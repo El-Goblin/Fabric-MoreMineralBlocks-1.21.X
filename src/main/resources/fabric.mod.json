@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "moremineralblocks",
+	"version": "${version}",
+	"name": "More Mineral Blocks",
+	"description": "This mod adds building blocks such as stairs, slabs and walls made with minerals such as iron, gold, diamond.",
+	"authors": [
+		"El Goblin"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/moremineralblocks/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.elgoblin.moremineralblocks.MoreMineralBlocks"
+		],
+		"fabric-datagen": [
+			"net.elgoblin.moremineralblocks.MoreMineralBlocksDataGenerator"
+		],
+		"client": [
+			"net.elgoblin.moremineralblocks.MoreMineralBlocksClient"
+		]
+	},
+	"mixins": [
+		"moremineralblocks.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
