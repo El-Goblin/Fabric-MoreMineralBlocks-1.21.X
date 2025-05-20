@@ -1,12 +1,14 @@
 {
   "item.moremineralblocks.pink_garnet": "Pink Garnet",
   "item.moremineralblocks.raw_pink_garnet": "Raw Pink Garnet",
+  "item.moremineralblocks.chisel": "Chisel",
 
   "block.moremineralblocks.pink_garnet_block": "Pink Garnet Block",
   "block.moremineralblocks.raw_pink_garnet_block": "Raw Pink Garnet Block",
 
   "block.moremineralblocks.pink_garnet_ore": "Pink Garnet Ore",
   "block.moremineralblocks.pink_garnet_deepslate_ore": "Pink Garnet Deepslate Ore",
+  "block.moremineralblocks.magic_block": "Magic Block",
 
   "itemgroup.moremineralblocks.pink_garnet_items": "Pink Garnet Items",
   "itemgroup.moremineralblocks.pink_garnet_blocks": "Pink Garnet Blocks",
