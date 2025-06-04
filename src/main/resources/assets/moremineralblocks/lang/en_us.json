@@ -10,8 +10,22 @@
   "block.moremineralblocks.pink_garnet_deepslate_ore": "Pink Garnet Deepslate Ore",
   "block.moremineralblocks.magic_block": "Magic Block",
 
-  "itemgroup.moremineralblocks.pink_garnet_items": "Pink Garnet Items",
-  "itemgroup.moremineralblocks.pink_garnet_blocks": "Pink Garnet Blocks",
+  "block.moremineralblocks.pink_garnet_stairs": "Pink Garnet Stairs",
+  "block.moremineralblocks.pink_garnet_slab": "Pink Garnet Slab",
+  "block.moremineralblocks.pink_garnet_button": "Pink Garnet Button",
+  "block.moremineralblocks.pink_garnet_pressure_plate": "Pink Garnet Pressure Plate",
+  "block.moremineralblocks.pink_garnet_fence": "Pink Garnet Fence",
+  "block.moremineralblocks.pink_garnet_fence_gate": "Pink Garnet Fence Gate",
+  "block.moremineralblocks.pink_garnet_wall": "Pink Garnet Wall",
 
+  "block.moremineralblocks.gold_stairs": "Gold Stairs",
+  "block.moremineralblocks.gold_slab": "Gold Slab",
+  "block.moremineralblocks.gold_fence": "Gold Fence",
+  "block.moremineralblocks.gold_fence_gate": "Gold Fence Gate",
+  "block.moremineralblocks.gold_wall": "Gold Wall",
+  "block.moremineralblocks.gold_test": "Gold Test",
+
+  "itemgroup.moremineralblocks.pink_garnet_items": "Pink Garnet Items",
+  "itemgroup.moremineralblocks.pink_garnet_blocks": "Pink Garnet Blocks"
 
 }

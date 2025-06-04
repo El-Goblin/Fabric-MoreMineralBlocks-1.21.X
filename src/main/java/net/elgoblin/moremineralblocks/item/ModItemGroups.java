@@ -3,6 +3,7 @@ package net.elgoblin.moremineralblocks.item;
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -33,6 +34,21 @@ public class ModItemGroups {
                         entries.add(ModBlocks.PINK_GARNET_ORE);
                         entries.add(ModBlocks.PINK_GARNET_DEEPSLATE_ORE);
                         entries.add(ModBlocks.MAGIC_BLOCK);
+
+                        entries.add(ModBlocks.PINK_GARNET_STAIRS);
+                        entries.add(ModBlocks.PINK_GARNET_SLAB);
+                        entries.add(ModBlocks.PINK_GARNET_BUTTON);
+                        entries.add(ModBlocks.PINK_GARNET_PRESSURE_PLATE);
+                        entries.add(ModBlocks.PINK_GARNET_FENCE);
+                        entries.add(ModBlocks.PINK_GARNET_FENCE_GATE);
+                        entries.add(ModBlocks.PINK_GARNET_WALL);
+
+                        entries.add(ModBlocks.GOLD_STAIRS);
+                        entries.add(ModBlocks.GOLD_SLAB);
+                        entries.add(ModBlocks.GOLD_FENCE);
+                        entries.add(ModBlocks.GOLD_FENCE_GATE);
+                        entries.add(ModBlocks.GOLD_WALL);
+                        entries.add(ModBlocks.GOLD_TEST);
                     })
                     .build());
 

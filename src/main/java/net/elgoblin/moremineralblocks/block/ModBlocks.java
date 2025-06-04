@@ -30,6 +30,58 @@ public class ModBlocks {
 
     public static final Block MAGIC_BLOCK = registerBlock("magic_block", new MagicBlock(AbstractBlock.Settings.create().strength(1).requiresTool()));
 
+    // ----------------------
+
+    public static final Block PINK_GARNET_STAIRS = registerBlock("pink_garnet_stairs",
+            new StairsBlock(ModBlocks.PINK_GARNET_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+    public static final Block PINK_GARNET_SLAB = registerBlock("pink_garnet_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+
+
+    public static final Block PINK_GARNET_BUTTON = registerBlock("pink_garnet_button",
+            new ButtonBlock(BlockSetType.IRON, 2, AbstractBlock.Settings.create().strength(2).requiresTool().noCollision()));
+
+    public static final Block PINK_GARNET_PRESSURE_PLATE = registerBlock("pink_garnet_pressure_plate",
+            new PressurePlateBlock(BlockSetType.IRON, AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+
+
+    public static final Block PINK_GARNET_FENCE = registerBlock("pink_garnet_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+    public static final Block PINK_GARNET_FENCE_GATE = registerBlock("pink_garnet_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+    public static final Block PINK_GARNET_WALL = registerBlock("pink_garnet_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+
+
+    // GOLD BLOCKS
+
+    public static final Block GOLD_STAIRS = registerBlock("gold_stairs",
+            new StairsBlock(Blocks.GOLD_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+    public static final Block GOLD_SLAB = registerBlock("gold_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+    public static final Block GOLD_FENCE = registerBlock("gold_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+    public static final Block GOLD_FENCE_GATE = registerBlock("gold_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+    public static final Block GOLD_WALL = registerBlock("gold_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
+
+    public static final Block GOLD_TEST = registerBlock("gold_test",
+            new StairsBlock(Blocks.GOLD_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(2).requiresTool()));
+
 
     // Otra funcion de ayuda para registrar bloques nuevos
     private static Block registerBlock(String name, Block block) {
