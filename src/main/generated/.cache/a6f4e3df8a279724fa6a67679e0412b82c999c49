@@ -1,0 +1,6 @@
+// 1.21.1	2025-06-04T02:14:15.8516461	More Mineral Blocks/Tags for minecraft:block
+0532084fa874c16c4aeee60faf4c05ee469380f9 data\minecraft\tags\block\fence_gates.json
+918115c6ddd1239d1c6368391280abcf19a425fa data\minecraft\tags\block\fences.json
+a709c1bf98ae503d3f663233dbcaa5f5f95c8b45 data\minecraft\tags\block\needs_iron_tool.json
+c6aa7fa26b9b9b03006d92f0d6512e434f8d02c5 data\minecraft\tags\block\walls.json
+3c26458608c2f5e81e4109421711dc0a39d54fc6 data\minecraft\tags\block\mineable\pickaxe.json

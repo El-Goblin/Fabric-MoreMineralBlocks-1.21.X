@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "moremineralblocks:item/raw_pink_garnet"
+  }
+}
