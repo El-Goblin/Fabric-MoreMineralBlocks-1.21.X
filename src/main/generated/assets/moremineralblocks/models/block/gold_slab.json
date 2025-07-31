@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "moremineralblocks:block/calcite_gold_block",
-    "side": "moremineralblocks:block/calcite_gold_block",
-    "top": "moremineralblocks:block/calcite_gold_block"
-  }
-}

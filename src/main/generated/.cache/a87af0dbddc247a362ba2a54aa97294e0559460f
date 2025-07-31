@@ -1,2 +1,3 @@
-// 1.21.1	2025-06-04T02:14:15.8526517	More Mineral Blocks/Tags for minecraft:item
-d1fe5b7613175390c218ff8bf13c7a8d4ac73ae1 data\moremineralblocks\tags\item\transformable_items.json
+// 1.21.1	2025-07-31T05:07:56.2616053	More Mineral Blocks/Tags for minecraft:item
+a521b7bba0a9d2cb2a05be30c062702f30640416 data\moremineralblocks\tags\item\transformable_items.json
+07bb3c0e3679a734a54498d9e3b1ade315c94272 data\minecraft\tags\item\pickaxes.json

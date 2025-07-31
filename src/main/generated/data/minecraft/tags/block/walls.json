@@ -1,6 +1,23 @@
 {
   "values": [
-    "moremineralblocks:pink_garnet_wall",
-    "moremineralblocks:gold_wall"
+    "moremineralblocks:gold_wall",
+    "moremineralblocks:diamond_wall",
+    "moremineralblocks:emerald_wall",
+    "moremineralblocks:iron_wall",
+    "moremineralblocks:lapis_wall",
+    "moremineralblocks:netherite_wall",
+    "moremineralblocks:amethyst_wall",
+    "moremineralblocks:calcite_wall",
+    "moremineralblocks:coal_wall",
+    "moremineralblocks:redstone_wall",
+    "moremineralblocks:obsidian_wall",
+    "moremineralblocks:bedrock_wall",
+    "moremineralblocks:sculk_wall",
+    "moremineralblocks:packed_ice_wall",
+    "moremineralblocks:blue_ice_wall",
+    "moremineralblocks:ice_wall",
+    "moremineralblocks:deepslate_emerald_ore_wall",
+    "moremineralblocks:dark_prismarine_wall",
+    "moremineralblocks:prismarine_brick_wall"
   ]
 }

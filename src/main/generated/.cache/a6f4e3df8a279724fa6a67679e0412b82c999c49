@@ -1,6 +1,9 @@
-// 1.21.1	2025-06-04T02:14:15.8516461	More Mineral Blocks/Tags for minecraft:block
-0532084fa874c16c4aeee60faf4c05ee469380f9 data\minecraft\tags\block\fence_gates.json
-918115c6ddd1239d1c6368391280abcf19a425fa data\minecraft\tags\block\fences.json
-a709c1bf98ae503d3f663233dbcaa5f5f95c8b45 data\minecraft\tags\block\needs_iron_tool.json
-c6aa7fa26b9b9b03006d92f0d6512e434f8d02c5 data\minecraft\tags\block\walls.json
-3c26458608c2f5e81e4109421711dc0a39d54fc6 data\minecraft\tags\block\mineable\pickaxe.json
+// 1.21.1	2025-07-31T05:07:56.259603	More Mineral Blocks/Tags for minecraft:block
+1ad9d79cfd250c6bd29494f28c3055de803e8e9b data\minecraft\tags\block\fences.json
+4dcaed5ee077258701095c79ef68116357331794 data\minecraft\tags\block\fence_gates.json
+1cfa34234f2cf7019c2f4a8a54ea2f33c90a4ec4 data\minecraft\tags\block\needs_iron_tool.json
+5b46c50130cf5e9d854af31d65f5b7d8a19545d8 data\minecraft\tags\block\needs_diamond_tool.json
+c0e7982b289e521374b093f92dd53aa529fd140f data\minecraft\tags\block\walls.json
+688aefeec1e2aff2ba2e8db288c1731ace51bfea data\minecraft\tags\block\needs_stone_tool.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data\moremineralblocks\tags\block\needs_legendary_tool.json
+e43acdd7e4312e18f9cba75398928621c5282912 data\minecraft\tags\block\mineable\pickaxe.json

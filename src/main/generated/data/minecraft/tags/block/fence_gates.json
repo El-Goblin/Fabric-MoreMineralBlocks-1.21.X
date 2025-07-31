@@ -1,6 +1,21 @@
 {
   "values": [
-    "moremineralblocks:pink_garnet_fence_gate",
-    "moremineralblocks:gold_fence_gate"
+    "moremineralblocks:gold_fence_gate",
+    "moremineralblocks:diamond_fence_gate",
+    "moremineralblocks:emerald_fence_gate",
+    "moremineralblocks:iron_fence_gate",
+    "moremineralblocks:lapis_fence_gate",
+    "moremineralblocks:netherite_fence_gate",
+    "moremineralblocks:amethyst_fence_gate",
+    "moremineralblocks:calcite_fence_gate",
+    "moremineralblocks:coal_fence_gate",
+    "moremineralblocks:redstone_fence_gate",
+    "moremineralblocks:obsidian_fence_gate",
+    "moremineralblocks:bedrock_fence_gate",
+    "moremineralblocks:sculk_fence_gate",
+    "moremineralblocks:packed_ice_fence_gate",
+    "moremineralblocks:blue_ice_fence_gate",
+    "moremineralblocks:ice_fence_gate",
+    "moremineralblocks:deepslate_emerald_ore_fence_gate"
   ]
 }

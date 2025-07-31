@@ -20,9 +20,9 @@ public class ChiselItem extends Item {
 
     private static final Map<Block, Block> CHISEL_MAP = Map.of(
             Blocks.STONE, Blocks.STONE_BRICKS,
-            Blocks.END_STONE, Blocks.END_STONE_BRICKS,
-            Blocks.OAK_LOG, ModBlocks.PINK_GARNET_BLOCK,
-            ModBlocks.PINK_GARNET_BLOCK, Blocks.OAK_LOG
+            Blocks.END_STONE, Blocks.END_STONE_BRICKS
+            //Blocks.OAK_LOG, ModBlocks.PINK_GARNET_BLOCK,
+            //ModBlocks.PINK_GARNET_BLOCK, Blocks.OAK_LOG
     );
 
     public ChiselItem(Settings settings) {

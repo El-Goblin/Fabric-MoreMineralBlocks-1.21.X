@@ -1,0 +1,6 @@
+{
+  "parent": "moremineralblocks:item/parent2",
+  "textures": {
+    "layer0": "moremineralblocks:item/chisel"
+  }
+}
