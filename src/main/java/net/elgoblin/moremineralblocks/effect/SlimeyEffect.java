@@ -1,9 +1,15 @@
 package net.elgoblin.moremineralblocks.effect;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.AttributeContainer;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.Map;
 
 public class SlimeyEffect extends StatusEffect {
     public SlimeyEffect(StatusEffectCategory category, int color) {

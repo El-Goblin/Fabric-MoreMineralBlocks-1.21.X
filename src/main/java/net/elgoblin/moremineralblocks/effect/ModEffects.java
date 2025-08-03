@@ -22,6 +22,9 @@ public class ModEffects {
     public static final RegistryEntry<StatusEffect> CHAOS = registerStatusEffect("chaos",
             new ChaosEffect(StatusEffectCategory.NEUTRAL, 0x00ff20));
 
+    public static final RegistryEntry<StatusEffect> ADVENTURE = registerStatusEffect("adventure",
+            new AdventureEffect(StatusEffectCategory.NEUTRAL, 0x00ff20));
+
     private static RegistryEntry<StatusEffect> registerStatusEffect(String name, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(MoreMineralBlocks.MOD_ID, name), statusEffect);
     }
