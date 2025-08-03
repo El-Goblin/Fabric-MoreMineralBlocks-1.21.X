@@ -152,17 +152,17 @@ public class ChaosEffect extends InstantStatusEffect {
         // for (LivingEntity livingEntity : this.getWorld().getEntitiesByClass(LivingEntity.class, box, AFFECTED_BY_WATER)) {
 
         for (ServerPlayerEntity playerEntity : players) {
-            ServerWorld dimension = playerEntity.getServer().getWorld(entity.getWorld().getRegistryKey());
+            ServerWorld dimension = playerEntity.getServer().getWorld(playerEntity.getWorld().getRegistryKey());
             TeleportTarget teleportTarget = new TeleportTarget(dimension,
                     new Vec3d((double)this.random.nextBetween(-10000000, 10000000),
-                            entity.getY(),
+                            playerEntity.getY(),
                             (double)this.random.nextBetween(-10000000, 10000000)),
                     new Vec3d(0, 0, 0),
-                    entity.getYaw(),
-                    entity.getPitch(),
+                    playerEntity.getYaw(),
+                    playerEntity.getPitch(),
                     TeleportTarget.NO_OP);
-            entity.teleportTo(teleportTarget);
-            entity.sendMessage(Text.of(String.format("tpeado")));
+            playerEntity.teleportTo(teleportTarget);
+            playerEntity.sendMessage(Text.of(String.format("tpeado")));
         }
 
     }
