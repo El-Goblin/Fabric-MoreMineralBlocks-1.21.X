@@ -1,0 +1,6 @@
+{
+  "parent": "moremineralblocks:item/longswords_parent",
+  "textures": {
+    "layer0": "moremineralblocks:item/fiendblade_longsword"
+  }
+}

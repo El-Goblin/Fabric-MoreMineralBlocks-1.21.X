@@ -1,0 +1,19 @@
+{
+  "values": [
+    "moremineralblocks:netherite_stairs",
+    "moremineralblocks:netherite_slab",
+    "moremineralblocks:netherite_fence",
+    "moremineralblocks:netherite_fence_gate",
+    "moremineralblocks:polished_netherite_block",
+    "moremineralblocks:netherite_door",
+    "moremineralblocks:netherite_trapdoor",
+    "moremineralblocks:calcified_netherite_block",
+    "moremineralblocks:netherite_bricks",
+    "moremineralblocks:netherite_wall",
+    "moremineralblocks:obsidian_stairs",
+    "moremineralblocks:obsidian_slab",
+    "moremineralblocks:obsidian_fence",
+    "moremineralblocks:obsidian_fence_gate",
+    "moremineralblocks:obsidian_wall"
+  ]
+}

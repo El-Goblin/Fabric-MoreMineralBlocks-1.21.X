@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:ice"
+  },
+  "result": {
+    "count": 2,
+    "id": "moremineralblocks:ice_fence_gate"
+  }
+}

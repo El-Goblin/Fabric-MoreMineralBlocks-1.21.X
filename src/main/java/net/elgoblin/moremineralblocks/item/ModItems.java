@@ -1,9 +1,7 @@
 package net.elgoblin.moremineralblocks.item;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
-import net.elgoblin.moremineralblocks.item.custom.ChiselItem;
-import net.elgoblin.moremineralblocks.item.custom.LegendaryPickaxeItem;
-import net.elgoblin.moremineralblocks.item.custom.LongSwordItem;
+import net.elgoblin.moremineralblocks.item.custom.*;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
@@ -58,6 +56,8 @@ public class ModItems {
 
 
     //
+    public static final Item CHAOS_ORB = registerItem("chaos_orb", new ChaosOrbItem(new Item.Settings()));
+
     public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
 
     private static Item registerItem(String name, Item item) {

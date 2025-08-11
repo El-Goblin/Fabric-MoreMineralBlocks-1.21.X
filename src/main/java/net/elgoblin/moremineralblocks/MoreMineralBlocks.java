@@ -3,6 +3,7 @@ package net.elgoblin.moremineralblocks;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
+import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItemGroups;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.fabricmc.api.ModInitializer;
@@ -24,5 +25,6 @@ public class MoreMineralBlocks implements ModInitializer {
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
 		ModEffects.registerEffects();
+		ModEntities.registerModEntities();
 	}
 }

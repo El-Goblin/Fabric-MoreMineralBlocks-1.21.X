@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "R": {
+      "item": "minecraft:netherite_ingot"
+    }
+  },
+  "pattern": [
+    "RR",
+    "RR",
+    "RR"
+  ],
+  "result": {
+    "count": 3,
+    "id": "moremineralblocks:netherite_door"
+  }
+}

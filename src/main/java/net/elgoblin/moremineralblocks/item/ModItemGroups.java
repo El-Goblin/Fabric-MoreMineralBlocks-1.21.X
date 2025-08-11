@@ -3,8 +3,10 @@ package net.elgoblin.moremineralblocks.item;
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -51,5 +53,9 @@ public class ModItemGroups {
 
     public static void registerItemGroups() {
         MoreMineralBlocks.LOGGER.info("Registering Item Groups for " + MoreMineralBlocks.MOD_ID);
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
+            entries.add(ModItems.CHAOS_ORB);
+        });
     }
 }

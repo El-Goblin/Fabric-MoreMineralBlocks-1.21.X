@@ -1,0 +1,22 @@
+{
+  "values": [
+    "moremineralblocks:iron_stairs",
+    "moremineralblocks:iron_slab",
+    "moremineralblocks:iron_fence",
+    "moremineralblocks:iron_fence_gate",
+    "moremineralblocks:polished_iron_block",
+    "moremineralblocks:calcified_iron_block",
+    "moremineralblocks:iron_bricks",
+    "moremineralblocks:iron_wall",
+    "moremineralblocks:lapis_stairs",
+    "moremineralblocks:lapis_slab",
+    "moremineralblocks:lapis_fence",
+    "moremineralblocks:lapis_fence_gate",
+    "moremineralblocks:polished_lapis_block",
+    "moremineralblocks:lapis_door",
+    "moremineralblocks:lapis_trapdoor",
+    "moremineralblocks:calcified_lapis_block",
+    "moremineralblocks:lapis_bricks",
+    "moremineralblocks:lapis_wall"
+  ]
+}

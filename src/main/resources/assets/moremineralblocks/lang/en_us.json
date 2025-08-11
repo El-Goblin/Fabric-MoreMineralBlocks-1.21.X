@@ -153,8 +153,12 @@
   "item.moremineralblocks.flameberge_longsword": "Flameberge",
   "item.moremineralblocks.fire_dragonsword_longsword": "Fire Dragonsword",
   "item.moremineralblocks.fiendblade_longsword": "Fiendblade",
+  "item.moremineralblocks.chaos_orb": "Chaos Orb",
 
   "effect.moremineralblocks.slimey": "Slimey",
-  "effect.moremineralblocks.chaosy": "Chaos"
+  "effect.moremineralblocks.chaosy": "Chaos",
+
+
+  "entity.moremineralblocks.chaos_orb": "Chaos Orb"
 
 }
