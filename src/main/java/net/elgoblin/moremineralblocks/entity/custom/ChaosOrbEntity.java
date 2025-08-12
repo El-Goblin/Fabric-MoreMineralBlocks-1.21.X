@@ -41,7 +41,7 @@ import java.util.function.Consumer;
 public class ChaosOrbEntity extends ThrownItemEntity {
 
     private Random random = Random.create();
-    private int effectsCount = 1;
+    private int effectsCount = 7;
     private List<Consumer<HitResult>> chaosEffects = new ArrayList<>(List.of(
 //              this::crash,
             this::spawnPig,
