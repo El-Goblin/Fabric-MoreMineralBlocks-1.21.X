@@ -46,31 +46,6 @@ public class ChaosOrbItem extends SnowballItem {
         return TypedActionResult.success(itemStack, world.isClient());
     }
 
-//    @Override
-//    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-//        ItemStack itemStack = user.getStackInHand(hand);
-//        world.playSound(
-//                null,
-//                user.getX(),
-//                user.getY(),
-//                user.getZ(),
-//                SoundEvents.ENTITY_SNOWBALL_THROW,
-//                SoundCategory.NEUTRAL,
-//                0.5F,
-//                0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
-//        );
-//        if (!world.isClient) {
-//            ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(world, user);
-//            chaosOrbEntity.setItem(itemStack);
-//            chaosOrbEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
-//            world.spawnEntity(chaosOrbEntity);
-//        }
-//
-//        user.incrementStat(Stats.USED.getOrCreateStat(this));
-//        itemStack.decrementUnlessCreative(1, user);
-//        return TypedActionResult.success(itemStack, world.isClient());
-//    }
-
     @Override
     public ProjectileEntity createEntity(World world, Position pos, ItemStack stack, Direction direction) {
         ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(world, pos.getX(), pos.getY(), pos.getZ());

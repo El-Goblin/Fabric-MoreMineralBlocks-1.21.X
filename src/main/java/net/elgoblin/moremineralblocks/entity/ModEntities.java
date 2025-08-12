@@ -15,10 +15,6 @@ public class ModEntities {
             EntityType.Builder.<ChaosOrbEntity>create(ChaosOrbEntity::new, SpawnGroup.MISC)
                     .dimensions(0.25F,0.25F).maxTrackingRange(4).trackingTickInterval(10).build());
 
-//    public static final EntityType<ChaosOrbEntity> CHAOS_ORB_TWO = Registry.register(Registries.ENTITY_TYPE,
-//            Identifier.of(MoreMineralBlocks.MOD_ID, "chaos_orb"),
-//            EntityType.Builder.<ChaosOrbEntity>create(ChaosOrbEntity::new, SpawnGroup.MISC)
-//                    .dimensions(0.25F,0.25F).build());
 
     public static void registerModEntities() {
         MoreMineralBlocks.LOGGER.info("Registering Mod Entities for " + MoreMineralBlocks.MOD_ID);
