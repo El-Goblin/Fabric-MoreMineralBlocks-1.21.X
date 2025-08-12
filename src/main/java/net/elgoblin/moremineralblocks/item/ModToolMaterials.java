@@ -13,7 +13,8 @@ import net.minecraft.registry.tag.TagKey;
 import java.util.function.Supplier;
 
 public enum ModToolMaterials implements ToolMaterial {
-    LEGENDARY(ModTags.Blocks.INCORRECT_FOR_LEGENDARY_TOOL, 2000, 30.0F, 4.0F, 30, () -> Ingredient.ofItems(Items.NETHERITE_INGOT));
+    LEGENDARY(ModTags.Blocks.INCORRECT_FOR_LEGENDARY_TOOL, 2000, 30.0F, 4.0F, 30, () -> Ingredient.ofItems(Items.NETHERITE_INGOT)),
+    SURVIVALDEBUGSTICK(ModTags.Blocks.INCORRECT_FOR_LEGENDARY_TOOL, 2000, 500000.0F, 0.0F, 30, () -> Ingredient.ofItems(Items.NETHERITE_INGOT));
 
     private final TagKey<Block> inverseTag;
     private final int itemDurability;

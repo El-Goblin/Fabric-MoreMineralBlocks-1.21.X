@@ -41,16 +41,16 @@ import java.util.function.Consumer;
 public class ChaosOrbEntity extends ThrownItemEntity {
 
     private Random random = Random.create();
-    private int effectsCount = 7;
+    private int effectsCount = 1;
     private List<Consumer<HitResult>> chaosEffects = new ArrayList<>(List.of(
 //              this::crash,
-            this::spawnPig,
-            this::beginThunderstorm,
-            this::goDownXBlocks,
-            this::randomizePlayersPositions,
-            this::applyBeaconEffect,
-            this::getMythicItem,
-            this::spawnSkeletonHorse
+//            this::spawnPig,
+//            this::beginThunderstorm,
+//            this::goDownXBlocks,
+//            this::randomizePlayersPositions,
+//            this::applyBeaconEffect,
+            this::getMythicItem
+//            this::spawnSkeletonHorse
 
     ));
 
@@ -191,6 +191,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
 
+    private void saveAndQuit(HitResult hitResult) {
+    }
+
     private void getMythicItem(HitResult hitResult) {
 //        List<ItemStack> mythicItems = new ArrayList<>(List.of(
 //                ModItems.LEGENDARY_PICKAXE.getDefaultStack(),
@@ -205,7 +208,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         mythicItems.add(ModItems.LEGENDARY_PICKAXE.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_ROCKET.getDefaultStack());
-        mythicItems.add(Items.DEBUG_STICK.getDefaultStack());
+        mythicItems.add(ModItems.SURVIVAL_DEBUG_STICK.getDefaultStack());
         mythicItems.add(Items.DRAGON_EGG.getDefaultStack());
         mythicItems.add(Items.LIGHT.getDefaultStack());
 

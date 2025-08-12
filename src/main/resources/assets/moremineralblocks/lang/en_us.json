@@ -156,9 +156,13 @@
   "item.moremineralblocks.chaos_orb": "Chaos Orb",
 
   "effect.moremineralblocks.slimey": "Slimey",
-  "effect.moremineralblocks.chaosy": "Chaos",
+  "effect.moremineralblocks.chaos": "Chaos",
 
 
-  "entity.moremineralblocks.chaos_orb": "Chaos Orb"
+  "entity.moremineralblocks.chaos_orb": "Chaos Orb",
 
+  "item.moremineralblocks.survival_debug_stick": "Debug Stick",
+  "item.moremineralblocks.survival_debug_stick.empty": "%s has no properties",
+  "item.moremineralblocks.survival_debug_stick.select": "selected \"%s\" (%s)",
+  "item.moremineralblocks.survival_debug_stick.update": "\"%s\" to %s"
 }
