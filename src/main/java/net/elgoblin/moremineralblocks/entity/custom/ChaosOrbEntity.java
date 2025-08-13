@@ -18,12 +18,12 @@ import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.*;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
@@ -41,17 +41,17 @@ import java.util.function.Consumer;
 public class ChaosOrbEntity extends ThrownItemEntity {
 
     private Random random = Random.create();
-    private int effectsCount = 1;
+    private int effectsCount = 8;
     private List<Consumer<HitResult>> chaosEffects = new ArrayList<>(List.of(
 //              this::crash,
-//            this::spawnPig,
-//            this::beginThunderstorm,
-//            this::goDownXBlocks,
-//            this::randomizePlayersPositions,
-//            this::applyBeaconEffect,
-            this::getMythicItem
-//            this::spawnSkeletonHorse
-
+            this::spawnPig,
+            this::beginThunderstorm,
+            this::goDownXBlocks,
+            this::randomizePlayersPositions,
+            this::applyBeaconEffect,
+            this::getMythicItem,
+            this::spawnSkeletonHorse,
+            this::getElytra
     ));
 
     public ChaosOrbEntity(EntityType<? extends ChaosOrbEntity> entityType, World world) {
@@ -92,10 +92,6 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void spawnPig(HitResult hitResult) {
-//        if(this.getOwner() != null) {
-//            this.getOwner().sendMessage(Text.of("SPAWNPIG"));
-//        }
-
         PigEntity chickenEntity = EntityType.PIG.create(this.getWorld());
         if (chickenEntity != null) {
             chickenEntity.setBreedingAge(0);
@@ -106,10 +102,6 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void spawnSkeletonHorse(HitResult hitResult) {
-//        if(this.getOwner() != null) {
-//            this.getOwner().sendMessage(Text.of("SPAWNPIG"));
-//        }
-
         SkeletonHorseEntity skeletonHorseEntity = EntityType.SKELETON_HORSE.create(this.getWorld());
         skeletonHorseEntity.setTrapped(true);
         if (skeletonHorseEntity != null) {
@@ -153,9 +145,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         for (ServerPlayerEntity playerEntity : players) {
             ServerWorld dimension = playerEntity.getServer().getWorld(playerEntity.getWorld().getRegistryKey());
             TeleportTarget teleportTarget = new TeleportTarget(dimension,
-                    new Vec3d((double)this.random.nextBetween(-10000000, 10000000),
+                    new Vec3d((double)this.random.nextBetween(-2000, 2000),
                             playerEntity.getY(),
-                            (double)this.random.nextBetween(-10000000, 10000000)),
+                            (double)this.random.nextBetween(-2000, 2000)),
                     new Vec3d(0, 0, 0),
                     playerEntity.getYaw(),
                     playerEntity.getPitch(),
@@ -178,32 +170,17 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void crash(HitResult hitResult) {
-        List<ItemGroup> groups = ItemGroups.getGroups();
-        List<ItemStack> spawnEggs;
-        for (ItemGroup group : groups) {
-//            if (Objects.equals(group.getDisplayName(), Text.translatable("itemGroup.spawnEggs"))) {
-                spawnEggs = (List<ItemStack>) group.getDisplayStacks();
-//                int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
-//                ItemStack eggs = spawnEggs.get(nextEgg);
-//                eggs.setCount(16);
-//                mythicItems.add(eggs);
-//            }
-        }
+//        float a = 1/0;
     }
 
     private void saveAndQuit(HitResult hitResult) {
     }
 
+    private void getElytra(HitResult hitResult) {
+        this.dropStack(Items.ELYTRA.getDefaultStack(), 0);
+    }
+
     private void getMythicItem(HitResult hitResult) {
-//        List<ItemStack> mythicItems = new ArrayList<>(List.of(
-//                ModItems.LEGENDARY_PICKAXE.getDefaultStack(),
-//                Items.BEDROCK.getDefaultStack(),
-//                Items.END_PORTAL_FRAME.getDefaultStack(),
-//                Items.DEBUG_STICK.getDefaultStack(),
-//                Items.REINFORCED_DEEPSLATE.getDefaultStack(),
-//                Items.DRAGON_EGG.getDefaultStack(),
-//                Items.BUDDING_AMETHYST.getDefaultStack()
-//        ));
         List<ItemStack> mythicItems = new ArrayList<>();
 
         mythicItems.add(ModItems.LEGENDARY_PICKAXE.getDefaultStack());
@@ -228,18 +205,30 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         buddingAmethyst.setCount(64);
         mythicItems.add(buddingAmethyst);
 
-        List<ItemGroup> groups = ItemGroups.getGroups();
-        List<ItemStack> spawnEggs;
+//        List<ItemStack> spawnEggs = new ArrayList<>();
 
-//        for (ItemGroup group : groups) {
-//            if (Objects.equals(group.getDisplayName(), Text.translatable("itemGroup.spawnEggs"))) {
-//                spawnEggs = (List<ItemStack>) group.getDisplayStacks();
-//                int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
-//                ItemStack eggs = spawnEggs.get(nextEgg);
-//                eggs.setCount(16);
-//                mythicItems.add(eggs);
+//        DynamicRegistryManager registryManager = this.getRegistryManager();
+//
+//        ItemGroup spawnEggsGroup = registryManager.get(RegistryKeys.ITEM_GROUP).get(Identifier.of("spawn_eggs"));
+//
+//        for (Item item : Registries.ITEM.stream().toList()) {
+//            this.getOwner().sendMessage(Text.of(spawnEggsGroup.getDisplayName()));
+//            this.getOwner().sendMessage(Text.of(item.getName()));
+//            if (spawnEggsGroup.contains(item.getDefaultStack())) {
+//                if (item != Items.TRIAL_SPAWNER && item != Items.SPAWNER) {
+//                    this.getOwner().sendMessage(Text.of(String.valueOf(3)));
+//                    ItemStack egg = item.getDefaultStack();
+//                    egg.setCount(16);
+//                    spawnEggs.add(egg);
+//                }
 //            }
 //        }
+//
+//        this.getOwner().sendMessage(Text.of(String.valueOf(spawnEggs.size())));
+//        this.getOwner().sendMessage(Text.of(String.valueOf(mythicItems.size())));
+
+        //int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
+        //mythicItems.add(spawnEggs.get(nextEgg));
 
         int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);
         ItemStack reward = mythicItems.get(nextItem);

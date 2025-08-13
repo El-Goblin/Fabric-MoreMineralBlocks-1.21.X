@@ -6,6 +6,7 @@ import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItemGroups;
 import net.elgoblin.moremineralblocks.item.ModItems;
+import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -26,5 +27,6 @@ public class MoreMineralBlocks implements ModInitializer {
 		ModBlocks.registerModBlocks();
 		ModEffects.registerEffects();
 		ModEntities.registerModEntities();
+		ModLootTableModifiers.modifyLootTables();
 	}
 }
