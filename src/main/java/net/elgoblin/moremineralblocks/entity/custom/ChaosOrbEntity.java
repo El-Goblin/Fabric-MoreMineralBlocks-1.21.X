@@ -41,7 +41,7 @@ import java.util.function.Consumer;
 public class ChaosOrbEntity extends ThrownItemEntity {
 
     private Random random = Random.create();
-    private int effectsCount = 8;
+    private int effectsCount = 1;
     private List<Consumer<HitResult>> chaosEffects = new ArrayList<>(List.of(
 //              this::crash,
             this::spawnPig,
@@ -163,7 +163,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         List<RegistryEntry<StatusEffect>> pool = BeaconBlockEntity.EFFECTS_BY_LEVEL.stream().flatMap(List::stream).toList();
         long poolSize = pool.size();
         int nextEffect = this.random.nextBetween(0, (int) poolSize-1);
-        StatusEffectInstance effect = new StatusEffectInstance(pool.get(nextEffect), 72000);
+        int nextLevel = this.random.nextBetween(0, 9);
+        StatusEffectInstance effect = new StatusEffectInstance(pool.get(nextEffect), 72000, nextLevel);
         if (entity != null) {
             entity.addStatusEffect(effect);
         }
@@ -232,6 +233,11 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);
         ItemStack reward = mythicItems.get(nextItem);
+        if (reward.getItem() == Items.END_PORTAL_FRAME) {
+            ItemStack enderEyes = Items.ENDER_EYE.getDefaultStack();
+            enderEyes.setCount(12);
+            this.dropStack(enderEyes, 0);
+        }
         this.dropStack(reward, 0);
     }
 }

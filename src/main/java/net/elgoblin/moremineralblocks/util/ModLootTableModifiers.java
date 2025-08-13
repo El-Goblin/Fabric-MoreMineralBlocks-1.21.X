@@ -24,69 +24,69 @@ public class ModLootTableModifiers {
 
             LootPool.Builder village = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.25f))
+                    .conditionally(RandomChanceLootCondition.builder(0.5f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 3.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0f, 3.0f)).build());
 
             LootPool.Builder dungeon = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.6f))
+                    .conditionally(RandomChanceLootCondition.builder(0.9f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 3.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0f, 3.0f)).build());
 
             LootPool.Builder stronghold = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.75f))
+                    .conditionally(RandomChanceLootCondition.builder(1))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(8.0f, 16.0f)).build());
 
             LootPool.Builder desertTemple = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.15f))
+                    .conditionally(RandomChanceLootCondition.builder(0.35f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 3.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0f, 5.0f)).build());
 
             LootPool.Builder jungleTemple = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.6f))
+                    .conditionally(RandomChanceLootCondition.builder(0.9f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0f, 4.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0f, 6.0f)).build());
 
             LootPool.Builder igloo = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
                     .conditionally(RandomChanceLootCondition.builder(1))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0f, 5.0f)).build());
 
             LootPool.Builder mansion = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
                     .conditionally(RandomChanceLootCondition.builder(0.8f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0f, 5.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(20.0f, 50.0f)).build());
 
             LootPool.Builder shipwrecks = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.2f))
+                    .conditionally(RandomChanceLootCondition.builder(0.5f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 2.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0f, 3.0f)).build());
 
             LootPool.Builder buriedTreasure = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
                     .conditionally(RandomChanceLootCondition.builder(1))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0f, 3.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(10.0f, 10.0f)).build());
 
             LootPool.Builder netherBridge = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.75f))
+                    .conditionally(RandomChanceLootCondition.builder(0.85f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0f, 5.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(6.0f, 10.0f)).build());
 
             LootPool.Builder bastion = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
                     .conditionally(RandomChanceLootCondition.builder(0.9f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0f, 8.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(9.0f, 15.0f)).build());
 
             LootPool.Builder ancientCity = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
@@ -96,27 +96,27 @@ public class ModLootTableModifiers {
 
             LootPool.Builder trialChambers = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.15f))
+                    .conditionally(RandomChanceLootCondition.builder(0.25f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0f, 4.0f)).build());
 
             LootPool.Builder fishingJunk = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.02f))
+                    .conditionally(RandomChanceLootCondition.builder(0.15f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 
             LootPool.Builder fishingTreasure = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.1f))
+                    .conditionally(RandomChanceLootCondition.builder(0.4f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 
             LootPool.Builder piglinBartering = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.05f))
+                    .conditionally(RandomChanceLootCondition.builder(0.15f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0f, 4.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0f, 8.0f)).build());
 
             // Start chest
 
@@ -206,9 +206,6 @@ public class ModLootTableModifiers {
             // Jungle Temple
 
             if (LootTables.JUNGLE_TEMPLE_CHEST.equals(key)) {
-                tableBuilder.pool(jungleTemple.build());
-            }
-            if (LootTables.JUNGLE_TEMPLE_DISPENSER_CHEST.equals(key)) {
                 tableBuilder.pool(jungleTemple.build());
             }
 
