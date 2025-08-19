@@ -4,11 +4,14 @@ import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
+import net.elgoblin.moremineralblocks.entity.custom.DevilmonEntity;
+import net.elgoblin.moremineralblocks.entity.custom.MantisEntity;
 import net.elgoblin.moremineralblocks.item.ModItemGroups;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,5 +31,8 @@ public class MoreMineralBlocks implements ModInitializer {
 		ModEffects.registerEffects();
 		ModEntities.registerModEntities();
 		ModLootTableModifiers.modifyLootTables();
+
+		FabricDefaultAttributeRegistry.register(ModEntities.MANTIS, MantisEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(ModEntities.DEVILMON, DevilmonEntity.createAttributes());
 	}
 }

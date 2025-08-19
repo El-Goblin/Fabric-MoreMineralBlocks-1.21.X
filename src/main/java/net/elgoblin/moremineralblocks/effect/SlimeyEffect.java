@@ -12,8 +12,11 @@ import net.minecraft.util.math.Vec3d;
 import java.util.Map;
 
 public class SlimeyEffect extends StatusEffect {
+    private Integer counter = 0;
+
     public SlimeyEffect(StatusEffectCategory category, int color) {
         super(category, color);
+        counter = 0;
     }
 
     @Override

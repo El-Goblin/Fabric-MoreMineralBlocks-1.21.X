@@ -18,7 +18,7 @@ public class ModItems {
 
     public static final Item LEGENDARY_PICKAXE = registerItem(
             "legendary_pickaxe",
-            new LegendaryPickaxeItem(ModToolMaterials.LEGENDARY, new Item.Settings().attributeModifiers(PickaxeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)))
+            new LegendaryPickaxeItem(ModToolMaterials.LEGENDARY, new Item.Settings().attributeModifiers(PickaxeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
     );
     public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings().maxCount(1)));
     public static final Item SURVIVAL_DEBUG_STICK = registerItem("survival_debug_stick", new SurvivalDebugStickItem(new Item.Settings()
@@ -26,6 +26,7 @@ public class ModItems {
             .rarity(Rarity.EPIC)
             .component(DataComponentTypes.DEBUG_STICK_STATE, DebugStickStateComponent.DEFAULT)
             .component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
+//    public static final Item LEGENDARY_ELYTRA = registerItem("legendary_elytra", new ElytraItem(new Item.Settings().rarity(Rarity.EPIC)));
     public static final Item WOODEN_LONGSWORD = registerItem(
             "wooden_longsword",
             new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F)))
@@ -97,6 +98,7 @@ public class ModItems {
             entries.add(FIENDBLADE_LONGSWORD);
             entries.add(LEGENDARY_ROCKET);
             entries.add(SURVIVAL_DEBUG_STICK);
+//            entries.add(LEGENDARY_ELYTRA);
         });
     }
 }

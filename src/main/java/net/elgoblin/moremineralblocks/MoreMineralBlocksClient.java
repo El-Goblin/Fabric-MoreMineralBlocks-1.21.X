@@ -3,16 +3,22 @@ package net.elgoblin.moremineralblocks;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
+import net.elgoblin.moremineralblocks.entity.client.DevilmonModel;
+import net.elgoblin.moremineralblocks.entity.client.MantisModel;
+import net.elgoblin.moremineralblocks.entity.client.MantisRenderer;
+import net.elgoblin.moremineralblocks.entity.client.DevilmonRenderer;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.LegendaryPickaxeItem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
@@ -67,5 +73,11 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
                     }
             }
         });
+
+        EntityModelLayerRegistry.registerModelLayer(MantisModel.MANTIS, MantisModel::getTexturedModelData);
+        EntityRendererRegistry.register(ModEntities.MANTIS, MantisRenderer::new);
+
+        EntityModelLayerRegistry.registerModelLayer(DevilmonModel.DEVILMON, DevilmonModel::getTexturedModelData);
+        EntityRendererRegistry.register(ModEntities.DEVILMON, DevilmonRenderer::new);
     }
 }

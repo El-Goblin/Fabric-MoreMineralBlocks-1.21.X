@@ -1,8 +1,8 @@
-// 1.21.1	2025-08-02T22:49:36.2454555	More Mineral Blocks/Tags for minecraft:block
+// 1.21.1	2025-08-19T01:15:04.3046788	More Mineral Blocks/Tags for minecraft:block
 1ad9d79cfd250c6bd29494f28c3055de803e8e9b data\minecraft\tags\block\fences.json
 4dcaed5ee077258701095c79ef68116357331794 data\minecraft\tags\block\fence_gates.json
-1cfa34234f2cf7019c2f4a8a54ea2f33c90a4ec4 data\minecraft\tags\block\needs_iron_tool.json
 5b46c50130cf5e9d854af31d65f5b7d8a19545d8 data\minecraft\tags\block\needs_diamond_tool.json
+1cfa34234f2cf7019c2f4a8a54ea2f33c90a4ec4 data\minecraft\tags\block\needs_iron_tool.json
 c0e7982b289e521374b093f92dd53aa529fd140f data\minecraft\tags\block\walls.json
 688aefeec1e2aff2ba2e8db288c1731ace51bfea data\minecraft\tags\block\needs_stone_tool.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data\moremineralblocks\tags\block\needs_legendary_tool.json

@@ -13,6 +13,7 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
@@ -21,13 +22,17 @@ import java.util.List;
 import java.util.Map;
 
 public class AdventureEffect extends StatusEffect {
+    private Integer counter = 0;
+
     public AdventureEffect(StatusEffectCategory category, int color) {
         super(category, color);
+        counter = 0;
     }
 
     @Override
     public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         if (!entity.getWorld().isClient) {
+            counter = counter+1;
             if (entity.isPlayer()) {
                 MinecraftServer server = entity.getServer();
                 List<ServerPlayerEntity> list = server.getPlayerManager().getPlayerList();
@@ -35,6 +40,9 @@ public class AdventureEffect extends StatusEffect {
                     ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)list.get(0);
                     serverPlayerEntity.changeGameMode(GameMode.ADVENTURE);
                 }
+            }
+            if (counter % 100 == 0) {
+                entity.sendMessage(Text.of("Pasaron 5 segundos"));
             }
         }
 

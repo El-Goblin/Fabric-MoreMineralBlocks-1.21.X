@@ -8,6 +8,9 @@ import net.fabricmc.fabric.mixin.itemgroup.ItemGroupAccessor;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LightBlock;
 import net.minecraft.block.entity.BeaconBlockEntity;
+import net.minecraft.component.type.UnbreakableComponent;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
@@ -20,6 +23,8 @@ import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -41,7 +46,7 @@ import java.util.function.Consumer;
 public class ChaosOrbEntity extends ThrownItemEntity {
 
     private Random random = Random.create();
-    private int effectsCount = 1;
+    private int effectsCount = 10;
     private List<Consumer<HitResult>> chaosEffects = new ArrayList<>(List.of(
 //              this::crash,
             this::spawnPig,
@@ -51,7 +56,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::applyBeaconEffect,
             this::getMythicItem,
             this::spawnSkeletonHorse,
-            this::getElytra
+            this::getElytra,
+            this::getFullDiamondArmorSet,
+            this::getFullDiamondToolsSet
     ));
 
     public ChaosOrbEntity(EntityType<? extends ChaosOrbEntity> entityType, World world) {
@@ -180,6 +187,38 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     private void getElytra(HitResult hitResult) {
         this.dropStack(Items.ELYTRA.getDefaultStack(), 0);
     }
+
+    private void get5ChaosOrbs(HitResult hitResult) {
+        ItemStack chaosOrbs = ModItems.CHAOS_ORB.getDefaultStack();
+        chaosOrbs.setCount(5);
+        this.dropStack(chaosOrbs, 0);
+    }
+
+    private void getFullDiamondToolsSet(HitResult hitResult) {
+        this.dropStack(Items.DIAMOND_AXE.getDefaultStack(), 0);
+        this.dropStack(Items.DIAMOND_SHOVEL.getDefaultStack(), 0);
+        this.dropStack(Items.DIAMOND_SWORD.getDefaultStack(), 0);
+        this.dropStack(Items.DIAMOND_PICKAXE.getDefaultStack(), 0);
+        this.dropStack(Items.DIAMOND_HOE.getDefaultStack(), 0);
+    }
+
+    private void getFullDiamondArmorSet(HitResult hitResult) {
+        this.dropStack(Items.DIAMOND_HELMET.getDefaultStack(), 0);
+        this.dropStack(Items.DIAMOND_HORSE_ARMOR.getDefaultStack(), 0);
+        this.dropStack(Items.DIAMOND_CHESTPLATE.getDefaultStack(), 0);
+        this.dropStack(Items.DIAMOND_LEGGINGS.getDefaultStack(), 0);
+        this.dropStack(Items.DIAMOND_BOOTS.getDefaultStack(), 0);
+    }
+
+//    private void getLegendaryElytra(HitResult hitResult) {
+//        ItemStack chaosOrbs = Items.ELYTRA.getDefaultStack();
+//        DynamicRegistryManager registryManager = this.getWorld().getRegistryManager();
+//        RegistryEntry<Enchantment> enchantment = registryManager
+//                .get(RegistryKeys.ENCHANTMENT)
+//                .getEntry();
+//        chaosOrbs.addEnchantment(Enchantments.UNBREAKING, 100);
+//        this.dropStack(chaosOrbs, 0);
+//    }
 
     private void getMythicItem(HitResult hitResult) {
         List<ItemStack> mythicItems = new ArrayList<>();
