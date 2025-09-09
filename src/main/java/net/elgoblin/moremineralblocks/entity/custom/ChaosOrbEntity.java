@@ -2,6 +2,7 @@ package net.elgoblin.moremineralblocks.entity.custom;
 
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItems;
+import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
 import net.elgoblin.moremineralblocks.util.ModTags;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.mixin.itemgroup.ItemGroupAccessor;
@@ -11,10 +12,7 @@ import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.component.type.UnbreakableComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
@@ -128,6 +126,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             if (entity != null) {
                 entity.sendMessage(Text.of("Its raining"));
             }
+            LightningEntity bolt = EntityType.LIGHTNING_BOLT.create(this.getWorld());
+            bolt.refreshPositionAndAngles(hitResult.getPos(),1f, 1f);
+            this.getWorld().spawnEntity(bolt);
         }
     }
 
@@ -224,6 +225,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         List<ItemStack> mythicItems = new ArrayList<>();
 
         mythicItems.add(ModItems.LEGENDARY_PICKAXE.getDefaultStack());
+        mythicItems.add(ModItems.LEGENDARY_SHOVEL.getDefaultStack());
+        mythicItems.add(ModItems.LEGENDARY_AXE.getDefaultStack());
+        mythicItems.add(ModItems.LEGENDARY_HOE.getDefaultStack());
+        mythicItems.add(ModItems.LEGENDARY_SWORD.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_ROCKET.getDefaultStack());
         mythicItems.add(ModItems.SURVIVAL_DEBUG_STICK.getDefaultStack());
         mythicItems.add(Items.DRAGON_EGG.getDefaultStack());
@@ -245,30 +250,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         buddingAmethyst.setCount(64);
         mythicItems.add(buddingAmethyst);
 
-//        List<ItemStack> spawnEggs = new ArrayList<>();
+        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
 
-//        DynamicRegistryManager registryManager = this.getRegistryManager();
-//
-//        ItemGroup spawnEggsGroup = registryManager.get(RegistryKeys.ITEM_GROUP).get(Identifier.of("spawn_eggs"));
-//
-//        for (Item item : Registries.ITEM.stream().toList()) {
-//            this.getOwner().sendMessage(Text.of(spawnEggsGroup.getDisplayName()));
-//            this.getOwner().sendMessage(Text.of(item.getName()));
-//            if (spawnEggsGroup.contains(item.getDefaultStack())) {
-//                if (item != Items.TRIAL_SPAWNER && item != Items.SPAWNER) {
-//                    this.getOwner().sendMessage(Text.of(String.valueOf(3)));
-//                    ItemStack egg = item.getDefaultStack();
-//                    egg.setCount(16);
-//                    spawnEggs.add(egg);
-//                }
-//            }
-//        }
-//
-//        this.getOwner().sendMessage(Text.of(String.valueOf(spawnEggs.size())));
-//        this.getOwner().sendMessage(Text.of(String.valueOf(mythicItems.size())));
-
-        //int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
-        //mythicItems.add(spawnEggs.get(nextEgg));
+        int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
+        mythicItems.add(spawnEggs.get(nextEgg));
 
         int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);
         ItemStack reward = mythicItems.get(nextItem);

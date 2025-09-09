@@ -1,3 +1,7 @@
-// 1.21.1	2025-08-19T01:15:04.3056772	More Mineral Blocks/Tags for minecraft:item
+// 1.21.1	2025-09-08T22:01:09.4079191	More Mineral Blocks/Tags for minecraft:item
 a521b7bba0a9d2cb2a05be30c062702f30640416 data\moremineralblocks\tags\item\transformable_items.json
+ffbe6f57828bb1f8c4976d31c37318e6db6e8cee data\minecraft\tags\item\shovels.json
 07bb3c0e3679a734a54498d9e3b1ade315c94272 data\minecraft\tags\item\pickaxes.json
+188bba1d61add5fb72178a626f1a07b4af4e0c75 data\minecraft\tags\item\axes.json
+2d7d10d289775bca4cfd4a61e6e6b2d4cb52234c data\minecraft\tags\item\swords.json
+7bb289d8505ed9b976d2f33a9e2c8d48a4e3942c data\minecraft\tags\item\hoes.json

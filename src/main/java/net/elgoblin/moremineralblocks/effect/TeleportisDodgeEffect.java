@@ -13,19 +13,14 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.Map;
 
-public class SlimeyEffect extends StatusEffect {
-    private Integer counter = 0;
+public class TeleportisDodgeEffect extends StatusEffect {
 
-    public SlimeyEffect(StatusEffectCategory category, int color) {
+    public TeleportisDodgeEffect(StatusEffectCategory category, int color) {
         super(category, color);
-        counter = 0;
     }
 
     @Override
     public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
-        if (!entity.getWorld().isClient()) {
-        }
-
         return super.applyUpdateEffect(entity, amplifier);
     }
 

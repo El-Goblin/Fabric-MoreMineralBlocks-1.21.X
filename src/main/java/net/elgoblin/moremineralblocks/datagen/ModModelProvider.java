@@ -212,6 +212,10 @@ public class ModModelProvider extends FabricModelProvider {
         //itemModelGenerator.register(ModItems.RAW_PINK_GARNET, Models.GENERATED);
         //itemModelGenerator.register(ModItems.CHISEL, Models.GENERATED);
         itemModelGenerator.register(ModItems.LEGENDARY_PICKAXE, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.LEGENDARY_SHOVEL, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.LEGENDARY_AXE, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.LEGENDARY_HOE, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.LEGENDARY_SWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.WOODEN_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.STONE_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.IRON_LONGSWORD, Models.HANDHELD);

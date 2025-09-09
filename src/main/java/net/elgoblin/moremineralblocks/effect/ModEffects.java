@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks.effect;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.attribute.ModEntityAttributes;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.InstantStatusEffect;
@@ -24,6 +25,11 @@ public class ModEffects {
 
     public static final RegistryEntry<StatusEffect> ADVENTURE = registerStatusEffect("adventure",
             new AdventureEffect(StatusEffectCategory.NEUTRAL, 0x00ff20));
+
+    public static final RegistryEntry<StatusEffect> TELEPORTIS_DODGE = registerStatusEffect("teleportis_dodge", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366));
+    public static final RegistryEntry<StatusEffect> DOUBLE_DAMAGE_TAKEN = registerStatusEffect("double_damage_taken", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366));
+    public static final RegistryEntry<StatusEffect> CUMULATIVE_DAMAGE_TAKEN = registerStatusEffect("cumulative_damage_taken", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366)
+            .addAttributeModifier(ModEntityAttributes.CUMULATIVE_DAMAGE_TAKEN, Identifier.of(MoreMineralBlocks.MOD_ID, "cumulative_damage_taken"), 0.5, EntityAttributeModifier.Operation.ADD_VALUE));
 
     private static RegistryEntry<StatusEffect> registerStatusEffect(String name, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(MoreMineralBlocks.MOD_ID, name), statusEffect);

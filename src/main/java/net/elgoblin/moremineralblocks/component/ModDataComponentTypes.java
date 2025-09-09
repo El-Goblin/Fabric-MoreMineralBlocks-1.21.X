@@ -1,11 +1,14 @@
 package net.elgoblin.moremineralblocks.component;
 
+import com.mojang.serialization.Codec;
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.dynamic.Codecs;
 
 import java.util.function.UnaryOperator;
 
@@ -16,6 +19,9 @@ public class ModDataComponentTypes {
     );
     public static final ComponentType<ItemEnchantmentsComponent> OTHER_ENCHANTMENTS = register(
             "other_enchantments", builder -> builder.codec(ItemEnchantmentsComponent.CODEC).packetCodec(ItemEnchantmentsComponent.PACKET_CODEC).cache()
+    );
+    public static final ComponentType<Integer> CUMULATED_DAMAGE_TAKEN = register(
+            "cumulated_damage_taken", builder -> builder.codec(Codecs.rangedInt(0, 100)).packetCodec(PacketCodecs.VAR_INT).cache()
     );
 
 

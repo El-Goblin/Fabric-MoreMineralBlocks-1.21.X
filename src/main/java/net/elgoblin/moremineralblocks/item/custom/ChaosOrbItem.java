@@ -1,25 +1,35 @@
 package net.elgoblin.moremineralblocks.item.custom;
 
 import net.elgoblin.moremineralblocks.entity.custom.ChaosOrbEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.SnowballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SnowballItem;
+import net.minecraft.item.SpawnEggItem;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChaosOrbItem extends SnowballItem {
     public ChaosOrbItem(Item.Settings settings) {
         super(settings);
     }
+
+    private List<ItemStack> spawnEggs = new ArrayList<>();
+    private long spawnEggsReady = 0;
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
@@ -51,5 +61,21 @@ public class ChaosOrbItem extends SnowballItem {
         ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(world, pos.getX(), pos.getY(), pos.getZ());
         chaosOrbEntity.setItem(stack);
         return chaosOrbEntity;
+    }
+
+    public List<ItemStack> getOrCreateSpawnEggList() {
+        if (spawnEggsReady != 1) {
+            spawnEggs = new ArrayList<>();
+
+            for (Item item : Registries.ITEM) {
+                if (item instanceof SpawnEggItem) {
+                    ItemStack egg = item.getDefaultStack();
+                    egg.setCount(16);
+                    spawnEggs.add(egg);
+                }
+            }
+            spawnEggsReady = 1;
+        }
+        return spawnEggs;
     }
 }

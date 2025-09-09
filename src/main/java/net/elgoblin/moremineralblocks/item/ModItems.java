@@ -18,9 +18,25 @@ public class ModItems {
 
     public static final Item LEGENDARY_PICKAXE = registerItem(
             "legendary_pickaxe",
-            new LegendaryPickaxeItem(ModToolMaterials.LEGENDARY, new Item.Settings().attributeModifiers(PickaxeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
+            new LegendaryPickaxeItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(PickaxeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
     );
-    public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings().maxCount(1)));
+    public static final Item LEGENDARY_SHOVEL = registerItem(
+            "legendary_shovel",
+            new LegendaryShovelItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(ShovelItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
+    );
+    public static final Item LEGENDARY_AXE = registerItem(
+            "legendary_axe",
+            new LegendaryAxeItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(AxeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
+    );
+    public static final Item LEGENDARY_HOE = registerItem(
+            "legendary_hoe",
+            new LegendaryHoeItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
+    );
+    public static final Item LEGENDARY_SWORD = registerItem(
+            "legendary_sword",
+            new LegendarySwordItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
+    );
+    public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings().maxCount(1).fireproof()));
     public static final Item SURVIVAL_DEBUG_STICK = registerItem("survival_debug_stick", new SurvivalDebugStickItem(new Item.Settings()
             .maxCount(1)
             .rarity(Rarity.EPIC)
@@ -86,6 +102,10 @@ public class ModItems {
         // Esto lo pone en la tab de ingredients en creativo
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(LEGENDARY_PICKAXE);
+            entries.add(LEGENDARY_SHOVEL);
+            entries.add(LEGENDARY_AXE);
+            entries.add(LEGENDARY_HOE);
+            entries.add(LEGENDARY_SWORD);
             entries.add(CHISEL);
             entries.add(WOODEN_LONGSWORD);
             entries.add(STONE_LONGSWORD);

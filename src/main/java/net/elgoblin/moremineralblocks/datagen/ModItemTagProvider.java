@@ -24,5 +24,9 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
                 .add(Items.APPLE);
 
         getOrCreateTagBuilder(ItemTags.PICKAXES).add(ModItems.LEGENDARY_PICKAXE);
+        getOrCreateTagBuilder(ItemTags.SHOVELS).add(ModItems.LEGENDARY_SHOVEL);
+        getOrCreateTagBuilder(ItemTags.AXES).add(ModItems.LEGENDARY_AXE);
+        getOrCreateTagBuilder(ItemTags.HOES).add(ModItems.LEGENDARY_HOE);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.LEGENDARY_SWORD);
     }
 }
