@@ -34,7 +34,7 @@ public class ModItems {
     );
     public static final Item LEGENDARY_SWORD = registerItem(
             "legendary_sword",
-            new LegendarySwordItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
+            new LegendarySwordItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 9.0F, -2.0F)).rarity(Rarity.EPIC))
     );
     public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings().maxCount(1).fireproof()));
     public static final Item SURVIVAL_DEBUG_STICK = registerItem("survival_debug_stick", new SurvivalDebugStickItem(new Item.Settings()
@@ -45,39 +45,39 @@ public class ModItems {
 //    public static final Item LEGENDARY_ELYTRA = registerItem("legendary_elytra", new ElytraItem(new Item.Settings().rarity(Rarity.EPIC)));
     public static final Item WOODEN_LONGSWORD = registerItem(
             "wooden_longsword",
-            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F)))
+            new LongSwordItem(ToolMaterials.WOOD, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.WOOD, 5, -2.4F)))
     );
     public static final Item STONE_LONGSWORD = registerItem(
             "stone_longsword",
-            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F)))
+            new LongSwordItem(ToolMaterials.STONE, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.STONE, 5, -2.4F)))
     );
     public static final Item IRON_LONGSWORD = registerItem(
             "iron_longsword",
-            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F)))
+            new LongSwordItem(ToolMaterials.IRON, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.IRON, 5, -2.4F)))
     );
     public static final Item GOLDEN_LONGSWORD = registerItem(
             "golden_longsword",
-            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F)))
+            new LongSwordItem(ToolMaterials.GOLD, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.GOLD, 5, -2.4F)))
     );
     public static final Item DIAMOND_LONGSWORD = registerItem(
             "diamond_longsword",
-            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F)))
+            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 5, -2.4F)))
     );
     public static final Item NETHERITE_LONGSWORD = registerItem(
             "netherite_longsword",
-            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F)))
+            new LongSwordItem(ToolMaterials.NETHERITE, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.NETHERITE, 5, -2.4F)))
     );
     public static final Item FLAMEBERGE_LONGSWORD = registerItem(
             "flameberge_longsword",
-            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F)))
+            new LongSwordItem(ToolMaterials.IRON, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.IRON, 5, -2.4F)))
     );
     public static final Item FIRE_DRAGONSWORD_LONGSWORD = registerItem(
             "fire_dragonsword_longsword",
-            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F)))
+            new LongSwordItem(ToolMaterials.NETHERITE, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.NETHERITE, 5, -2.4F)))
     );
     public static final Item FIENDBLADE_LONGSWORD = registerItem(
             "fiendblade_longsword",
-            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F)))
+            new LongSwordItem(ToolMaterials.NETHERITE, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.NETHERITE, 5, -2.4F)))
     );
 
 
