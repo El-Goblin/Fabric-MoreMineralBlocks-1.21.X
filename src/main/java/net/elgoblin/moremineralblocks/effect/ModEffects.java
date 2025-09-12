@@ -20,6 +20,9 @@ public class ModEffects {
                             Identifier.of(MoreMineralBlocks.MOD_ID, "slimey"), -0.25f,
                             EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
+    public static final RegistryEntry<StatusEffect> PERSISTENT_CHORUS_FRUIT = registerStatusEffect("persistent_chorus_fruit",
+            new PersistentChorusFruitEffect(StatusEffectCategory.NEUTRAL, 0x00ff20));
+
     public static final RegistryEntry<StatusEffect> CHAOS = registerStatusEffect("chaos",
             new ChaosEffect(StatusEffectCategory.NEUTRAL, 0x00ff20));
 
@@ -28,6 +31,7 @@ public class ModEffects {
 
     public static final RegistryEntry<StatusEffect> TELEPORTIS_DODGE = registerStatusEffect("teleportis_dodge", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366));
     public static final RegistryEntry<StatusEffect> DOUBLE_DAMAGE_TAKEN = registerStatusEffect("double_damage_taken", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366));
+    public static final RegistryEntry<StatusEffect> ONANA_HANDS = registerStatusEffect("onana_hands", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366));
     public static final RegistryEntry<StatusEffect> CUMULATIVE_DAMAGE_TAKEN = registerStatusEffect("cumulative_damage_taken", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366)
             .addAttributeModifier(ModEntityAttributes.CUMULATIVE_DAMAGE_TAKEN, Identifier.of(MoreMineralBlocks.MOD_ID, "cumulative_damage_taken"), 0.5, EntityAttributeModifier.Operation.ADD_VALUE));
 

@@ -11,11 +11,14 @@ import net.elgoblin.moremineralblocks.item.ModItemGroups;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -26,8 +29,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -41,7 +43,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.slf4j.Logger;
@@ -80,6 +81,12 @@ public class MoreMineralBlocks implements ModInitializer {
 					entity.damage(newSource, damageTaken*2);
 				}
 			}
+
+//			if (entity.hasStatusEffect(ModEffects.ONANA_HANDS) && !blocked) {
+//				if (entity instanceof PlayerEntity) {
+//					((PlayerEntity) entity).getInventory().dropAll();
+//				}
+//			}
 
 			if (entity.hasStatusEffect(ModEffects.CUMULATIVE_DAMAGE_TAKEN) && !blocked) {
 				entity.sendMessage(Text.of("dsa"));

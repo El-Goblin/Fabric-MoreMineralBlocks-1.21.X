@@ -7,6 +7,8 @@ import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
 import net.elgoblin.moremineralblocks.util.ModTags;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.mixin.itemgroup.ItemGroupAccessor;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LightBlock;
 import net.minecraft.block.entity.BeaconBlockEntity;
@@ -18,6 +20,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.passive.PigEntity;
+import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.*;
@@ -30,8 +33,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TeleportTarget;
@@ -65,7 +70,11 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::spawnSkeletonHorse,
             this::getElytra,
             this::getFullDiamondArmorSet,
-            this::getFullDiamondToolsSet
+            this::getFullDiamondToolsSet,
+            this::spawn5ChaosOrbs,
+            this::destroyAllBlocksInASphere,
+            this::explosion,
+            this::fireExplosion
     ));
     private List<BiConsumer<HitResult, List<LivingEntity>>> areaChaosEffects = new ArrayList<>(List.of(
             this::applyBeaconEffect
@@ -80,7 +89,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     ));;
     private List<BiConsumer<HitResult, List<LivingEntity>>> targetsOrSelfChaosEffects = new ArrayList<>(List.of(
             this::teleportisDodge,
-            this::adventureGamemode
+//            this::adventureGamemode
+//            this::onanaHands,
+            this::chorusFruitTpEveryXSeconds
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>();
 
@@ -285,10 +296,96 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         this.dropStack(Items.ELYTRA.getDefaultStack(), 0);
     }
 
-    private void get5ChaosOrbs(HitResult hitResult) {
-        ItemStack chaosOrbs = ModItems.CHAOS_ORB.getDefaultStack();
-        chaosOrbs.setCount(5);
-        this.dropStack(chaosOrbs, 0);
+    private void explosion(HitResult hitResult) {
+        int selfHarm = random.nextBetween(1, 10);
+        int power = random.nextBetween(1, 100);
+        if (selfHarm == 10) {
+            this.getWorld().createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) power, World.ExplosionSourceType.BLOCK);
+        }
+        else {
+            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) power, World.ExplosionSourceType.BLOCK);
+        }
+    }
+
+    private void fireExplosion(HitResult hitResult) {
+        int selfHarm = random.nextBetween(1, 10);
+        int power = random.nextBetween(1, 100);
+
+        FireballEntity fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), power);
+
+        if (selfHarm == 10) {
+            fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
+            this.getWorld().spawnEntity(fireballEntity);
+        }
+        else {
+            fireballEntity.setPosition(this.getX(), this.getY(), this.getZ());
+            this.getWorld().spawnEntity(fireballEntity);
+        }
+    }
+
+    private void spawn5ChaosOrbs(HitResult hitResult) {
+        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        chaosOrbEntity.setOwner(this.getOwner());
+        chaosOrbEntity.setVelocity( 1.0f, 2.0f, 0f, 0.5f, 0.0f);
+
+        this.getWorld().spawnEntity(chaosOrbEntity);
+
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        chaosOrbEntity.setOwner(this.getOwner());
+        chaosOrbEntity.setVelocity( -1.0f, 2.0f, 0f, 0.5f, 0.0f);
+
+        this.getWorld().spawnEntity(chaosOrbEntity);
+
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        chaosOrbEntity.setOwner(this.getOwner());
+        chaosOrbEntity.setVelocity( 0f, 2.0f, 1.0f, 0.5f, 0.0f);
+
+        this.getWorld().spawnEntity(chaosOrbEntity);
+
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        chaosOrbEntity.setOwner(this.getOwner());
+        chaosOrbEntity.setVelocity( 0f, 2.0f, -1.0f, 0.5f, 0.0f);
+
+        this.getWorld().spawnEntity(chaosOrbEntity);
+
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        chaosOrbEntity.setOwner(this.getOwner());
+        chaosOrbEntity.setVelocity( 0f, 2.0f, 0.0f, 0f, 0f);
+
+        this.getWorld().spawnEntity(chaosOrbEntity);
+    }
+
+    private void destroyAllBlocksInASphere(HitResult hitResult) {
+        int radius = random.nextBetween(4,127);
+        World world = this.getWorld();
+        BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, (int) hitResult.getPos().y, (int) hitResult.getPos().z));
+        for (int x = -radius ; x <= radius ; x++) {
+            for (int y = -radius ; y <= radius ; y++) {
+                for (int z = -radius ; z <= radius ; z++) {
+                    BlockPos auxBlock = new BlockPos(x, y, z);
+                    BlockPos currentBlock = center.add(auxBlock);
+
+//                    int x1 = center.getX();
+//                    int x2 = center.getY();
+//                    int y1 = center.getZ();
+//                    int y2 = currentBlock.getX();
+//                    int z1 = currentBlock.getY();
+//                    int z2 = currentBlock.getZ();
+//
+//                    int a = x1 - x2;
+//                    int b = y1 - y2;
+//                    int c = z1 - z2;
+//
+//                    int distance = a * a + b * b + c * c;
+//
+//                    if (distance < radius * radius) {
+                    if (center.isWithinDistance(currentBlock, radius)) {
+//                        this.getWorld().removeBlock(currentBlock, false);
+                        world.setBlockState(currentBlock, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
+                    }
+                }
+            }
+        }
     }
 
     private void getFullDiamondToolsSet(HitResult hitResult) {
@@ -376,24 +473,38 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     private void receiveDoubleDamage(HitResult hitResult, List<LivingEntity> entities) {
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.DOUBLE_DAMAGE_TAKEN, 72000, 1);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.DOUBLE_DAMAGE_TAKEN, 72000, 0);
             entity.addStatusEffect(effect);
         }
     }
 
     private void teleportisDodge(HitResult hitResult, List<LivingEntity> entities) {
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.TELEPORTIS_DODGE, 72000, 1);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.TELEPORTIS_DODGE, 72000, 0);
             entity.addStatusEffect(effect);
         }
     }
 
-    private void adventureGamemode(HitResult hitResult, List<LivingEntity> entities) {
+    private void chorusFruitTpEveryXSeconds(HitResult hitResult, List<LivingEntity> entities) {
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.TELEPORTIS_DODGE, 72000, 1);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.PERSISTENT_CHORUS_FRUIT, 72000, 0);
             entity.addStatusEffect(effect);
         }
     }
+
+//    private void adventureGamemode(HitResult hitResult, List<LivingEntity> entities) {
+//        for (LivingEntity entity : entities) {
+//            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.TELEPORTIS_DODGE, 72000, 1);
+//            entity.addStatusEffect(effect);
+//        }
+//    }
+
+//    private void onanaHands(HitResult hitResult, List<LivingEntity> entities) {
+//        for (LivingEntity entity : entities) {
+//            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.ONANA_HANDS, 72000, 0);
+//            entity.addStatusEffect(effect);
+//        }
+//    }
 
 
     private void getMythicItem(HitResult hitResult) {
