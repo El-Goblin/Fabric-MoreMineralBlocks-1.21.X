@@ -18,6 +18,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.projectile.FireballEntity;
@@ -54,15 +55,14 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     private Random random = Random.create();
     private int effectsCount = 0;
 
-//    private List<Consumer<HitResult>> chaosEffects = new ArrayList<>(List.of(
-//            this::spawnPig,
-//            this::getMythicItem,
-//            this::spawnSkeletonHorse,
-//            this::getElytra,
-//            this::getFullDiamondArmorSet,
-//            this::getFullDiamondToolsSet,
-//            this::applyBeaconEffect
-//    ));
+    private List<Consumer<HitResult>> chaosEffects = new ArrayList<>(List.of(
+            this::spawnPig,
+            this::getMythicItem,
+            this::spawnSkeletonHorse,
+            this::getElytra,
+            this::getFullDiamondArmorSet,
+            this::getFullDiamondToolsSet
+    ));
 
     private List<Consumer<HitResult>> pointChaosEffects = new ArrayList<>(List.of(
             this::spawnPig,
@@ -73,6 +73,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::getFullDiamondToolsSet,
             this::spawn5ChaosOrbs,
             this::destroyAllBlocksInASphere,
+//            this::createSkyblock
             this::explosion,
             this::fireExplosion
     ));
@@ -297,30 +298,38 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void explosion(HitResult hitResult) {
-        int selfHarm = random.nextBetween(1, 10);
-        int power = random.nextBetween(1, 100);
-        if (selfHarm == 10) {
-            this.getWorld().createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) power, World.ExplosionSourceType.BLOCK);
+        int kase = random.nextBetween(1, 20);
+
+        if (kase == 20) {
+            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 127.0, World.ExplosionSourceType.BLOCK);
+        }
+        else if (kase > 17) {
+            this.getWorld().createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 8.0, World.ExplosionSourceType.BLOCK);
         }
         else {
-            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) power, World.ExplosionSourceType.BLOCK);
+            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 8.0, World.ExplosionSourceType.BLOCK);
         }
     }
 
     private void fireExplosion(HitResult hitResult) {
-        int selfHarm = random.nextBetween(1, 10);
-        int power = random.nextBetween(1, 100);
+        int kase = random.nextBetween(1, 20);
 
-        FireballEntity fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), power);
+        FireballEntity fireballEntity;
 
-        if (selfHarm == 10) {
+        if (kase == 20) {
+            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 127);
+        }
+        else {
+            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 2);
+        }
+
+        if (kase > 17 && kase < 20) {
             fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
-            this.getWorld().spawnEntity(fireballEntity);
         }
         else {
             fireballEntity.setPosition(this.getX(), this.getY(), this.getZ());
-            this.getWorld().spawnEntity(fireballEntity);
         }
+        this.getWorld().spawnEntity(fireballEntity);
     }
 
     private void spawn5ChaosOrbs(HitResult hitResult) {
@@ -356,7 +365,16 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void destroyAllBlocksInASphere(HitResult hitResult) {
-        int radius = random.nextBetween(4,127);
+        double gaussianValue = random.nextGaussian();
+//        int radius = ((int) Math.abs(gaussianValue * 35)) + 10;
+//        if (radius < 20) { radius = 20;}
+        float randomNumber = random.nextFloat();
+        while (randomNumber < 0.0000000001f) {
+            randomNumber = random.nextFloat();
+        }
+        int radius = Math.max((int) (-1 * (9.8036f * Math.log(randomNumber * 40)/Math.log(1.5) - 90)), 20);
+        this.getOwner().sendMessage(Text.of(String.format("%d", radius)));
+
         World world = this.getWorld();
         BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, (int) hitResult.getPos().y, (int) hitResult.getPos().z));
         for (int x = -radius ; x <= radius ; x++) {
@@ -365,28 +383,36 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     BlockPos auxBlock = new BlockPos(x, y, z);
                     BlockPos currentBlock = center.add(auxBlock);
 
-//                    int x1 = center.getX();
-//                    int x2 = center.getY();
-//                    int y1 = center.getZ();
-//                    int y2 = currentBlock.getX();
-//                    int z1 = currentBlock.getY();
-//                    int z2 = currentBlock.getZ();
-//
-//                    int a = x1 - x2;
-//                    int b = y1 - y2;
-//                    int c = z1 - z2;
-//
-//                    int distance = a * a + b * b + c * c;
-//
-//                    if (distance < radius * radius) {
                     if (center.isWithinDistance(currentBlock, radius)) {
-//                        this.getWorld().removeBlock(currentBlock, false);
                         world.setBlockState(currentBlock, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
                     }
                 }
             }
         }
+        StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 100, 0);
+        ((LivingEntity) this.getOwner()).addStatusEffect(slowFall);
     }
+
+//    private void createSkyblock(HitResult hitResult) {
+//
+//        World world = this.getWorld();
+//        BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, 0, (int) hitResult.getPos().z));
+//        for (int x = -1024 ; x <= 1024 ; x++) {
+//            for (int y = -64 ; y <= 320 ; y++) {
+//                for (int z = -1024 ; z <= 1024 ; z++) {
+//                    BlockPos auxBlock = new BlockPos(x, y, z);
+//                    BlockPos currentBlock = center.add(auxBlock);
+//
+//                    world.setBlockState(currentBlock, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
+//                }
+//            }
+//        }
+//        world.setBlockState(center.add(new Vec3i(0, 64, 0)), Blocks.BEDROCK.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
+//    }
+
+//    private void createStructure(HitResult hitResult) {
+//        hitResult.getPos();
+//    }
 
     private void getFullDiamondToolsSet(HitResult hitResult) {
         int material = random.nextBetween(0, 4);
@@ -487,7 +513,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     private void chorusFruitTpEveryXSeconds(HitResult hitResult, List<LivingEntity> entities) {
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.PERSISTENT_CHORUS_FRUIT, 72000, 0);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.PERSISTENT_CHORUS_FRUIT, 3600, 0);
             entity.addStatusEffect(effect);
         }
     }
