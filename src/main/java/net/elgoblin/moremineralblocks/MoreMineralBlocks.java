@@ -117,8 +117,7 @@ public class MoreMineralBlocks implements ModInitializer {
 				}
 			}
 
-			if (entity.hasStatusEffect(ModEffects.TELEPORTIS_DODGE) && !blocked) {
-				entity.sendMessage(Text.of("Te pegaron"));
+			if (entity.hasStatusEffect(ModEffects.TELEPORTITIS_DODGE) && !blocked) {
 				World world = entity.getWorld();
 				if (!world.isClient) {
 					for (int i = 0; i < 16; i++) {

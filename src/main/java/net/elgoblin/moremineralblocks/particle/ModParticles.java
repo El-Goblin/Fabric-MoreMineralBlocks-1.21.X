@@ -10,6 +10,15 @@ import net.minecraft.util.Identifier;
 public class ModParticles {
 
     public static final SimpleParticleType PICKAXE_PARTICLE = registerParticle("pickaxe_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_HASTE_PARTICLE = registerParticle("haste_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_JUMP_BOOST_PARTICLE = registerParticle("jump_boost_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_REGENERATION_PARTICLE = registerParticle("regeneration_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_RESISTANCE_PARTICLE = registerParticle("resistance_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_SPEED_PARTICLE = registerParticle("speed_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_STRENGTH_PARTICLE = registerParticle("strength_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_TELEPORTITIS_DODGE_PARTICLE = registerParticle("teleportitis_dodge_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_CHORUS_FRUIT_TP_PARTICLE = registerParticle("chorus_fruit_tp_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_DOUBLE_DAMAGE_TAKEN_PARTICLE = registerParticle("double_damage_taken_particle", FabricParticleTypes.simple());
 
     //
 

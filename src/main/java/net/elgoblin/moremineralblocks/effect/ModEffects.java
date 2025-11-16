@@ -4,7 +4,6 @@ import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.elgoblin.moremineralblocks.attribute.ModEntityAttributes;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.effect.InstantStatusEffect;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.registry.Registries;
@@ -20,7 +19,7 @@ public class ModEffects {
                             Identifier.of(MoreMineralBlocks.MOD_ID, "slimey"), -0.25f,
                             EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
-    public static final RegistryEntry<StatusEffect> PERSISTENT_CHORUS_FRUIT = registerStatusEffect("persistent_chorus_fruit",
+    public static final RegistryEntry<StatusEffect> CHORUS_FRUIT_TP = registerStatusEffect("chorus_fruit_tp",
             new PersistentChorusFruitEffect(StatusEffectCategory.NEUTRAL, 0x00ff20));
 
     public static final RegistryEntry<StatusEffect> CHAOS = registerStatusEffect("chaos",
@@ -29,7 +28,7 @@ public class ModEffects {
     public static final RegistryEntry<StatusEffect> ADVENTURE = registerStatusEffect("adventure",
             new AdventureEffect(StatusEffectCategory.NEUTRAL, 0x00ff20));
 
-    public static final RegistryEntry<StatusEffect> TELEPORTIS_DODGE = registerStatusEffect("teleportis_dodge", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366));
+    public static final RegistryEntry<StatusEffect> TELEPORTITIS_DODGE = registerStatusEffect("teleportitis_dodge", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366));
     public static final RegistryEntry<StatusEffect> DOUBLE_DAMAGE_TAKEN = registerStatusEffect("double_damage_taken", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366));
     public static final RegistryEntry<StatusEffect> ONANA_HANDS = registerStatusEffect("onana_hands", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366));
     public static final RegistryEntry<StatusEffect> CUMULATIVE_DAMAGE_TAKEN = registerStatusEffect("cumulative_damage_taken", new TeleportisDodgeEffect(StatusEffectCategory.HARMFUL, 12779366)

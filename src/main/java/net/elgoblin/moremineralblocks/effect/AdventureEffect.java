@@ -54,4 +54,8 @@ public class AdventureEffect extends StatusEffect {
         return true;
     }
 
+    @Override
+    public void onRemoved(AttributeContainer attributeContainer) {
+        super.onRemoved(attributeContainer);
+    }
 }

@@ -4,30 +4,29 @@ import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
-import net.elgoblin.moremineralblocks.util.ModTags;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.mixin.itemgroup.ItemGroupAccessor;
+import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.LightBlock;
 import net.minecraft.block.entity.BeaconBlockEntity;
-import net.minecraft.component.type.UnbreakableComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.*;
+import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
+import net.minecraft.entity.mob.SlimeEntity;
+import net.minecraft.entity.passive.AxolotlEntity;
 import net.minecraft.entity.passive.PigEntity;
+import net.minecraft.entity.passive.TropicalFishEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.*;
-import net.minecraft.registry.*;
+import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -43,58 +42,54 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ChaosOrbEntity extends ThrownItemEntity {
 
+    private Map<String, SimpleParticleType> particleMap = Map.of("minecraft:haste", ModParticles.CHAOS_ORB_HASTE_PARTICLE,
+                                                                 "minecraft:jump_boost", ModParticles.CHAOS_ORB_JUMP_BOOST_PARTICLE,
+                                                                 "minecraft:regeneration", ModParticles.CHAOS_ORB_REGENERATION_PARTICLE,
+                                                                 "minecraft:resistance", ModParticles.CHAOS_ORB_RESISTANCE_PARTICLE,
+                                                                 "minecraft:speed", ModParticles.CHAOS_ORB_SPEED_PARTICLE,
+                                                                 "minecraft:strength", ModParticles.CHAOS_ORB_STRENGTH_PARTICLE);
     private Random random = Random.create();
-    private int effectsCount = 0;
-
-    private List<Consumer<HitResult>> chaosEffects = new ArrayList<>(List.of(
-            this::spawnPig,
-            this::getMythicItem,
-            this::spawnSkeletonHorse,
-            this::getElytra,
-            this::getFullDiamondArmorSet,
-            this::getFullDiamondToolsSet
-    ));
 
     private List<Consumer<HitResult>> pointChaosEffects = new ArrayList<>(List.of(
-            this::spawnPig,
+            this::spawnMobPack,
             this::getMythicItem,
             this::spawnSkeletonHorse,
             this::getElytra,
-            this::getFullDiamondArmorSet,
-            this::getFullDiamondToolsSet,
+            this::getArmorSet,
+            this::getToolsSet,
             this::spawn5ChaosOrbs,
             this::destroyAllBlocksInASphere,
 //            this::createSkyblock
             this::explosion,
             this::fireExplosion
     ));
-    private List<BiConsumer<HitResult, List<LivingEntity>>> areaChaosEffects = new ArrayList<>(List.of(
+    private List<BiConsumer<HitResult, Box>> areaChaosEffects = new ArrayList<>(List.of(
             this::applyBeaconEffect
     ));
-    private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
-            this::beginThunderstorm,
-            this::randomizePlayersPositions
-    ));
-    private List<BiConsumer<HitResult, List<LivingEntity>>> selfAreaChaosEffects = new ArrayList<>(List.of(
+    private List<BiConsumer<HitResult, Box>> selfAreaChaosEffects = new ArrayList<>(List.of(
             this::receiveDoubleDamage,
             this::goDownXBlocks
-    ));;
-    private List<BiConsumer<HitResult, List<LivingEntity>>> targetsOrSelfChaosEffects = new ArrayList<>(List.of(
+    ));
+    private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
+//            this::crash
+    ));
+    private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
+            this::beginThunderstorm
+            //this::randomizePlayersPositions
+    ));
+    private List<BiConsumer<HitResult, Box>> targetsOrSelfChaosEffects = new ArrayList<>(List.of(
             this::teleportisDodge,
 //            this::adventureGamemode
 //            this::onanaHands,
             this::chorusFruitTpEveryXSeconds
     ));
-    private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>();
+
 
     public ChaosOrbEntity(EntityType<? extends ChaosOrbEntity> entityType, World world) {
         super(entityType, world);
@@ -109,27 +104,29 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private int nextCategory() {
-        int pointCategory = pointChaosEffects.size();
-        int areaCategory = pointCategory + areaChaosEffects.size();
-        int selfAreaCategory = areaCategory + selfAreaChaosEffects.size();
-        int selfCategory = selfAreaCategory + selfChaosEffects.size();
-        int globalCategory = selfCategory + globalChaosEffects.size();
-        int targetSelfCategory = globalCategory + targetsOrSelfChaosEffects.size();
 
-        int category = this.random.nextBetween(0, targetSelfCategory-1);
+        int pointChaosEffectsInterval = pointChaosEffects.size();
+        int areaChaosEffectsInterval = pointChaosEffectsInterval + areaChaosEffects.size();
+        int selfAreaChaosEffectsInterval = areaChaosEffectsInterval + selfAreaChaosEffects.size();
+        int selfChaosEffectsInterval = selfAreaChaosEffectsInterval + selfChaosEffects.size();
+        int globalChaosEffectsInterval = selfChaosEffectsInterval + globalChaosEffects.size();
+        int targetsOrSelfChaosEffectsInterval = globalChaosEffectsInterval + targetsOrSelfChaosEffects.size();
 
-        if (category < pointCategory) {
+
+        int category = this.random.nextBetween(0, targetsOrSelfChaosEffectsInterval-1);
+
+        if (category < pointChaosEffectsInterval) {
             return 0;
-        } else if (category < areaCategory) {
+        } else if (category < areaChaosEffectsInterval) {
             return 1;
-        } else if (category < selfAreaCategory) {
+        } else if (category < selfAreaChaosEffectsInterval) {
             return 2;
-        } else if (category < selfCategory) {
+        } else if (category < selfChaosEffectsInterval) {
             return 3;
-        } else if (category < globalCategory) {
+        } else if (category < globalChaosEffectsInterval) {
             return 4;
         }
-        else {return 5;}
+        else { return 5;} // Targets or Self Chaos Effects Interval
     }
 
     @Override
@@ -147,51 +144,58 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
             int eventCategory = nextCategory();
             int nextEffect;
-
-            Box box = this.getBoundingBox().expand(4.0, 2.0, 4.0);
-            List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, box);
+            Box boundingBox = this.getBoundingBox();
 
             switch (eventCategory) {
                 // POINT
                 case 0:
-                    nextEffect = random.nextBetween(0, pointChaosEffects.size()-1);
-                    pointChaosEffects.get(nextEffect).accept(hitResult);
+                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                    if (!pointChaosEffects.isEmpty()) {
+                        nextEffect = random.nextBetween(0, pointChaosEffects.size()-1);
+                        pointChaosEffects.get(nextEffect).accept(hitResult);
+                    }
                     break;
                 //AREA
                 case 1:
-
-                    nextEffect = random.nextBetween(0, areaChaosEffects.size()-1);
-                    areaChaosEffects.get(nextEffect).accept(hitResult, list);
+                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                    if (!areaChaosEffects.isEmpty()) {
+                        nextEffect = random.nextBetween(0, areaChaosEffects.size()-1);
+                        areaChaosEffects.get(nextEffect).accept(hitResult, boundingBox);
+                    }
                     break;
                 //SELF AREA
                 case 2:
-                    if (!list.contains((LivingEntity) (this.getOwner()))){
-                        list.add((LivingEntity) (this.getOwner()));
+                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                    if (!selfAreaChaosEffects.isEmpty()) {
+                        nextEffect = random.nextBetween(0, selfAreaChaosEffects.size()-1);
+                        selfAreaChaosEffects.get(nextEffect).accept(hitResult, boundingBox);
                     }
-                    nextEffect = random.nextBetween(0, selfAreaChaosEffects.size()-1);
-                    selfAreaChaosEffects.get(nextEffect).accept(hitResult, list);
                     break;
                 //SELF
                 case 3:
-                    nextEffect = random.nextBetween(0, selfChaosEffects.size()-1);
-                    selfChaosEffects.get(nextEffect).accept(hitResult);
+                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                    if (!selfChaosEffects.isEmpty()) {
+                        nextEffect = random.nextBetween(0, selfChaosEffects.size()-1);
+                        selfChaosEffects.get(nextEffect).accept(hitResult);
+                    }
                     break;
                 //GLOBAL
                 case 4:
-                    nextEffect = random.nextBetween(0, globalChaosEffects.size()-1);
-                    globalChaosEffects.get(nextEffect).accept(hitResult);
+                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                    if (!globalChaosEffects.isEmpty()) {
+                        nextEffect = random.nextBetween(0, globalChaosEffects.size()-1);
+                        globalChaosEffects.get(nextEffect).accept(hitResult);
+                    }
+                    break;
                 //TARGET SELF
                 case 5:
-                    if (list.isEmpty()) {
-                        list.add((LivingEntity) (this.getOwner()));
+                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                    if (!targetsOrSelfChaosEffects.isEmpty()) {
+                        nextEffect = random.nextBetween(0, targetsOrSelfChaosEffects.size()-1);
+                        targetsOrSelfChaosEffects.get(nextEffect).accept(hitResult, boundingBox);
                     }
-                    nextEffect = random.nextBetween(0, targetsOrSelfChaosEffects.size()-1);
-                    targetsOrSelfChaosEffects.get(nextEffect).accept(hitResult, list);
                     break;
             }
-
-//            int nextEffect = this.random.nextBetween(0, this.effectsCount - 1);
-//            chaosEffects.get(nextEffect).accept(hitResult);
 
             this.discard();
         }
@@ -202,20 +206,110 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         return ModItems.CHAOS_ORB;
     }
 
-    private void spawnPig(HitResult hitResult) {
-        PigEntity chickenEntity = EntityType.PIG.create(this.getWorld());
-        if (chickenEntity != null) {
-            chickenEntity.setBreedingAge(0);
-            chickenEntity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
+    private void spawnMobPack(HitResult hitResult) {
 
-            this.getWorld().spawnEntity(chickenEntity);
+        // Como es esto un tipo???
+        List<EntityType<?>> mobs = Registries.ENTITY_TYPE.stream()
+                .filter(type -> type.create(MinecraftClient.getInstance().world) instanceof MobEntity)
+                .toList();
+
+        int nextEntity = this.random.nextBetween(0, mobs.size()-1);
+        int spawnsToPerform = this.random.nextBetween(5, 14);
+
+        EntityType<?> entityType = mobs.get(nextEntity);
+        Identifier entityTypeID = Registries.ENTITY_TYPE.getId(entityType);
+
+
+        while (spawnsToPerform-- > 0) {
+            Entity entity = entityType.create(this.getWorld());
+
+            switch (entityTypeID.toString()) {
+
+                case "minecraft:wither":
+                    if (entity != null) {
+                        ((WitherEntity) entity).setInvulTimer(440);
+                    }
+                    spawnsToPerform -= 4;
+                    break;
+
+                case "minecraft:ender_dragon", "minecraft:warden":
+                    nextEntity = this.random.nextBetween(0, mobs.size() - 1);
+                    entityType = mobs.get(nextEntity);
+                    entityTypeID = Registries.ENTITY_TYPE.getId(entityType);
+                    entity = entityType.create(this.getWorld());
+                    spawnsToPerform++;
+                    break;
+
+
+                case "minecraft:bat", "minecraft:bee", "minecraft:chicken", "minecraft:cod", "minecraft:frog", "minecraft:pufferfish", "minecraft:rabbit", "minecraft:salmon", "minecraft:silverfish", "minecraft:endermite", "minecraft:tadpole":
+                    Entity entity2 = entityType.create(this.getWorld());
+                    if (entity2 != null) {
+                        entity2.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
+                        this.getWorld().spawnEntity(entity2);
+                    }
+                    Entity entity3 = entityType.create(this.getWorld());
+                    if (entity3 != null) {
+                        entity3.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
+                        this.getWorld().spawnEntity(entity3);
+                    }
+                    break;
+
+                case "minecraft:tropical_fish":
+                    TropicalFishEntity.Variety[] variantsTropicalFish = TropicalFishEntity.Variety.values();
+                    if (entity != null) {
+                        ((TropicalFishEntity) entity).setVariant(variantsTropicalFish[random.nextBetween(0, variantsTropicalFish.length-1)]);
+                    }
+                    Entity tropicalFish2 = entityType.create(this.getWorld());
+                    if (tropicalFish2 != null) {
+                        tropicalFish2.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
+                        ((TropicalFishEntity) tropicalFish2).setVariant(variantsTropicalFish[random.nextBetween(0, variantsTropicalFish.length-1)]);
+                        this.getWorld().spawnEntity(tropicalFish2);
+                    }
+                    Entity tropicalFish3 = entityType.create(this.getWorld());
+                    if (tropicalFish3 != null) {
+                        tropicalFish3.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
+                        ((TropicalFishEntity) tropicalFish3).setVariant(variantsTropicalFish[random.nextBetween(0, variantsTropicalFish.length-1)]);
+                        this.getWorld().spawnEntity(tropicalFish3);
+                    }
+                    break;
+
+                case "minecraft:axolotl":
+                    spawnsToPerform -= 3;
+                    if (entity != null) {
+                        ((AxolotlEntity) entity).setVariant(AxolotlEntity.Variant.byId(random.nextBetween(0,4)));
+                    }
+                    break;
+
+                case "minecraft:elder_guardian":
+                    spawnsToPerform-=4;
+                    break;
+
+                case "minecraft:slime":
+                    if (entity != null) {
+                        ((SlimeEntity) entity).setSize(random.nextBetween(1, 4), true);
+                    }
+                    break;
+
+                case "minecraft:ghast":
+                    spawnsToPerform--;
+                    break;
+
+                case "minecraft:evoker", "minecraft:ravager":
+                    spawnsToPerform-=2;
+                    break;
+            }
+
+            if (entity != null) {
+                entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
+                this.getWorld().spawnEntity(entity);
+            }
         }
     }
 
     private void spawnSkeletonHorse(HitResult hitResult) {
         SkeletonHorseEntity skeletonHorseEntity = EntityType.SKELETON_HORSE.create(this.getWorld());
-        skeletonHorseEntity.setTrapped(true);
         if (skeletonHorseEntity != null) {
+            skeletonHorseEntity.setTrapped(true);
             skeletonHorseEntity.setBreedingAge(0);
             skeletonHorseEntity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
 
@@ -226,31 +320,42 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     private void beginThunderstorm(HitResult hitResult) {
         // En el comando no se preocuparon por si es null. Si en algun momento se rompe quizas chequear esto
         if (!this.getWorld().isClient) {
-            ServerWorld world = this.getServer().getOverworld();
-            world.setWeather(0, UniformIntProvider.create(3600, 15600).get(world.getRandom()), true, true);
-            LivingEntity entity = (LivingEntity) this.getOwner();
-            if (entity != null) {
-                entity.sendMessage(Text.of("Its raining"));
+            if (this.getServer() != null) {
+                ServerWorld world = this.getServer().getOverworld();
+                world.setWeather(0, UniformIntProvider.create(3600, 15600).get(world.getRandom()), true, true);
+//                LivingEntity entity = (LivingEntity) this.getOwner();
+//                if (entity != null) { entity.sendMessage(Text.of("Its raining"));}
+                LightningEntity bolt = EntityType.LIGHTNING_BOLT.create(this.getWorld());
+                if (bolt != null) {
+                    bolt.refreshPositionAndAngles(hitResult.getPos(),1f, 1f);
+                    this.getWorld().spawnEntity(bolt);
+                }
             }
-            LightningEntity bolt = EntityType.LIGHTNING_BOLT.create(this.getWorld());
-            bolt.refreshPositionAndAngles(hitResult.getPos(),1f, 1f);
-            this.getWorld().spawnEntity(bolt);
         }
     }
 
-    private void goDownXBlocks(HitResult hitResult, List<LivingEntity> entities) {
+    private void goDownXBlocks(HitResult hitResult, Box boundingBox) {
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
         for (LivingEntity entity : entities) {
-            ServerWorld server = entity.getServer().getWorld(entity.getWorld().getRegistryKey());
-            TeleportTarget teleportTarget = new TeleportTarget(server,
-                    new Vec3d(entity.getX(),
-                            entity.getY() - 20.0,
-                            entity.getZ()),
-                    new Vec3d(0, 0, 0),
-                    entity.getYaw(),
-                    entity.getPitch(),
-                    TeleportTarget.NO_OP);
-            entity.teleportTo(teleportTarget);
-            entity.sendMessage(Text.of(String.format("-20")));
+
+            // Ocurre cuando se muere el player antes de que se calcule la lista
+            if (entity == null) {
+                continue;
+            }
+
+            if (this.getServer() != null) {
+                ServerWorld server = this.getServer().getWorld(entity.getWorld().getRegistryKey());
+                TeleportTarget teleportTarget = new TeleportTarget(server,
+                                                new Vec3d(entity.getX(),
+                                                       entity.getY() - 20.0,
+                                                          entity.getZ()),
+                                                new Vec3d(0, 0, 0),
+                                                entity.getYaw(),
+                                                entity.getPitch(),
+                                                TeleportTarget.NO_OP);
+                entity.teleportTo(teleportTarget);
+                entity.sendMessage(Text.of("-20"));
+            }
         }
 
     }
@@ -259,6 +364,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         List<ServerPlayerEntity> players = this.getServer().getPlayerManager().getPlayerList();
 
         for (ServerPlayerEntity playerEntity : players) {
+            if (playerEntity == null) {
+                continue;
+            }
             ServerWorld dimension = playerEntity.getServer().getWorld(playerEntity.getWorld().getRegistryKey());
             TeleportTarget teleportTarget = new TeleportTarget(dimension,
                     new Vec3d((double)this.random.nextBetween((int) (playerEntity.getX()-2000.0D), (int) (playerEntity.getX()+2000.0D)),
@@ -274,20 +382,34 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     }
 
-    private void applyBeaconEffect(HitResult hitResult, List<LivingEntity> entities) {
+    private void applyBeaconEffect(HitResult hitResult, Box boundingBox) {
+
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(32.0, 200.0, 32.0));
+
         List<RegistryEntry<StatusEffect>> pool = BeaconBlockEntity.EFFECTS_BY_LEVEL.stream().flatMap(List::stream).toList();
+
+
         long poolSize = pool.size();
         int nextEffect = this.random.nextBetween(0, (int) poolSize-1);
         int nextLevel = this.random.nextBetween(0, 9);
+        RegistryEntry<StatusEffect> effect = pool.get(nextEffect);
+        SimpleParticleType effectParticle = particleMap.get(effect.getIdAsString());
+        ((ServerWorld) this.getWorld()).spawnParticles(effectParticle,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(pool.get(nextEffect), 72000, nextLevel);
-            entity.addStatusEffect(effect);
+            StatusEffectInstance effectInstance = new StatusEffectInstance(effect, 72000, nextLevel);
+            if (entity != null) {
+                entity.addStatusEffect(effectInstance);
+            }
         }
     }
 
     private void crash(HitResult hitResult) {
-//        float a = 1/0;
+        if (this.getWorld().isClient) {
+            LivingEntity entity = (LivingEntity) this.getOwner();
+            if (entity != null) { entity.sendMessage(Text.of("crash"));}
+            throw new RuntimeException("Chaos Crash");
+        }
     }
 
     private void saveAndQuit(HitResult hitResult) {
@@ -303,7 +425,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         if (kase == 20) {
             this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 127.0, World.ExplosionSourceType.BLOCK);
         }
-        else if (kase > 17) {
+        else if (kase > 17 && this.getOwner() != null) {
             this.getWorld().createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 8.0, World.ExplosionSourceType.BLOCK);
         }
         else {
@@ -317,13 +439,27 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         FireballEntity fireballEntity;
 
         if (kase == 20) {
-            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 127);
+            if (this.getOwner() != null) {
+                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 127);
+            }
+            else {
+                LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
+                dummy.setPosition(this.getX(), this.getY(), this.getZ());
+                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 2);
+            }
         }
         else {
-            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 2);
+            if (this.getOwner() != null) {
+                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 2);
+            }
+            else {
+                LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
+                dummy.setPosition(this.getX(), this.getY(), this.getZ());
+                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 2);
+            }
         }
 
-        if (kase > 17 && kase < 20) {
+        if (kase > 17 && kase < 20 && this.getOwner() != null) {
             fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
         }
         else {
@@ -365,32 +501,35 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void destroyAllBlocksInASphere(HitResult hitResult) {
-        double gaussianValue = random.nextGaussian();
-//        int radius = ((int) Math.abs(gaussianValue * 35)) + 10;
-//        if (radius < 20) { radius = 20;}
         float randomNumber = random.nextFloat();
         while (randomNumber < 0.0000000001f) {
             randomNumber = random.nextFloat();
         }
         int radius = Math.max((int) (-1 * (9.8036f * Math.log(randomNumber * 40)/Math.log(1.5) - 90)), 20);
-        this.getOwner().sendMessage(Text.of(String.format("%d", radius)));
+        if (this.getOwner() != null) {
+            this.getOwner().sendMessage(Text.of(String.format("%d", radius)));
+            StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 100, 0);
+            ((LivingEntity) this.getOwner()).addStatusEffect(slowFall);
+        }
 
         World world = this.getWorld();
         BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, (int) hitResult.getPos().y, (int) hitResult.getPos().z));
-        for (int x = -radius ; x <= radius ; x++) {
-            for (int y = -radius ; y <= radius ; y++) {
-                for (int z = -radius ; z <= radius ; z++) {
-                    BlockPos auxBlock = new BlockPos(x, y, z);
-                    BlockPos currentBlock = center.add(auxBlock);
 
-                    if (center.isWithinDistance(currentBlock, radius)) {
+        for (int x = -radius ; x <= radius ; x++) {
+            for (int z = -radius ; z <= radius ; z++) {
+                for (int y = -radius ; y <= radius ; y++) {
+
+                    if (x*x + y*y + z*z > radius * radius) { continue;}
+
+                    BlockPos currentBlock = center.add(x, y, z);
+                    BlockState currentState = world.getBlockState(currentBlock);
+
+                    if (!currentState.isAir()) {
                         world.setBlockState(currentBlock, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
                     }
                 }
             }
         }
-        StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 100, 0);
-        ((LivingEntity) this.getOwner()).addStatusEffect(slowFall);
     }
 
 //    private void createSkyblock(HitResult hitResult) {
@@ -414,7 +553,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //        hitResult.getPos();
 //    }
 
-    private void getFullDiamondToolsSet(HitResult hitResult) {
+    private void getToolsSet(HitResult hitResult) {
         int material = random.nextBetween(0, 4);
 
         switch (material) {
@@ -456,7 +595,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
 
-    private void getFullDiamondArmorSet(HitResult hitResult) {
+    private void getArmorSet(HitResult hitResult) {
         int material = random.nextBetween(0, 4);
 
         switch (material) {
@@ -497,24 +636,39 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
 
-    private void receiveDoubleDamage(HitResult hitResult, List<LivingEntity> entities) {
+    private void receiveDoubleDamage(HitResult hitResult, Box boundingBox) {
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
+        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_DOUBLE_DAMAGE_TAKEN_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.DOUBLE_DAMAGE_TAKEN, 72000, 0);
-            entity.addStatusEffect(effect);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.DOUBLE_DAMAGE_TAKEN, 6000, 0);
+            if (entity != null) {
+                entity.addStatusEffect(effect);
+            }
         }
     }
 
-    private void teleportisDodge(HitResult hitResult, List<LivingEntity> entities) {
+    private void teleportisDodge(HitResult hitResult, Box boundingBox) {
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
+        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_TELEPORTITIS_DODGE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.TELEPORTIS_DODGE, 72000, 0);
-            entity.addStatusEffect(effect);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.TELEPORTITIS_DODGE, 72000, 0);
+            if (entity != null) {
+                entity.addStatusEffect(effect);
+            }
         }
     }
 
-    private void chorusFruitTpEveryXSeconds(HitResult hitResult, List<LivingEntity> entities) {
+    private void chorusFruitTpEveryXSeconds(HitResult hitResult, Box boundingBox) {
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(256.0, 200.0, 256.0));
+        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_CHORUS_FRUIT_TP_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.PERSISTENT_CHORUS_FRUIT, 3600, 0);
-            entity.addStatusEffect(effect);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.CHORUS_FRUIT_TP, 3600, 0);
+            if (entity != null) {
+                entity.addStatusEffect(effect);
+            }
         }
     }
 
@@ -531,7 +685,6 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //            entity.addStatusEffect(effect);
 //        }
 //    }
-
 
     private void getMythicItem(HitResult hitResult) {
         List<ItemStack> mythicItems = new ArrayList<>();

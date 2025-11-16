@@ -10,7 +10,7 @@ import net.elgoblin.moremineralblocks.entity.client.DevilmonRenderer;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.LegendaryPickaxeItem;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
-import net.elgoblin.moremineralblocks.particle.custom.PickaxeParticle;
+import net.elgoblin.moremineralblocks.particle.custom.ChaosOrbFeedbackParticle;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -84,6 +84,15 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(DevilmonModel.DEVILMON, DevilmonModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.DEVILMON, DevilmonRenderer::new);
 
-        ParticleFactoryRegistry.getInstance().register(ModParticles.PICKAXE_PARTICLE, PickaxeParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.PICKAXE_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_HASTE_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_JUMP_BOOST_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_REGENERATION_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_RESISTANCE_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_SPEED_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_STRENGTH_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_TELEPORTITIS_DODGE_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_CHORUS_FRUIT_TP_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_DOUBLE_DAMAGE_TAKEN_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
     }
 }
