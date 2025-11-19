@@ -1,9 +1,7 @@
 package net.elgoblin.moremineralblocks.entity;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
-import net.elgoblin.moremineralblocks.entity.custom.ChaosOrbEntity;
-import net.elgoblin.moremineralblocks.entity.custom.DevilmonEntity;
-import net.elgoblin.moremineralblocks.entity.custom.MantisEntity;
+import net.elgoblin.moremineralblocks.entity.custom.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
@@ -15,6 +13,16 @@ public class ModEntities {
     public static final EntityType<ChaosOrbEntity> CHAOS_ORB = Registry.register(Registries.ENTITY_TYPE,
             Identifier.of(MoreMineralBlocks.MOD_ID, "chaos_orb"),
             EntityType.Builder.<ChaosOrbEntity>create(ChaosOrbEntity::new, SpawnGroup.MISC)
+                    .dimensions(0.25F,0.25F).maxTrackingRange(4).trackingTickInterval(10).build());
+
+    public static final EntityType<EmptyMobCapsuleEntity> EMPTY_MOB_CAPSULE = Registry.register(Registries.ENTITY_TYPE,
+            Identifier.of(MoreMineralBlocks.MOD_ID, "empty_mob_capsule"),
+            EntityType.Builder.<EmptyMobCapsuleEntity>create(EmptyMobCapsuleEntity::new, SpawnGroup.MISC)
+                    .dimensions(0.25F,0.25F).maxTrackingRange(4).trackingTickInterval(10).build());
+
+    public static final EntityType<FilledMobCapsuleEntity> FILLED_MOB_CAPSULE = Registry.register(Registries.ENTITY_TYPE,
+            Identifier.of(MoreMineralBlocks.MOD_ID, "empty_mob_capsule"),
+            EntityType.Builder.<FilledMobCapsuleEntity>create(FilledMobCapsuleEntity::new, SpawnGroup.MISC)
                     .dimensions(0.25F,0.25F).maxTrackingRange(4).trackingTickInterval(10).build());
 
     public static final EntityType<MantisEntity> MANTIS = Registry.register(Registries.ENTITY_TYPE,

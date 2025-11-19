@@ -83,6 +83,8 @@ public class ModItems {
 
     //
     public static final Item CHAOS_ORB = registerItem("chaos_orb", new ChaosOrbItem(new Item.Settings()));
+    public static final Item EMPTY_MOB_CAPSULE = registerItem("empty_mob_capsule", new EmptyMobCapsuleItem(new Item.Settings()));
+    public static final Item FILLED_MOB_CAPSULE = registerItem("filled_mob_capsule", new FilledMobCapsuleItem(new Item.Settings()));
 
     public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
 

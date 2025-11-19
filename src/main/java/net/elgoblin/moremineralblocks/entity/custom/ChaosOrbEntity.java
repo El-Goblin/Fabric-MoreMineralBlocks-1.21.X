@@ -1,5 +1,6 @@
 package net.elgoblin.moremineralblocks.entity.custom;
 
+import com.sun.jna.platform.win32.Variant;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItems;
@@ -10,8 +11,17 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.type.FoodComponent;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentLevelEntry;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -19,17 +29,21 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.entity.passive.AxolotlEntity;
+import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.passive.TropicalFishEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.*;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -41,6 +55,7 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -67,14 +82,14 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::destroyAllBlocksInASphere,
 //            this::createSkyblock
             this::explosion,
-            this::fireExplosion
+            this::fireExplosion,
+            this::getFood
     ));
     private List<BiConsumer<HitResult, Box>> areaChaosEffects = new ArrayList<>(List.of(
             this::applyBeaconEffect
     ));
     private List<BiConsumer<HitResult, Box>> selfAreaChaosEffects = new ArrayList<>(List.of(
-            this::receiveDoubleDamage,
-            this::goDownXBlocks
+            this::receiveDoubleDamage
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
 //            this::crash
@@ -87,7 +102,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::teleportisDodge,
 //            this::adventureGamemode
 //            this::onanaHands,
-            this::chorusFruitTpEveryXSeconds
+            this::chorusFruitTpEveryXSeconds,
+            this::goDownXBlocks
     ));
 
 
@@ -206,6 +222,31 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         return ModItems.CHAOS_ORB;
     }
 
+    private static List<TropicalFishEntity.Variant> TROPICAL_FISH_VARIANTS = List.of(
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.STRIPEY, DyeColor.ORANGE, DyeColor.GRAY),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.GRAY, DyeColor.GRAY),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.GRAY, DyeColor.BLUE),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.CLAYFISH, DyeColor.WHITE, DyeColor.GRAY),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SUNSTREAK, DyeColor.BLUE, DyeColor.GRAY),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.KOB, DyeColor.ORANGE, DyeColor.WHITE),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SPOTTY, DyeColor.PINK, DyeColor.LIGHT_BLUE),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BLOCKFISH, DyeColor.PURPLE, DyeColor.YELLOW),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.CLAYFISH, DyeColor.WHITE, DyeColor.RED),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SPOTTY, DyeColor.WHITE, DyeColor.YELLOW),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.GLITTER, DyeColor.WHITE, DyeColor.GRAY),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.CLAYFISH, DyeColor.WHITE, DyeColor.ORANGE),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.DASHER, DyeColor.CYAN, DyeColor.PINK),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BRINELY, DyeColor.LIME, DyeColor.LIGHT_BLUE),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BETTY, DyeColor.RED, DyeColor.WHITE),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SNOOPER, DyeColor.GRAY, DyeColor.RED),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BLOCKFISH, DyeColor.RED, DyeColor.WHITE),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.WHITE, DyeColor.YELLOW),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.KOB, DyeColor.RED, DyeColor.WHITE),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SUNSTREAK, DyeColor.GRAY, DyeColor.WHITE),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.DASHER, DyeColor.CYAN, DyeColor.YELLOW),
+            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.YELLOW, DyeColor.YELLOW)
+    );
+
     private void spawnMobPack(HitResult hitResult) {
 
         // Como es esto un tipo???
@@ -219,7 +260,6 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         EntityType<?> entityType = mobs.get(nextEntity);
         Identifier entityTypeID = Registries.ENTITY_TYPE.getId(entityType);
 
-
         while (spawnsToPerform-- > 0) {
             Entity entity = entityType.create(this.getWorld());
 
@@ -232,7 +272,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     spawnsToPerform -= 4;
                     break;
 
-                case "minecraft:ender_dragon", "minecraft:warden":
+                case "minecraft:ender_dragon", "minecraft:warden", "moremineralblocks:devilmon":
                     nextEntity = this.random.nextBetween(0, mobs.size() - 1);
                     entityType = mobs.get(nextEntity);
                     entityTypeID = Registries.ENTITY_TYPE.getId(entityType);
@@ -255,21 +295,19 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     break;
 
                 case "minecraft:tropical_fish":
-                    TropicalFishEntity.Variety[] variantsTropicalFish = TropicalFishEntity.Variety.values();
-                    if (entity != null) {
-                        ((TropicalFishEntity) entity).setVariant(variantsTropicalFish[random.nextBetween(0, variantsTropicalFish.length-1)]);
-                    }
-                    Entity tropicalFish2 = entityType.create(this.getWorld());
-                    if (tropicalFish2 != null) {
-                        tropicalFish2.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-                        ((TropicalFishEntity) tropicalFish2).setVariant(variantsTropicalFish[random.nextBetween(0, variantsTropicalFish.length-1)]);
-                        this.getWorld().spawnEntity(tropicalFish2);
-                    }
-                    Entity tropicalFish3 = entityType.create(this.getWorld());
-                    if (tropicalFish3 != null) {
-                        tropicalFish3.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-                        ((TropicalFishEntity) tropicalFish3).setVariant(variantsTropicalFish[random.nextBetween(0, variantsTropicalFish.length-1)]);
-                        this.getWorld().spawnEntity(tropicalFish3);
+                    for (int i = 0 ; i < 3 ; i++) {
+                        entity = entityType.create(this.getWorld());
+                        if (entity != null) {
+                            TropicalFishEntity.Variant variant = TROPICAL_FISH_VARIANTS.get(random.nextBetween(0, TROPICAL_FISH_VARIANTS.size()-1));
+                            int variantInt = variant.variety().getId() & 65535 |  (variant.baseColor().getId() & 0xFF) << 16 | (variant.patternColor().getId() & 0xFF) << 24;
+
+                            NbtCompound nbt = new NbtCompound();
+                            entity.writeNbt(nbt);
+                            nbt.putInt("Variant", variantInt);
+                            entity.readNbt(nbt);
+                            entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
+                            this.getWorld().spawnEntity(entity);
+                        }
                     }
                     break;
 
@@ -335,7 +373,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void goDownXBlocks(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 200.0, 16.0));
+        if (entities.isEmpty() && this.getOwner() != null) {
+            entities.add((LivingEntity) this.getOwner());
+        }
         for (LivingEntity entity : entities) {
 
             // Ocurre cuando se muere el player antes de que se calcule la lista
@@ -397,7 +438,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         ((ServerWorld) this.getWorld()).spawnParticles(effectParticle,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effectInstance = new StatusEffectInstance(effect, 72000, nextLevel);
+            StatusEffectInstance effectInstance = new StatusEffectInstance(effect, 24000, nextLevel);
             if (entity != null) {
                 entity.addStatusEffect(effectInstance);
             }
@@ -415,8 +456,54 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     private void saveAndQuit(HitResult hitResult) {
     }
 
+    private void getFood(HitResult hitResult) {
+        ItemStack food = Items.COOKED_BEEF.getDefaultStack();
+        food.setCount(64);
+        this.dropStack(food, 0);
+    }
+
     private void getElytra(HitResult hitResult) {
-        this.dropStack(Items.ELYTRA.getDefaultStack(), 0);
+        List<ItemStack> rareItems = new ArrayList<>();
+        rareItems.add(Items.ELYTRA.getDefaultStack());
+        rareItems.add(Items.MACE.getDefaultStack());
+        rareItems.add(Items.DRAGON_EGG.getDefaultStack());
+        rareItems.add(Items.BEACON.getDefaultStack());
+        rareItems.add(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE.getDefaultStack());
+        rareItems.add(Items.TOTEM_OF_UNDYING.getDefaultStack());
+
+        ItemStack mendingBook = Items.ENCHANTED_BOOK.getDefaultStack();
+        RegistryEntry<Enchantment> mendingEntry =
+                this.getWorld().getRegistryManager()
+                        .get(RegistryKeys.ENCHANTMENT)
+                        .getEntry(Enchantments.MENDING)
+                        .orElseThrow();
+        mendingBook.addEnchantment(mendingEntry, 1);
+        rareItems.add(mendingBook);
+
+        ItemStack diamonds = Items.DIAMOND.getDefaultStack();
+        diamonds.setCount(32);
+        rareItems.add(diamonds);
+
+        ItemStack goldenCarrots = Items.GOLDEN_CARROT.getDefaultStack();
+        diamonds.setCount(32);
+        rareItems.add(goldenCarrots);
+
+        ItemStack netherite = Items.NETHERITE_INGOT.getDefaultStack();
+        netherite.setCount(2);
+        rareItems.add(netherite);
+
+        ItemStack goldenApples = Items.ENCHANTED_GOLDEN_APPLE.getDefaultStack();
+        netherite.setCount(2);
+        rareItems.add(goldenApples);
+
+        ItemStack sponges = Items.SPONGE.getDefaultStack();
+        netherite.setCount(64);
+        rareItems.add(sponges);
+
+        int nextItem = this.random.nextBetween(0, (int) rareItems.size()-1);
+        ItemStack reward = rareItems.get(nextItem);
+
+        this.dropStack(reward, 0);
     }
 
     private void explosion(HitResult hitResult) {
@@ -426,7 +513,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 127.0, World.ExplosionSourceType.BLOCK);
         }
         else if (kase > 17 && this.getOwner() != null) {
-            this.getWorld().createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 8.0, World.ExplosionSourceType.BLOCK);
+            this.getWorld().createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 1.0, World.ExplosionSourceType.BLOCK);
         }
         else {
             this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 8.0, World.ExplosionSourceType.BLOCK);
@@ -445,24 +532,26 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             else {
                 LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
                 dummy.setPosition(this.getX(), this.getY(), this.getZ());
-                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 2);
+                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
             }
         }
         else {
             if (this.getOwner() != null) {
-                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 2);
+                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 4);
             }
             else {
                 LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
                 dummy.setPosition(this.getX(), this.getY(), this.getZ());
-                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 2);
+                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
             }
         }
 
         if (kase > 17 && kase < 20 && this.getOwner() != null) {
+            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 2);
             fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
         }
         else {
+            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 2);
             fireballEntity.setPosition(this.getX(), this.getY(), this.getZ());
         }
         this.getWorld().spawnEntity(fireballEntity);
@@ -506,6 +595,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             randomNumber = random.nextFloat();
         }
         int radius = Math.max((int) (-1 * (9.8036f * Math.log(randomNumber * 40)/Math.log(1.5) - 90)), 20);
+        if (radius==20) {
+            radius = 10;
+        }
         if (this.getOwner() != null) {
             this.getOwner().sendMessage(Text.of(String.format("%d", radius)));
             StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 100, 0);
@@ -650,10 +742,14 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     private void teleportisDodge(HitResult hitResult, Box boundingBox) {
         List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
+        if (entities.isEmpty() && this.getOwner() != null) {
+            entities.add((LivingEntity) this.getOwner());
+        }
+
         ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_TELEPORTITIS_DODGE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.TELEPORTITIS_DODGE, 72000, 0);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.TELEPORTITIS_DODGE, 24000, 0);
             if (entity != null) {
                 entity.addStatusEffect(effect);
             }
@@ -661,11 +757,14 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void chorusFruitTpEveryXSeconds(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(256.0, 200.0, 256.0));
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 200.0, 16.0));
+        if (entities.isEmpty() && this.getOwner() != null) {
+            entities.add((LivingEntity) this.getOwner());
+        }
         ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_CHORUS_FRUIT_TP_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.CHORUS_FRUIT_TP, 3600, 0);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.CHORUS_FRUIT_TP, 1200, 0);
             if (entity != null) {
                 entity.addStatusEffect(effect);
             }
@@ -717,6 +816,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
         mythicItems.add(trialSpawner);
 
+        ItemStack spawner = Items.SPAWNER.getDefaultStack();
+        mythicItems.add(spawner);
+
         List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
 
         int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
@@ -725,7 +827,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);
         ItemStack reward = mythicItems.get(nextItem);
 
-        if (reward.getItem() == Items.TRIAL_SPAWNER) {
+        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
             ItemStack newEgg = spawnEggs.get(nextEgg);
             newEgg.setCount(1);
             this.dropStack(newEgg, 0);
