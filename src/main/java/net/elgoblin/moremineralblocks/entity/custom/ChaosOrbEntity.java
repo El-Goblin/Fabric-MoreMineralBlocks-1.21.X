@@ -1,6 +1,5 @@
 package net.elgoblin.moremineralblocks.entity.custom;
 
-import com.sun.jna.platform.win32.Variant;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItems;
@@ -11,25 +10,18 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.type.FoodComponent;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.entity.passive.AxolotlEntity;
-import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.passive.TropicalFishEntity;
 import net.minecraft.entity.projectile.FireballEntity;
@@ -55,7 +47,6 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -63,33 +54,34 @@ import java.util.function.Consumer;
 
 public class ChaosOrbEntity extends ThrownItemEntity {
 
-    private Map<String, SimpleParticleType> particleMap = Map.of("minecraft:haste", ModParticles.CHAOS_ORB_HASTE_PARTICLE,
-                                                                 "minecraft:jump_boost", ModParticles.CHAOS_ORB_JUMP_BOOST_PARTICLE,
-                                                                 "minecraft:regeneration", ModParticles.CHAOS_ORB_REGENERATION_PARTICLE,
-                                                                 "minecraft:resistance", ModParticles.CHAOS_ORB_RESISTANCE_PARTICLE,
-                                                                 "minecraft:speed", ModParticles.CHAOS_ORB_SPEED_PARTICLE,
-                                                                 "minecraft:strength", ModParticles.CHAOS_ORB_STRENGTH_PARTICLE);
+    private final Map<String, SimpleParticleType> particleMap = Map.of("minecraft:haste", ModParticles.CHAOS_ORB_HASTE_PARTICLE,
+            "minecraft:jump_boost", ModParticles.CHAOS_ORB_JUMP_BOOST_PARTICLE,
+            "minecraft:regeneration", ModParticles.CHAOS_ORB_REGENERATION_PARTICLE,
+            "minecraft:resistance", ModParticles.CHAOS_ORB_RESISTANCE_PARTICLE,
+            "minecraft:speed", ModParticles.CHAOS_ORB_SPEED_PARTICLE,
+            "minecraft:strength", ModParticles.CHAOS_ORB_STRENGTH_PARTICLE);
     private Random random = Random.create();
 
     private List<Consumer<HitResult>> pointChaosEffects = new ArrayList<>(List.of(
             this::spawnMobPack,
             this::getMythicItem,
             this::spawnSkeletonHorse,
-            this::getElytra,
+            this::breakGameProgression,
             this::getArmorSet,
             this::getToolsSet,
             this::spawn5ChaosOrbs,
-            this::destroyAllBlocksInASphere,
+            this::voidSphere,
 //            this::createSkyblock
             this::explosion,
             this::fireExplosion,
-            this::getFood
+            this::getFood,
+            this::getEnchantedBook
     ));
     private List<BiConsumer<HitResult, Box>> areaChaosEffects = new ArrayList<>(List.of(
             this::applyBeaconEffect
     ));
     private List<BiConsumer<HitResult, Box>> selfAreaChaosEffects = new ArrayList<>(List.of(
-            this::receiveDoubleDamage
+            this::fragile
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
 //            this::crash
@@ -99,10 +91,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             //this::randomizePlayersPositions
     ));
     private List<BiConsumer<HitResult, Box>> targetsOrSelfChaosEffects = new ArrayList<>(List.of(
-            this::teleportisDodge,
+            this::counterBlinking,
 //            this::adventureGamemode
 //            this::onanaHands,
-            this::chorusFruitTpEveryXSeconds,
+            this::blinking,
             this::goDownXBlocks
     ));
 
@@ -222,7 +214,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         return ModItems.CHAOS_ORB;
     }
 
-    private static List<TropicalFishEntity.Variant> TROPICAL_FISH_VARIANTS = List.of(
+    private static final List<TropicalFishEntity.Variant> TROPICAL_FISH_VARIANTS = List.of(
             new TropicalFishEntity.Variant(TropicalFishEntity.Variety.STRIPEY, DyeColor.ORANGE, DyeColor.GRAY),
             new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.GRAY, DyeColor.GRAY),
             new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.GRAY, DyeColor.BLUE),
@@ -328,6 +320,12 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     }
                     break;
 
+                case "minecraft:magma_cube":
+                    if (entity != null) {
+                        ((MagmaCubeEntity) entity).setSize(random.nextBetween(1, 4), true);
+                    }
+                    break;
+
                 case "minecraft:ghast":
                     spawnsToPerform--;
                     break;
@@ -373,7 +371,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void goDownXBlocks(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 200.0, 16.0));
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
+
         if (entities.isEmpty() && this.getOwner() != null) {
             entities.add((LivingEntity) this.getOwner());
         }
@@ -387,13 +386,13 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             if (this.getServer() != null) {
                 ServerWorld server = this.getServer().getWorld(entity.getWorld().getRegistryKey());
                 TeleportTarget teleportTarget = new TeleportTarget(server,
-                                                new Vec3d(entity.getX(),
-                                                       entity.getY() - 20.0,
-                                                          entity.getZ()),
-                                                new Vec3d(0, 0, 0),
-                                                entity.getYaw(),
-                                                entity.getPitch(),
-                                                TeleportTarget.NO_OP);
+                        new Vec3d(entity.getX(),
+                                entity.getY() - 20.0,
+                                entity.getZ()),
+                        new Vec3d(0, 0, 0),
+                        entity.getYaw(),
+                        entity.getPitch(),
+                        TeleportTarget.NO_OP);
                 entity.teleportTo(teleportTarget);
                 entity.sendMessage(Text.of("-20"));
             }
@@ -462,7 +461,16 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         this.dropStack(food, 0);
     }
 
-    private void getElytra(HitResult hitResult) {
+    private void getEnchantedBook(HitResult hitResult) {
+        ItemStack enchantedBook = Items.ENCHANTED_BOOK.getDefaultStack();
+        List<Enchantment> enchantments = this.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).stream().toList();
+        Enchantment enchantment = enchantments.get(random.nextBetween(0, enchantments.size() - 1));
+        RegistryEntry<Enchantment> enchantmentEntry = this.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(enchantment);
+        enchantedBook.addEnchantment(enchantmentEntry, enchantment.getMaxLevel());
+        this.dropStack(enchantedBook, 0);
+    }
+
+    private void breakGameProgression(HitResult hitResult) {
         List<ItemStack> rareItems = new ArrayList<>();
         rareItems.add(Items.ELYTRA.getDefaultStack());
         rareItems.add(Items.MACE.getDefaultStack());
@@ -480,12 +488,30 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         mendingBook.addEnchantment(mendingEntry, 1);
         rareItems.add(mendingBook);
 
+        ItemStack fortuneBook = Items.ENCHANTED_BOOK.getDefaultStack();
+        RegistryEntry<Enchantment> fortuneEntry =
+                this.getWorld().getRegistryManager()
+                        .get(RegistryKeys.ENCHANTMENT)
+                        .getEntry(Enchantments.FORTUNE)
+                        .orElseThrow();
+        fortuneBook.addEnchantment(fortuneEntry, 3);
+        rareItems.add(fortuneBook);
+
+        ItemStack lootingBook = Items.ENCHANTED_BOOK.getDefaultStack();
+        RegistryEntry<Enchantment> lootingEntry =
+                this.getWorld().getRegistryManager()
+                        .get(RegistryKeys.ENCHANTMENT)
+                        .getEntry(Enchantments.LOOTING)
+                        .orElseThrow();
+        lootingBook.addEnchantment(lootingEntry, 3);
+        rareItems.add(lootingBook);
+
         ItemStack diamonds = Items.DIAMOND.getDefaultStack();
         diamonds.setCount(32);
         rareItems.add(diamonds);
 
         ItemStack goldenCarrots = Items.GOLDEN_CARROT.getDefaultStack();
-        diamonds.setCount(32);
+        goldenCarrots.setCount(32);
         rareItems.add(goldenCarrots);
 
         ItemStack netherite = Items.NETHERITE_INGOT.getDefaultStack();
@@ -493,11 +519,11 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         rareItems.add(netherite);
 
         ItemStack goldenApples = Items.ENCHANTED_GOLDEN_APPLE.getDefaultStack();
-        netherite.setCount(2);
+        goldenApples.setCount(2);
         rareItems.add(goldenApples);
 
         ItemStack sponges = Items.SPONGE.getDefaultStack();
-        netherite.setCount(64);
+        sponges.setCount(64);
         rareItems.add(sponges);
 
         int nextItem = this.random.nextBetween(0, (int) rareItems.size()-1);
@@ -516,7 +542,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this.getWorld().createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 1.0, World.ExplosionSourceType.BLOCK);
         }
         else {
-            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 8.0, World.ExplosionSourceType.BLOCK);
+            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 5.0, World.ExplosionSourceType.BLOCK);
         }
     }
 
@@ -537,7 +563,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
         else {
             if (this.getOwner() != null) {
-                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 4);
+                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 3);
             }
             else {
                 LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
@@ -547,11 +573,11 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
 
         if (kase > 17 && kase < 20 && this.getOwner() != null) {
-            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 2);
+            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 1);
             fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
         }
         else {
-            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 2);
+            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 1);
             fireballEntity.setPosition(this.getX(), this.getY(), this.getZ());
         }
         this.getWorld().spawnEntity(fireballEntity);
@@ -589,15 +615,12 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         this.getWorld().spawnEntity(chaosOrbEntity);
     }
 
-    private void destroyAllBlocksInASphere(HitResult hitResult) {
+    private void voidSphere(HitResult hitResult) {
         float randomNumber = random.nextFloat();
         while (randomNumber < 0.0000000001f) {
             randomNumber = random.nextFloat();
         }
-        int radius = Math.max((int) (-1 * (9.8036f * Math.log(randomNumber * 40)/Math.log(1.5) - 90)), 20);
-        if (radius==20) {
-            radius = 10;
-        }
+        int radius = Math.max((int) (-1 * (5.6f * Math.log(randomNumber * 1369)/Math.log(1.375f) - 127)), 10);
         if (this.getOwner() != null) {
             this.getOwner().sendMessage(Text.of(String.format("%d", radius)));
             StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 100, 0);
@@ -728,7 +751,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
 
-    private void receiveDoubleDamage(HitResult hitResult, Box boundingBox) {
+    private void fragile(HitResult hitResult, Box boundingBox) {
         List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
         ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_DOUBLE_DAMAGE_TAKEN_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
@@ -740,8 +763,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
 
-    private void teleportisDodge(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
+    private void counterBlinking(HitResult hitResult, Box boundingBox) {
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
         if (entities.isEmpty() && this.getOwner() != null) {
             entities.add((LivingEntity) this.getOwner());
         }
@@ -756,8 +779,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
 
-    private void chorusFruitTpEveryXSeconds(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 200.0, 16.0));
+    private void blinking(HitResult hitResult, Box boundingBox) {
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(8.0, 4.0, 8.0));
         if (entities.isEmpty() && this.getOwner() != null) {
             entities.add((LivingEntity) this.getOwner());
         }
@@ -812,6 +835,15 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         ItemStack buddingAmethyst = Items.BUDDING_AMETHYST.getDefaultStack();
         buddingAmethyst.setCount(64);
         mythicItems.add(buddingAmethyst);
+
+//        ItemStack lootingBook = Items.ENCHANTED_BOOK.getDefaultStack();
+//        RegistryEntry<Enchantment> lootingEntry =
+//                this.getWorld().getRegistryManager()
+//                        .get(RegistryKeys.ENCHANTMENT)
+//                        .getEntry(Enchantments.LOOTING)
+//                        .orElseThrow();
+//        lootingBook.addEnchantment(lootingEntry, 5);
+//        mythicItems.add(lootingBook);
 
         ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
         mythicItems.add(trialSpawner);
