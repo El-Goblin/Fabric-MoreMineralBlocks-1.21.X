@@ -62,6 +62,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             "minecraft:strength", ModParticles.CHAOS_ORB_STRENGTH_PARTICLE);
     private Random random = Random.create();
 
+    private boolean tunneler = false;
+    private LinkedList<BlockPos> tunnelQueue = new LinkedList<>();
+
     private List<Consumer<HitResult>> pointChaosEffects = new ArrayList<>(List.of(
             this::spawnMobPack,
             this::getMythicItem,
@@ -75,7 +78,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::explosion,
             this::fireExplosion,
             this::getFood,
-            this::getEnchantedBook
+            this::getEnchantedBook,
+            this::smallPrize,
+            this::xp
     ));
     private List<BiConsumer<HitResult, Box>> areaChaosEffects = new ArrayList<>(List.of(
             this::applyBeaconEffect
@@ -107,8 +112,44 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         super(ModEntities.CHAOS_ORB, owner, world);
     }
 
+    public ChaosOrbEntity(World world, LivingEntity owner, boolean tunneler) {
+        super(ModEntities.CHAOS_ORB, owner, world);
+        this.tunneler = true;
+    }
+
     public ChaosOrbEntity(World world, double x, double y, double z) {
         super(ModEntities.CHAOS_ORB, x, y, z, world);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (this.tunneler) {
+            BlockPos center = new BlockPos(new Vec3i((int) this.getX(), (int) this.getY(), (int) this.getZ()));
+
+            for (int x = -5; x <= 5; x++) {
+                for (int z = -5; z <= 5; z++) {
+                    for (int y = -5; y <= 5; y++) {
+                        if (x * x + y * y + z * z > 25) {
+                            continue;
+                        }
+
+                        BlockPos currentBlock = center.add(x, y, z);
+                        this.tunnelQueue.add(currentBlock);
+                    }
+                }
+            }
+            World world = this.getWorld();
+            while (!tunnelQueue.isEmpty()) {
+                BlockPos blockToRemove = tunnelQueue.pop();
+                BlockState currentState = world.getBlockState(blockToRemove);
+
+                if (!currentState.isAir()) {
+                world.setBlockState(blockToRemove, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
+                }
+            }
+        }
     }
 
     private int nextCategory() {
@@ -212,6 +253,15 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     @Override
     protected Item getDefaultItem() {
         return ModItems.CHAOS_ORB;
+    }
+
+    public int effectCount() {
+        return this.pointChaosEffects.size() +
+                this.areaChaosEffects.size() +
+                this.selfAreaChaosEffects.size() +
+                this.selfChaosEffects.size() +
+                this.globalChaosEffects.size() +
+                this.targetsOrSelfChaosEffects.size();
     }
 
     private static final List<TropicalFishEntity.Variant> TROPICAL_FISH_VARIANTS = List.of(
@@ -417,7 +467,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     playerEntity.getPitch(),
                     TeleportTarget.NO_OP);
             playerEntity.teleportTo(teleportTarget);
-            playerEntity.sendMessage(Text.of(String.format("tpeado")));
+            playerEntity.sendMessage(Text.of("tpeado"));
         }
 
     }
@@ -470,6 +520,36 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         this.dropStack(enchantedBook, 0);
     }
 
+    private void xp(HitResult hitResult) {
+        float prizeMultiplier = (int) Math.pow((random.nextFloat()+1)*4,3);
+        ExperienceOrbEntity.spawn((ServerWorld) this.getWorld(), this.getPos(), (int) (random.nextBetween(250, 500) * prizeMultiplier));
+    }
+
+    private void smallPrize(HitResult hitResult) {
+        List<ItemStack> prizes = new ArrayList<>();
+        prizes.add(new ItemStack(Items.OAK_LOG, 64));
+        prizes.add(new ItemStack(Items.BONE, 48));
+        prizes.add(new ItemStack(Items.COAL, 64));
+        prizes.add(new ItemStack(Items.STONE, 64));
+        prizes.add(new ItemStack(Items.SOUL_SAND, 32));
+        prizes.add(new ItemStack(Items.SOUL_SOIL, 32));
+        prizes.add(new ItemStack(Items.OBSIDIAN, 10));
+        prizes.add(new ItemStack(Items.RED_BED, 1));
+        prizes.add(new ItemStack(Items.POINTED_DRIPSTONE, 12));
+        prizes.add(new ItemStack(Items.TURTLE_HELMET, 1));
+        prizes.add(new ItemStack(Items.SCAFFOLDING, 32));
+
+        int nextItem = this.random.nextBetween(0, prizes.size() -1);
+        ItemStack reward = prizes.get(nextItem);
+
+        if (reward.getItem() == Items.POINTED_DRIPSTONE) {
+            this.dropStack(new ItemStack(Items.LAVA_BUCKET, 1), 0);
+            this.dropStack(new ItemStack(Items.WATER_BUCKET, 1), 0);
+        }
+
+        this.dropStack(reward, 0);
+    }
+
     private void breakGameProgression(HitResult hitResult) {
         List<ItemStack> rareItems = new ArrayList<>();
         rareItems.add(Items.ELYTRA.getDefaultStack());
@@ -478,6 +558,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         rareItems.add(Items.BEACON.getDefaultStack());
         rareItems.add(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE.getDefaultStack());
         rareItems.add(Items.TOTEM_OF_UNDYING.getDefaultStack());
+        rareItems.add(Items.TRIDENT.getDefaultStack());
+        rareItems.add(Items.SHULKER_BOX.getDefaultStack());
 
         ItemStack mendingBook = Items.ENCHANTED_BOOK.getDefaultStack();
         RegistryEntry<Enchantment> mendingEntry =
@@ -518,6 +600,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         netherite.setCount(2);
         rareItems.add(netherite);
 
+        ItemStack bookshelves = Items.BOOKSHELF.getDefaultStack();
+        bookshelves.setCount(15);
+        rareItems.add(bookshelves);
+
         ItemStack goldenApples = Items.ENCHANTED_GOLDEN_APPLE.getDefaultStack();
         goldenApples.setCount(2);
         rareItems.add(goldenApples);
@@ -526,8 +612,16 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         sponges.setCount(64);
         rareItems.add(sponges);
 
+        ItemStack iron_ingots = Items.IRON_INGOT.getDefaultStack();
+        iron_ingots.setCount(64);
+        rareItems.add(iron_ingots);
+
         int nextItem = this.random.nextBetween(0, (int) rareItems.size()-1);
         ItemStack reward = rareItems.get(nextItem);
+
+        if (reward.getItem() == Items.BOOKSHELF) {
+            this.dropStack(Items.ENCHANTING_TABLE.getDefaultStack(), 0);
+        }
 
         this.dropStack(reward, 0);
     }
@@ -623,7 +717,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         int radius = Math.max((int) (-1 * (5.6f * Math.log(randomNumber * 1369)/Math.log(1.375f) - 127)), 10);
         if (this.getOwner() != null) {
             this.getOwner().sendMessage(Text.of(String.format("%d", radius)));
-            StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 100, 0);
+            StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, radius * 4, 0);
             ((LivingEntity) this.getOwner()).addStatusEffect(slowFall);
         }
 

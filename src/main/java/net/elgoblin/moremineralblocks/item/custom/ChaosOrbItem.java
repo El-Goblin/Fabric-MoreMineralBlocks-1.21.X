@@ -18,6 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Position;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class ChaosOrbItem extends SnowballItem {
 
     private List<ItemStack> spawnEggs = new ArrayList<>();
     private long spawnEggsReady = 0;
+    private net.minecraft.util.math.random.Random random = Random.create();
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
@@ -45,7 +47,12 @@ public class ChaosOrbItem extends SnowballItem {
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
         );
         if (!world.isClient) {
+
             ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(world, user);
+            boolean shouldTunnel = random.nextBetween(0, chaosOrbEntity.effectCount()) == 0;
+            if (shouldTunnel) {
+                chaosOrbEntity = new ChaosOrbEntity(world, user, true);
+            }
             chaosOrbEntity.setItem(itemStack);
             chaosOrbEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(chaosOrbEntity);
