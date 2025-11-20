@@ -114,11 +114,16 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     public ChaosOrbEntity(World world, LivingEntity owner, boolean tunneler) {
         super(ModEntities.CHAOS_ORB, owner, world);
-        this.tunneler = true;
+        this.tunneler = tunneler;
     }
 
     public ChaosOrbEntity(World world, double x, double y, double z) {
         super(ModEntities.CHAOS_ORB, x, y, z, world);
+    }
+
+    public ChaosOrbEntity(World world, double x, double y, double z, boolean tunneler) {
+        super(ModEntities.CHAOS_ORB, x, y, z, world);
+        this.tunneler = tunneler;
     }
 
     @Override
@@ -678,31 +683,36 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void spawn5ChaosOrbs(HitResult hitResult) {
-        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        boolean shouldTunnel = this.random.nextBetween(0, this.effectCount()) == 0;
+        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, shouldTunnel);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        shouldTunnel = this.random.nextBetween(0, this.effectCount()) == 0;
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, shouldTunnel);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( -1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        shouldTunnel = this.random.nextBetween(0, this.effectCount()) == 0;
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, shouldTunnel);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, 1.0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        shouldTunnel = this.random.nextBetween(0, this.effectCount()) == 0;
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, shouldTunnel);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, -1.0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        shouldTunnel = this.random.nextBetween(0, this.effectCount()) == 0;
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, shouldTunnel);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, 0.0f, 0f, 0f);
 
