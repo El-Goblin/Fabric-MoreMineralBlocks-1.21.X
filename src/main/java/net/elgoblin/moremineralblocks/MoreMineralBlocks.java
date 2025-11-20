@@ -90,32 +90,32 @@ public class MoreMineralBlocks implements ModInitializer {
 //				}
 //			}
 
-			if (entity.hasStatusEffect(ModEffects.CUMULATIVE_DAMAGE_TAKEN) && !blocked) {
-				entity.sendMessage(Text.of("dsa"));
-
-				DynamicRegistryManager registryManager = entity.getWorld().getRegistryManager();
-				DamageSources sources = new DamageSources(registryManager);
-				DamageSource newSource = sources.generic();
-
-				entity.sendMessage(Text.of("asd"));
-				entity.sendMessage(Text.of(source.getType().toString()));
-				entity.sendMessage(Text.of(newSource.getType().toString()));
-
-				if (!entity.getWorld().isClient && source.getType() != newSource.getType()) {
-					entity.sendMessage(Text.of("sss"));
-
-					double cumulative_damage_taken = entity.getAttributeValue(ModEntityAttributes.CUMULATIVE_DAMAGE_TAKEN);
-
-					entity.sendMessage(Text.of(String.format("%f", cumulative_damage_taken)));
-
-					double newDamage = damageTaken + cumulative_damage_taken;
-
-					entity.sendMessage(Text.of("punto b"));
-
-					entity.damage(newSource, (float) (newDamage));
-					entity.getAttributeInstance(ModEntityAttributes.CUMULATIVE_DAMAGE_TAKEN).setBaseValue(cumulative_damage_taken+0.5);
-				}
-			}
+//			if (entity.hasStatusEffect(ModEffects.CUMULATIVE_DAMAGE_TAKEN) && !blocked) {
+//				entity.sendMessage(Text.of("dsa"));
+//
+//				DynamicRegistryManager registryManager = entity.getWorld().getRegistryManager();
+//				DamageSources sources = new DamageSources(registryManager);
+//				DamageSource newSource = sources.generic();
+//
+//				entity.sendMessage(Text.of("asd"));
+//				entity.sendMessage(Text.of(source.getType().toString()));
+//				entity.sendMessage(Text.of(newSource.getType().toString()));
+//
+//				if (!entity.getWorld().isClient && source.getType() != newSource.getType()) {
+//					entity.sendMessage(Text.of("sss"));
+//
+//					double cumulative_damage_taken = entity.getAttributeValue(ModEntityAttributes.CUMULATIVE_DAMAGE_TAKEN);
+//
+//					entity.sendMessage(Text.of(String.format("%f", cumulative_damage_taken)));
+//
+//					double newDamage = damageTaken + cumulative_damage_taken;
+//
+//					entity.sendMessage(Text.of("punto b"));
+//
+//					entity.damage(newSource, (float) (newDamage));
+//					entity.getAttributeInstance(ModEntityAttributes.CUMULATIVE_DAMAGE_TAKEN).setBaseValue(cumulative_damage_taken+0.5);
+//				}
+//			}
 
 			if (entity.hasStatusEffect(ModEffects.TELEPORTITIS_DODGE) && !blocked) {
 				World world = entity.getWorld();

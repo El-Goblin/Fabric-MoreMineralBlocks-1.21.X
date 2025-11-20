@@ -15,16 +15,6 @@ public class ModEntities {
             EntityType.Builder.<ChaosOrbEntity>create(ChaosOrbEntity::new, SpawnGroup.MISC)
                     .dimensions(0.25F,0.25F).maxTrackingRange(4).trackingTickInterval(10).build());
 
-    public static final EntityType<EmptyMobCapsuleEntity> EMPTY_MOB_CAPSULE = Registry.register(Registries.ENTITY_TYPE,
-            Identifier.of(MoreMineralBlocks.MOD_ID, "empty_mob_capsule"),
-            EntityType.Builder.<EmptyMobCapsuleEntity>create(EmptyMobCapsuleEntity::new, SpawnGroup.MISC)
-                    .dimensions(0.25F,0.25F).maxTrackingRange(4).trackingTickInterval(10).build());
-
-    public static final EntityType<FilledMobCapsuleEntity> FILLED_MOB_CAPSULE = Registry.register(Registries.ENTITY_TYPE,
-            Identifier.of(MoreMineralBlocks.MOD_ID, "empty_mob_capsule"),
-            EntityType.Builder.<FilledMobCapsuleEntity>create(FilledMobCapsuleEntity::new, SpawnGroup.MISC)
-                    .dimensions(0.25F,0.25F).maxTrackingRange(4).trackingTickInterval(10).build());
-
     public static final EntityType<MantisEntity> MANTIS = Registry.register(Registries.ENTITY_TYPE,
             Identifier.of(MoreMineralBlocks.MOD_ID, "mantis"),
             EntityType.Builder.create(MantisEntity::new, SpawnGroup.CREATURE)

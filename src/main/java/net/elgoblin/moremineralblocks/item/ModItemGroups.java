@@ -56,8 +56,6 @@ public class ModItemGroups {
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(ModItems.CHAOS_ORB);
-            entries.add(ModItems.EMPTY_MOB_CAPSULE);
-            entries.add(ModItems.FILLED_MOB_CAPSULE);
         });
     }
 }
