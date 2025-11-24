@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moremineralblocks:block/polished_coal_slab"
+    },
+    "type=double": {
+      "model": "moremineralblocks:block/polished_coal_block"
+    },
+    "type=top": {
+      "model": "moremineralblocks:block/polished_coal_slab_top"
+    }
+  }
+}

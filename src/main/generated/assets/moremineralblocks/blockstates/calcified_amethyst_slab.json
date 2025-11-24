@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moremineralblocks:block/calcified_amethyst_slab"
+    },
+    "type=double": {
+      "model": "moremineralblocks:block/calcified_amethyst_block"
+    },
+    "type=top": {
+      "model": "moremineralblocks:block/calcified_amethyst_slab_top"
+    }
+  }
+}

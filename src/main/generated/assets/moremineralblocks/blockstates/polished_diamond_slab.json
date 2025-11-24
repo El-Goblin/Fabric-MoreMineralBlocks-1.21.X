@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moremineralblocks:block/polished_diamond_slab"
+    },
+    "type=double": {
+      "model": "moremineralblocks:block/polished_diamond_block"
+    },
+    "type=top": {
+      "model": "moremineralblocks:block/polished_diamond_slab_top"
+    }
+  }
+}

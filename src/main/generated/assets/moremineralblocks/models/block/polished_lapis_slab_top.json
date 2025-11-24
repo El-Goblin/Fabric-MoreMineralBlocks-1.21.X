@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "moremineralblocks:block/polished_lapis_block",
+    "side": "moremineralblocks:block/polished_lapis_block",
+    "top": "moremineralblocks:block/polished_lapis_block"
+  }
+}

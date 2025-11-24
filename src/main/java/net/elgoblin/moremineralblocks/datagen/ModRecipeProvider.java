@@ -3,10 +3,12 @@ package net.elgoblin.moremineralblocks.datagen;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.BlastingRecipe;
@@ -21,6 +23,53 @@ import java.util.concurrent.CompletableFuture;
 public class ModRecipeProvider extends FabricRecipeProvider {
     public ModRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
+    }
+
+    private record BlockPack(
+            ItemConvertible stairs,
+            ItemConvertible slab,
+            ItemConvertible wall,
+            ItemConvertible fence,
+            ItemConvertible fenceGate,
+            Block baseBlock
+
+    ) {
+        public void createPackRecipes(RecipeExporter exporter) {
+            createStairsRecipe(this.stairs, Ingredient.ofItems(this.baseBlock)).criterion(hasItem(this.baseBlock), conditionsFromItem(this.baseBlock)).offerTo(exporter);
+            offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.stairs, this.baseBlock);
+            offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.slab, this.baseBlock);
+            offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.slab, this.baseBlock, 2);
+            createFenceRecipe(this.fence, Ingredient.ofItems(this.baseBlock)).criterion(hasItem(this.baseBlock), conditionsFromItem(this.baseBlock)).offerTo(exporter);
+            offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.fence, this.baseBlock, 2);
+            createFenceGateRecipe(this.fenceGate, Ingredient.ofItems(this.baseBlock)).criterion(hasItem(this.baseBlock), conditionsFromItem(this.baseBlock)).offerTo(exporter);
+            offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.fenceGate, this.baseBlock, 2);
+            offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.wall, this.baseBlock);
+            offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.wall, this.baseBlock);
+        }
+    }
+
+    private record DoorPack(
+            ItemConvertible trapdoor,
+            ItemConvertible door,
+            Item trapDoorIngredient,
+            Item doorIngredient
+    ) {
+        public void createPackRecipes(RecipeExporter exporter) {
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, this.trapdoor)
+                    .pattern("RR")
+                    .pattern("RR")
+                    .input('R', this.trapDoorIngredient)
+                    .criterion(hasItem(this.trapDoorIngredient), conditionsFromItem(this.trapDoorIngredient))
+                    .offerTo(exporter);
+
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, this.door, 3)
+                    .pattern("RR")
+                    .pattern("RR")
+                    .pattern("RR")
+                    .input('R',this.doorIngredient)
+                    .criterion(hasItem(this.doorIngredient), conditionsFromItem(this.doorIngredient))
+                    .offerTo(exporter);
+        }
     }
 
     @Override
@@ -66,37 +115,49 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         offerBlasting(exporter, List.of(Blocks.COBBLESTONE), RecipeCategory.BUILDING_BLOCKS, Blocks.STONE, 0.10F, 100, "stone");
         offerBlasting(exporter, List.of(Blocks.NETHERRACK), RecipeCategory.BUILDING_BLOCKS, Items.NETHER_BRICK, 0.10F, 100, "nether_brick");
-        //offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.GOLD_FENCE_GATE, Blocks.GOLD_BLOCK, 2);
 
-        createStairsRecipe(ModBlocks.GOLD_STAIRS, Ingredient.ofItems(Blocks.GOLD_BLOCK)).criterion(hasItem(Blocks.GOLD_BLOCK), conditionsFromItem(Blocks.GOLD_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.GOLD_STAIRS, Blocks.GOLD_BLOCK);
+        BlockPack goldPack = new BlockPack(
+                ModBlocks.GOLD_STAIRS,
+                ModBlocks.GOLD_SLAB,
+                ModBlocks.GOLD_WALL,
+                ModBlocks.GOLD_FENCE,
+                ModBlocks.GOLD_FENCE_GATE,
+                Blocks.GOLD_BLOCK
+        );
+        goldPack.createPackRecipes(exporter);
 
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.GOLD_SLAB, Blocks.GOLD_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.GOLD_SLAB, Blocks.GOLD_BLOCK, 2);
+        BlockPack goldBrickPack = new BlockPack(
+                ModBlocks.GOLD_BRICK_STAIRS,
+                ModBlocks.GOLD_BRICK_SLAB,
+                ModBlocks.GOLD_BRICK_WALL,
+                ModBlocks.GOLD_BRICK_FENCE,
+                ModBlocks.GOLD_BRICK_FENCE_GATE,
+                ModBlocks.GOLD_BRICKS
+        );
+        goldBrickPack.createPackRecipes(exporter);
 
-        createFenceRecipe(ModBlocks.GOLD_FENCE, Ingredient.ofItems(Blocks.GOLD_BLOCK)).criterion(hasItem(Blocks.GOLD_BLOCK), conditionsFromItem(Blocks.GOLD_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.GOLD_FENCE, Blocks.GOLD_BLOCK, 2);
+        BlockPack calcifiedGoldPack = new BlockPack(
+                ModBlocks.CALCIFIED_GOLD_STAIRS,
+                ModBlocks.CALCIFIED_GOLD_SLAB,
+                ModBlocks.CALCIFIED_GOLD_WALL,
+                ModBlocks.CALCIFIED_GOLD_FENCE,
+                ModBlocks.CALCIFIED_GOLD_FENCE_GATE,
+                ModBlocks.CALCIFIED_GOLD_BLOCK
+        );
+        calcifiedGoldPack.createPackRecipes(exporter);
 
-        createFenceGateRecipe(ModBlocks.GOLD_FENCE_GATE, Ingredient.ofItems(Blocks.GOLD_BLOCK)).criterion(hasItem(Blocks.GOLD_BLOCK), conditionsFromItem(Blocks.GOLD_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.GOLD_FENCE_GATE, Blocks.GOLD_BLOCK, 2);
+        BlockPack polishedGoldPack = new BlockPack(
+                ModBlocks.POLISHED_GOLD_STAIRS,
+                ModBlocks.POLISHED_GOLD_SLAB,
+                ModBlocks.POLISHED_GOLD_WALL,
+                ModBlocks.POLISHED_GOLD_FENCE,
+                ModBlocks.POLISHED_GOLD_FENCE_GATE,
+                ModBlocks.POLISHED_GOLD_BLOCK
+        );
+        polishedGoldPack.createPackRecipes(exporter);
 
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.GOLD_WALL, Blocks.GOLD_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.GOLD_WALL, Blocks.GOLD_BLOCK);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GOLD_TRAPDOOR)
-                .pattern("RR")
-                .pattern("RR")
-                .input('R', Items.GOLD_INGOT)
-                .criterion(hasItem(Items.GOLD_INGOT), conditionsFromItem(Items.GOLD_INGOT))
-                .offerTo(exporter);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GOLD_DOOR, 3)
-                .pattern("RR")
-                .pattern("RR")
-                .pattern("RR")
-                .input('R',Items.GOLD_INGOT)
-                .criterion(hasItem(Items.GOLD_INGOT), conditionsFromItem(Items.GOLD_INGOT))
-                .offerTo(exporter);
+        DoorPack goldDoorPack = new DoorPack(ModBlocks.GOLD_TRAPDOOR, ModBlocks.GOLD_DOOR, Items.GOLD_INGOT, Items.GOLD_INGOT);
+        goldDoorPack.createPackRecipes(exporter);
 
         offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.POLISHED_GOLD_BLOCK, Blocks.GOLD_BLOCK);
 
@@ -118,35 +179,48 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // DIAMOND
 
-        createStairsRecipe(ModBlocks.DIAMOND_STAIRS, Ingredient.ofItems(Blocks.DIAMOND_BLOCK)).criterion(hasItem(Blocks.DIAMOND_BLOCK), conditionsFromItem(Blocks.DIAMOND_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.DIAMOND_STAIRS, Blocks.DIAMOND_BLOCK);
+        BlockPack diamondPack = new BlockPack(
+                ModBlocks.DIAMOND_STAIRS,
+                ModBlocks.DIAMOND_SLAB,
+                ModBlocks.DIAMOND_WALL,
+                ModBlocks.DIAMOND_FENCE,
+                ModBlocks.DIAMOND_FENCE_GATE,
+                Blocks.DIAMOND_BLOCK
+        );
+        diamondPack.createPackRecipes(exporter);
 
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.DIAMOND_SLAB, Blocks.DIAMOND_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.DIAMOND_SLAB, Blocks.DIAMOND_BLOCK, 2);
+        BlockPack diamondBrickPack = new BlockPack(
+                ModBlocks.DIAMOND_BRICK_STAIRS,
+                ModBlocks.DIAMOND_BRICK_SLAB,
+                ModBlocks.DIAMOND_BRICK_WALL,
+                ModBlocks.DIAMOND_BRICK_FENCE,
+                ModBlocks.DIAMOND_BRICK_FENCE_GATE,
+                ModBlocks.DIAMOND_BRICKS
+        );
+        diamondBrickPack.createPackRecipes(exporter);
 
-        createFenceRecipe(ModBlocks.DIAMOND_FENCE, Ingredient.ofItems(Blocks.DIAMOND_BLOCK)).criterion(hasItem(Blocks.DIAMOND_BLOCK), conditionsFromItem(Blocks.DIAMOND_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.DIAMOND_FENCE, Blocks.DIAMOND_BLOCK, 2);
+        BlockPack calcifiedDiamondPack = new BlockPack(
+                ModBlocks.CALCIFIED_DIAMOND_STAIRS,
+                ModBlocks.CALCIFIED_DIAMOND_SLAB,
+                ModBlocks.CALCIFIED_DIAMOND_WALL,
+                ModBlocks.CALCIFIED_DIAMOND_FENCE,
+                ModBlocks.CALCIFIED_DIAMOND_FENCE_GATE,
+                ModBlocks.CALCIFIED_DIAMOND_BLOCK
+        );
+        calcifiedDiamondPack.createPackRecipes(exporter);
 
-        createFenceGateRecipe(ModBlocks.DIAMOND_FENCE_GATE, Ingredient.ofItems(Blocks.DIAMOND_BLOCK)).criterion(hasItem(Blocks.DIAMOND_BLOCK), conditionsFromItem(Blocks.DIAMOND_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.DIAMOND_FENCE_GATE, Blocks.DIAMOND_BLOCK, 2);
+        BlockPack polishedDiamondPack = new BlockPack(
+                ModBlocks.POLISHED_DIAMOND_STAIRS,
+                ModBlocks.POLISHED_DIAMOND_SLAB,
+                ModBlocks.POLISHED_DIAMOND_WALL,
+                ModBlocks.POLISHED_DIAMOND_FENCE,
+                ModBlocks.POLISHED_DIAMOND_FENCE_GATE,
+                ModBlocks.POLISHED_DIAMOND_BLOCK
+        );
+        polishedDiamondPack.createPackRecipes(exporter);
 
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.DIAMOND_WALL, Blocks.DIAMOND_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.DIAMOND_WALL, Blocks.DIAMOND_BLOCK);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.DIAMOND_TRAPDOOR)
-                .pattern("RR")
-                .pattern("RR")
-                .input('R', Items.DIAMOND)
-                .criterion(hasItem(Items.DIAMOND), conditionsFromItem(Items.DIAMOND))
-                .offerTo(exporter);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.DIAMOND_DOOR, 3)
-                .pattern("RR")
-                .pattern("RR")
-                .pattern("RR")
-                .input('R',Items.DIAMOND)
-                .criterion(hasItem(Items.DIAMOND), conditionsFromItem(Items.DIAMOND))
-                .offerTo(exporter);
+        DoorPack diamondDoorPack = new DoorPack(ModBlocks.DIAMOND_TRAPDOOR, ModBlocks.DIAMOND_DOOR, Items.DIAMOND, Items.DIAMOND);
+        diamondDoorPack.createPackRecipes(exporter);
 
         offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.POLISHED_DIAMOND_BLOCK, Blocks.DIAMOND_BLOCK);
 
@@ -168,20 +242,45 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // IRON
 
-        createStairsRecipe(ModBlocks.IRON_STAIRS, Ingredient.ofItems(Blocks.IRON_BLOCK)).criterion(hasItem(Blocks.IRON_BLOCK), conditionsFromItem(Blocks.IRON_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.IRON_STAIRS, Blocks.IRON_BLOCK);
+        BlockPack ironPack = new BlockPack(
+                ModBlocks.IRON_STAIRS,
+                ModBlocks.IRON_SLAB,
+                ModBlocks.IRON_WALL,
+                ModBlocks.IRON_FENCE,
+                ModBlocks.IRON_FENCE_GATE,
+                Blocks.IRON_BLOCK
+        );
+        ironPack.createPackRecipes(exporter);
 
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.IRON_SLAB, Blocks.IRON_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.IRON_SLAB, Blocks.IRON_BLOCK, 2);
+        BlockPack ironBrickPack = new BlockPack(
+                ModBlocks.IRON_BRICK_STAIRS,
+                ModBlocks.IRON_BRICK_SLAB,
+                ModBlocks.IRON_BRICK_WALL,
+                ModBlocks.IRON_BRICK_FENCE,
+                ModBlocks.IRON_BRICK_FENCE_GATE,
+                ModBlocks.IRON_BRICKS
+        );
+        ironBrickPack.createPackRecipes(exporter);
 
-        createFenceRecipe(ModBlocks.IRON_FENCE, Ingredient.ofItems(Blocks.IRON_BLOCK)).criterion(hasItem(Blocks.IRON_BLOCK), conditionsFromItem(Blocks.IRON_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.IRON_FENCE, Blocks.IRON_BLOCK, 2);
+        BlockPack calcifiedIronPack = new BlockPack(
+                ModBlocks.CALCIFIED_IRON_STAIRS,
+                ModBlocks.CALCIFIED_IRON_SLAB,
+                ModBlocks.CALCIFIED_IRON_WALL,
+                ModBlocks.CALCIFIED_IRON_FENCE,
+                ModBlocks.CALCIFIED_IRON_FENCE_GATE,
+                ModBlocks.CALCIFIED_IRON_BLOCK
+        );
+        calcifiedIronPack.createPackRecipes(exporter);
 
-        createFenceGateRecipe(ModBlocks.IRON_FENCE_GATE, Ingredient.ofItems(Blocks.IRON_BLOCK)).criterion(hasItem(Blocks.IRON_BLOCK), conditionsFromItem(Blocks.IRON_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.IRON_FENCE_GATE, Blocks.IRON_BLOCK, 2);
-
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.IRON_WALL, Blocks.IRON_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.IRON_WALL, Blocks.IRON_BLOCK);
+        BlockPack polishedIronPack = new BlockPack(
+                ModBlocks.POLISHED_IRON_STAIRS,
+                ModBlocks.POLISHED_IRON_SLAB,
+                ModBlocks.POLISHED_IRON_WALL,
+                ModBlocks.POLISHED_IRON_FENCE,
+                ModBlocks.POLISHED_IRON_FENCE_GATE,
+                ModBlocks.POLISHED_IRON_BLOCK
+        );
+        polishedIronPack.createPackRecipes(exporter);
 
         offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.POLISHED_IRON_BLOCK, Blocks.IRON_BLOCK);
 
@@ -203,35 +302,58 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // EMERALD
 
-        createStairsRecipe(ModBlocks.EMERALD_STAIRS, Ingredient.ofItems(Blocks.EMERALD_BLOCK)).criterion(hasItem(Blocks.EMERALD_BLOCK), conditionsFromItem(Blocks.EMERALD_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.EMERALD_STAIRS, Blocks.EMERALD_BLOCK);
+        BlockPack emeraldPack = new BlockPack(
+                ModBlocks.EMERALD_STAIRS,
+                ModBlocks.EMERALD_SLAB,
+                ModBlocks.EMERALD_WALL,
+                ModBlocks.EMERALD_FENCE,
+                ModBlocks.EMERALD_FENCE_GATE,
+                Blocks.EMERALD_BLOCK
+        );
+        emeraldPack.createPackRecipes(exporter);
 
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.EMERALD_SLAB, Blocks.EMERALD_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.EMERALD_SLAB, Blocks.EMERALD_BLOCK, 2);
+        BlockPack emeraldBrickPack = new BlockPack(
+                ModBlocks.EMERALD_BRICK_STAIRS,
+                ModBlocks.EMERALD_BRICK_SLAB,
+                ModBlocks.EMERALD_BRICK_WALL,
+                ModBlocks.EMERALD_BRICK_FENCE,
+                ModBlocks.EMERALD_BRICK_FENCE_GATE,
+                ModBlocks.EMERALD_BRICKS
+        );
+        emeraldBrickPack.createPackRecipes(exporter);
 
-        createFenceRecipe(ModBlocks.EMERALD_FENCE, Ingredient.ofItems(Blocks.EMERALD_BLOCK)).criterion(hasItem(Blocks.EMERALD_BLOCK), conditionsFromItem(Blocks.EMERALD_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.EMERALD_FENCE, Blocks.EMERALD_BLOCK, 2);
+        BlockPack calcifiedEmeraldPack = new BlockPack(
+                ModBlocks.CALCIFIED_EMERALD_STAIRS,
+                ModBlocks.CALCIFIED_EMERALD_SLAB,
+                ModBlocks.CALCIFIED_EMERALD_WALL,
+                ModBlocks.CALCIFIED_EMERALD_FENCE,
+                ModBlocks.CALCIFIED_EMERALD_FENCE_GATE,
+                ModBlocks.CALCIFIED_EMERALD_BLOCK
+        );
+        calcifiedEmeraldPack.createPackRecipes(exporter);
 
-        createFenceGateRecipe(ModBlocks.EMERALD_FENCE_GATE, Ingredient.ofItems(Blocks.EMERALD_BLOCK)).criterion(hasItem(Blocks.EMERALD_BLOCK), conditionsFromItem(Blocks.EMERALD_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.EMERALD_FENCE_GATE, Blocks.EMERALD_BLOCK, 2);
+        BlockPack polishedEmeraldPack = new BlockPack(
+                ModBlocks.POLISHED_EMERALD_STAIRS,
+                ModBlocks.POLISHED_EMERALD_SLAB,
+                ModBlocks.POLISHED_EMERALD_WALL,
+                ModBlocks.POLISHED_EMERALD_FENCE,
+                ModBlocks.POLISHED_EMERALD_FENCE_GATE,
+                ModBlocks.POLISHED_EMERALD_BLOCK
+        );
+        polishedEmeraldPack.createPackRecipes(exporter);
 
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.EMERALD_WALL, Blocks.EMERALD_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.EMERALD_WALL, Blocks.EMERALD_BLOCK);
+        BlockPack chiseledEmeraldPack = new BlockPack(
+                ModBlocks.CHISELED_EMERALD_STAIRS,
+                ModBlocks.CHISELED_EMERALD_SLAB,
+                ModBlocks.CHISELED_EMERALD_WALL,
+                ModBlocks.CHISELED_EMERALD_FENCE,
+                ModBlocks.CHISELED_EMERALD_FENCE_GATE,
+                ModBlocks.CHISELED_EMERALD_BLOCK
+        );
+        chiseledEmeraldPack.createPackRecipes(exporter);
 
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.EMERALD_TRAPDOOR)
-                .pattern("RR")
-                .pattern("RR")
-                .input('R', Items.EMERALD)
-                .criterion(hasItem(Items.EMERALD), conditionsFromItem(Items.EMERALD))
-                .offerTo(exporter);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.EMERALD_DOOR, 3)
-                .pattern("RR")
-                .pattern("RR")
-                .pattern("RR")
-                .input('R',Items.EMERALD)
-                .criterion(hasItem(Items.EMERALD), conditionsFromItem(Items.EMERALD))
-                .offerTo(exporter);
+        DoorPack emeraldDoorPack = new DoorPack(ModBlocks.EMERALD_TRAPDOOR, ModBlocks.EMERALD_DOOR, Items.EMERALD, Items.EMERALD);
+        emeraldDoorPack.createPackRecipes(exporter);
 
         offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.POLISHED_EMERALD_BLOCK, Blocks.EMERALD_BLOCK);
 
@@ -255,35 +377,48 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // LAPIS
 
-        createStairsRecipe(ModBlocks.LAPIS_STAIRS, Ingredient.ofItems(Blocks.LAPIS_BLOCK)).criterion(hasItem(Blocks.LAPIS_BLOCK), conditionsFromItem(Blocks.LAPIS_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAPIS_STAIRS, Blocks.LAPIS_BLOCK);
+        BlockPack lapisPack = new BlockPack(
+                ModBlocks.LAPIS_STAIRS,
+                ModBlocks.LAPIS_SLAB,
+                ModBlocks.LAPIS_WALL,
+                ModBlocks.LAPIS_FENCE,
+                ModBlocks.LAPIS_FENCE_GATE,
+                Blocks.LAPIS_BLOCK
+        );
+        lapisPack.createPackRecipes(exporter);
 
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAPIS_SLAB, Blocks.LAPIS_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAPIS_SLAB, Blocks.LAPIS_BLOCK, 2);
+        BlockPack lapisBrickPack = new BlockPack(
+                ModBlocks.LAPIS_BRICK_STAIRS,
+                ModBlocks.LAPIS_BRICK_SLAB,
+                ModBlocks.LAPIS_BRICK_WALL,
+                ModBlocks.LAPIS_BRICK_FENCE,
+                ModBlocks.LAPIS_BRICK_FENCE_GATE,
+                ModBlocks.LAPIS_BRICKS
+        );
+        lapisBrickPack.createPackRecipes(exporter);
 
-        createFenceRecipe(ModBlocks.LAPIS_FENCE, Ingredient.ofItems(Blocks.LAPIS_BLOCK)).criterion(hasItem(Blocks.LAPIS_BLOCK), conditionsFromItem(Blocks.LAPIS_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAPIS_FENCE, Blocks.LAPIS_BLOCK, 2);
+        BlockPack calcifiedLapisPack = new BlockPack(
+                ModBlocks.CALCIFIED_LAPIS_STAIRS,
+                ModBlocks.CALCIFIED_LAPIS_SLAB,
+                ModBlocks.CALCIFIED_LAPIS_WALL,
+                ModBlocks.CALCIFIED_LAPIS_FENCE,
+                ModBlocks.CALCIFIED_LAPIS_FENCE_GATE,
+                ModBlocks.CALCIFIED_LAPIS_BLOCK
+        );
+        calcifiedLapisPack.createPackRecipes(exporter);
 
-        createFenceGateRecipe(ModBlocks.LAPIS_FENCE_GATE, Ingredient.ofItems(Blocks.LAPIS_BLOCK)).criterion(hasItem(Blocks.LAPIS_BLOCK), conditionsFromItem(Blocks.LAPIS_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAPIS_FENCE_GATE, Blocks.LAPIS_BLOCK, 2);
+        BlockPack polishedLapisPack = new BlockPack(
+                ModBlocks.POLISHED_LAPIS_STAIRS,
+                ModBlocks.POLISHED_LAPIS_SLAB,
+                ModBlocks.POLISHED_LAPIS_WALL,
+                ModBlocks.POLISHED_LAPIS_FENCE,
+                ModBlocks.POLISHED_LAPIS_FENCE_GATE,
+                ModBlocks.POLISHED_LAPIS_BLOCK
+        );
+        polishedLapisPack.createPackRecipes(exporter);
 
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAPIS_WALL, Blocks.LAPIS_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAPIS_WALL, Blocks.LAPIS_BLOCK);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAPIS_TRAPDOOR)
-                .pattern("RR")
-                .pattern("RR")
-                .input('R', Items.LAPIS_LAZULI)
-                .criterion(hasItem(Items.LAPIS_LAZULI), conditionsFromItem(Items.LAPIS_LAZULI))
-                .offerTo(exporter);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAPIS_DOOR, 3)
-                .pattern("RR")
-                .pattern("RR")
-                .pattern("RR")
-                .input('R',Items.LAPIS_LAZULI)
-                .criterion(hasItem(Items.LAPIS_LAZULI), conditionsFromItem(Items.LAPIS_LAZULI))
-                .offerTo(exporter);
+        DoorPack lapisDoorPack = new DoorPack(ModBlocks.LAPIS_TRAPDOOR, ModBlocks.LAPIS_DOOR, Items.LAPIS_LAZULI, Items.LAPIS_LAZULI);
+        lapisDoorPack.createPackRecipes(exporter);
 
         offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.POLISHED_LAPIS_BLOCK, Blocks.LAPIS_BLOCK);
 
@@ -305,35 +440,48 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // COAL
 
-        createStairsRecipe(ModBlocks.COAL_STAIRS, Ingredient.ofItems(Blocks.COAL_BLOCK)).criterion(hasItem(Blocks.COAL_BLOCK), conditionsFromItem(Blocks.COAL_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.COAL_STAIRS, Blocks.COAL_BLOCK);
+        BlockPack coalPack = new BlockPack(
+                ModBlocks.COAL_STAIRS,
+                ModBlocks.COAL_SLAB,
+                ModBlocks.COAL_WALL,
+                ModBlocks.COAL_FENCE,
+                ModBlocks.COAL_FENCE_GATE,
+                Blocks.COAL_BLOCK
+        );
+        coalPack.createPackRecipes(exporter);
 
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.COAL_SLAB, Blocks.COAL_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.COAL_SLAB, Blocks.COAL_BLOCK, 2);
+        BlockPack coalBrickPack = new BlockPack(
+                ModBlocks.COAL_BRICK_STAIRS,
+                ModBlocks.COAL_BRICK_SLAB,
+                ModBlocks.COAL_BRICK_WALL,
+                ModBlocks.COAL_BRICK_FENCE,
+                ModBlocks.COAL_BRICK_FENCE_GATE,
+                ModBlocks.COAL_BRICKS
+        );
+        coalBrickPack.createPackRecipes(exporter);
 
-        createFenceRecipe(ModBlocks.COAL_FENCE, Ingredient.ofItems(Blocks.COAL_BLOCK)).criterion(hasItem(Blocks.COAL_BLOCK), conditionsFromItem(Blocks.COAL_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.COAL_FENCE, Blocks.COAL_BLOCK, 2);
+        BlockPack calcifiedCoalPack = new BlockPack(
+                ModBlocks.CALCIFIED_COAL_STAIRS,
+                ModBlocks.CALCIFIED_COAL_SLAB,
+                ModBlocks.CALCIFIED_COAL_WALL,
+                ModBlocks.CALCIFIED_COAL_FENCE,
+                ModBlocks.CALCIFIED_COAL_FENCE_GATE,
+                ModBlocks.CALCIFIED_COAL_BLOCK
+        );
+        calcifiedCoalPack.createPackRecipes(exporter);
 
-        createFenceGateRecipe(ModBlocks.COAL_FENCE_GATE, Ingredient.ofItems(Blocks.COAL_BLOCK)).criterion(hasItem(Blocks.COAL_BLOCK), conditionsFromItem(Blocks.COAL_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.COAL_FENCE_GATE, Blocks.COAL_BLOCK, 2);
+        BlockPack polishedCoalPack = new BlockPack(
+                ModBlocks.POLISHED_COAL_STAIRS,
+                ModBlocks.POLISHED_COAL_SLAB,
+                ModBlocks.POLISHED_COAL_WALL,
+                ModBlocks.POLISHED_COAL_FENCE,
+                ModBlocks.POLISHED_COAL_FENCE_GATE,
+                ModBlocks.POLISHED_COAL_BLOCK
+        );
+        polishedCoalPack.createPackRecipes(exporter);
 
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.COAL_WALL, Blocks.COAL_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.COAL_WALL, Blocks.COAL_BLOCK);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.COAL_TRAPDOOR)
-                .pattern("RR")
-                .pattern("RR")
-                .input('R', Items.COAL)
-                .criterion(hasItem(Items.COAL), conditionsFromItem(Items.COAL))
-                .offerTo(exporter);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.COAL_DOOR, 3)
-                .pattern("RR")
-                .pattern("RR")
-                .pattern("RR")
-                .input('R',Items.COAL)
-                .criterion(hasItem(Items.COAL), conditionsFromItem(Items.COAL))
-                .offerTo(exporter);
+        DoorPack coalDoorPack = new DoorPack(ModBlocks.COAL_TRAPDOOR, ModBlocks.COAL_DOOR, Items.COAL, Items.COAL);
+        coalDoorPack.createPackRecipes(exporter);
 
         offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.POLISHED_COAL_BLOCK, Blocks.COAL_BLOCK);
 
@@ -355,52 +503,60 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // CALCITE
 
-        createStairsRecipe(ModBlocks.CALCITE_STAIRS, Ingredient.ofItems(Blocks.CALCITE)).criterion(hasItem(Blocks.CALCITE), conditionsFromItem(Blocks.CALCITE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.CALCITE_STAIRS, Blocks.CALCITE);
-
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.CALCITE_SLAB, Blocks.CALCITE);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.CALCITE_SLAB, Blocks.CALCITE, 2);
-
-        createFenceRecipe(ModBlocks.CALCITE_FENCE, Ingredient.ofItems(Blocks.CALCITE)).criterion(hasItem(Blocks.CALCITE), conditionsFromItem(Blocks.CALCITE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.CALCITE_FENCE, Blocks.CALCITE, 2);
-
-        createFenceGateRecipe(ModBlocks.CALCITE_FENCE_GATE, Ingredient.ofItems(Blocks.CALCITE)).criterion(hasItem(Blocks.CALCITE), conditionsFromItem(Blocks.CALCITE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.CALCITE_FENCE_GATE, Blocks.CALCITE, 2);
-
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.CALCITE_WALL, Blocks.CALCITE);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.CALCITE_WALL, Blocks.CALCITE);
+        BlockPack calcitePack = new BlockPack(
+                ModBlocks.CALCITE_STAIRS,
+                ModBlocks.CALCITE_SLAB,
+                ModBlocks.CALCITE_WALL,
+                ModBlocks.CALCITE_FENCE,
+                ModBlocks.CALCITE_FENCE_GATE,
+                Blocks.CALCITE
+        );
+        calcitePack.createPackRecipes(exporter);
 
         // NETHERITE
 
-        createStairsRecipe(ModBlocks.NETHERITE_STAIRS, Ingredient.ofItems(Blocks.NETHERITE_BLOCK)).criterion(hasItem(Blocks.NETHERITE_BLOCK), conditionsFromItem(Blocks.NETHERITE_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.NETHERITE_STAIRS, Blocks.NETHERITE_BLOCK);
+        BlockPack netheritePack = new BlockPack(
+                ModBlocks.NETHERITE_STAIRS,
+                ModBlocks.NETHERITE_SLAB,
+                ModBlocks.NETHERITE_WALL,
+                ModBlocks.NETHERITE_FENCE,
+                ModBlocks.NETHERITE_FENCE_GATE,
+                Blocks.NETHERITE_BLOCK
+        );
+        netheritePack.createPackRecipes(exporter);
 
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.NETHERITE_SLAB, Blocks.NETHERITE_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.NETHERITE_SLAB, Blocks.NETHERITE_BLOCK, 2);
+        BlockPack netheriteBrickPack = new BlockPack(
+                ModBlocks.NETHERITE_BRICK_STAIRS,
+                ModBlocks.NETHERITE_BRICK_SLAB,
+                ModBlocks.NETHERITE_BRICK_WALL,
+                ModBlocks.NETHERITE_BRICK_FENCE,
+                ModBlocks.NETHERITE_BRICK_FENCE_GATE,
+                ModBlocks.NETHERITE_BRICKS
+        );
+        netheriteBrickPack.createPackRecipes(exporter);
 
-        createFenceRecipe(ModBlocks.NETHERITE_FENCE, Ingredient.ofItems(Blocks.NETHERITE_BLOCK)).criterion(hasItem(Blocks.NETHERITE_BLOCK), conditionsFromItem(Blocks.NETHERITE_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.NETHERITE_FENCE, Blocks.NETHERITE_BLOCK, 2);
+        BlockPack calcifiedNetheritePack = new BlockPack(
+                ModBlocks.CALCIFIED_NETHERITE_STAIRS,
+                ModBlocks.CALCIFIED_NETHERITE_SLAB,
+                ModBlocks.CALCIFIED_NETHERITE_WALL,
+                ModBlocks.CALCIFIED_NETHERITE_FENCE,
+                ModBlocks.CALCIFIED_NETHERITE_FENCE_GATE,
+                ModBlocks.CALCIFIED_NETHERITE_BLOCK
+        );
+        calcifiedNetheritePack.createPackRecipes(exporter);
 
-        createFenceGateRecipe(ModBlocks.NETHERITE_FENCE_GATE, Ingredient.ofItems(Blocks.NETHERITE_BLOCK)).criterion(hasItem(Blocks.NETHERITE_BLOCK), conditionsFromItem(Blocks.NETHERITE_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.NETHERITE_FENCE_GATE, Blocks.NETHERITE_BLOCK, 2);
+        BlockPack polishedNetheritePack = new BlockPack(
+                ModBlocks.POLISHED_NETHERITE_STAIRS,
+                ModBlocks.POLISHED_NETHERITE_SLAB,
+                ModBlocks.POLISHED_NETHERITE_WALL,
+                ModBlocks.POLISHED_NETHERITE_FENCE,
+                ModBlocks.POLISHED_NETHERITE_FENCE_GATE,
+                ModBlocks.POLISHED_NETHERITE_BLOCK
+        );
+        polishedNetheritePack.createPackRecipes(exporter);
 
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.NETHERITE_WALL, Blocks.NETHERITE_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.NETHERITE_WALL, Blocks.NETHERITE_BLOCK);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.NETHERITE_TRAPDOOR)
-                .pattern("RR")
-                .pattern("RR")
-                .input('R', Items.NETHERITE_INGOT)
-                .criterion(hasItem(Items.NETHERITE_INGOT), conditionsFromItem(Items.NETHERITE_INGOT))
-                .offerTo(exporter);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.NETHERITE_DOOR, 3)
-                .pattern("RR")
-                .pattern("RR")
-                .pattern("RR")
-                .input('R',Items.NETHERITE_INGOT)
-                .criterion(hasItem(Items.NETHERITE_INGOT), conditionsFromItem(Items.NETHERITE_INGOT))
-                .offerTo(exporter);
+        DoorPack netheriteDoorPack = new DoorPack(ModBlocks.NETHERITE_TRAPDOOR, ModBlocks.NETHERITE_DOOR, Items.NETHERITE_INGOT, Items.NETHERITE_INGOT);
+        netheriteDoorPack.createPackRecipes(exporter);
 
         offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.POLISHED_NETHERITE_BLOCK, Blocks.NETHERITE_BLOCK);
 
@@ -422,21 +578,47 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // AMETHYST
 
-        createStairsRecipe(ModBlocks.AMETHYST_STAIRS, Ingredient.ofItems(Blocks.AMETHYST_BLOCK)).criterion(hasItem(Blocks.AMETHYST_BLOCK), conditionsFromItem(Blocks.AMETHYST_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMETHYST_STAIRS, Blocks.AMETHYST_BLOCK);
+        BlockPack amethystPack = new BlockPack(
+                ModBlocks.AMETHYST_STAIRS,
+                ModBlocks.AMETHYST_SLAB,
+                ModBlocks.AMETHYST_WALL,
+                ModBlocks.AMETHYST_FENCE,
+                ModBlocks.AMETHYST_FENCE_GATE,
+                Blocks.AMETHYST_BLOCK
+        );
+        amethystPack.createPackRecipes(exporter);
 
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMETHYST_SLAB, Blocks.AMETHYST_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMETHYST_SLAB, Blocks.AMETHYST_BLOCK, 2);
+        BlockPack amethystBrickPack = new BlockPack(
+                ModBlocks.AMETHYST_BRICK_STAIRS,
+                ModBlocks.AMETHYST_BRICK_SLAB,
+                ModBlocks.AMETHYST_BRICK_WALL,
+                ModBlocks.AMETHYST_BRICK_FENCE,
+                ModBlocks.AMETHYST_BRICK_FENCE_GATE,
+                ModBlocks.AMETHYST_BRICKS
+        );
+        amethystBrickPack.createPackRecipes(exporter);
 
-        createFenceRecipe(ModBlocks.AMETHYST_FENCE, Ingredient.ofItems(Blocks.AMETHYST_BLOCK)).criterion(hasItem(Blocks.AMETHYST_BLOCK), conditionsFromItem(Blocks.AMETHYST_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMETHYST_FENCE, Blocks.AMETHYST_BLOCK, 2);
+        BlockPack calcifiedAmethystPack = new BlockPack(
+                ModBlocks.CALCIFIED_AMETHYST_STAIRS,
+                ModBlocks.CALCIFIED_AMETHYST_SLAB,
+                ModBlocks.CALCIFIED_AMETHYST_WALL,
+                ModBlocks.CALCIFIED_AMETHYST_FENCE,
+                ModBlocks.CALCIFIED_AMETHYST_FENCE_GATE,
+                ModBlocks.CALCIFIED_AMETHYST_BLOCK
+        );
+        calcifiedAmethystPack.createPackRecipes(exporter);
 
-        createFenceGateRecipe(ModBlocks.AMETHYST_FENCE_GATE, Ingredient.ofItems(Blocks.AMETHYST_BLOCK)).criterion(hasItem(Blocks.AMETHYST_BLOCK), conditionsFromItem(Blocks.AMETHYST_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMETHYST_FENCE_GATE, Blocks.AMETHYST_BLOCK, 2);
+        BlockPack polishedAmethystPack = new BlockPack(
+                ModBlocks.POLISHED_AMETHYST_STAIRS,
+                ModBlocks.POLISHED_AMETHYST_SLAB,
+                ModBlocks.POLISHED_AMETHYST_WALL,
+                ModBlocks.POLISHED_AMETHYST_FENCE,
+                ModBlocks.POLISHED_AMETHYST_FENCE_GATE,
+                ModBlocks.POLISHED_AMETHYST_BLOCK
+        );
+        polishedAmethystPack.createPackRecipes(exporter);
 
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMETHYST_WALL, Blocks.AMETHYST_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMETHYST_WALL, Blocks.AMETHYST_BLOCK);
-
+        // ESTA ES DISTINTA PORQUE SE HACEN BLOQUES DE AMATISTA DE LA OTRA FORMA
         ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMETHYST_TRAPDOOR)
                 .pattern("RRR")
                 .pattern("RRR")
@@ -477,35 +659,48 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // REDSTONE
 
-        createStairsRecipe(ModBlocks.REDSTONE_STAIRS, Ingredient.ofItems(Blocks.REDSTONE_BLOCK)).criterion(hasItem(Blocks.REDSTONE_BLOCK), conditionsFromItem(Blocks.REDSTONE_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.REDSTONE_STAIRS, Blocks.REDSTONE_BLOCK);
+        BlockPack redstonePack = new BlockPack(
+                ModBlocks.REDSTONE_STAIRS,
+                ModBlocks.REDSTONE_SLAB,
+                ModBlocks.REDSTONE_WALL,
+                ModBlocks.REDSTONE_FENCE,
+                ModBlocks.REDSTONE_FENCE_GATE,
+                Blocks.REDSTONE_BLOCK
+        );
+        redstonePack.createPackRecipes(exporter);
 
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.REDSTONE_SLAB, Blocks.REDSTONE_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.REDSTONE_SLAB, Blocks.REDSTONE_BLOCK, 2);
+        BlockPack redstoneBrickPack = new BlockPack(
+                ModBlocks.REDSTONE_BRICK_STAIRS,
+                ModBlocks.REDSTONE_BRICK_SLAB,
+                ModBlocks.REDSTONE_BRICK_WALL,
+                ModBlocks.REDSTONE_BRICK_FENCE,
+                ModBlocks.REDSTONE_BRICK_FENCE_GATE,
+                ModBlocks.REDSTONE_BRICKS
+        );
+        redstoneBrickPack.createPackRecipes(exporter);
 
-        createFenceRecipe(ModBlocks.REDSTONE_FENCE, Ingredient.ofItems(Blocks.REDSTONE_BLOCK)).criterion(hasItem(Blocks.REDSTONE_BLOCK), conditionsFromItem(Blocks.REDSTONE_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.REDSTONE_FENCE, Blocks.REDSTONE_BLOCK, 2);
+        BlockPack calcifiedRedstonePack = new BlockPack(
+                ModBlocks.CALCIFIED_REDSTONE_STAIRS,
+                ModBlocks.CALCIFIED_REDSTONE_SLAB,
+                ModBlocks.CALCIFIED_REDSTONE_WALL,
+                ModBlocks.CALCIFIED_REDSTONE_FENCE,
+                ModBlocks.CALCIFIED_REDSTONE_FENCE_GATE,
+                ModBlocks.CALCIFIED_REDSTONE_BLOCK
+        );
+        calcifiedRedstonePack.createPackRecipes(exporter);
 
-        createFenceGateRecipe(ModBlocks.REDSTONE_FENCE_GATE, Ingredient.ofItems(Blocks.REDSTONE_BLOCK)).criterion(hasItem(Blocks.REDSTONE_BLOCK), conditionsFromItem(Blocks.REDSTONE_BLOCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.REDSTONE_FENCE_GATE, Blocks.REDSTONE_BLOCK, 2);
+        BlockPack polishedRedstonePack = new BlockPack(
+                ModBlocks.POLISHED_REDSTONE_STAIRS,
+                ModBlocks.POLISHED_REDSTONE_SLAB,
+                ModBlocks.POLISHED_REDSTONE_WALL,
+                ModBlocks.POLISHED_REDSTONE_FENCE,
+                ModBlocks.POLISHED_REDSTONE_FENCE_GATE,
+                ModBlocks.POLISHED_REDSTONE_BLOCK
+        );
+        polishedRedstonePack.createPackRecipes(exporter);
 
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.REDSTONE_WALL, Blocks.REDSTONE_BLOCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.REDSTONE_WALL, Blocks.REDSTONE_BLOCK);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.REDSTONE_TRAPDOOR)
-                .pattern("RR")
-                .pattern("RR")
-                .input('R', Items.REDSTONE)
-                .criterion(hasItem(Items.REDSTONE), conditionsFromItem(Items.REDSTONE))
-                .offerTo(exporter);
-
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.REDSTONE_DOOR, 3)
-                .pattern("RR")
-                .pattern("RR")
-                .pattern("RR")
-                .input('R',Items.REDSTONE)
-                .criterion(hasItem(Items.REDSTONE), conditionsFromItem(Items.REDSTONE))
-                .offerTo(exporter);
+        DoorPack redstoneDoorPack = new DoorPack(ModBlocks.REDSTONE_TRAPDOOR, ModBlocks.REDSTONE_DOOR, Items.REDSTONE, Items.REDSTONE);
+        redstoneDoorPack.createPackRecipes(exporter);
 
         offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.POLISHED_REDSTONE_BLOCK, Blocks.REDSTONE_BLOCK);
 
@@ -527,105 +722,75 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // OBSIDIAN
 
-        createStairsRecipe(ModBlocks.OBSIDIAN_STAIRS, Ingredient.ofItems(Blocks.OBSIDIAN)).criterion(hasItem(Blocks.OBSIDIAN), conditionsFromItem(Blocks.OBSIDIAN)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_STAIRS, Blocks.OBSIDIAN);
-
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_SLAB, Blocks.OBSIDIAN);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_SLAB, Blocks.OBSIDIAN, 2);
-
-        createFenceRecipe(ModBlocks.OBSIDIAN_FENCE, Ingredient.ofItems(Blocks.OBSIDIAN)).criterion(hasItem(Blocks.OBSIDIAN), conditionsFromItem(Blocks.OBSIDIAN)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_FENCE, Blocks.OBSIDIAN, 2);
-
-        createFenceGateRecipe(ModBlocks.OBSIDIAN_FENCE_GATE, Ingredient.ofItems(Blocks.OBSIDIAN)).criterion(hasItem(Blocks.OBSIDIAN), conditionsFromItem(Blocks.OBSIDIAN)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_FENCE_GATE, Blocks.OBSIDIAN, 2);
-
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_WALL, Blocks.OBSIDIAN);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_WALL, Blocks.OBSIDIAN);
+        BlockPack obsidianPack = new BlockPack(
+                ModBlocks.OBSIDIAN_STAIRS,
+                ModBlocks.OBSIDIAN_SLAB,
+                ModBlocks.OBSIDIAN_WALL,
+                ModBlocks.OBSIDIAN_FENCE,
+                ModBlocks.OBSIDIAN_FENCE_GATE,
+                Blocks.OBSIDIAN
+        );
+        obsidianPack.createPackRecipes(exporter);
 
         // BEDROCK
 
-        createStairsRecipe(ModBlocks.BEDROCK_STAIRS, Ingredient.ofItems(Blocks.BEDROCK)).criterion(hasItem(Blocks.BEDROCK), conditionsFromItem(Blocks.BEDROCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BEDROCK_STAIRS, Blocks.BEDROCK);
-
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BEDROCK_SLAB, Blocks.BEDROCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BEDROCK_SLAB, Blocks.BEDROCK, 2);
-
-        createFenceRecipe(ModBlocks.BEDROCK_FENCE, Ingredient.ofItems(Blocks.BEDROCK)).criterion(hasItem(Blocks.BEDROCK), conditionsFromItem(Blocks.BEDROCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BEDROCK_FENCE, Blocks.BEDROCK, 2);
-
-        createFenceGateRecipe(ModBlocks.BEDROCK_FENCE_GATE, Ingredient.ofItems(Blocks.BEDROCK)).criterion(hasItem(Blocks.BEDROCK), conditionsFromItem(Blocks.BEDROCK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BEDROCK_FENCE_GATE, Blocks.BEDROCK, 2);
-
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BEDROCK_WALL, Blocks.BEDROCK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BEDROCK_WALL, Blocks.BEDROCK);
+        BlockPack bedrockPack = new BlockPack(
+                ModBlocks.BEDROCK_STAIRS,
+                ModBlocks.BEDROCK_SLAB,
+                ModBlocks.BEDROCK_WALL,
+                ModBlocks.BEDROCK_FENCE,
+                ModBlocks.BEDROCK_FENCE_GATE,
+                Blocks.BEDROCK
+        );
+        bedrockPack.createPackRecipes(exporter);
 
         // SCULK
 
-        createStairsRecipe(ModBlocks.SCULK_STAIRS, Ingredient.ofItems(Blocks.SCULK)).criterion(hasItem(Blocks.SCULK), conditionsFromItem(Blocks.SCULK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SCULK_STAIRS, Blocks.SCULK);
-
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SCULK_SLAB, Blocks.SCULK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SCULK_SLAB, Blocks.SCULK, 2);
-
-        createFenceRecipe(ModBlocks.SCULK_FENCE, Ingredient.ofItems(Blocks.SCULK)).criterion(hasItem(Blocks.SCULK), conditionsFromItem(Blocks.SCULK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SCULK_FENCE, Blocks.SCULK, 2);
-
-        createFenceGateRecipe(ModBlocks.SCULK_FENCE_GATE, Ingredient.ofItems(Blocks.SCULK)).criterion(hasItem(Blocks.SCULK), conditionsFromItem(Blocks.SCULK)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SCULK_FENCE_GATE, Blocks.SCULK, 2);
-
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SCULK_WALL, Blocks.SCULK);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SCULK_WALL, Blocks.SCULK);
+        BlockPack sculkPack = new BlockPack(
+                ModBlocks.SCULK_STAIRS,
+                ModBlocks.SCULK_SLAB,
+                ModBlocks.SCULK_WALL,
+                ModBlocks.SCULK_FENCE,
+                ModBlocks.SCULK_FENCE_GATE,
+                Blocks.SCULK
+        );
+        sculkPack.createPackRecipes(exporter);
 
         // PACKED ICE
 
-        createStairsRecipe(ModBlocks.PACKED_ICE_STAIRS, Ingredient.ofItems(Blocks.PACKED_ICE)).criterion(hasItem(Blocks.PACKED_ICE), conditionsFromItem(Blocks.PACKED_ICE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PACKED_ICE_STAIRS, Blocks.PACKED_ICE);
-
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PACKED_ICE_SLAB, Blocks.PACKED_ICE);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PACKED_ICE_SLAB, Blocks.PACKED_ICE, 2);
-
-        createFenceRecipe(ModBlocks.PACKED_ICE_FENCE, Ingredient.ofItems(Blocks.PACKED_ICE)).criterion(hasItem(Blocks.PACKED_ICE), conditionsFromItem(Blocks.PACKED_ICE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PACKED_ICE_FENCE, Blocks.PACKED_ICE, 2);
-
-        createFenceGateRecipe(ModBlocks.PACKED_ICE_FENCE_GATE, Ingredient.ofItems(Blocks.PACKED_ICE)).criterion(hasItem(Blocks.PACKED_ICE), conditionsFromItem(Blocks.PACKED_ICE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PACKED_ICE_FENCE_GATE, Blocks.PACKED_ICE, 2);
-
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PACKED_ICE_WALL, Blocks.PACKED_ICE);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PACKED_ICE_WALL, Blocks.PACKED_ICE);
+        BlockPack packedIcePack = new BlockPack(
+                ModBlocks.PACKED_ICE_STAIRS,
+                ModBlocks.PACKED_ICE_SLAB,
+                ModBlocks.PACKED_ICE_WALL,
+                ModBlocks.PACKED_ICE_FENCE,
+                ModBlocks.PACKED_ICE_FENCE_GATE,
+                Blocks.PACKED_ICE
+        );
+        packedIcePack.createPackRecipes(exporter);
 
         // BLUE ICE
 
-        createStairsRecipe(ModBlocks.BLUE_ICE_STAIRS, Ingredient.ofItems(Blocks.BLUE_ICE)).criterion(hasItem(Blocks.BLUE_ICE), conditionsFromItem(Blocks.BLUE_ICE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLUE_ICE_STAIRS, Blocks.BLUE_ICE);
-
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLUE_ICE_SLAB, Blocks.BLUE_ICE);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLUE_ICE_SLAB, Blocks.BLUE_ICE, 2);
-
-        createFenceRecipe(ModBlocks.BLUE_ICE_FENCE, Ingredient.ofItems(Blocks.BLUE_ICE)).criterion(hasItem(Blocks.BLUE_ICE), conditionsFromItem(Blocks.BLUE_ICE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLUE_ICE_FENCE, Blocks.BLUE_ICE, 2);
-
-        createFenceGateRecipe(ModBlocks.BLUE_ICE_FENCE_GATE, Ingredient.ofItems(Blocks.BLUE_ICE)).criterion(hasItem(Blocks.BLUE_ICE), conditionsFromItem(Blocks.BLUE_ICE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLUE_ICE_FENCE_GATE, Blocks.BLUE_ICE, 2);
-
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLUE_ICE_WALL, Blocks.BLUE_ICE);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLUE_ICE_WALL, Blocks.BLUE_ICE);
+        BlockPack blueIcePack = new BlockPack(
+                ModBlocks.BLUE_ICE_STAIRS,
+                ModBlocks.BLUE_ICE_SLAB,
+                ModBlocks.BLUE_ICE_WALL,
+                ModBlocks.BLUE_ICE_FENCE,
+                ModBlocks.BLUE_ICE_FENCE_GATE,
+                Blocks.BLUE_ICE
+        );
+        blueIcePack.createPackRecipes(exporter);
 
         // ICE
 
-        createStairsRecipe(ModBlocks.ICE_STAIRS, Ingredient.ofItems(Blocks.ICE)).criterion(hasItem(Blocks.ICE), conditionsFromItem(Blocks.ICE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_STAIRS, Blocks.ICE);
-
-        offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_SLAB, Blocks.ICE);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_SLAB, Blocks.ICE, 2);
-
-        createFenceRecipe(ModBlocks.ICE_FENCE, Ingredient.ofItems(Blocks.ICE)).criterion(hasItem(Blocks.ICE), conditionsFromItem(Blocks.ICE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_FENCE, Blocks.ICE, 2);
-
-        createFenceGateRecipe(ModBlocks.ICE_FENCE_GATE, Ingredient.ofItems(Blocks.ICE)).criterion(hasItem(Blocks.ICE), conditionsFromItem(Blocks.ICE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_FENCE_GATE, Blocks.ICE, 2);
-
-        offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_WALL, Blocks.ICE);
-        offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_WALL, Blocks.ICE);
+        BlockPack icePack = new BlockPack(
+                ModBlocks.ICE_STAIRS,
+                ModBlocks.ICE_SLAB,
+                ModBlocks.ICE_WALL,
+                ModBlocks.ICE_FENCE,
+                ModBlocks.ICE_FENCE_GATE,
+                Blocks.ICE
+        );
+        icePack.createPackRecipes(exporter);
 
         // PRISMARINE
 

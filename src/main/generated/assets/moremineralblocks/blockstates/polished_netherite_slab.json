@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moremineralblocks:block/polished_netherite_slab"
+    },
+    "type=double": {
+      "model": "moremineralblocks:block/polished_netherite_block"
+    },
+    "type=top": {
+      "model": "moremineralblocks:block/polished_netherite_slab_top"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moremineralblocks:block/polished_redstone_slab"
+    },
+    "type=double": {
+      "model": "moremineralblocks:block/polished_redstone_block"
+    },
+    "type=top": {
+      "model": "moremineralblocks:block/polished_redstone_slab_top"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moremineralblocks:block/calcified_diamond_slab"
+    },
+    "type=double": {
+      "model": "moremineralblocks:block/calcified_diamond_block"
+    },
+    "type=top": {
+      "model": "moremineralblocks:block/calcified_diamond_slab_top"
+    }
+  }
+}

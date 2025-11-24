@@ -78,12 +78,46 @@ public class ModBlocks {
             new TrapdoorBlock(BlockSetType.GOLD, AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().nonOpaque().sounds(BlockSoundGroup.METAL)));
     public static final Block POLISHED_GOLD_BLOCK = registerBlock("polished_gold_block",
             new Block(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL).instrument(NoteBlockInstrument.BELL)));
-    public static final Block GOLD_BLOCK = registerBlock("gold_block",
-            new Block(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block CALCIFIED_GOLD_BLOCK = registerBlock("calcified_gold_block",
             new Block(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block GOLD_BRICKS = registerBlock("gold_bricks",
             new Block(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL).instrument(NoteBlockInstrument.BELL)));
+
+    public static final Block GOLD_BRICK_STAIRS = registerBlock("gold_brick_stairs",
+            new StairsBlock(ModBlocks.GOLD_BRICKS.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block GOLD_BRICK_SLAB = registerBlock("gold_brick_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block GOLD_BRICK_FENCE = registerBlock("gold_brick_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block GOLD_BRICK_FENCE_GATE = registerBlock("gold_brick_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block GOLD_BRICK_WALL = registerBlock("gold_brick_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block CALCIFIED_GOLD_STAIRS = registerBlock("calcified_gold_stairs",
+            new StairsBlock(ModBlocks.CALCIFIED_GOLD_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_GOLD_SLAB = registerBlock("calcified_gold_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_GOLD_FENCE = registerBlock("calcified_gold_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_GOLD_FENCE_GATE = registerBlock("calcified_gold_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_GOLD_WALL = registerBlock("calcified_gold_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block POLISHED_GOLD_STAIRS = registerBlock("polished_gold_stairs",
+            new StairsBlock(ModBlocks.POLISHED_GOLD_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_GOLD_SLAB = registerBlock("polished_gold_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_GOLD_FENCE = registerBlock("polished_gold_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_GOLD_FENCE_GATE = registerBlock("polished_gold_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_GOLD_WALL = registerBlock("polished_gold_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(3.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
 
     // DIAMOND BLOCKS
 
@@ -104,12 +138,46 @@ public class ModBlocks {
             new TrapdoorBlock(BlockSetType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().nonOpaque().sounds(BlockSoundGroup.METAL)));
     public static final Block POLISHED_DIAMOND_BLOCK = registerBlock("polished_diamond_block",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
-    public static final Block DIAMOND_BLOCK = registerBlock("diamond_block",
-            new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block CALCIFIED_DIAMOND_BLOCK = registerBlock("calcified_diamond_block",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block DIAMOND_BRICKS = registerBlock("diamond_bricks",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block DIAMOND_BRICK_STAIRS = registerBlock("diamond_brick_stairs",
+            new StairsBlock(ModBlocks.DIAMOND_BRICKS.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block DIAMOND_BRICK_SLAB = registerBlock("diamond_brick_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block DIAMOND_BRICK_FENCE = registerBlock("diamond_brick_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block DIAMOND_BRICK_FENCE_GATE = registerBlock("diamond_brick_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block DIAMOND_BRICK_WALL = registerBlock("diamond_brick_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block CALCIFIED_DIAMOND_STAIRS = registerBlock("calcified_diamond_stairs",
+            new StairsBlock(ModBlocks.CALCIFIED_DIAMOND_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_DIAMOND_SLAB = registerBlock("calcified_diamond_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_DIAMOND_FENCE = registerBlock("calcified_diamond_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_DIAMOND_FENCE_GATE = registerBlock("calcified_diamond_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_DIAMOND_WALL = registerBlock("calcified_diamond_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block POLISHED_DIAMOND_STAIRS = registerBlock("polished_diamond_stairs",
+            new StairsBlock(ModBlocks.POLISHED_DIAMOND_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_DIAMOND_SLAB = registerBlock("polished_diamond_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_DIAMOND_FENCE = registerBlock("polished_diamond_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_DIAMOND_FENCE_GATE = registerBlock("polished_diamond_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_DIAMOND_WALL = registerBlock("polished_diamond_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
 
     // IRON BLOCKS
 
@@ -126,12 +194,46 @@ public class ModBlocks {
             new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block POLISHED_IRON_BLOCK = registerBlock("polished_iron_block",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE)));
-    public static final Block IRON_BLOCK = registerBlock("iron_block",
-            new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block CALCIFIED_IRON_BLOCK = registerBlock("calcified_iron_block",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block IRON_BRICKS = registerBlock("iron_bricks",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE)));
+
+    public static final Block IRON_BRICK_STAIRS = registerBlock("iron_brick_stairs",
+            new StairsBlock(ModBlocks.IRON_BRICKS.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block IRON_BRICK_SLAB = registerBlock("iron_brick_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block IRON_BRICK_FENCE = registerBlock("iron_brick_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block IRON_BRICK_FENCE_GATE = registerBlock("iron_brick_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block IRON_BRICK_WALL = registerBlock("iron_brick_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block CALCIFIED_IRON_STAIRS = registerBlock("calcified_iron_stairs",
+            new StairsBlock(ModBlocks.CALCIFIED_IRON_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_IRON_SLAB = registerBlock("calcified_iron_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_IRON_FENCE = registerBlock("calcified_iron_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_IRON_FENCE_GATE = registerBlock("calcified_iron_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_IRON_WALL = registerBlock("calcified_iron_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block POLISHED_IRON_STAIRS = registerBlock("polished_iron_stairs",
+            new StairsBlock(ModBlocks.POLISHED_IRON_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_IRON_SLAB = registerBlock("polished_iron_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_IRON_FENCE = registerBlock("polished_iron_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_IRON_FENCE_GATE = registerBlock("polished_iron_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_IRON_WALL = registerBlock("polished_iron_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
 
     // EMERALD BLOCKS
 
@@ -154,12 +256,58 @@ public class ModBlocks {
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL).instrument(NoteBlockInstrument.BIT)));
     public static final Block POLISHED_EMERALD_BLOCK = registerBlock("polished_emerald_block",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL).instrument(NoteBlockInstrument.BIT)));
-    public static final Block EMERALD_BLOCK = registerBlock("emerald_block",
-            new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block CALCIFIED_EMERALD_BLOCK = registerBlock("calcified_emerald_block",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block EMERALD_BRICKS = registerBlock("emerald_bricks",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL).instrument(NoteBlockInstrument.BIT)));
+
+    public static final Block EMERALD_BRICK_STAIRS = registerBlock("emerald_brick_stairs",
+            new StairsBlock(ModBlocks.EMERALD_BRICKS.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block EMERALD_BRICK_SLAB = registerBlock("emerald_brick_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block EMERALD_BRICK_FENCE = registerBlock("emerald_brick_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block EMERALD_BRICK_FENCE_GATE = registerBlock("emerald_brick_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block EMERALD_BRICK_WALL = registerBlock("emerald_brick_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block CALCIFIED_EMERALD_STAIRS = registerBlock("calcified_emerald_stairs",
+            new StairsBlock(ModBlocks.CALCIFIED_EMERALD_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_EMERALD_SLAB = registerBlock("calcified_emerald_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_EMERALD_FENCE = registerBlock("calcified_emerald_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_EMERALD_FENCE_GATE = registerBlock("calcified_emerald_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_EMERALD_WALL = registerBlock("calcified_emerald_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block POLISHED_EMERALD_STAIRS = registerBlock("polished_emerald_stairs",
+            new StairsBlock(ModBlocks.POLISHED_EMERALD_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_EMERALD_SLAB = registerBlock("polished_emerald_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_EMERALD_FENCE = registerBlock("polished_emerald_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_EMERALD_FENCE_GATE = registerBlock("polished_emerald_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_EMERALD_WALL = registerBlock("polished_emerald_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block CHISELED_EMERALD_STAIRS = registerBlock("chiseled_emerald_stairs",
+            new StairsBlock(ModBlocks.CHISELED_EMERALD_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CHISELED_EMERALD_SLAB = registerBlock("chiseled_emerald_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CHISELED_EMERALD_FENCE = registerBlock("chiseled_emerald_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CHISELED_EMERALD_FENCE_GATE = registerBlock("chiseled_emerald_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CHISELED_EMERALD_WALL = registerBlock("chiseled_emerald_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
 
     // AMETHYST BLOCKS
 
@@ -185,6 +333,42 @@ public class ModBlocks {
     public static final Block AMETHYST_BRICKS = registerBlock("amethyst_bricks",
             new Block(AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
 
+    public static final Block AMETHYST_BRICK_STAIRS = registerBlock("amethyst_brick_stairs",
+            new StairsBlock(ModBlocks.AMETHYST_BRICKS.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block AMETHYST_BRICK_SLAB = registerBlock("amethyst_brick_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block AMETHYST_BRICK_FENCE = registerBlock("amethyst_brick_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block AMETHYST_BRICK_FENCE_GATE = registerBlock("amethyst_brick_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block AMETHYST_BRICK_WALL = registerBlock("amethyst_brick_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+
+    public static final Block CALCIFIED_AMETHYST_STAIRS = registerBlock("calcified_amethyst_stairs",
+            new StairsBlock(ModBlocks.CALCIFIED_AMETHYST_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block CALCIFIED_AMETHYST_SLAB = registerBlock("calcified_amethyst_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block CALCIFIED_AMETHYST_FENCE = registerBlock("calcified_amethyst_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block CALCIFIED_AMETHYST_FENCE_GATE = registerBlock("calcified_amethyst_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block CALCIFIED_AMETHYST_WALL = registerBlock("calcified_amethyst_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+
+    public static final Block POLISHED_AMETHYST_STAIRS = registerBlock("polished_amethyst_stairs",
+            new StairsBlock(ModBlocks.POLISHED_AMETHYST_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block POLISHED_AMETHYST_SLAB = registerBlock("polished_amethyst_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block POLISHED_AMETHYST_FENCE = registerBlock("polished_amethyst_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block POLISHED_AMETHYST_FENCE_GATE = registerBlock("polished_amethyst_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+    public static final Block POLISHED_AMETHYST_WALL = registerBlock("polished_amethyst_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(1.5F).requiresTool().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+
     // LAPIS LAZULI BLOCKS
 
     public static final Block LAPIS_STAIRS = registerBlock("lapis_stairs",
@@ -204,12 +388,46 @@ public class ModBlocks {
             new TrapdoorBlock(BlockSetType.ACACIA, AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool().nonOpaque()));
     public static final Block POLISHED_LAPIS_BLOCK = registerBlock("polished_lapis_block",
             new Block(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
-    public static final Block LAPIS_BLOCK = registerBlock("lapis_block",
-            new Block(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
     public static final Block CALCIFIED_LAPIS_BLOCK = registerBlock("calcified_lapis_block",
             new Block(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
     public static final Block LAPIS_BRICKS = registerBlock("lapis_bricks",
             new Block(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+
+    public static final Block LAPIS_BRICK_STAIRS = registerBlock("lapis_brick_stairs",
+            new StairsBlock(ModBlocks.LAPIS_BRICKS.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block LAPIS_BRICK_SLAB = registerBlock("lapis_brick_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block LAPIS_BRICK_FENCE = registerBlock("lapis_brick_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block LAPIS_BRICK_FENCE_GATE = registerBlock("lapis_brick_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block LAPIS_BRICK_WALL = registerBlock("lapis_brick_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+
+    public static final Block CALCIFIED_LAPIS_STAIRS = registerBlock("calcified_lapis_stairs",
+            new StairsBlock(ModBlocks.CALCIFIED_LAPIS_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block CALCIFIED_LAPIS_SLAB = registerBlock("calcified_lapis_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block CALCIFIED_LAPIS_FENCE = registerBlock("calcified_lapis_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block CALCIFIED_LAPIS_FENCE_GATE = registerBlock("calcified_lapis_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block CALCIFIED_LAPIS_WALL = registerBlock("calcified_lapis_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+
+    public static final Block POLISHED_LAPIS_STAIRS = registerBlock("polished_lapis_stairs",
+            new StairsBlock(ModBlocks.POLISHED_LAPIS_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block POLISHED_LAPIS_SLAB = registerBlock("polished_lapis_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block POLISHED_LAPIS_FENCE = registerBlock("polished_lapis_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block POLISHED_LAPIS_FENCE_GATE = registerBlock("polished_lapis_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
+    public static final Block POLISHED_LAPIS_WALL = registerBlock("polished_lapis_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(3.0F, 3.0F).requiresTool()));
 
     // COAL BLOCKS
 
@@ -234,6 +452,42 @@ public class ModBlocks {
             new Block(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
     public static final Block COAL_BRICKS = registerBlock("coal_bricks",
             new Block(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool().instrument(NoteBlockInstrument.BASEDRUM)));
+
+    public static final Block COAL_BRICK_STAIRS = registerBlock("coal_brick_stairs",
+            new StairsBlock(ModBlocks.COAL_BRICKS.getDefaultState(),
+                    AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block COAL_BRICK_SLAB = registerBlock("coal_brick_slab",
+            new SlabBlock(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block COAL_BRICK_FENCE = registerBlock("coal_brick_fence",
+            new FenceBlock(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block COAL_BRICK_FENCE_GATE = registerBlock("coal_brick_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block COAL_BRICK_WALL = registerBlock("coal_brick_wall",
+            new WallBlock(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+
+    public static final Block POLISHED_COAL_STAIRS = registerBlock("polished_coal_stairs",
+            new StairsBlock(ModBlocks.POLISHED_COAL_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block POLISHED_COAL_SLAB = registerBlock("polished_coal_slab",
+            new SlabBlock(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block POLISHED_COAL_FENCE = registerBlock("polished_coal_fence",
+            new FenceBlock(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block POLISHED_COAL_FENCE_GATE = registerBlock("polished_coal_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block POLISHED_COAL_WALL = registerBlock("polished_coal_wall",
+            new WallBlock(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+
+    public static final Block CALCIFIED_COAL_STAIRS = registerBlock("calcified_coal_stairs",
+            new StairsBlock(ModBlocks.CALCIFIED_COAL_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block CALCIFIED_COAL_SLAB = registerBlock("calcified_coal_slab",
+            new SlabBlock(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block CALCIFIED_COAL_FENCE = registerBlock("calcified_coal_fence",
+            new FenceBlock(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block CALCIFIED_COAL_FENCE_GATE = registerBlock("calcified_coal_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
+    public static final Block CALCIFIED_COAL_WALL = registerBlock("calcified_coal_wall",
+            new WallBlock(AbstractBlock.Settings.create().requiresTool().strength(5.0F, 6.0F).requiresTool()));
 
     // CALCITE BLOCKS
 
@@ -273,6 +527,42 @@ public class ModBlocks {
     public static final Block NETHERITE_BRICKS = registerBlock("netherite_bricks",
             new Block(AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
 
+    public static final Block NETHERITE_BRICK_STAIRS = registerBlock("netherite_brick_stairs",
+            new StairsBlock(ModBlocks.NETHERITE_BRICKS.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block NETHERITE_BRICK_SLAB = registerBlock("netherite_brick_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block NETHERITE_BRICK_FENCE = registerBlock("netherite_brick_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block NETHERITE_BRICK_FENCE_GATE = registerBlock("netherite_brick_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block NETHERITE_BRICK_WALL = registerBlock("netherite_brick_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+
+    public static final Block CALCIFIED_NETHERITE_STAIRS = registerBlock("calcified_netherite_stairs",
+            new StairsBlock(ModBlocks.CALCIFIED_NETHERITE_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block CALCIFIED_NETHERITE_SLAB = registerBlock("calcified_netherite_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block CALCIFIED_NETHERITE_FENCE = registerBlock("calcified_netherite_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block CALCIFIED_NETHERITE_FENCE_GATE = registerBlock("calcified_netherite_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block CALCIFIED_NETHERITE_WALL = registerBlock("calcified_netherite_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+
+    public static final Block POLISHED_NETHERITE_STAIRS = registerBlock("polished_netherite_stairs",
+            new StairsBlock(ModBlocks.POLISHED_NETHERITE_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block POLISHED_NETHERITE_SLAB = registerBlock("polished_netherite_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block POLISHED_NETHERITE_FENCE = registerBlock("polished_netherite_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block POLISHED_NETHERITE_FENCE_GATE = registerBlock("polished_netherite_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+    public static final Block POLISHED_NETHERITE_WALL = registerBlock("polished_netherite_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(50.0F, 1200.0F).requiresTool().sounds(BlockSoundGroup.NETHERITE)));
+
     // REDSTONE
 
     public static final Block REDSTONE_STAIRS = registerBlock("redstone_stairs",
@@ -292,12 +582,46 @@ public class ModBlocks {
             new TrapdoorBlock(BlockSetType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL).nonOpaque()));
     public static final Block POLISHED_REDSTONE_BLOCK = registerBlock("polished_redstone_block",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
-    public static final Block REDSTONE_BLOCK = registerBlock("redstone_block",
-            new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block CALCIFIED_REDSTONE_BLOCK = registerBlock("calcified_redstone_block",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
     public static final Block REDSTONE_BRICKS = registerBlock("redstone_bricks",
             new Block(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block REDSTONE_BRICK_STAIRS = registerBlock("redstone_brick_stairs",
+            new StairsBlock(ModBlocks.REDSTONE_BRICKS.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block REDSTONE_BRICK_SLAB = registerBlock("redstone_brick_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block REDSTONE_BRICK_FENCE = registerBlock("redstone_brick_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block REDSTONE_BRICK_FENCE_GATE = registerBlock("redstone_brick_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block REDSTONE_BRICK_WALL = registerBlock("redstone_brick_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block CALCIFIED_REDSTONE_STAIRS = registerBlock("calcified_redstone_stairs",
+            new StairsBlock(ModBlocks.CALCIFIED_REDSTONE_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_REDSTONE_SLAB = registerBlock("calcified_redstone_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_REDSTONE_FENCE = registerBlock("calcified_redstone_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_REDSTONE_FENCE_GATE = registerBlock("calcified_redstone_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block CALCIFIED_REDSTONE_WALL = registerBlock("calcified_redstone_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block POLISHED_REDSTONE_STAIRS = registerBlock("polished_redstone_stairs",
+            new StairsBlock(ModBlocks.POLISHED_REDSTONE_BLOCK.getDefaultState(),
+                    AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_REDSTONE_SLAB = registerBlock("polished_redstone_slab",
+            new SlabBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_REDSTONE_FENCE = registerBlock("polished_redstone_fence",
+            new FenceBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_REDSTONE_FENCE_GATE = registerBlock("polished_redstone_fence_gate",
+            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
+    public static final Block POLISHED_REDSTONE_WALL = registerBlock("polished_redstone_wall",
+            new WallBlock(AbstractBlock.Settings.create().strength(5.0F, 6.0F).requiresTool().sounds(BlockSoundGroup.METAL)));
 
     // OBSIDIAN
 
@@ -434,7 +758,23 @@ public class ModBlocks {
             entries.add(ModBlocks.POLISHED_GOLD_BLOCK);
             entries.add(ModBlocks.CALCIFIED_GOLD_BLOCK);
             entries.add(ModBlocks.GOLD_BRICKS);
-            entries.add(ModBlocks.GOLD_BLOCK);
+
+
+            entries.add(ModBlocks.GOLD_BRICK_STAIRS);
+            entries.add(ModBlocks.GOLD_BRICK_SLAB);
+            entries.add(ModBlocks.GOLD_BRICK_WALL);
+            entries.add(ModBlocks.GOLD_BRICK_FENCE);
+            entries.add(ModBlocks.GOLD_BRICK_FENCE_GATE);
+            entries.add(ModBlocks.CALCIFIED_GOLD_STAIRS);
+            entries.add(ModBlocks.CALCIFIED_GOLD_SLAB);
+            entries.add(ModBlocks.CALCIFIED_GOLD_WALL);
+            entries.add(ModBlocks.CALCIFIED_GOLD_FENCE);
+            entries.add(ModBlocks.CALCIFIED_GOLD_FENCE_GATE);
+            entries.add(ModBlocks.POLISHED_GOLD_STAIRS);
+            entries.add(ModBlocks.POLISHED_GOLD_SLAB);
+            entries.add(ModBlocks.POLISHED_GOLD_WALL);
+            entries.add(ModBlocks.POLISHED_GOLD_FENCE);
+            entries.add(ModBlocks.POLISHED_GOLD_FENCE_GATE);
 
             entries.add(ModBlocks.DIAMOND_STAIRS);
             entries.add(ModBlocks.DIAMOND_SLAB);
@@ -446,7 +786,22 @@ public class ModBlocks {
             entries.add(ModBlocks.POLISHED_DIAMOND_BLOCK);
             entries.add(ModBlocks.CALCIFIED_DIAMOND_BLOCK);
             entries.add(ModBlocks.DIAMOND_BRICKS);
-            entries.add(ModBlocks.DIAMOND_BLOCK);
+
+            entries.add(ModBlocks.DIAMOND_BRICK_STAIRS);
+            entries.add(ModBlocks.DIAMOND_BRICK_SLAB);
+            entries.add(ModBlocks.DIAMOND_BRICK_WALL);
+            entries.add(ModBlocks.DIAMOND_BRICK_FENCE);
+            entries.add(ModBlocks.DIAMOND_BRICK_FENCE_GATE);
+            entries.add(ModBlocks.CALCIFIED_DIAMOND_STAIRS);
+            entries.add(ModBlocks.CALCIFIED_DIAMOND_SLAB);
+            entries.add(ModBlocks.CALCIFIED_DIAMOND_WALL);
+            entries.add(ModBlocks.CALCIFIED_DIAMOND_FENCE);
+            entries.add(ModBlocks.CALCIFIED_DIAMOND_FENCE_GATE);
+            entries.add(ModBlocks.POLISHED_DIAMOND_STAIRS);
+            entries.add(ModBlocks.POLISHED_DIAMOND_SLAB);
+            entries.add(ModBlocks.POLISHED_DIAMOND_WALL);
+            entries.add(ModBlocks.POLISHED_DIAMOND_FENCE);
+            entries.add(ModBlocks.POLISHED_DIAMOND_FENCE_GATE);
 
             entries.add(ModBlocks.IRON_STAIRS);
             entries.add(ModBlocks.IRON_SLAB);
@@ -456,7 +811,22 @@ public class ModBlocks {
             entries.add(ModBlocks.POLISHED_IRON_BLOCK);
             entries.add(ModBlocks.CALCIFIED_IRON_BLOCK);
             entries.add(ModBlocks.IRON_BRICKS);
-            entries.add(ModBlocks.IRON_BLOCK);
+
+            entries.add(ModBlocks.IRON_BRICK_STAIRS);
+            entries.add(ModBlocks.IRON_BRICK_SLAB);
+            entries.add(ModBlocks.IRON_BRICK_WALL);
+            entries.add(ModBlocks.IRON_BRICK_FENCE);
+            entries.add(ModBlocks.IRON_BRICK_FENCE_GATE);
+            entries.add(ModBlocks.CALCIFIED_IRON_STAIRS);
+            entries.add(ModBlocks.CALCIFIED_IRON_SLAB);
+            entries.add(ModBlocks.CALCIFIED_IRON_WALL);
+            entries.add(ModBlocks.CALCIFIED_IRON_FENCE);
+            entries.add(ModBlocks.CALCIFIED_IRON_FENCE_GATE);
+            entries.add(ModBlocks.POLISHED_IRON_STAIRS);
+            entries.add(ModBlocks.POLISHED_IRON_SLAB);
+            entries.add(ModBlocks.POLISHED_IRON_WALL);
+            entries.add(ModBlocks.POLISHED_IRON_FENCE);
+            entries.add(ModBlocks.POLISHED_IRON_FENCE_GATE);
 
             entries.add(ModBlocks.EMERALD_STAIRS);
             entries.add(ModBlocks.EMERALD_SLAB);
@@ -469,7 +839,27 @@ public class ModBlocks {
             entries.add(ModBlocks.POLISHED_EMERALD_BLOCK);
             entries.add(ModBlocks.CALCIFIED_EMERALD_BLOCK);
             entries.add(ModBlocks.EMERALD_BRICKS);
-            entries.add(ModBlocks.EMERALD_BLOCK);
+
+            entries.add(ModBlocks.EMERALD_BRICK_STAIRS);
+            entries.add(ModBlocks.EMERALD_BRICK_SLAB);
+            entries.add(ModBlocks.EMERALD_BRICK_WALL);
+            entries.add(ModBlocks.EMERALD_BRICK_FENCE);
+            entries.add(ModBlocks.EMERALD_BRICK_FENCE_GATE);
+            entries.add(ModBlocks.CALCIFIED_EMERALD_STAIRS);
+            entries.add(ModBlocks.CALCIFIED_EMERALD_SLAB);
+            entries.add(ModBlocks.CALCIFIED_EMERALD_WALL);
+            entries.add(ModBlocks.CALCIFIED_EMERALD_FENCE);
+            entries.add(ModBlocks.CALCIFIED_EMERALD_FENCE_GATE);
+            entries.add(ModBlocks.POLISHED_EMERALD_STAIRS);
+            entries.add(ModBlocks.POLISHED_EMERALD_SLAB);
+            entries.add(ModBlocks.POLISHED_EMERALD_WALL);
+            entries.add(ModBlocks.POLISHED_EMERALD_FENCE);
+            entries.add(ModBlocks.POLISHED_EMERALD_FENCE_GATE);
+            entries.add(ModBlocks.CHISELED_EMERALD_STAIRS);
+            entries.add(ModBlocks.CHISELED_EMERALD_SLAB);
+            entries.add(ModBlocks.CHISELED_EMERALD_WALL);
+            entries.add(ModBlocks.CHISELED_EMERALD_FENCE);
+            entries.add(ModBlocks.CHISELED_EMERALD_FENCE_GATE);
 
             entries.add(ModBlocks.LAPIS_STAIRS);
             entries.add(ModBlocks.LAPIS_SLAB);
@@ -481,7 +871,22 @@ public class ModBlocks {
             entries.add(ModBlocks.POLISHED_LAPIS_BLOCK);
             entries.add(ModBlocks.CALCIFIED_LAPIS_BLOCK);
             entries.add(ModBlocks.LAPIS_BRICKS);
-            entries.add(ModBlocks.LAPIS_BLOCK);
+
+            entries.add(ModBlocks.LAPIS_BRICK_STAIRS);
+            entries.add(ModBlocks.LAPIS_BRICK_SLAB);
+            entries.add(ModBlocks.LAPIS_BRICK_WALL);
+            entries.add(ModBlocks.LAPIS_BRICK_FENCE);
+            entries.add(ModBlocks.LAPIS_BRICK_FENCE_GATE);
+            entries.add(ModBlocks.CALCIFIED_LAPIS_STAIRS);
+            entries.add(ModBlocks.CALCIFIED_LAPIS_SLAB);
+            entries.add(ModBlocks.CALCIFIED_LAPIS_WALL);
+            entries.add(ModBlocks.CALCIFIED_LAPIS_FENCE);
+            entries.add(ModBlocks.CALCIFIED_LAPIS_FENCE_GATE);
+            entries.add(ModBlocks.POLISHED_LAPIS_STAIRS);
+            entries.add(ModBlocks.POLISHED_LAPIS_SLAB);
+            entries.add(ModBlocks.POLISHED_LAPIS_WALL);
+            entries.add(ModBlocks.POLISHED_LAPIS_FENCE);
+            entries.add(ModBlocks.POLISHED_LAPIS_FENCE_GATE);
 
             entries.add(ModBlocks.COAL_STAIRS);
             entries.add(ModBlocks.COAL_SLAB);
@@ -493,6 +898,22 @@ public class ModBlocks {
             entries.add(ModBlocks.POLISHED_COAL_BLOCK);
             entries.add(ModBlocks.CALCIFIED_COAL_BLOCK);
             entries.add(ModBlocks.COAL_BRICKS);
+
+            entries.add(ModBlocks.COAL_BRICK_STAIRS);
+            entries.add(ModBlocks.COAL_BRICK_SLAB);
+            entries.add(ModBlocks.COAL_BRICK_WALL);
+            entries.add(ModBlocks.COAL_BRICK_FENCE);
+            entries.add(ModBlocks.COAL_BRICK_FENCE_GATE);
+            entries.add(ModBlocks.CALCIFIED_COAL_STAIRS);
+            entries.add(ModBlocks.CALCIFIED_COAL_SLAB);
+            entries.add(ModBlocks.CALCIFIED_COAL_WALL);
+            entries.add(ModBlocks.CALCIFIED_COAL_FENCE);
+            entries.add(ModBlocks.CALCIFIED_COAL_FENCE_GATE);
+            entries.add(ModBlocks.POLISHED_COAL_STAIRS);
+            entries.add(ModBlocks.POLISHED_COAL_SLAB);
+            entries.add(ModBlocks.POLISHED_COAL_WALL);
+            entries.add(ModBlocks.POLISHED_COAL_FENCE);
+            entries.add(ModBlocks.POLISHED_COAL_FENCE_GATE);
 
             entries.add(ModBlocks.CALCITE_STAIRS);
             entries.add(ModBlocks.CALCITE_SLAB);
@@ -511,6 +932,22 @@ public class ModBlocks {
             entries.add(ModBlocks.CALCIFIED_NETHERITE_BLOCK);
             entries.add(ModBlocks.NETHERITE_BRICKS);
 
+            entries.add(ModBlocks.NETHERITE_BRICK_STAIRS);
+            entries.add(ModBlocks.NETHERITE_BRICK_SLAB);
+            entries.add(ModBlocks.NETHERITE_BRICK_WALL);
+            entries.add(ModBlocks.NETHERITE_BRICK_FENCE);
+            entries.add(ModBlocks.NETHERITE_BRICK_FENCE_GATE);
+            entries.add(ModBlocks.CALCIFIED_NETHERITE_STAIRS);
+            entries.add(ModBlocks.CALCIFIED_NETHERITE_SLAB);
+            entries.add(ModBlocks.CALCIFIED_NETHERITE_WALL);
+            entries.add(ModBlocks.CALCIFIED_NETHERITE_FENCE);
+            entries.add(ModBlocks.CALCIFIED_NETHERITE_FENCE_GATE);
+            entries.add(ModBlocks.POLISHED_NETHERITE_STAIRS);
+            entries.add(ModBlocks.POLISHED_NETHERITE_SLAB);
+            entries.add(ModBlocks.POLISHED_NETHERITE_WALL);
+            entries.add(ModBlocks.POLISHED_NETHERITE_FENCE);
+            entries.add(ModBlocks.POLISHED_NETHERITE_FENCE_GATE);
+
             entries.add(ModBlocks.AMETHYST_STAIRS);
             entries.add(ModBlocks.AMETHYST_SLAB);
             entries.add(ModBlocks.AMETHYST_FENCE);
@@ -522,6 +959,22 @@ public class ModBlocks {
             entries.add(ModBlocks.CALCIFIED_AMETHYST_BLOCK);
             entries.add(ModBlocks.AMETHYST_BRICKS);
 
+            entries.add(ModBlocks.AMETHYST_BRICK_STAIRS);
+            entries.add(ModBlocks.AMETHYST_BRICK_SLAB);
+            entries.add(ModBlocks.AMETHYST_BRICK_WALL);
+            entries.add(ModBlocks.AMETHYST_BRICK_FENCE);
+            entries.add(ModBlocks.AMETHYST_BRICK_FENCE_GATE);
+            entries.add(ModBlocks.CALCIFIED_AMETHYST_STAIRS);
+            entries.add(ModBlocks.CALCIFIED_AMETHYST_SLAB);
+            entries.add(ModBlocks.CALCIFIED_AMETHYST_WALL);
+            entries.add(ModBlocks.CALCIFIED_AMETHYST_FENCE);
+            entries.add(ModBlocks.CALCIFIED_AMETHYST_FENCE_GATE);
+            entries.add(ModBlocks.POLISHED_AMETHYST_STAIRS);
+            entries.add(ModBlocks.POLISHED_AMETHYST_SLAB);
+            entries.add(ModBlocks.POLISHED_AMETHYST_WALL);
+            entries.add(ModBlocks.POLISHED_AMETHYST_FENCE);
+            entries.add(ModBlocks.POLISHED_AMETHYST_FENCE_GATE);
+
             entries.add(ModBlocks.REDSTONE_STAIRS);
             entries.add(ModBlocks.REDSTONE_SLAB);
             entries.add(ModBlocks.REDSTONE_FENCE);
@@ -530,9 +983,24 @@ public class ModBlocks {
             entries.add(ModBlocks.REDSTONE_DOOR);
             entries.add(ModBlocks.REDSTONE_TRAPDOOR);
             entries.add(ModBlocks.POLISHED_REDSTONE_BLOCK);
-            entries.add(ModBlocks.REDSTONE_BLOCK);
             entries.add(ModBlocks.CALCIFIED_REDSTONE_BLOCK);
             entries.add(ModBlocks.REDSTONE_BRICKS);
+
+            entries.add(ModBlocks.REDSTONE_BRICK_STAIRS);
+            entries.add(ModBlocks.REDSTONE_BRICK_SLAB);
+            entries.add(ModBlocks.REDSTONE_BRICK_WALL);
+            entries.add(ModBlocks.REDSTONE_BRICK_FENCE);
+            entries.add(ModBlocks.REDSTONE_BRICK_FENCE_GATE);
+            entries.add(ModBlocks.CALCIFIED_REDSTONE_STAIRS);
+            entries.add(ModBlocks.CALCIFIED_REDSTONE_SLAB);
+            entries.add(ModBlocks.CALCIFIED_REDSTONE_WALL);
+            entries.add(ModBlocks.CALCIFIED_REDSTONE_FENCE);
+            entries.add(ModBlocks.CALCIFIED_REDSTONE_FENCE_GATE);
+            entries.add(ModBlocks.POLISHED_REDSTONE_STAIRS);
+            entries.add(ModBlocks.POLISHED_REDSTONE_SLAB);
+            entries.add(ModBlocks.POLISHED_REDSTONE_WALL);
+            entries.add(ModBlocks.POLISHED_REDSTONE_FENCE);
+            entries.add(ModBlocks.POLISHED_REDSTONE_FENCE_GATE);
 
             entries.add(ModBlocks.OBSIDIAN_STAIRS);
             entries.add(ModBlocks.OBSIDIAN_SLAB);

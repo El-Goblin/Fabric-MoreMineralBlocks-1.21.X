@@ -10,6 +10,8 @@ import net.elgoblin.moremineralblocks.entity.custom.MantisEntity;
 import net.elgoblin.moremineralblocks.item.ModItemGroups;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
+import net.elgoblin.moremineralblocks.structure.MoreMineralBlocksStructure;
+import net.elgoblin.moremineralblocks.structure.MoreMineralBlocksStructurePlacement;
 import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -70,6 +72,8 @@ public class MoreMineralBlocks implements ModInitializer {
 		ModLootTableModifiers.modifyLootTables();
 		ModEntityAttributes.registerEntityAttributes();
 		ModParticles.registerParticles();
+		MoreMineralBlocksStructurePlacement.registerStructurePlacementTypes();
+		MoreMineralBlocksStructure.registerStructureTypes();
 
 		FabricDefaultAttributeRegistry.register(ModEntities.MANTIS, MantisEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(ModEntities.DEVILMON, DevilmonEntity.createAttributes());

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "moremineralblocks:block/redstone_bricks",
+    "side": "moremineralblocks:block/redstone_bricks",
+    "top": "moremineralblocks:block/redstone_bricks"
+  }
+}

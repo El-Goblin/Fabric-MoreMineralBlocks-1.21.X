@@ -52,6 +52,22 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.CALCIFIED_GOLD_BLOCK);
         addDrop(ModBlocks.GOLD_BRICKS);
 
+        addDrop(ModBlocks.GOLD_BRICK_STAIRS);
+        addDrop(ModBlocks.GOLD_BRICK_SLAB, slabDrops(ModBlocks.GOLD_BRICK_SLAB));
+        addDrop(ModBlocks.GOLD_BRICK_FENCE);
+        addDrop(ModBlocks.GOLD_BRICK_FENCE_GATE);
+        addDrop(ModBlocks.GOLD_BRICK_WALL);
+        addDrop(ModBlocks.POLISHED_GOLD_STAIRS);
+        addDrop(ModBlocks.POLISHED_GOLD_SLAB, slabDrops(ModBlocks.POLISHED_GOLD_SLAB));
+        addDrop(ModBlocks.POLISHED_GOLD_FENCE);
+        addDrop(ModBlocks.POLISHED_GOLD_FENCE_GATE);
+        addDrop(ModBlocks.POLISHED_GOLD_WALL);
+        addDrop(ModBlocks.CALCIFIED_GOLD_STAIRS);
+        addDrop(ModBlocks.CALCIFIED_GOLD_SLAB, slabDrops(ModBlocks.CALCIFIED_GOLD_SLAB));
+        addDrop(ModBlocks.CALCIFIED_GOLD_FENCE);
+        addDrop(ModBlocks.CALCIFIED_GOLD_FENCE_GATE);
+        addDrop(ModBlocks.CALCIFIED_GOLD_WALL);
+
         addDrop(ModBlocks.DIAMOND_STAIRS);
         addDrop(ModBlocks.DIAMOND_FENCE);
         addDrop(ModBlocks.DIAMOND_FENCE_GATE);
@@ -63,6 +79,22 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.CALCIFIED_DIAMOND_BLOCK);
         addDrop(ModBlocks.DIAMOND_BRICKS);
 
+        addDrop(ModBlocks.DIAMOND_BRICK_STAIRS);
+        addDrop(ModBlocks.DIAMOND_BRICK_SLAB, slabDrops(ModBlocks.DIAMOND_BRICK_SLAB));
+        addDrop(ModBlocks.DIAMOND_BRICK_FENCE);
+        addDrop(ModBlocks.DIAMOND_BRICK_FENCE_GATE);
+        addDrop(ModBlocks.DIAMOND_BRICK_WALL);
+        addDrop(ModBlocks.POLISHED_DIAMOND_STAIRS);
+        addDrop(ModBlocks.POLISHED_DIAMOND_SLAB, slabDrops(ModBlocks.POLISHED_DIAMOND_SLAB));
+        addDrop(ModBlocks.POLISHED_DIAMOND_FENCE);
+        addDrop(ModBlocks.POLISHED_DIAMOND_FENCE_GATE);
+        addDrop(ModBlocks.POLISHED_DIAMOND_WALL);
+        addDrop(ModBlocks.CALCIFIED_DIAMOND_STAIRS);
+        addDrop(ModBlocks.CALCIFIED_DIAMOND_SLAB, slabDrops(ModBlocks.CALCIFIED_DIAMOND_SLAB));
+        addDrop(ModBlocks.CALCIFIED_DIAMOND_FENCE);
+        addDrop(ModBlocks.CALCIFIED_DIAMOND_FENCE_GATE);
+        addDrop(ModBlocks.CALCIFIED_DIAMOND_WALL);
+
         addDrop(ModBlocks.IRON_STAIRS);
         addDrop(ModBlocks.IRON_FENCE);
         addDrop(ModBlocks.IRON_FENCE_GATE);
@@ -71,6 +103,22 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.POLISHED_IRON_BLOCK);
         addDrop(ModBlocks.CALCIFIED_IRON_BLOCK);
         addDrop(ModBlocks.IRON_BRICKS);
+
+        addDrop(ModBlocks.IRON_BRICK_STAIRS);
+        addDrop(ModBlocks.IRON_BRICK_SLAB, slabDrops(ModBlocks.IRON_BRICK_SLAB));
+        addDrop(ModBlocks.IRON_BRICK_FENCE);
+        addDrop(ModBlocks.IRON_BRICK_FENCE_GATE);
+        addDrop(ModBlocks.IRON_BRICK_WALL);
+        addDrop(ModBlocks.POLISHED_IRON_STAIRS);
+        addDrop(ModBlocks.POLISHED_IRON_SLAB, slabDrops(ModBlocks.POLISHED_IRON_SLAB));
+        addDrop(ModBlocks.POLISHED_IRON_FENCE);
+        addDrop(ModBlocks.POLISHED_IRON_FENCE_GATE);
+        addDrop(ModBlocks.POLISHED_IRON_WALL);
+        addDrop(ModBlocks.CALCIFIED_IRON_STAIRS);
+        addDrop(ModBlocks.CALCIFIED_IRON_SLAB, slabDrops(ModBlocks.CALCIFIED_IRON_SLAB));
+        addDrop(ModBlocks.CALCIFIED_IRON_FENCE);
+        addDrop(ModBlocks.CALCIFIED_IRON_FENCE_GATE);
+        addDrop(ModBlocks.CALCIFIED_IRON_WALL);
 
         addDrop(ModBlocks.AMETHYST_STAIRS);
         addDrop(ModBlocks.AMETHYST_FENCE);
@@ -82,6 +130,22 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.POLISHED_AMETHYST_BLOCK);
         addDrop(ModBlocks.CALCIFIED_AMETHYST_BLOCK);
         addDrop(ModBlocks.AMETHYST_BRICKS);
+
+        addDrop(ModBlocks.AMETHYST_BRICK_STAIRS);
+        addDrop(ModBlocks.AMETHYST_BRICK_SLAB, slabDrops(ModBlocks.AMETHYST_BRICK_SLAB));
+        addDrop(ModBlocks.AMETHYST_BRICK_FENCE);
+        addDrop(ModBlocks.AMETHYST_BRICK_FENCE_GATE);
+        addDrop(ModBlocks.AMETHYST_BRICK_WALL);
+        addDrop(ModBlocks.POLISHED_AMETHYST_STAIRS);
+        addDrop(ModBlocks.POLISHED_AMETHYST_SLAB, slabDrops(ModBlocks.POLISHED_AMETHYST_SLAB));
+        addDrop(ModBlocks.POLISHED_AMETHYST_FENCE);
+        addDrop(ModBlocks.POLISHED_AMETHYST_FENCE_GATE);
+        addDrop(ModBlocks.POLISHED_AMETHYST_WALL);
+        addDrop(ModBlocks.CALCIFIED_AMETHYST_STAIRS);
+        addDrop(ModBlocks.CALCIFIED_AMETHYST_SLAB, slabDrops(ModBlocks.CALCIFIED_AMETHYST_SLAB));
+        addDrop(ModBlocks.CALCIFIED_AMETHYST_FENCE);
+        addDrop(ModBlocks.CALCIFIED_AMETHYST_FENCE_GATE);
+        addDrop(ModBlocks.CALCIFIED_AMETHYST_WALL);
 
         addDrop(ModBlocks.EMERALD_STAIRS);
         addDrop(ModBlocks.EMERALD_FENCE);
@@ -95,6 +159,27 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.CALCIFIED_EMERALD_BLOCK);
         addDrop(ModBlocks.EMERALD_BRICKS);
 
+        addDrop(ModBlocks.EMERALD_BRICK_STAIRS);
+        addDrop(ModBlocks.EMERALD_BRICK_SLAB, slabDrops(ModBlocks.EMERALD_BRICK_SLAB));
+        addDrop(ModBlocks.EMERALD_BRICK_FENCE);
+        addDrop(ModBlocks.EMERALD_BRICK_FENCE_GATE);
+        addDrop(ModBlocks.EMERALD_BRICK_WALL);
+        addDrop(ModBlocks.POLISHED_EMERALD_STAIRS);
+        addDrop(ModBlocks.POLISHED_EMERALD_SLAB, slabDrops(ModBlocks.POLISHED_EMERALD_SLAB));
+        addDrop(ModBlocks.POLISHED_EMERALD_FENCE);
+        addDrop(ModBlocks.POLISHED_EMERALD_FENCE_GATE);
+        addDrop(ModBlocks.POLISHED_EMERALD_WALL);
+        addDrop(ModBlocks.CALCIFIED_EMERALD_STAIRS);
+        addDrop(ModBlocks.CALCIFIED_EMERALD_SLAB, slabDrops(ModBlocks.CALCIFIED_EMERALD_SLAB));
+        addDrop(ModBlocks.CALCIFIED_EMERALD_FENCE);
+        addDrop(ModBlocks.CALCIFIED_EMERALD_FENCE_GATE);
+        addDrop(ModBlocks.CALCIFIED_EMERALD_WALL);
+        addDrop(ModBlocks.CHISELED_EMERALD_STAIRS);
+        addDrop(ModBlocks.CHISELED_EMERALD_SLAB, slabDrops(ModBlocks.CHISELED_EMERALD_SLAB));
+        addDrop(ModBlocks.CHISELED_EMERALD_FENCE);
+        addDrop(ModBlocks.CHISELED_EMERALD_FENCE_GATE);
+        addDrop(ModBlocks.CHISELED_EMERALD_WALL);
+
         addDrop(ModBlocks.LAPIS_STAIRS);
         addDrop(ModBlocks.LAPIS_FENCE);
         addDrop(ModBlocks.LAPIS_FENCE_GATE);
@@ -106,6 +191,22 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.CALCIFIED_LAPIS_BLOCK);
         addDrop(ModBlocks.LAPIS_BRICKS);
 
+        addDrop(ModBlocks.LAPIS_BRICK_STAIRS);
+        addDrop(ModBlocks.LAPIS_BRICK_SLAB, slabDrops(ModBlocks.LAPIS_BRICK_SLAB));
+        addDrop(ModBlocks.LAPIS_BRICK_FENCE);
+        addDrop(ModBlocks.LAPIS_BRICK_FENCE_GATE);
+        addDrop(ModBlocks.LAPIS_BRICK_WALL);
+        addDrop(ModBlocks.POLISHED_LAPIS_STAIRS);
+        addDrop(ModBlocks.POLISHED_LAPIS_SLAB, slabDrops(ModBlocks.POLISHED_LAPIS_SLAB));
+        addDrop(ModBlocks.POLISHED_LAPIS_FENCE);
+        addDrop(ModBlocks.POLISHED_LAPIS_FENCE_GATE);
+        addDrop(ModBlocks.POLISHED_LAPIS_WALL);
+        addDrop(ModBlocks.CALCIFIED_LAPIS_STAIRS);
+        addDrop(ModBlocks.CALCIFIED_LAPIS_SLAB, slabDrops(ModBlocks.CALCIFIED_LAPIS_SLAB));
+        addDrop(ModBlocks.CALCIFIED_LAPIS_FENCE);
+        addDrop(ModBlocks.CALCIFIED_LAPIS_FENCE_GATE);
+        addDrop(ModBlocks.CALCIFIED_LAPIS_WALL);
+
         addDrop(ModBlocks.COAL_STAIRS);
         addDrop(ModBlocks.COAL_FENCE);
         addDrop(ModBlocks.COAL_FENCE_GATE);
@@ -116,6 +217,22 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.POLISHED_COAL_BLOCK);
         addDrop(ModBlocks.CALCIFIED_COAL_BLOCK);
         addDrop(ModBlocks.COAL_BRICKS);
+
+        addDrop(ModBlocks.COAL_BRICK_STAIRS);
+        addDrop(ModBlocks.COAL_BRICK_SLAB, slabDrops(ModBlocks.COAL_BRICK_SLAB));
+        addDrop(ModBlocks.COAL_BRICK_FENCE);
+        addDrop(ModBlocks.COAL_BRICK_FENCE_GATE);
+        addDrop(ModBlocks.COAL_BRICK_WALL);
+        addDrop(ModBlocks.POLISHED_COAL_STAIRS);
+        addDrop(ModBlocks.POLISHED_COAL_SLAB, slabDrops(ModBlocks.POLISHED_COAL_SLAB));
+        addDrop(ModBlocks.POLISHED_COAL_FENCE);
+        addDrop(ModBlocks.POLISHED_COAL_FENCE_GATE);
+        addDrop(ModBlocks.POLISHED_COAL_WALL);
+        addDrop(ModBlocks.CALCIFIED_COAL_STAIRS);
+        addDrop(ModBlocks.CALCIFIED_COAL_SLAB, slabDrops(ModBlocks.CALCIFIED_COAL_SLAB));
+        addDrop(ModBlocks.CALCIFIED_COAL_FENCE);
+        addDrop(ModBlocks.CALCIFIED_COAL_FENCE_GATE);
+        addDrop(ModBlocks.CALCIFIED_COAL_WALL);
 
         addDrop(ModBlocks.CALCITE_STAIRS);
         addDrop(ModBlocks.CALCITE_FENCE);
@@ -134,6 +251,22 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.CALCIFIED_NETHERITE_BLOCK);
         addDrop(ModBlocks.NETHERITE_BRICKS);
 
+        addDrop(ModBlocks.NETHERITE_BRICK_STAIRS);
+        addDrop(ModBlocks.NETHERITE_BRICK_SLAB, slabDrops(ModBlocks.NETHERITE_BRICK_SLAB));
+        addDrop(ModBlocks.NETHERITE_BRICK_FENCE);
+        addDrop(ModBlocks.NETHERITE_BRICK_FENCE_GATE);
+        addDrop(ModBlocks.NETHERITE_BRICK_WALL);
+        addDrop(ModBlocks.POLISHED_NETHERITE_STAIRS);
+        addDrop(ModBlocks.POLISHED_NETHERITE_SLAB, slabDrops(ModBlocks.POLISHED_NETHERITE_SLAB));
+        addDrop(ModBlocks.POLISHED_NETHERITE_FENCE);
+        addDrop(ModBlocks.POLISHED_NETHERITE_FENCE_GATE);
+        addDrop(ModBlocks.POLISHED_NETHERITE_WALL);
+        addDrop(ModBlocks.CALCIFIED_NETHERITE_STAIRS);
+        addDrop(ModBlocks.CALCIFIED_NETHERITE_SLAB, slabDrops(ModBlocks.CALCIFIED_NETHERITE_SLAB));
+        addDrop(ModBlocks.CALCIFIED_NETHERITE_FENCE);
+        addDrop(ModBlocks.CALCIFIED_NETHERITE_FENCE_GATE);
+        addDrop(ModBlocks.CALCIFIED_NETHERITE_WALL);
+
         addDrop(ModBlocks.REDSTONE_STAIRS);
         addDrop(ModBlocks.REDSTONE_FENCE);
         addDrop(ModBlocks.REDSTONE_FENCE_GATE);
@@ -144,6 +277,22 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.POLISHED_REDSTONE_BLOCK);
         addDrop(ModBlocks.CALCIFIED_REDSTONE_BLOCK);
         addDrop(ModBlocks.REDSTONE_BRICKS);
+
+        addDrop(ModBlocks.REDSTONE_BRICK_STAIRS);
+        addDrop(ModBlocks.REDSTONE_BRICK_SLAB, slabDrops(ModBlocks.REDSTONE_BRICK_SLAB));
+        addDrop(ModBlocks.REDSTONE_BRICK_FENCE);
+        addDrop(ModBlocks.REDSTONE_BRICK_FENCE_GATE);
+        addDrop(ModBlocks.REDSTONE_BRICK_WALL);
+        addDrop(ModBlocks.POLISHED_REDSTONE_STAIRS);
+        addDrop(ModBlocks.POLISHED_REDSTONE_SLAB, slabDrops(ModBlocks.POLISHED_REDSTONE_SLAB));
+        addDrop(ModBlocks.POLISHED_REDSTONE_FENCE);
+        addDrop(ModBlocks.POLISHED_REDSTONE_FENCE_GATE);
+        addDrop(ModBlocks.POLISHED_REDSTONE_WALL);
+        addDrop(ModBlocks.CALCIFIED_REDSTONE_STAIRS);
+        addDrop(ModBlocks.CALCIFIED_REDSTONE_SLAB, slabDrops(ModBlocks.CALCIFIED_REDSTONE_SLAB));
+        addDrop(ModBlocks.CALCIFIED_REDSTONE_FENCE);
+        addDrop(ModBlocks.CALCIFIED_REDSTONE_FENCE_GATE);
+        addDrop(ModBlocks.CALCIFIED_REDSTONE_WALL);
 
         addDrop(ModBlocks.OBSIDIAN_STAIRS);
         addDrop(ModBlocks.OBSIDIAN_FENCE);

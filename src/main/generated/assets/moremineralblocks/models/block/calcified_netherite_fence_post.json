@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_post",
+  "textures": {
+    "texture": "moremineralblocks:block/calcified_netherite_block"
+  }
+}
