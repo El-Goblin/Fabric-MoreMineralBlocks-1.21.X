@@ -185,6 +185,7 @@ public class ModItemGroups {
                         entries.add(ModBlocks.CALCIFIED_LAPIS_FENCE);
                         entries.add(ModBlocks.CALCIFIED_LAPIS_FENCE_GATE);
 
+                        entries.add(Blocks.COAL_BLOCK);
                         entries.add(ModBlocks.COAL_STAIRS);
                         entries.add(ModBlocks.COAL_SLAB);
                         entries.add(ModBlocks.COAL_FENCE);
@@ -214,6 +215,7 @@ public class ModItemGroups {
                         entries.add(ModBlocks.CALCIFIED_COAL_FENCE);
                         entries.add(ModBlocks.CALCIFIED_COAL_FENCE_GATE);
 
+                        entries.add(Blocks.NETHERITE_BLOCK);
                         entries.add(ModBlocks.NETHERITE_STAIRS);
                         entries.add(ModBlocks.NETHERITE_SLAB);
                         entries.add(ModBlocks.NETHERITE_FENCE);
@@ -243,6 +245,7 @@ public class ModItemGroups {
                         entries.add(ModBlocks.CALCIFIED_NETHERITE_FENCE);
                         entries.add(ModBlocks.CALCIFIED_NETHERITE_FENCE_GATE);
 
+                        entries.add(Blocks.AMETHYST_BLOCK);
                         entries.add(ModBlocks.AMETHYST_STAIRS);
                         entries.add(ModBlocks.AMETHYST_SLAB);
                         entries.add(ModBlocks.AMETHYST_FENCE);
@@ -272,6 +275,7 @@ public class ModItemGroups {
                         entries.add(ModBlocks.CALCIFIED_AMETHYST_FENCE);
                         entries.add(ModBlocks.CALCIFIED_AMETHYST_FENCE_GATE);
 
+                        entries.add(Blocks.REDSTONE_BLOCK);
                         entries.add(ModBlocks.REDSTONE_STAIRS);
                         entries.add(ModBlocks.REDSTONE_SLAB);
                         entries.add(ModBlocks.REDSTONE_FENCE);
