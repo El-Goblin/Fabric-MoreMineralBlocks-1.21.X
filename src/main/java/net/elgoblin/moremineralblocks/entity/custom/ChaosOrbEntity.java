@@ -1,15 +1,18 @@
 package net.elgoblin.moremineralblocks.entity.custom;
 
+import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
+import net.elgoblin.moremineralblocks.item.custom.InfiniteItem;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
@@ -80,7 +83,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::getFood,
             this::getEnchantedBook,
             this::smallPrize,
-            this::xp
+            this::xp,
+            this::getInfiniteItem
     ));
     private List<BiConsumer<HitResult, Box>> areaChaosEffects = new ArrayList<>(List.of(
             this::applyBeaconEffect
@@ -89,10 +93,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::fragile
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
-//            this::crash
+            this::crash
     ));
     private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
-            this::beginThunderstorm
+//            this::beginThunderstorm
             //this::randomizePlayersPositions
     ));
     private List<BiConsumer<HitResult, Box>> targetsOrSelfChaosEffects = new ArrayList<>(List.of(
@@ -512,8 +516,28 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     private void getFood(HitResult hitResult) {
         ItemStack food = Items.COOKED_BEEF.getDefaultStack();
-        food.setCount(64);
+        food.setCount(16);
         this.dropStack(food, 0);
+    }
+
+    private void getInfiniteItem(HitResult hitResult) {
+        ItemStack infiniteItem = new ItemStack(ModItems.INFINITE_ITEM);
+        List<Item> items = new ArrayList<>();
+
+        for (Item item : Registries.ITEM) {
+            if (!(item instanceof ToolItem) && !(item instanceof EnderEyeItem) && !(item.getComponents().contains(DataComponentTypes.FOOD))) {
+                boolean isMusicDisc = item.getComponents().contains(DataComponentTypes.JUKEBOX_PLAYABLE);
+                if (!isMusicDisc) {
+                    if (this.getOwner() != null) {
+                        this.getOwner().sendMessage(Text.of(item.getName()));
+                    }
+                    items.add(item);
+                }
+            }
+        }
+
+        infiniteItem.set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, items.get(random.nextInt(items.size()-1)).getDefaultStack());
+        this.dropStack(infiniteItem, 0);
     }
 
     private void getEnchantedBook(HitResult hitResult) {
@@ -526,7 +550,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void xp(HitResult hitResult) {
-        float prizeMultiplier = (int) Math.pow((random.nextFloat()+1)*4,3);
+        float prizeMultiplier = (int) Math.pow((random.nextFloat()+1)*3,2);
         ExperienceOrbEntity.spawn((ServerWorld) this.getWorld(), this.getPos(), (int) (random.nextBetween(250, 500) * prizeMultiplier));
     }
 
