@@ -3,7 +3,8 @@
 	"package": "net.elgoblin.moremineralblocks.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"ZombieEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

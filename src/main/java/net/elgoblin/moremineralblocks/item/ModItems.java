@@ -5,6 +5,7 @@ import net.elgoblin.moremineralblocks.item.custom.*;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DebugStickStateComponent;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -37,6 +38,7 @@ public class ModItems {
             new LegendarySwordItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 9.0F, -2.0F)).rarity(Rarity.EPIC))
     );
     public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings().maxCount(1).fireproof()));
+    public static final Item INFINITE_ITEM = registerItem("infinite_item", new InfiniteItem(EntityType.ARMADILLO, 2, 3, new Item.Settings().maxDamage(0).maxCount(1).fireproof()));
     public static final Item SURVIVAL_DEBUG_STICK = registerItem("survival_debug_stick", new SurvivalDebugStickItem(new Item.Settings()
             .maxCount(1)
             .rarity(Rarity.EPIC)
@@ -118,6 +120,7 @@ public class ModItems {
             entries.add(FIENDBLADE_LONGSWORD);
             entries.add(LEGENDARY_ROCKET);
             entries.add(SURVIVAL_DEBUG_STICK);
+            entries.add(INFINITE_ITEM);
 //            entries.add(LEGENDARY_ELYTRA);
         });
     }
