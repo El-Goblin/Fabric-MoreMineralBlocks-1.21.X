@@ -32,8 +32,8 @@ public class InfiniteItem extends SpawnEggItem {
         if (!hasBeenUsed(context.getStack())) {
             PlayerEntity player = context.getPlayer();
             if (player != null && !player.getStackInHand(otherHand).isEmpty() && player.getStackInHand(otherHand).getItem() != this) {
-                ItemStack toStore = player.getStackInHand(otherHand);
-                toStore.increment(1);
+                ItemStack toStore = player.getStackInHand(otherHand).copy();
+//                toStore.increment(1);
                 player.getStackInHand(hand).set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, toStore);
             }
         }
@@ -44,6 +44,7 @@ public class InfiniteItem extends SpawnEggItem {
                 if (chosenItem != null) {
                     ItemStack originalStack = new ItemStack(this, 1);
                     ItemStack copy = chosenItem.copy();
+                    copy.setCount(2);
                     originalStack.set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, copy);
 
                     EquipmentSlot slot = hand.equals(Hand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
@@ -56,7 +57,7 @@ public class InfiniteItem extends SpawnEggItem {
                 }
             }
         }
-        return super.useOnBlock(context);
+        return ActionResult.PASS;
     }
 
     @Override
@@ -65,8 +66,8 @@ public class InfiniteItem extends SpawnEggItem {
         if (!hasBeenUsed(user.getStackInHand(hand))) {
             Hand otherHand = hand.equals(Hand.MAIN_HAND) ? Hand.OFF_HAND : Hand.MAIN_HAND;
             if (!user.getStackInHand(otherHand).isEmpty() && user.getStackInHand(otherHand).getItem() != this) {
-                ItemStack toStore = user.getStackInHand(otherHand);
-                toStore.increment(1);
+                ItemStack toStore = user.getStackInHand(otherHand).copy();
+//                toStore.increment(1);
                 user.getStackInHand(hand).set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, toStore);
             }
         }
@@ -88,8 +89,8 @@ public class InfiniteItem extends SpawnEggItem {
         Hand otherHand = hand.equals(Hand.MAIN_HAND) ? Hand.OFF_HAND : Hand.MAIN_HAND;
         if (!hasBeenUsed(user.getStackInHand(hand))) {
             if (!user.getStackInHand(otherHand).isEmpty() && user.getStackInHand(otherHand).getItem() != this) {
-                ItemStack toStore = user.getStackInHand(otherHand);
-                toStore.increment(1);
+                ItemStack toStore = user.getStackInHand(otherHand).copy();
+//                toStore.increment(1);
                 user.getStackInHand(hand).set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, toStore);
             }
         }
@@ -98,7 +99,7 @@ public class InfiniteItem extends SpawnEggItem {
             if (chosenItem != null) {
                 ItemStack originalStack = new ItemStack(this, 1);
                 ItemStack copy = chosenItem.copy();
-                copy.increment(1);
+                copy.setCount(2);
                 originalStack.set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, copy);
 
                 EquipmentSlot slot = hand.equals(Hand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;

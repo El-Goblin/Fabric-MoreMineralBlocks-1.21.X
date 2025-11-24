@@ -22,7 +22,9 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.client.render.entity.MinecartEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
@@ -68,7 +70,7 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.CHAOS_ORB, (context) ->
                 new FlyingItemEntityRenderer(context));
-
+        
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
 
             if (switchEnchantments.wasPressed()) {

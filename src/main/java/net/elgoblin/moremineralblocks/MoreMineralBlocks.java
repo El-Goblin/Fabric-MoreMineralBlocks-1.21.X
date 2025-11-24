@@ -78,6 +78,7 @@ public class MoreMineralBlocks implements ModInitializer {
 		FabricDefaultAttributeRegistry.register(ModEntities.MANTIS, MantisEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(ModEntities.DEVILMON, DevilmonEntity.createAttributes());
 
+
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
 			if (entity.hasStatusEffect(ModEffects.DOUBLE_DAMAGE_TAKEN) && !blocked) {
 				DynamicRegistryManager registryManager = entity.getWorld().getRegistryManager();
