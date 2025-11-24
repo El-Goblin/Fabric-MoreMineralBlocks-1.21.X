@@ -70,7 +70,7 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.CHAOS_ORB, (context) ->
                 new FlyingItemEntityRenderer(context));
-        
+
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
 
             if (switchEnchantments.wasPressed()) {
