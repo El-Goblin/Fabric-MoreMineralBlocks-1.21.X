@@ -1,5 +1,6 @@
 package net.elgoblin.moremineralblocks.entity.custom;
 
+import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
@@ -7,12 +8,18 @@ import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
 import net.elgoblin.moremineralblocks.item.custom.InfiniteItem;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
+import net.elgoblin.moremineralblocks.terrain.SingleBlockSphereJob;
+import net.elgoblin.moremineralblocks.terrain.SkyBlockJob;
+import net.elgoblin.moremineralblocks.terrain.TerrainManager;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.data.client.VariantSettings;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
@@ -27,29 +34,41 @@ import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.entity.passive.AxolotlEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.passive.TropicalFishEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.structure.StructurePlacementData;
+import net.minecraft.structure.StructureTemplate;
+import net.minecraft.structure.StructureTemplateManager;
 import net.minecraft.text.Text;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeKeys;
+import net.minecraft.world.chunk.*;
+import net.minecraft.world.gen.chunk.placement.StructurePlacement;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -77,7 +96,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::getToolsSet,
             this::spawn5ChaosOrbs,
             this::voidSphere,
-//            this::createSkyblock
+            this::createSkyblock,
             this::explosion,
             this::fireExplosion,
             this::getFood,
@@ -93,10 +112,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::fragile
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
-            this::crash
+//            this::crash
     ));
     private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
-//            this::beginThunderstorm
+            this::beginThunderstorm
             //this::randomizePlayersPositions
     ));
     private List<BiConsumer<HitResult, Box>> targetsOrSelfChaosEffects = new ArrayList<>(List.of(
@@ -155,7 +174,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                 BlockState currentState = world.getBlockState(blockToRemove);
 
                 if (!currentState.isAir()) {
-                world.setBlockState(blockToRemove, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
+                world.setBlockState(blockToRemove, Blocks.AIR.getDefaultState(), 50);
                 }
             }
         }
@@ -749,48 +768,107 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             randomNumber = random.nextFloat();
         }
         int radius = Math.max((int) (-1 * (5.6f * Math.log(randomNumber * 1369)/Math.log(1.375f) - 127)), 10);
+        World world = this.getWorld();
+        BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, (int) hitResult.getPos().y, (int) hitResult.getPos().z));
+
+        TerrainManager.TERRAIN_MANAGER.addJob(new SingleBlockSphereJob(world, center, radius, Blocks.AIR));
         if (this.getOwner() != null) {
             this.getOwner().sendMessage(Text.of(String.format("%d", radius)));
             StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, radius * 4, 0);
             ((LivingEntity) this.getOwner()).addStatusEffect(slowFall);
         }
+    }
+    // TODO
+    private void createSkyblock(HitResult hitResult) {
+
+        List<ServerPlayerEntity> players = this.getServer().getPlayerManager().getPlayerList();
 
         World world = this.getWorld();
-        BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, (int) hitResult.getPos().y, (int) hitResult.getPos().z));
 
-        for (int x = -radius ; x <= radius ; x++) {
-            for (int z = -radius ; z <= radius ; z++) {
-                for (int y = -radius ; y <= radius ; y++) {
+        for (ServerPlayerEntity playerEntity : players) {
+            if (playerEntity == null) {
+                continue;
+            }
+            StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 600, 0);
+            playerEntity.addStatusEffect(slowFall);
 
-                    if (x*x + y*y + z*z > radius * radius) { continue;}
+            ServerWorld dimension = (ServerWorld) world;
+            TeleportTarget teleportTarget = new TeleportTarget(dimension,
+                    new Vec3d(playerEntity.getX()+100000.0D,
+                            150,
+                            playerEntity.getZ()+100000.0D),
+                    new Vec3d(0, 0, 0),
+                    0,
+                    0,
+                    TeleportTarget.NO_OP);
+            playerEntity.teleportTo(teleportTarget);
+            BlockPos asd = new BlockPos((int) playerEntity.getX() - (int) playerEntity.getX() % 16 + 11, 66, (int) playerEntity.getZ() - (int) playerEntity.getZ() % 16 + 11);
+            playerEntity.setSpawnPoint(playerEntity.getWorld().getRegistryKey(), asd, 0, true, false);
+        }
+//        if (this.getOwner() != null) {
+//            StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 600, 0);
+//            ((LivingEntity) this.getOwner()).addStatusEffect(slowFall);
+//
+//            ServerWorld dimension = (ServerWorld) world;
+//            TeleportTarget teleportTarget = new TeleportTarget(dimension,
+//                    new Vec3d(this.getOwner().getX()+100000.0D,
+//                            150,
+//                            this.getOwner().getZ()+100000.0D),
+//                    new Vec3d(0, 0, 0),
+//                    0,
+//                    0,
+//                    TeleportTarget.NO_OP);
+//            this.getOwner().teleportTo(teleportTarget);
+//            ServerPlayerEntity player = (ServerPlayerEntity) (this.getOwner());
+//            BlockPos asd = new BlockPos((int) player.getX() - (int) player.getX() % 16 + 11, 66, (int) player.getZ() - (int) player.getZ() % 16 + 11);
+//            player.setSpawnPoint(player.getWorld().getRegistryKey(), asd, 0, true, false);
+//        }
 
-                    BlockPos currentBlock = center.add(x, y, z);
-                    BlockState currentState = world.getBlockState(currentBlock);
+        if (this.getOwner() != null) {
+            ChunkPos playerPos = new ChunkPos((int) (this.getOwner().getX()) >> 4, (int) (this.getOwner().getZ()) >> 4);
 
-                    if (!currentState.isAir()) {
-                        world.setBlockState(currentBlock, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
+            for (int x = -1 ; x < 2 ; x++) {
+                for (int z = -1 ; z < 2 ; z++) {
+                    ChunkPos chunkPos = new ChunkPos(playerPos.x + x, playerPos.z + z);
+
+                    ServerChunkManager chunkManager = (ServerChunkManager) world.getChunkManager();
+                    WorldChunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
+
+                    ChunkSection[] sections = chunk.getSectionArray();
+                    Registry<Biome> registry = world.getRegistryManager().get(RegistryKeys.BIOME);
+                    ReadableContainer<RegistryEntry<Biome>> readableContainer = new PalettedContainer<>(registry.getIndexedEntries(), registry.entryOf(BiomeKeys.SNOWY_TAIGA), PalettedContainer.PaletteProvider.BIOME);
+
+                    chunk.clear();
+                    for (int i = 0 ; i < sections.length ; i++) {
+                        ChunkSection empty = new ChunkSection(new PalettedContainer<>(Block.STATE_IDS, Blocks.AIR.getDefaultState(), PalettedContainer.PaletteProvider.BLOCK_STATE), readableContainer);
+                        sections[i] = empty;
                     }
+
+                    ChunkDataS2CPacket packet = new ChunkDataS2CPacket(chunk, chunkManager.getLightingProvider(), null, null);
+                    chunkManager.sendToNearbyPlayers(this.getOwner(), packet);
                 }
             }
+
+            ChunkPos chunkPos = new ChunkPos(playerPos.x, playerPos.z);
+            MinecraftServer server = world.getServer();
+            if (server != null) {
+                StructureTemplateManager structureManager = world.getServer().getStructureTemplateManager();
+                StructureTemplate template = structureManager.getTemplateOrBlank(Identifier.of(MoreMineralBlocks.MOD_ID, "skyblock_start"));
+
+                StructurePlacementData settings = new StructurePlacementData()
+                        .setRotation(BlockRotation.NONE)
+                        .setMirror(BlockMirror.NONE)
+                        .setIgnoreEntities(false);
+
+
+                template.place((ServerWorldAccess) world, chunkPos.getBlockPos(4, 63, 4), chunkPos.getBlockPos(4,63,4), settings, world.getRandom(), 50);
+            }
+//        if (this.getOwner() == null) {
+//            System.out.println("EL PLAYER ES NULL EN CHAOS ORB ENTITY");
+//        }
+            TerrainManager.TERRAIN_MANAGER.addJob(new SkyBlockJob(world, chunkPos, (PlayerEntity) this.getOwner()));
         }
     }
-
-//    private void createSkyblock(HitResult hitResult) {
-//
-//        World world = this.getWorld();
-//        BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, 0, (int) hitResult.getPos().z));
-//        for (int x = -1024 ; x <= 1024 ; x++) {
-//            for (int y = -64 ; y <= 320 ; y++) {
-//                for (int z = -1024 ; z <= 1024 ; z++) {
-//                    BlockPos auxBlock = new BlockPos(x, y, z);
-//                    BlockPos currentBlock = center.add(auxBlock);
-//
-//                    world.setBlockState(currentBlock, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
-//                }
-//            }
-//        }
-//        world.setBlockState(center.add(new Vec3i(0, 64, 0)), Blocks.BEDROCK.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
-//    }
 
 //    private void createStructure(HitResult hitResult) {
 //        hitResult.getPos();
