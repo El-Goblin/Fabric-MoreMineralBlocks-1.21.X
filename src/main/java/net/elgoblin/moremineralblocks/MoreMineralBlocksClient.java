@@ -1,14 +1,12 @@
 package net.elgoblin.moremineralblocks;
 
 import net.elgoblin.moremineralblocks.block.ModBlocks;
-import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.entity.client.DevilmonModel;
 import net.elgoblin.moremineralblocks.entity.client.MantisModel;
 import net.elgoblin.moremineralblocks.entity.client.MantisRenderer;
 import net.elgoblin.moremineralblocks.entity.client.DevilmonRenderer;
 import net.elgoblin.moremineralblocks.item.ModItems;
-import net.elgoblin.moremineralblocks.item.custom.LegendaryPickaxeItem;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.particle.custom.ChaosOrbFeedbackParticle;
 import net.fabricmc.api.ClientModInitializer;
@@ -19,31 +17,20 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
-import net.minecraft.client.render.entity.MinecartEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
 import org.lwjgl.glfw.GLFW;
 
 
 public class MoreMineralBlocksClient implements ClientModInitializer {
 
-    private static KeyBinding switchEnchantments = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-            "key.moremineralblocks.switch_enchantments",
-            InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_K,
-            "category.moremineralblocks.moremineralblocks"
-    ));
+//    private static KeyBinding switchEnchantments = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+//            "key.moremineralblocks.switch_enchantments",
+//            InputUtil.Type.KEYSYM,
+//            GLFW.GLFW_KEY_K,
+//            "category.moremineralblocks.moremineralblocks"
+//    ));
 
     //public TypedActionResult<ItemStack> advanceEnchantments(PlayerEntity user) {
         //return user.getMainHandStack().getItem().
@@ -68,17 +55,16 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.REDSTONE_DOOR, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.REDSTONE_TRAPDOOR, RenderLayer.getCutout());
 
-        EntityRendererRegistry.register(ModEntities.CHAOS_ORB, (context) ->
-                new FlyingItemEntityRenderer(context));
+        EntityRendererRegistry.register(ModEntities.CHAOS_ORB, FlyingItemEntityRenderer::new);
 
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-
-            if (switchEnchantments.wasPressed()) {
-                    if (client.player.getMainHandStack().getItem() == ModItems.LEGENDARY_PICKAXE) {
-                        //advanceEnchantments(client.player);
-                    }
-            }
-        });
+//        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+//
+////            if (switchEnchantments.wasPressed()) {
+////                    if (client.player.getMainHandStack().getItem() == ModItems.LEGENDARY_PICKAXE) {
+////                        //advanceEnchantments(client.player);
+////                    }
+////            }
+//        });
 
         EntityModelLayerRegistry.registerModelLayer(MantisModel.MANTIS, MantisModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.MANTIS, MantisRenderer::new);
@@ -93,8 +79,8 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_RESISTANCE_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_SPEED_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_STRENGTH_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_TELEPORTITIS_DODGE_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_CHORUS_FRUIT_TP_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_DOUBLE_DAMAGE_TAKEN_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_COUNTER_BLINK_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_BLINKING_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
     }
 }

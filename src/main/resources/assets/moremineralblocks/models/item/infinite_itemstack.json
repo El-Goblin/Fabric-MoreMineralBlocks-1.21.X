@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "moremineralblocks:item/infinite_item"
+    "layer0": "moremineralblocks:item/infinite_itemstack"
   }
 }

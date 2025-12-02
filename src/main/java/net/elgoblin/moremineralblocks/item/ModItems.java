@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DebugStickStateComponent;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -14,9 +13,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 
 public class ModItems {
-
-    //public static final Item PINK_GARNET = registerItem("pink_garnet", new Item(new Item.Settings()));
-    //public static final Item RAW_PINK_GARNET = registerItem("raw_pink_garnet", new Item(new Item.Settings()));
 
     public static final Item LEGENDARY_PICKAXE = registerItem(
             "legendary_pickaxe",
@@ -38,14 +34,13 @@ public class ModItems {
             "legendary_sword",
             new LegendarySwordItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 9.0F, -2.0F)).rarity(Rarity.EPIC))
     );
-    public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings().maxCount(1).fireproof()));
-    public static final Item INFINITE_ITEM = registerItem("infinite_item", new InfiniteItem(EntityType.ARMADILLO, 2, 3, new Item.Settings().maxDamage(0).maxCount(1).fireproof()));
+    public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings().maxCount(1).fireproof().rarity(Rarity.EPIC)));
+    public static final Item INFINITE_ITEMSTACK = registerItem("infinite_itemstack", new InfiniteItem(EntityType.ARMADILLO, 2, 3, new Item.Settings().maxDamage(0).maxCount(1).rarity(Rarity.EPIC)));
     public static final Item SURVIVAL_DEBUG_STICK = registerItem("survival_debug_stick", new SurvivalDebugStickItem(new Item.Settings()
             .maxCount(1)
             .rarity(Rarity.EPIC)
             .component(DataComponentTypes.DEBUG_STICK_STATE, DebugStickStateComponent.DEFAULT)
             .component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
-//    public static final Item LEGENDARY_ELYTRA = registerItem("legendary_elytra", new ElytraItem(new Item.Settings().rarity(Rarity.EPIC)));
     public static final Item WOODEN_LONGSWORD = registerItem(
             "wooden_longsword",
             new LongSwordItem(ToolMaterials.WOOD, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.WOOD, 5, -2.4F)))
@@ -84,10 +79,9 @@ public class ModItems {
     );
 
 
-    //
     public static final Item CHAOS_ORB = registerItem("chaos_orb", new ChaosOrbItem(new Item.Settings()));
 
-    public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
+//    public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, name), item);
@@ -109,7 +103,6 @@ public class ModItems {
             entries.add(LEGENDARY_AXE);
             entries.add(LEGENDARY_HOE);
             entries.add(LEGENDARY_SWORD);
-            entries.add(CHISEL);
             entries.add(WOODEN_LONGSWORD);
             entries.add(STONE_LONGSWORD);
             entries.add(IRON_LONGSWORD);
@@ -121,8 +114,7 @@ public class ModItems {
             entries.add(FIENDBLADE_LONGSWORD);
             entries.add(LEGENDARY_ROCKET);
             entries.add(SURVIVAL_DEBUG_STICK);
-            entries.add(INFINITE_ITEM);
-//            entries.add(LEGENDARY_ELYTRA);
+            entries.add(INFINITE_ITEMSTACK);
         });
     }
 }

@@ -16,9 +16,9 @@ public class ModParticles {
     public static final SimpleParticleType CHAOS_ORB_RESISTANCE_PARTICLE = registerParticle("resistance_particle", FabricParticleTypes.simple());
     public static final SimpleParticleType CHAOS_ORB_SPEED_PARTICLE = registerParticle("speed_particle", FabricParticleTypes.simple());
     public static final SimpleParticleType CHAOS_ORB_STRENGTH_PARTICLE = registerParticle("strength_particle", FabricParticleTypes.simple());
-    public static final SimpleParticleType CHAOS_ORB_TELEPORTITIS_DODGE_PARTICLE = registerParticle("teleportitis_dodge_particle", FabricParticleTypes.simple());
-    public static final SimpleParticleType CHAOS_ORB_CHORUS_FRUIT_TP_PARTICLE = registerParticle("chorus_fruit_tp_particle", FabricParticleTypes.simple());
-    public static final SimpleParticleType CHAOS_ORB_DOUBLE_DAMAGE_TAKEN_PARTICLE = registerParticle("double_damage_taken_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_COUNTER_BLINK_PARTICLE = registerParticle("counter_blink_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_BLINKING_PARTICLE = registerParticle("blinking_particle", FabricParticleTypes.simple());
+    public static final SimpleParticleType CHAOS_ORB_FRAGILE_PARTICLE = registerParticle("fragile_particle", FabricParticleTypes.simple());
 
     //
 

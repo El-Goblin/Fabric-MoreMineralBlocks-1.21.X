@@ -6,20 +6,15 @@ import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
-import net.elgoblin.moremineralblocks.item.custom.InfiniteItem;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.terrain.SingleBlockSphereJob;
 import net.elgoblin.moremineralblocks.terrain.SkyBlockJob;
 import net.elgoblin.moremineralblocks.terrain.TerrainManager;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.data.client.VariantSettings;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
@@ -32,7 +27,6 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.entity.passive.AxolotlEntity;
-import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.passive.TropicalFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
@@ -48,15 +42,13 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerChunkManager;
+import net.minecraft.server.world.ServerLightingProvider;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.StructureTemplate;
 import net.minecraft.structure.StructureTemplateManager;
 import net.minecraft.text.Text;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
@@ -68,7 +60,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.chunk.*;
-import net.minecraft.world.gen.chunk.placement.StructurePlacement;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -86,6 +77,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     private boolean tunneler = false;
     private LinkedList<BlockPos> tunnelQueue = new LinkedList<>();
+    private static boolean skyBlockHappened = false;
 
     private List<Consumer<HitResult>> pointChaosEffects = new ArrayList<>(List.of(
             this::spawnMobPack,
@@ -96,7 +88,6 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::getToolsSet,
             this::spawn5ChaosOrbs,
             this::voidSphere,
-            this::createSkyblock,
             this::explosion,
             this::fireExplosion,
             this::getFood,
@@ -115,6 +106,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //            this::crash
     ));
     private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
+            // Relevante para facilitar codigo que skyBlock sea el primero de la lista
+            this::createSkyblock,
             this::beginThunderstorm
             //this::randomizePlayersPositions
     ));
@@ -129,24 +122,26 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     public ChaosOrbEntity(EntityType<? extends ChaosOrbEntity> entityType, World world) {
         super(entityType, world);
+        this.dropSkyBlock();
+        this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
     public ChaosOrbEntity(World world, LivingEntity owner) {
         super(ModEntities.CHAOS_ORB, owner, world);
-    }
-
-    public ChaosOrbEntity(World world, LivingEntity owner, boolean tunneler) {
-        super(ModEntities.CHAOS_ORB, owner, world);
-        this.tunneler = tunneler;
+        this.dropSkyBlock();
+        this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
     public ChaosOrbEntity(World world, double x, double y, double z) {
         super(ModEntities.CHAOS_ORB, x, y, z, world);
+        this.dropSkyBlock();
+        this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
-    public ChaosOrbEntity(World world, double x, double y, double z, boolean tunneler) {
-        super(ModEntities.CHAOS_ORB, x, y, z, world);
-        this.tunneler = tunneler;
+    private void dropSkyBlock() {
+        if (skyBlockHappened) {
+            this.globalChaosEffects.removeFirst();
+        }
     }
 
     @Override
@@ -432,13 +427,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void beginThunderstorm(HitResult hitResult) {
-        // En el comando no se preocuparon por si es null. Si en algun momento se rompe quizas chequear esto
         if (!this.getWorld().isClient) {
             if (this.getServer() != null) {
                 ServerWorld world = this.getServer().getOverworld();
                 world.setWeather(0, UniformIntProvider.create(3600, 15600).get(world.getRandom()), true, true);
-//                LivingEntity entity = (LivingEntity) this.getOwner();
-//                if (entity != null) { entity.sendMessage(Text.of("Its raining"));}
                 LightningEntity bolt = EntityType.LIGHTNING_BOLT.create(this.getWorld());
                 if (bolt != null) {
                     bolt.refreshPositionAndAngles(hitResult.getPos(),1f, 1f);
@@ -503,9 +495,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     private void applyBeaconEffect(HitResult hitResult, Box boundingBox) {
 
         List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(32.0, 200.0, 32.0));
-
         List<RegistryEntry<StatusEffect>> pool = BeaconBlockEntity.EFFECTS_BY_LEVEL.stream().flatMap(List::stream).toList();
-
 
         long poolSize = pool.size();
         int nextEffect = this.random.nextBetween(0, (int) poolSize-1);
@@ -523,6 +513,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void crash(HitResult hitResult) {
+        // Esto nunca va a funcionar porque el chaosOrb corre en server
+        // Quizas podria hacer que el chequeo lo haga en ChaosOrbItem como hacia para el tunel
+        // No se si vale la pena tener este efecto y ademas mepa que va a generar una banda de bugs
         if (this.getWorld().isClient) {
             LivingEntity entity = (LivingEntity) this.getOwner();
             if (entity != null) { entity.sendMessage(Text.of("crash"));}
@@ -540,22 +533,39 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void getInfiniteItem(HitResult hitResult) {
-        ItemStack infiniteItem = new ItemStack(ModItems.INFINITE_ITEM);
+        ItemStack infiniteItem = new ItemStack(ModItems.INFINITE_ITEMSTACK);
         List<Item> items = new ArrayList<>();
 
         for (Item item : Registries.ITEM) {
-            if (!(item instanceof ToolItem) && !(item instanceof EnderEyeItem) && !(item.getComponents().contains(DataComponentTypes.FOOD))) {
-                boolean isMusicDisc = item.getComponents().contains(DataComponentTypes.JUKEBOX_PLAYABLE);
-                if (!isMusicDisc) {
-                    if (this.getOwner() != null) {
-                        this.getOwner().sendMessage(Text.of(item.getName()));
-                    }
-                    items.add(item);
-                }
+//            if (!(item instanceof ToolItem) && !(item instanceof EnderEyeItem) && !(item.getComponents().contains(DataComponentTypes.FOOD))) {
+//                boolean isMusicDisc = item.getComponents().contains(DataComponentTypes.JUKEBOX_PLAYABLE);
+//                if (!isMusicDisc) {
+                    boolean isBlock = item instanceof BlockItem;
+                    boolean isBucket = item instanceof FluidModificationItem;
+                    boolean isSpawnEgg = item instanceof SpawnEggItem;
+                    boolean isThrowableProjectile = item instanceof EnderPearlItem ||
+                                                    item instanceof EggItem ||
+                                                    item instanceof SnowballItem ||
+                                                    item instanceof FireChargeItem ||
+                                                    item instanceof BoneMealItem ||
+                                                    item instanceof WindChargeItem ||
+                                                    item instanceof ChaosOrbItem;
+                    boolean isDye = item instanceof DyeItem;
+                    boolean isBoat = item instanceof BoatItem;
+                    boolean isInkSac = item instanceof InkSacItem || item instanceof GlowInkSacItem;
+                    boolean isMinecart = item instanceof MinecartItem;
+                    if (isBlock || isBucket || isSpawnEgg || isThrowableProjectile || isDye || isBoat || isInkSac || isMinecart) {
+                        items.add(item);
+//                    }
+//                }
             }
         }
 
-        infiniteItem.set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, items.get(random.nextInt(items.size()-1)).getDefaultStack());
+        Item chosenItem = items.get(random.nextInt(items.size()-1));
+        if (this.getOwner() != null) {
+            this.getOwner().sendMessage(Text.of(chosenItem.getName()));
+        }
+        infiniteItem.set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, chosenItem.getDefaultStack());
         this.dropStack(infiniteItem, 0);
     }
 
@@ -564,13 +574,13 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         List<Enchantment> enchantments = this.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).stream().toList();
         Enchantment enchantment = enchantments.get(random.nextBetween(0, enchantments.size() - 1));
         RegistryEntry<Enchantment> enchantmentEntry = this.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(enchantment);
-        enchantedBook.addEnchantment(enchantmentEntry, enchantment.getMaxLevel());
+        enchantedBook.addEnchantment(enchantmentEntry, random.nextBetween(1, enchantment.getMaxLevel()));
         this.dropStack(enchantedBook, 0);
     }
 
     private void xp(HitResult hitResult) {
         float prizeMultiplier = (int) Math.pow((random.nextFloat()+1)*3,2);
-        ExperienceOrbEntity.spawn((ServerWorld) this.getWorld(), this.getPos(), (int) (random.nextBetween(250, 500) * prizeMultiplier));
+        ExperienceOrbEntity.spawn((ServerWorld) this.getWorld(), this.getPos(), (int) (random.nextBetween(128, 256) * prizeMultiplier));
     }
 
     private void smallPrize(HitResult hitResult) {
@@ -580,7 +590,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         prizes.add(new ItemStack(Items.COAL, 64));
         prizes.add(new ItemStack(Items.STONE, 64));
         prizes.add(new ItemStack(Items.SOUL_SAND, 32));
-        prizes.add(new ItemStack(Items.SOUL_SOIL, 32));
+        prizes.add(new ItemStack(Items.MAGMA_BLOCK, 32));
         prizes.add(new ItemStack(Items.OBSIDIAN, 10));
         prizes.add(new ItemStack(Items.RED_BED, 1));
         prizes.add(new ItemStack(Items.POINTED_DRIPSTONE, 12));
@@ -693,69 +703,64 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         FireballEntity fireballEntity;
 
-        if (kase == 20) {
-            if (this.getOwner() != null) {
-                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 127);
-            }
-            else {
-                LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
-                dummy.setPosition(this.getX(), this.getY(), this.getZ());
-                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
-            }
-        }
-        else {
-            if (this.getOwner() != null) {
-                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 3);
-            }
-            else {
-                LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
-                dummy.setPosition(this.getX(), this.getY(), this.getZ());
-                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
-            }
-        }
+//        if (kase == 20) {
+//            if (this.getOwner() != null) {
+//                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 127);
+//            }
+//            else {
+//                LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
+//                dummy.setPosition(this.getX(), this.getY(), this.getZ());
+//                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
+//            }
+//        }
+//        else {
+//            if (this.getOwner() != null) {
+//                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 3);
+//            }
+//            else {
+//                LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
+//                dummy.setPosition(this.getX(), this.getY(), this.getZ());
+//                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
+//            }
+//        }
 
         if (kase > 17 && kase < 20 && this.getOwner() != null) {
-            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 1);
+            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 2);
             fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
         }
         else {
-            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 1);
+            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 4);
             fireballEntity.setPosition(this.getX(), this.getY(), this.getZ());
         }
         this.getWorld().spawnEntity(fireballEntity);
     }
 
     private void spawn5ChaosOrbs(HitResult hitResult) {
-        boolean shouldTunnel = this.random.nextBetween(0, this.effectCount()) == 0;
-        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, shouldTunnel);
+        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        shouldTunnel = this.random.nextBetween(0, this.effectCount()) == 0;
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, shouldTunnel);
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( -1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        shouldTunnel = this.random.nextBetween(0, this.effectCount()) == 0;
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, shouldTunnel);
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, 1.0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        shouldTunnel = this.random.nextBetween(0, this.effectCount()) == 0;
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, shouldTunnel);
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, -1.0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        shouldTunnel = this.random.nextBetween(0, this.effectCount()) == 0;
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, shouldTunnel);
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, 0.0f, 0f, 0f);
 
@@ -771,9 +776,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         World world = this.getWorld();
         BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, (int) hitResult.getPos().y, (int) hitResult.getPos().z));
 
-        TerrainManager.TERRAIN_MANAGER.addJob(new SingleBlockSphereJob(world, center, radius, Blocks.AIR));
         if (this.getOwner() != null) {
-            this.getOwner().sendMessage(Text.of(String.format("%d", radius)));
+            TerrainManager.TERRAIN_MANAGER.addJob(new SingleBlockSphereJob(world, (PlayerEntity) this.getOwner(), center, radius, Blocks.AIR));
             StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, radius * 4, 0);
             ((LivingEntity) this.getOwner()).addStatusEffect(slowFall);
         }
@@ -785,6 +789,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         World world = this.getWorld();
 
+        int tpX = random.nextInt(1) == 0 ? random.nextBetween(10000, 20000) : random.nextBetween(-20000, -10000);
+        int tpZ = random.nextInt(1) == 0 ? random.nextBetween(10000, 20000) : random.nextBetween(-20000, -10000);
+
         for (ServerPlayerEntity playerEntity : players) {
             if (playerEntity == null) {
                 continue;
@@ -794,9 +801,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
             ServerWorld dimension = (ServerWorld) world;
             TeleportTarget teleportTarget = new TeleportTarget(dimension,
-                    new Vec3d(playerEntity.getX()+100000.0D,
+                    new Vec3d(tpX,
                             150,
-                            playerEntity.getZ()+100000.0D),
+                            tpZ),
                     new Vec3d(0, 0, 0),
                     0,
                     0,
@@ -805,31 +812,13 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             BlockPos asd = new BlockPos((int) playerEntity.getX() - (int) playerEntity.getX() % 16 + 11, 66, (int) playerEntity.getZ() - (int) playerEntity.getZ() % 16 + 11);
             playerEntity.setSpawnPoint(playerEntity.getWorld().getRegistryKey(), asd, 0, true, false);
         }
-//        if (this.getOwner() != null) {
-//            StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 600, 0);
-//            ((LivingEntity) this.getOwner()).addStatusEffect(slowFall);
-//
-//            ServerWorld dimension = (ServerWorld) world;
-//            TeleportTarget teleportTarget = new TeleportTarget(dimension,
-//                    new Vec3d(this.getOwner().getX()+100000.0D,
-//                            150,
-//                            this.getOwner().getZ()+100000.0D),
-//                    new Vec3d(0, 0, 0),
-//                    0,
-//                    0,
-//                    TeleportTarget.NO_OP);
-//            this.getOwner().teleportTo(teleportTarget);
-//            ServerPlayerEntity player = (ServerPlayerEntity) (this.getOwner());
-//            BlockPos asd = new BlockPos((int) player.getX() - (int) player.getX() % 16 + 11, 66, (int) player.getZ() - (int) player.getZ() % 16 + 11);
-//            player.setSpawnPoint(player.getWorld().getRegistryKey(), asd, 0, true, false);
-//        }
 
         if (this.getOwner() != null) {
-            ChunkPos playerPos = new ChunkPos((int) (this.getOwner().getX()) >> 4, (int) (this.getOwner().getZ()) >> 4);
+            ChunkPos islandChunkPos = new ChunkPos(tpX >> 4, tpZ >> 4);
 
             for (int x = -1 ; x < 2 ; x++) {
                 for (int z = -1 ; z < 2 ; z++) {
-                    ChunkPos chunkPos = new ChunkPos(playerPos.x + x, playerPos.z + z);
+                    ChunkPos chunkPos = new ChunkPos(islandChunkPos.x + x, islandChunkPos.z + z);
 
                     ServerChunkManager chunkManager = (ServerChunkManager) world.getChunkManager();
                     WorldChunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
@@ -838,18 +827,28 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     Registry<Biome> registry = world.getRegistryManager().get(RegistryKeys.BIOME);
                     ReadableContainer<RegistryEntry<Biome>> readableContainer = new PalettedContainer<>(registry.getIndexedEntries(), registry.entryOf(BiomeKeys.SNOWY_TAIGA), PalettedContainer.PaletteProvider.BIOME);
 
+                    Box chunkBox = new Box(chunkPos.getStartX(), 0, chunkPos.getStartZ(), chunkPos.getEndX() + 1, world.getHeight(), chunkPos.getEndZ() + 1);
+                    for (Entity entity : world.getOtherEntities(this.getOwner(), chunkBox)) {
+                        entity.remove(Entity.RemovalReason.DISCARDED);
+                    }
+
                     chunk.clear();
                     for (int i = 0 ; i < sections.length ; i++) {
                         ChunkSection empty = new ChunkSection(new PalettedContainer<>(Block.STATE_IDS, Blocks.AIR.getDefaultState(), PalettedContainer.PaletteProvider.BLOCK_STATE), readableContainer);
                         sections[i] = empty;
                     }
 
+                    chunk.setLightOn(false);
+                    ServerLightingProvider lighting = chunkManager.getLightingProvider();
+                    lighting.enqueue(chunkPos.x, chunkPos.z);
+                    chunk.setNeedsSaving(true);
+
                     ChunkDataS2CPacket packet = new ChunkDataS2CPacket(chunk, chunkManager.getLightingProvider(), null, null);
                     chunkManager.sendToNearbyPlayers(this.getOwner(), packet);
                 }
             }
 
-            ChunkPos chunkPos = new ChunkPos(playerPos.x, playerPos.z);
+            ChunkPos chunkPos = new ChunkPos(islandChunkPos.x, islandChunkPos.z);
             MinecraftServer server = world.getServer();
             if (server != null) {
                 StructureTemplateManager structureManager = world.getServer().getStructureTemplateManager();
@@ -863,9 +862,6 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
                 template.place((ServerWorldAccess) world, chunkPos.getBlockPos(4, 63, 4), chunkPos.getBlockPos(4,63,4), settings, world.getRandom(), 50);
             }
-//        if (this.getOwner() == null) {
-//            System.out.println("EL PLAYER ES NULL EN CHAOS ORB ENTITY");
-//        }
             TerrainManager.TERRAIN_MANAGER.addJob(new SkyBlockJob(world, chunkPos, (PlayerEntity) this.getOwner()));
         }
     }
@@ -959,10 +955,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     private void fragile(HitResult hitResult, Box boundingBox) {
         List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
-        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_DOUBLE_DAMAGE_TAKEN_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.DOUBLE_DAMAGE_TAKEN, 6000, 0);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.FRAGILE, 6000, 0);
             if (entity != null) {
                 entity.addStatusEffect(effect);
             }
@@ -975,10 +971,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             entities.add((LivingEntity) this.getOwner());
         }
 
-        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_TELEPORTITIS_DODGE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_COUNTER_BLINK_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.TELEPORTITIS_DODGE, 24000, 0);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.COUNTER_BLINK, 24000, 0);
             if (entity != null) {
                 entity.addStatusEffect(effect);
             }
@@ -990,10 +986,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         if (entities.isEmpty() && this.getOwner() != null) {
             entities.add((LivingEntity) this.getOwner());
         }
-        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_CHORUS_FRUIT_TP_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_BLINKING_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.CHORUS_FRUIT_TP, 1200, 0);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.BLINKING, 1200, 0);
             if (entity != null) {
                 entity.addStatusEffect(effect);
             }

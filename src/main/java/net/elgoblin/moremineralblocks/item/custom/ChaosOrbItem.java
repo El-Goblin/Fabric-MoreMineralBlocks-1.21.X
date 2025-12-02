@@ -49,10 +49,6 @@ public class ChaosOrbItem extends SnowballItem {
         if (!world.isClient) {
 
             ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(world, user);
-            boolean shouldTunnel = random.nextBetween(0, chaosOrbEntity.effectCount()) == 0;
-            if (shouldTunnel) {
-                chaosOrbEntity = new ChaosOrbEntity(world, user, true);
-            }
             chaosOrbEntity.setItem(itemStack);
             chaosOrbEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(chaosOrbEntity);

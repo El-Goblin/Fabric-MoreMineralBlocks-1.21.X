@@ -7,9 +7,27 @@
   "block.moremineralblocks.gold_wall": "Gold Wall",
   "block.moremineralblocks.gold_door": "Gold Door",
   "block.moremineralblocks.gold_trapdoor": "Gold Trapdoor",
+
   "block.moremineralblocks.polished_gold_block": "Polished Gold Block",
+  "block.moremineralblocks.polished_gold_stairs": "Polished Gold Stairs",
+  "block.moremineralblocks.polished_gold_slab": "Polished Gold Slab",
+  "block.moremineralblocks.polished_gold_fence": "Polished Gold Fence",
+  "block.moremineralblocks.polished_gold_fence_gate": "Polished Gold Fence Gate",
+  "block.moremineralblocks.polished_gold_wall": "Polished Gold Wall",
+
   "block.moremineralblocks.calcified_gold_block": "Calcified Gold Block",
+  "block.moremineralblocks.calcified_gold_stairs": "Calcified Gold Stairs",
+  "block.moremineralblocks.calcified_gold_slab": "Calcified Gold Slab",
+  "block.moremineralblocks.calcified_gold_fence": "Calcified Gold Fence",
+  "block.moremineralblocks.calcified_gold_fence_gate": "Calcified Gold Fence Gate",
+  "block.moremineralblocks.calcified_gold_wall": "Calcified Gold Wall",
+
   "block.moremineralblocks.gold_bricks": "Gold Bricks",
+  "block.moremineralblocks.gold_brick_stairs": "Gold Brick Stairs",
+  "block.moremineralblocks.gold_brick_slab": "Gold Brick Slab",
+  "block.moremineralblocks.gold_brick_fence": "Gold Brick Fence",
+  "block.moremineralblocks.gold_brick_fence_gate": "Gold Brick Fence Gate",
+  "block.moremineralblocks.gold_brick_wall": "Gold Brick Wall",
 
   "block.moremineralblocks.diamond_stairs": "Diamond Stairs",
   "block.moremineralblocks.diamond_slab": "Diamond Slab",
@@ -18,18 +36,56 @@
   "block.moremineralblocks.diamond_wall": "Diamond Wall",
   "block.moremineralblocks.diamond_door": "Diamond Door",
   "block.moremineralblocks.diamond_trapdoor": "Diamond Trapdoor",
+
   "block.moremineralblocks.polished_diamond_block": "Polished Diamond Block",
-  "block.moremineralblocks.calcified_diamond_block": "Calcified Gold Block",
+  "block.moremineralblocks.polished_diamond_stairs": "Polished Diamond Stairs",
+  "block.moremineralblocks.polished_diamond_slab": "Polished Diamond Slab",
+  "block.moremineralblocks.polished_diamond_fence": "Polished Diamond Fence",
+  "block.moremineralblocks.polished_diamond_fence_gate": "Polished Diamond Fence Gate",
+  "block.moremineralblocks.polished_diamond_wall": "Polished Diamond Wall",
+
+  "block.moremineralblocks.calcified_diamond_block": "Calcified Diamond Block",
+  "block.moremineralblocks.calcified_diamond_stairs": "Calcified Diamond Stairs",
+  "block.moremineralblocks.calcified_diamond_slab": "Calcified Diamond Slab",
+  "block.moremineralblocks.calcified_diamond_fence": "Calcified Diamond Fence",
+  "block.moremineralblocks.calcified_diamond_fence_gate": "Calcified Diamond Fence Gate",
+  "block.moremineralblocks.calcified_diamond_wall": "Calcified Diamond Wall",
+
   "block.moremineralblocks.diamond_bricks": "Diamond Bricks",
+  "block.moremineralblocks.diamond_brick_stairs": "Diamond Brick Stairs",
+  "block.moremineralblocks.diamond_brick_slab": "Diamond Brick Slab",
+  "block.moremineralblocks.diamond_brick_fence": "Diamond Brick Fence",
+  "block.moremineralblocks.diamond_brick_fence_gate": "Diamond Brick Fence Gate",
+  "block.moremineralblocks.diamond_brick_wall": "Diamond Brick Wall",
 
   "block.moremineralblocks.iron_stairs": "Iron Stairs",
   "block.moremineralblocks.iron_slab": "Iron Slab",
   "block.moremineralblocks.iron_fence": "Iron Fence",
   "block.moremineralblocks.iron_fence_gate": "Iron Fence Gate",
   "block.moremineralblocks.iron_wall": "Iron Wall",
+  "block.moremineralblocks.iron_door": "Iron Door",
+  "block.moremineralblocks.iron_trapdoor": "Iron Trapdoor",
+
   "block.moremineralblocks.polished_iron_block": "Polished Iron Block",
+  "block.moremineralblocks.polished_iron_stairs": "Polished Iron Stairs",
+  "block.moremineralblocks.polished_iron_slab": "Polished Iron Slab",
+  "block.moremineralblocks.polished_iron_fence": "Polished Iron Fence",
+  "block.moremineralblocks.polished_iron_fence_gate": "Polished Iron Fence Gate",
+  "block.moremineralblocks.polished_iron_wall": "Polished Iron Wall",
+
   "block.moremineralblocks.calcified_iron_block": "Calcified Iron Block",
+  "block.moremineralblocks.calcified_iron_stairs": "Calcified Iron Stairs",
+  "block.moremineralblocks.calcified_iron_slab": "Calcified Iron Slab",
+  "block.moremineralblocks.calcified_iron_fence": "Calcified Iron Fence",
+  "block.moremineralblocks.calcified_iron_fence_gate": "Calcified Iron Fence Gate",
+  "block.moremineralblocks.calcified_iron_wall": "Calcified Iron Wall",
+
   "block.moremineralblocks.iron_bricks": "Iron Bricks",
+  "block.moremineralblocks.iron_brick_stairs": "Iron Brick Stairs",
+  "block.moremineralblocks.iron_brick_slab": "Iron Brick Slab",
+  "block.moremineralblocks.iron_brick_fence": "Iron Brick Fence",
+  "block.moremineralblocks.iron_brick_fence_gate": "Iron Brick Fence Gate",
+  "block.moremineralblocks.iron_brick_wall": "Iron Brick Wall",
 
   "block.moremineralblocks.emerald_stairs": "Emerald Stairs",
   "block.moremineralblocks.emerald_slab": "Emerald Slab",
@@ -38,10 +94,34 @@
   "block.moremineralblocks.emerald_wall": "Emerald Wall",
   "block.moremineralblocks.emerald_door": "Emerald Door",
   "block.moremineralblocks.emerald_trapdoor": "Emerald Trapdoor",
+
   "block.moremineralblocks.polished_emerald_block": "Polished Emerald Block",
-  "block.moremineralblocks.chiseled_emerald_block": "Chiseled Emerald Block",
+  "block.moremineralblocks.polished_emerald_stairs": "Polished Emerald Stairs",
+  "block.moremineralblocks.polished_emerald_slab": "Polished Emerald Slab",
+  "block.moremineralblocks.polished_emerald_fence": "Polished Emerald Fence",
+  "block.moremineralblocks.polished_emerald_fence_gate": "Polished Emerald Fence Gate",
+  "block.moremineralblocks.polished_emerald_wall": "Polished Emerald Wall",
+
   "block.moremineralblocks.calcified_emerald_block": "Calcified Emerald Block",
+  "block.moremineralblocks.calcified_emerald_stairs": "Calcified Emerald Stairs",
+  "block.moremineralblocks.calcified_emerald_slab": "Calcified Emerald Slab",
+  "block.moremineralblocks.calcified_emerald_fence": "Calcified Emerald Fence",
+  "block.moremineralblocks.calcified_emerald_fence_gate": "Calcified Emerald Fence Gate",
+  "block.moremineralblocks.calcified_emerald_wall": "Calcified Emerald Wall",
+
   "block.moremineralblocks.emerald_bricks": "Emerald Bricks",
+  "block.moremineralblocks.emerald_brick_stairs": "Emerald Brick Stairs",
+  "block.moremineralblocks.emerald_brick_slab": "Emerald Brick Slab",
+  "block.moremineralblocks.emerald_brick_fence": "Emerald Brick Fence",
+  "block.moremineralblocks.emerald_brick_fence_gate": "Emerald Brick Fence Gate",
+  "block.moremineralblocks.emerald_brick_wall": "Emerald Brick Wall",
+
+  "block.moremineralblocks.chiseled_emerald_block": "Chiseled Emerald Block",
+  "block.moremineralblocks.chiseled_emerald_stairs": "Chiseled Emerald Stairs",
+  "block.moremineralblocks.chiseled_emerald_slab": "Chiseled Emerald Slab",
+  "block.moremineralblocks.chiseled_emerald_fence": "Chiseled Emerald Fence",
+  "block.moremineralblocks.chiseled_emerald_fence_gate": "Chiseled Emerald Fence Gate",
+  "block.moremineralblocks.chiseled_emerald_wall": "Chiseled Emerald Wall",
 
   "block.moremineralblocks.amethyst_stairs": "Amethyst Stairs",
   "block.moremineralblocks.amethyst_slab": "Amethyst Slab",
@@ -50,20 +130,56 @@
   "block.moremineralblocks.amethyst_wall": "Amethyst Wall",
   "block.moremineralblocks.amethyst_door": "Amethyst Door",
   "block.moremineralblocks.amethyst_trapdoor": "Amethyst Trapdoor",
-  "block.moremineralblocks.polished_amethyst_block": "Polished Amethyst Block",
-  "block.moremineralblocks.calcified_amethyst_block": "Calcified Amethyst Block",
-  "block.moremineralblocks.amethyst_bricks": "Amethyst Bricks",
 
-  "block.moremineralblocks.lapis_stairs": "Lapis Lazuli Stairs",
-  "block.moremineralblocks.lapis_slab": "Lapis Lazuli Slab",
-  "block.moremineralblocks.lapis_fence": "Lapis Lazuli Fence",
-  "block.moremineralblocks.lapis_fence_gate": "Lapis Lazuli Fence Gate",
-  "block.moremineralblocks.lapis_wall": "Lapis Lazuli Wall",
-  "block.moremineralblocks.lapis_door": "Lapis Lazuli Door",
-  "block.moremineralblocks.lapis_trapdoor": "Lapis Lazuli Trapdoor",
-  "block.moremineralblocks.polished_lapis_block": "Polished Lapis Lazuli Block",
-  "block.moremineralblocks.calcified_lapis_block": "Calcified Lapis Lazuli Block",
-  "block.moremineralblocks.lapis_bricks": "Lapis Lazuli Bricks",
+  "block.moremineralblocks.polished_amethyst_block": "Polished Amethyst Block",
+  "block.moremineralblocks.polished_amethyst_stairs": "Polished Amethyst Stairs",
+  "block.moremineralblocks.polished_amethyst_slab": "Polished Amethyst Slab",
+  "block.moremineralblocks.polished_amethyst_fence": "Polished Amethyst Fence",
+  "block.moremineralblocks.polished_amethyst_fence_gate": "Polished Amethyst Fence Gate",
+  "block.moremineralblocks.polished_amethyst_wall": "Polished Amethyst Wall",
+
+  "block.moremineralblocks.calcified_amethyst_block": "Calcified Amethyst Block",
+  "block.moremineralblocks.calcified_amethyst_stairs": "Calcified Amethyst Stairs",
+  "block.moremineralblocks.calcified_amethyst_slab": "Calcified Amethyst Slab",
+  "block.moremineralblocks.calcified_amethyst_fence": "Calcified Amethyst Fence",
+  "block.moremineralblocks.calcified_amethyst_fence_gate": "Calcified Amethyst Fence Gate",
+  "block.moremineralblocks.calcified_amethyst_wall": "Calcified Amethyst Wall",
+
+  "block.moremineralblocks.amethyst_bricks": "Amethyst Bricks",
+  "block.moremineralblocks.amethyst_brick_stairs": "Amethyst Brick Stairs",
+  "block.moremineralblocks.amethyst_brick_slab": "Amethyst Brick Slab",
+  "block.moremineralblocks.amethyst_brick_fence": "Amethyst Brick Fence",
+  "block.moremineralblocks.amethyst_brick_fence_gate": "Amethyst Brick Fence Gate",
+  "block.moremineralblocks.amethyst_brick_wall": "Amethyst Brick Wall",
+
+  "block.moremineralblocks.lapis_stairs": "Lapis Stairs",
+  "block.moremineralblocks.lapis_slab": "Lapis Slab",
+  "block.moremineralblocks.lapis_fence": "Lapis Fence",
+  "block.moremineralblocks.lapis_fence_gate": "Lapis Fence Gate",
+  "block.moremineralblocks.lapis_wall": "Lapis Wall",
+  "block.moremineralblocks.lapis_door": "Lapis Door",
+  "block.moremineralblocks.lapis_trapdoor": "Lapis Trapdoor",
+
+  "block.moremineralblocks.polished_lapis_block": "Polished Lapis Block",
+  "block.moremineralblocks.polished_lapis_stairs": "Polished Lapis Stairs",
+  "block.moremineralblocks.polished_lapis_slab": "Polished Lapis Slab",
+  "block.moremineralblocks.polished_lapis_fence": "Polished Lapis Fence",
+  "block.moremineralblocks.polished_lapis_fence_gate": "Polished Lapis Fence Gate",
+  "block.moremineralblocks.polished_lapis_wall": "Polished Lapis Wall",
+
+  "block.moremineralblocks.calcified_lapis_block": "Calcified Lapis Block",
+  "block.moremineralblocks.calcified_lapis_stairs": "Calcified Lapis Stairs",
+  "block.moremineralblocks.calcified_lapis_slab": "Calcified Lapis Slab",
+  "block.moremineralblocks.calcified_lapis_fence": "Calcified Lapis Fence",
+  "block.moremineralblocks.calcified_lapis_fence_gate": "Calcified Lapis Fence Gate",
+  "block.moremineralblocks.calcified_lapis_wall": "Calcified Lapis Wall",
+
+  "block.moremineralblocks.lapis_bricks": "Lapis Bricks",
+  "block.moremineralblocks.lapis_brick_stairs": "Lapis Brick Stairs",
+  "block.moremineralblocks.lapis_brick_slab": "Lapis Brick Slab",
+  "block.moremineralblocks.lapis_brick_fence": "Lapis Brick Fence",
+  "block.moremineralblocks.lapis_brick_fence_gate": "Lapis Brick Fence Gate",
+  "block.moremineralblocks.lapis_brick_wall": "Lapis Brick Wall",
 
   "block.moremineralblocks.calcite_stairs": "Calcite Stairs",
   "block.moremineralblocks.calcite_slab": "Calcite Slab",
@@ -78,9 +194,27 @@
   "block.moremineralblocks.redstone_wall": "Redstone Wall",
   "block.moremineralblocks.redstone_door": "Redstone Door",
   "block.moremineralblocks.redstone_trapdoor": "Redstone Trapdoor",
+
   "block.moremineralblocks.polished_redstone_block": "Polished Redstone Block",
+  "block.moremineralblocks.polished_redstone_stairs": "Polished Redstone Stairs",
+  "block.moremineralblocks.polished_redstone_slab": "Polished Redstone Slab",
+  "block.moremineralblocks.polished_redstone_fence": "Polished Redstone Fence",
+  "block.moremineralblocks.polished_redstone_fence_gate": "Polished Redstone Fence Gate",
+  "block.moremineralblocks.polished_redstone_wall": "Polished Redstone Wall",
+
   "block.moremineralblocks.calcified_redstone_block": "Calcified Redstone Block",
+  "block.moremineralblocks.calcified_redstone_stairs": "Calcified Redstone Stairs",
+  "block.moremineralblocks.calcified_redstone_slab": "Calcified Redstone Slab",
+  "block.moremineralblocks.calcified_redstone_fence": "Calcified Redstone Fence",
+  "block.moremineralblocks.calcified_redstone_fence_gate": "Calcified Redstone Fence Gate",
+  "block.moremineralblocks.calcified_redstone_wall": "Calcified Redstone Wall",
+
   "block.moremineralblocks.redstone_bricks": "Redstone Bricks",
+  "block.moremineralblocks.redstone_brick_stairs": "Redstone Brick Stairs",
+  "block.moremineralblocks.redstone_brick_slab": "Redstone Brick Slab",
+  "block.moremineralblocks.redstone_brick_fence": "Redstone Brick Fence",
+  "block.moremineralblocks.redstone_brick_fence_gate": "Redstone Brick Fence Gate",
+  "block.moremineralblocks.redstone_brick_wall": "Redstone Brick Wall",
 
   "block.moremineralblocks.netherite_stairs": "Netherite Stairs",
   "block.moremineralblocks.netherite_slab": "Netherite Slab",
@@ -89,9 +223,27 @@
   "block.moremineralblocks.netherite_wall": "Netherite Wall",
   "block.moremineralblocks.netherite_door": "Netherite Door",
   "block.moremineralblocks.netherite_trapdoor": "Netherite Trapdoor",
+
   "block.moremineralblocks.polished_netherite_block": "Polished Netherite Block",
+  "block.moremineralblocks.polished_netherite_stairs": "Polished Netherite Stairs",
+  "block.moremineralblocks.polished_netherite_slab": "Polished Netherite Slab",
+  "block.moremineralblocks.polished_netherite_fence": "Polished Netherite Fence",
+  "block.moremineralblocks.polished_netherite_fence_gate": "Polished Netherite Fence Gate",
+  "block.moremineralblocks.polished_netherite_wall": "Polished Netherite Wall",
+
   "block.moremineralblocks.calcified_netherite_block": "Calcified Netherite Block",
+  "block.moremineralblocks.calcified_netherite_stairs": "Calcified Netherite Stairs",
+  "block.moremineralblocks.calcified_netherite_slab": "Calcified Netherite Slab",
+  "block.moremineralblocks.calcified_netherite_fence": "Calcified Netherite Fence",
+  "block.moremineralblocks.calcified_netherite_fence_gate": "Calcified Netherite Fence Gate",
+  "block.moremineralblocks.calcified_netherite_wall": "Calcified Netherite Wall",
+
   "block.moremineralblocks.netherite_bricks": "Netherite Bricks",
+  "block.moremineralblocks.netherite_brick_stairs": "Netherite Brick Stairs",
+  "block.moremineralblocks.netherite_brick_slab": "Netherite Brick Slab",
+  "block.moremineralblocks.netherite_brick_fence": "Netherite Brick Fence",
+  "block.moremineralblocks.netherite_brick_fence_gate": "Netherite Brick Fence Gate",
+  "block.moremineralblocks.netherite_brick_wall": "Netherite Brick Wall",
 
   "block.moremineralblocks.coal_stairs": "Coal Stairs",
   "block.moremineralblocks.coal_slab": "Coal Slab",
@@ -100,9 +252,27 @@
   "block.moremineralblocks.coal_wall": "Coal Wall",
   "block.moremineralblocks.coal_door": "Coal Door",
   "block.moremineralblocks.coal_trapdoor": "Coal Trapdoor",
+
   "block.moremineralblocks.polished_coal_block": "Polished Coal Block",
+  "block.moremineralblocks.polished_coal_stairs": "Polished Coal Stairs",
+  "block.moremineralblocks.polished_coal_slab": "Polished Coal Slab",
+  "block.moremineralblocks.polished_coal_fence": "Polished Coal Fence",
+  "block.moremineralblocks.polished_coal_fence_gate": "Polished Coal Fence Gate",
+  "block.moremineralblocks.polished_coal_wall": "Polished Coal Wall",
+
   "block.moremineralblocks.calcified_coal_block": "Calcified Coal Block",
+  "block.moremineralblocks.calcified_coal_stairs": "Calcified Coal Stairs",
+  "block.moremineralblocks.calcified_coal_slab": "Calcified Coal Slab",
+  "block.moremineralblocks.calcified_coal_fence": "Calcified Coal Fence",
+  "block.moremineralblocks.calcified_coal_fence_gate": "Calcified Coal Fence Gate",
+  "block.moremineralblocks.calcified_coal_wall": "Calcified Coal Wall",
+
   "block.moremineralblocks.coal_bricks": "Coal Bricks",
+  "block.moremineralblocks.coal_brick_stairs": "Coal Brick Stairs",
+  "block.moremineralblocks.coal_brick_slab": "Coal Brick Slab",
+  "block.moremineralblocks.coal_brick_fence": "Coal Brick Fence",
+  "block.moremineralblocks.coal_brick_fence_gate": "Coal Brick Fence Gate",
+  "block.moremineralblocks.coal_brick_wall": "Coal Brick Wall",
 
   "block.moremineralblocks.obsidian_stairs": "Obsidian Stairs",
   "block.moremineralblocks.obsidian_slab": "Obsidian Slab",
@@ -143,11 +313,27 @@
   "block.moremineralblocks.prismarine_brick_wall": "Prismarine Brick Wall",
   "block.moremineralblocks.dark_prismarine_wall": "Dark Prismarine Wall",
 
+
+
+
+
+
+
+
+
   "item.moremineralblocks.legendary_pickaxe": "Legendary Pickaxe",
   "item.moremineralblocks.legendary_shovel": "Legendary Shovel",
   "item.moremineralblocks.legendary_axe": "Legendary Axe",
   "item.moremineralblocks.legendary_hoe": "Legendary Hoe",
   "item.moremineralblocks.legendary_sword": "Legendary Sword",
+  "item.moremineralblocks.legendary_rocket": "Legendary Rocket",
+  "item.moremineralblocks.infinite_itemstack": "Infinite Itemstack",
+
+  "item.moremineralblocks.survival_debug_stick": "Debug Stick",
+  "item.moremineralblocks.survival_debug_stick.empty": "%s has no properties",
+  "item.moremineralblocks.survival_debug_stick.select": "selected \"%s\" (%s)",
+  "item.moremineralblocks.survival_debug_stick.update": "\"%s\" to %s",
+
   "item.moremineralblocks.wooden_longsword": "Wooden Longsword",
   "item.moremineralblocks.stone_longsword": "Stone Longsword",
   "item.moremineralblocks.iron_longsword": "Iron Longsword",
@@ -159,6 +345,7 @@
   "item.moremineralblocks.fiendblade_longsword": "Fiendblade",
   "item.moremineralblocks.chaos_orb": "Chaos Orb",
 
+
   "effect.moremineralblocks.slimey": "Slimey",
   "effect.moremineralblocks.teleportitis_dodge": "Teleportitis Dodge",
   "effect.moremineralblocks.double_damage_taken": "Double Damage Taken",
@@ -166,10 +353,7 @@
   "effect.moremineralblocks.chaos": "Chaos",
 
 
-  "entity.moremineralblocks.chaos_orb": "Chaos Orb",
+  "entity.moremineralblocks.chaos_orb": "Chaos Orb"
 
-  "item.moremineralblocks.survival_debug_stick": "Debug Stick",
-  "item.moremineralblocks.survival_debug_stick.empty": "%s has no properties",
-  "item.moremineralblocks.survival_debug_stick.select": "selected \"%s\" (%s)",
-  "item.moremineralblocks.survival_debug_stick.update": "\"%s\" to %s"
+
 }

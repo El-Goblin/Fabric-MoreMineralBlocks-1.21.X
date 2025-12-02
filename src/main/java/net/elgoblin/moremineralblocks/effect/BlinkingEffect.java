@@ -1,30 +1,22 @@
 package net.elgoblin.moremineralblocks.effect;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AttributeContainer;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.damage.DamageTracker;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
-import java.util.Map;
-
-public class PersistentChorusFruitEffect extends StatusEffect {
+public class BlinkingEffect extends StatusEffect {
     private Integer counter = 0;
 
-    public PersistentChorusFruitEffect(StatusEffectCategory category, int color) {
+    public BlinkingEffect(StatusEffectCategory category, int color) {
         super(category, color);
         counter = 0;
     }

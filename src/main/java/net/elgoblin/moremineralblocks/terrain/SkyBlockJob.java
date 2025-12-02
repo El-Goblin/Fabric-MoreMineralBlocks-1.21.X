@@ -2,6 +2,8 @@ package net.elgoblin.moremineralblocks.terrain;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.registry.Registry;
@@ -9,9 +11,11 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerChunkManager;
+import net.minecraft.server.world.ServerLightingProvider;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -66,19 +70,22 @@ public class SkyBlockJob implements TerrainJob{
         int chunksLoaded = positionsTicketed.size();
         timer++;
 
-        if (chunksLoaded != chunkPositions.size()) {
-            int[] newPosition = chunkPositions.get(this.closestChunk);
-            ChunkPos chunkPos = new ChunkPos(this.center.x + newPosition[0], this.center.z + newPosition[1]);
-            ServerChunkManager chunkManager = (ServerChunkManager) world.getChunkManager();
-            chunkManager.addTicket(ChunkTicketType.FORCED, chunkPos, 2, chunkPos);
-            positionsTicketed.add(chunkPos);
-            closestChunk++;
-            return 1;
+        for (int i = 0 ; i < 5 ; i++) {
+            if (chunksLoaded != chunkPositions.size()) {
+                int[] newPosition = chunkPositions.get(this.closestChunk);
+                ChunkPos chunkPos = new ChunkPos(this.center.x + newPosition[0], this.center.z + newPosition[1]);
+                ServerChunkManager chunkManager = (ServerChunkManager) world.getChunkManager();
+                chunkManager.addTicket(ChunkTicketType.FORCED, chunkPos, 2, chunkPos);
+                positionsTicketed.add(chunkPos);
+                closestChunk++;
+                chunksLoaded = positionsTicketed.size();
+            }
+            else {
+                closestChunk = 0;
+                return 0;
+            }
         }
-        else {
-            closestChunk = 0;
-            return 0;
-        }
+        return 5;
     }
 
     public boolean process(int maxBlockOperations) {
@@ -96,43 +103,43 @@ public class SkyBlockJob implements TerrainJob{
             ServerChunkManager chunkManager = (ServerChunkManager) world.getChunkManager();
             WorldChunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
             ServerWorld serverWorld = (ServerWorld) world;
-            serverWorld.getPointOfInterestStorage().remove(chunkPos.getStartPos());
-//            chunkManager.chunkLoadingManager.createLoader(ChunkStatus.EMPTY, chunkPos);
-//            chunkManager.chunkLoadingManager.updateChunks();
 
+            serverWorld.getPointOfInterestStorage().remove(chunkPos.getStartPos());
             ChunkSection[] sections = chunk.getSectionArray();
             Registry<Biome> registry = world.getRegistryManager().get(RegistryKeys.BIOME);
             ReadableContainer<RegistryEntry<Biome>> readableContainer = new PalettedContainer<>(registry.getIndexedEntries(), registry.entryOf(BiomeKeys.SNOWY_TAIGA), PalettedContainer.PaletteProvider.BIOME);
+            Box chunkBox = new Box(chunkPos.getStartX(), 0, chunkPos.getStartZ(), chunkPos.getEndX() + 1, world.getHeight(), chunkPos.getEndZ() + 1);
+            for (Entity entity : world.getOtherEntities(this.player, chunkBox)) {
+                entity.remove(Entity.RemovalReason.DISCARDED);
+            }
 
             chunk.clear();
             for (int i = 0 ; i < sections.length ; i++) {
                 ChunkSection empty = new ChunkSection(new PalettedContainer<>(Block.STATE_IDS, Blocks.AIR.getDefaultState(), PalettedContainer.PaletteProvider.BLOCK_STATE), readableContainer);
                 sections[i] = empty;
             }
+            chunk.setLightOn(false);
+            ServerLightingProvider lighting = chunkManager.getLightingProvider();
+            lighting.enqueue(chunkPos.x, chunkPos.z);
             chunk.setNeedsSaving(true);
 
             ChunkDataS2CPacket packet = new ChunkDataS2CPacket(chunk, chunkManager.getLightingProvider(), null, null);
-//            if (this.player == null) {
-//                System.out.println("El player es null en SkyBlockJob");
-//            }
             chunkManager.sendToNearbyPlayers(this.player, packet);
 
             chunksProcessed++;
             this.closestChunk++;
         }
         if (chunksProcessed == chunkPositions.size()) {
-//            this.player.sendMessage(Text.of("Comenzando la limpieza"));
             ServerChunkManager chunkManager = (ServerChunkManager) world.getChunkManager();
             for (ChunkPos chunkPos : positionsTicketed) {
                 chunkManager.removeTicket(ChunkTicketType.FORCED, chunkPos, 2, chunkPos);
             }
             for (int i = 0 ; i < 200 ; i++) {
-                chunkManager.tick(() -> true, true);
+                chunkManager.tick(() -> false, true);
             }
             this.chunkPositions.clear();
             this.positionsTicketed.clear();
             this.world = null;
-//            this.player.sendMessage(Text.of("Terminando la limpieza"));
             this.player = null;
             return true;
         }

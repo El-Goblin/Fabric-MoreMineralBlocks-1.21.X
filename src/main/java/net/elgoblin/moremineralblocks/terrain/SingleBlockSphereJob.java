@@ -1,6 +1,8 @@
 package net.elgoblin.moremineralblocks.terrain;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -14,19 +16,21 @@ public class SingleBlockSphereJob implements TerrainJob{
     private Queue<int[]> advanceZ;
     private Queue<int[]> advanceEquals;
     private final World world;
+    private final PlayerEntity player;
     private final BlockPos center;
     private final int radius;
     private final int radiusSquared;
     private Block toPlace;
     int blocksAdvanced;
 
-    public SingleBlockSphereJob(World world, BlockPos center, int radius, Block toPlace) {
+    public SingleBlockSphereJob(World world, PlayerEntity player, BlockPos center, int radius, Block toPlace) {
         this.world = world;
         this.center = center;
         this.radius = radius;
         this.radiusSquared = radius * radius;
         this.toPlace = toPlace;
         this.blocksAdvanced = 0;
+        this.player = player;
 
         this.advanceX = new ArrayDeque<>();
         this.advanceZ = new ArrayDeque<>();
@@ -75,7 +79,11 @@ public class SingleBlockSphereJob implements TerrainJob{
             }
             blocksProcessed += processEquals(positionToModify);
         }
-        return advanceX.isEmpty() && advanceZ.isEmpty();
+        if (advanceX.isEmpty() && advanceZ.isEmpty()) {
+            player.sendMessage(Text.of(String.format("%d", radius)));
+            return true;
+        }
+        return false;
     }
 
     private int processY(BlockPos.Mutable positionToModify) {

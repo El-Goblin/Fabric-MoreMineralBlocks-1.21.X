@@ -1,6 +1,5 @@
 package net.elgoblin.moremineralblocks;
 
-import net.elgoblin.moremineralblocks.attribute.ModEntityAttributes;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
@@ -49,7 +48,6 @@ public class MoreMineralBlocks implements ModInitializer {
 		ModEffects.registerEffects();
 		ModEntities.registerModEntities();
 		ModLootTableModifiers.modifyLootTables();
-		ModEntityAttributes.registerEntityAttributes();
 		ModParticles.registerParticles();
 		MoreMineralBlocksStructurePlacement.registerStructurePlacementTypes();
 		MoreMineralBlocksStructure.registerStructureTypes();
@@ -64,7 +62,7 @@ public class MoreMineralBlocks implements ModInitializer {
 
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
-			if (entity.hasStatusEffect(ModEffects.DOUBLE_DAMAGE_TAKEN) && !blocked) {
+			if (entity.hasStatusEffect(ModEffects.FRAGILE) && !blocked) {
 				DynamicRegistryManager registryManager = entity.getWorld().getRegistryManager();
 				DamageSources sources = new DamageSources(registryManager);
 				DamageSource newSource = sources.generic();
@@ -106,7 +104,7 @@ public class MoreMineralBlocks implements ModInitializer {
 //				}
 //			}
 
-			if (entity.hasStatusEffect(ModEffects.TELEPORTITIS_DODGE) && !blocked) {
+			if (entity.hasStatusEffect(ModEffects.COUNTER_BLINK) && !blocked) {
 				World world = entity.getWorld();
 				if (!world.isClient) {
 					for (int i = 0; i < 16; i++) {
