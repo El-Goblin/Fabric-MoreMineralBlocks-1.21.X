@@ -345,13 +345,10 @@
   "item.moremineralblocks.fiendblade_longsword": "Fiendblade",
   "item.moremineralblocks.chaos_orb": "Chaos Orb",
 
-
   "effect.moremineralblocks.slimey": "Slimey",
-  "effect.moremineralblocks.teleportitis_dodge": "Teleportitis Dodge",
-  "effect.moremineralblocks.double_damage_taken": "Double Damage Taken",
-  "effect.moremineralblocks.chorus_fruit_tp": "Chorus Fruit Tp",
-  "effect.moremineralblocks.chaos": "Chaos",
-
+  "effect.moremineralblocks.blinking": "Blinking",
+  "effect.moremineralblocks.counter_blink": "Counter Blink",
+  "effect.moremineralblocks.fragile": "Fragile",
 
   "entity.moremineralblocks.chaos_orb": "Chaos Orb"
 

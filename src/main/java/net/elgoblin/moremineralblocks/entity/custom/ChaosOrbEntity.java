@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks.entity.custom;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.StateSaverAndLoader;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
@@ -106,10 +107,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //            this::crash
     ));
     private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
-            // Relevante para facilitar codigo que skyBlock sea el primero de la lista
-            this::createSkyblock,
             this::beginThunderstorm
-            //this::randomizePlayersPositions
+//            this::randomizePlayersPositions
+//            this::createSkyblock
+            // Skyblock se va a ir agregando en cada llamado hasta que salga una vez.
     ));
     private List<BiConsumer<HitResult, Box>> targetsOrSelfChaosEffects = new ArrayList<>(List.of(
             this::counterBlinking,
@@ -139,8 +140,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void dropSkyBlock() {
-        if (skyBlockHappened) {
-            this.globalChaosEffects.removeFirst();
+        if (!MoreMineralBlocks.getStateSaverAndLoader(this.getServer()).hasSkyblockHappened()) {
+            this.globalChaosEffects.add(this::createSkyblock);
         }
     }
 
@@ -149,27 +150,29 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         super.tick();
 
         if (this.tunneler) {
-            BlockPos center = new BlockPos(new Vec3i((int) this.getX(), (int) this.getY(), (int) this.getZ()));
+            if (!this.getWorld().isClient) {
+                BlockPos center = new BlockPos(new Vec3i((int) this.getX(), (int) this.getY(), (int) this.getZ()));
 
-            for (int x = -5; x <= 5; x++) {
-                for (int z = -5; z <= 5; z++) {
-                    for (int y = -5; y <= 5; y++) {
-                        if (x * x + y * y + z * z > 25) {
-                            continue;
+                for (int x = -5; x <= 5; x++) {
+                    for (int z = -5; z <= 5; z++) {
+                        for (int y = -5; y <= 5; y++) {
+                            if (x * x + y * y + z * z > 25) {
+                                continue;
+                            }
+
+                            BlockPos currentBlock = center.add(x, y, z);
+                            this.tunnelQueue.add(currentBlock);
                         }
-
-                        BlockPos currentBlock = center.add(x, y, z);
-                        this.tunnelQueue.add(currentBlock);
                     }
                 }
-            }
-            World world = this.getWorld();
-            while (!tunnelQueue.isEmpty()) {
-                BlockPos blockToRemove = tunnelQueue.pop();
-                BlockState currentState = world.getBlockState(blockToRemove);
+                World world = this.getWorld();
+                while (!tunnelQueue.isEmpty()) {
+                    BlockPos blockToRemove = tunnelQueue.pop();
+                    BlockState currentState = world.getBlockState(blockToRemove);
 
-                if (!currentState.isAir()) {
-                world.setBlockState(blockToRemove, Blocks.AIR.getDefaultState(), 50);
+                    if (!currentState.isAir()) {
+                        world.setBlockState(blockToRemove, Blocks.AIR.getDefaultState(), 50);
+                    }
                 }
             }
         }
@@ -725,7 +728,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //        }
 
         if (kase > 17 && kase < 20 && this.getOwner() != null) {
-            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 2);
+            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 1);
             fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
         }
         else {
@@ -863,6 +866,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                 template.place((ServerWorldAccess) world, chunkPos.getBlockPos(4, 63, 4), chunkPos.getBlockPos(4,63,4), settings, world.getRandom(), 50);
             }
             TerrainManager.TERRAIN_MANAGER.addJob(new SkyBlockJob(world, chunkPos, (PlayerEntity) this.getOwner()));
+
+            MoreMineralBlocks.getStateSaverAndLoader(this.getServer()).setSkyBlockHappened(true);
         }
     }
 

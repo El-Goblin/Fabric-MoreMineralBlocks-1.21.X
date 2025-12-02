@@ -15,10 +15,12 @@ import net.elgoblin.moremineralblocks.terrain.TerrainManager;
 import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -32,10 +34,11 @@ import net.minecraft.world.event.GameEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MoreMineralBlocks implements ModInitializer {
+public class MoreMineralBlocks implements ModInitializer, ServerWorldEvents.Load{
 	public static final String MOD_ID = "moremineralblocks";
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	private static StateSaverAndLoader stateSaverAndLoader;
 
 	@Override
 	public void onInitialize() {
@@ -180,5 +183,17 @@ public class MoreMineralBlocks implements ModInitializer {
 //			}
 //			return ActionResult.PASS;
 //        });
+	}
+
+	@Override
+	public void onWorldLoad(MinecraftServer minecraftServer, ServerWorld serverWorld) {
+		stateSaverAndLoader = StateSaverAndLoader.loadSave(minecraftServer);
+	}
+
+	public static StateSaverAndLoader getStateSaverAndLoader(MinecraftServer minecraftServer) {
+		if (stateSaverAndLoader == null) {
+			stateSaverAndLoader = StateSaverAndLoader.loadSave(minecraftServer);
+		}
+		return stateSaverAndLoader;
 	}
 }
