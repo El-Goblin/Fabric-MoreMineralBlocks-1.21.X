@@ -14,6 +14,7 @@ import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.server.world.ServerLightingProvider;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.TypeFilter;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
@@ -109,7 +110,9 @@ public class SkyBlockJob implements TerrainJob{
             Registry<Biome> registry = world.getRegistryManager().get(RegistryKeys.BIOME);
             ReadableContainer<RegistryEntry<Biome>> readableContainer = new PalettedContainer<>(registry.getIndexedEntries(), registry.entryOf(BiomeKeys.SNOWY_TAIGA), PalettedContainer.PaletteProvider.BIOME);
             Box chunkBox = new Box(chunkPos.getStartX(), 0, chunkPos.getStartZ(), chunkPos.getEndX() + 1, world.getHeight(), chunkPos.getEndZ() + 1);
-            for (Entity entity : world.getOtherEntities(this.player, chunkBox)) {
+//            for (Entity entity : world.getOtherEntities(this.player, chunkBox)) {
+
+            for (Entity entity : world.getOtherEntities(player, chunkBox, entity -> !(entity instanceof PlayerEntity))) {
                 entity.remove(Entity.RemovalReason.DISCARDED);
             }
 
