@@ -38,7 +38,7 @@ public class MoreMineralBlocks implements ModInitializer, ServerWorldEvents.Load
 	public static final String MOD_ID = "moremineralblocks";
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	private static StateSaverAndLoader stateSaverAndLoader;
+//	private static StateSaverAndLoader stateSaverAndLoader;
 
 	@Override
 	public void onInitialize() {
@@ -187,13 +187,10 @@ public class MoreMineralBlocks implements ModInitializer, ServerWorldEvents.Load
 
 	@Override
 	public void onWorldLoad(MinecraftServer minecraftServer, ServerWorld serverWorld) {
-		stateSaverAndLoader = StateSaverAndLoader.loadSave(minecraftServer);
+		StateSaverAndLoader.loadSave(minecraftServer);
 	}
 
 	public static StateSaverAndLoader getStateSaverAndLoader(MinecraftServer minecraftServer) {
-		if (stateSaverAndLoader == null) {
-			stateSaverAndLoader = StateSaverAndLoader.loadSave(minecraftServer);
-		}
-		return stateSaverAndLoader;
+		return StateSaverAndLoader.loadSave(minecraftServer);
 	}
 }

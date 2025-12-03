@@ -1,7 +1,5 @@
 package net.elgoblin.moremineralblocks;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
@@ -15,12 +13,6 @@ public class StateSaverAndLoader extends PersistentState {
     private StateSaverAndLoader(boolean skyBlockHappened) {
         this.skyBlockHappened = skyBlockHappened;
     }
-
-    private static final Type<StateSaverAndLoader> type = new Type<>(
-            StateSaverAndLoader::createNew,
-            StateSaverAndLoader::createFromNbt,
-            null
-    );
 
     public static StateSaverAndLoader createNew() {
         return new StateSaverAndLoader();
@@ -36,17 +28,17 @@ public class StateSaverAndLoader extends PersistentState {
 
     public void setSkyBlockHappened(boolean value) {
         skyBlockHappened = value;
-        markDirty(); // important: marks the data for saving
+        markDirty();
     }
 
-    // CODEC — describes how to read/write this state
-    public static final Codec<StateSaverAndLoader> CODEC = RecordCodecBuilder.create(instance ->
-            instance.group(
-                    Codec.BOOL
-                            .fieldOf("skyblock_happened")
-                            .forGetter(state -> state.skyBlockHappened)
-            ).apply(instance, StateSaverAndLoader::new)
-    );
+//    // CODEC — describes how to read/write this state
+//    public static final Codec<StateSaverAndLoader> CODEC = RecordCodecBuilder.create(instance ->
+//            instance.group(
+//                    Codec.BOOL
+//                            .fieldOf("skyblock_happened")
+//                            .forGetter(state -> state.skyBlockHappened)
+//            ).apply(instance, StateSaverAndLoader::new)
+//    );
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
@@ -60,8 +52,15 @@ public class StateSaverAndLoader extends PersistentState {
         );
     }
 
-    public static StateSaverAndLoader loadSave(MinecraftServer server){
+    public static StateSaverAndLoader loadSave(MinecraftServer server) {
         PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();
+
+        PersistentState.Type<StateSaverAndLoader> type = new PersistentState.Type<>(
+                StateSaverAndLoader::createNew,
+                StateSaverAndLoader::createFromNbt,
+                null
+        );
+
         return stateManager.getOrCreate(type, MoreMineralBlocks.MOD_ID);
     }
 }
