@@ -117,25 +117,25 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //            this::adventureGamemode
 //            this::onanaHands,
             this::blinking,
-            this::goDownXBlocks
+            this::moveXBlocks
     ));
 
 
     public ChaosOrbEntity(EntityType<? extends ChaosOrbEntity> entityType, World world) {
         super(entityType, world);
-        this.addSkyBlock();
+        //this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
     public ChaosOrbEntity(World world, LivingEntity owner) {
         super(ModEntities.CHAOS_ORB, owner, world);
-        this.addSkyBlock();
+        //this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
     public ChaosOrbEntity(World world, double x, double y, double z) {
         super(ModEntities.CHAOS_ORB, x, y, z, world);
-        this.addSkyBlock();
+        //this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
@@ -405,10 +405,6 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     }
                     break;
 
-                case "minecraft:ghast":
-                    spawnsToPerform--;
-                    break;
-
                 case "minecraft:evoker", "minecraft:ravager":
                     spawnsToPerform-=2;
                     break;
@@ -446,8 +442,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
 
-    private void goDownXBlocks(HitResult hitResult, Box boundingBox) {
+    private void moveXBlocks(HitResult hitResult, Box boundingBox) {
         List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
+
+        boolean goDown = this.random.nextBoolean();
 
         if (entities.isEmpty() && this.getOwner() != null) {
             entities.add((LivingEntity) this.getOwner());
@@ -463,14 +461,18 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                 ServerWorld server = this.getServer().getWorld(entity.getWorld().getRegistryKey());
                 TeleportTarget teleportTarget = new TeleportTarget(server,
                         new Vec3d(entity.getX(),
-                                entity.getY() - 20.0,
+                                entity.getY() + (goDown ? -20 : 20),
                                 entity.getZ()),
                         new Vec3d(0, 0, 0),
                         entity.getYaw(),
                         entity.getPitch(),
                         TeleportTarget.NO_OP);
                 entity.teleportTo(teleportTarget);
-                entity.sendMessage(Text.of("-20"));
+                if (goDown) {
+                    entity.sendMessage(Text.of("-20"));
+                } else {
+                    entity.sendMessage(Text.of("+20"));
+                }
             }
         }
 
@@ -585,8 +587,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void xp(HitResult hitResult) {
-        float prizeMultiplier = (int) Math.pow((random.nextFloat()+1)*3,2);
-        ExperienceOrbEntity.spawn((ServerWorld) this.getWorld(), this.getPos(), (int) (random.nextBetween(128, 256) * prizeMultiplier));
+        //float prizeMultiplier = (int) Math.pow((random.nextFloat()+1),5);
+        //ExperienceOrbEntity.spawn((ServerWorld) this.getWorld(), this.getPos(), (int) (random.nextBetween(32, 128) * prizeMultiplier));
+        // El segundo boostea ligeramente las chances para arriba
+        ExperienceOrbEntity.spawn((ServerWorld) this.getWorld(), this.getPos(), (int) Math.pow(Math.min(random.nextBetween(8,32), random.nextBetween(16,32)),3));
     }
 
     private void smallPrize(HitResult hitResult) {
@@ -595,13 +599,14 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         prizes.add(new ItemStack(Items.BONE, 48));
         prizes.add(new ItemStack(Items.COAL, 64));
         prizes.add(new ItemStack(Items.STONE, 64));
-        prizes.add(new ItemStack(Items.SOUL_SAND, 32));
-        prizes.add(new ItemStack(Items.MAGMA_BLOCK, 32));
-        prizes.add(new ItemStack(Items.OBSIDIAN, 10));
-        prizes.add(new ItemStack(Items.RED_BED, 1));
+        prizes.add(new ItemStack(Items.SOUL_SAND, 64));
+        prizes.add(new ItemStack(Items.MAGMA_BLOCK, 64));
+        prizes.add(new ItemStack(Items.OBSIDIAN, 20));
+        prizes.add(new ItemStack(Items.BLUE_BED, 1));
+        prizes.add(new ItemStack(Items.ENDER_PEARL, 16));
         prizes.add(new ItemStack(Items.POINTED_DRIPSTONE, 12));
         prizes.add(new ItemStack(Items.TURTLE_HELMET, 1));
-        prizes.add(new ItemStack(Items.SCAFFOLDING, 32));
+        prizes.add(new ItemStack(Items.SCAFFOLDING, 64));
 
         int nextItem = this.random.nextBetween(0, prizes.size() -1);
         ItemStack reward = prizes.get(nextItem);
@@ -609,6 +614,11 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         if (reward.getItem() == Items.POINTED_DRIPSTONE) {
             this.dropStack(new ItemStack(Items.LAVA_BUCKET, 1), 0);
             this.dropStack(new ItemStack(Items.WATER_BUCKET, 1), 0);
+            this.dropStack(new ItemStack(Items.CAULDRON, 1), 0);
+        }
+        if (reward.getItem() == Items.STONE) {
+            this.dropStack(new ItemStack(Items.STONE, 64), 0);
+            this.dropStack(new ItemStack(Items.STONE, 64), 0);
         }
 
         this.dropStack(reward, 0);
@@ -984,7 +994,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_COUNTER_BLINK_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
-            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.COUNTER_BLINK, 24000, 0);
+            StatusEffectInstance effect = new StatusEffectInstance(ModEffects.COUNTER_BLINK, 9600, 0);
             if (entity != null) {
                 entity.addStatusEffect(effect);
             }
