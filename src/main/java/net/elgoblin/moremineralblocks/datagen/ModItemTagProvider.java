@@ -28,5 +28,14 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         getOrCreateTagBuilder(ItemTags.AXES).add(ModItems.LEGENDARY_AXE);
         getOrCreateTagBuilder(ItemTags.HOES).add(ModItems.LEGENDARY_HOE);
         getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.LEGENDARY_SWORD);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.WOODEN_LONGSWORD);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.STONE_LONGSWORD);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.GOLDEN_LONGSWORD);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.IRON_LONGSWORD);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.DIAMOND_LONGSWORD);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.NETHERITE_LONGSWORD);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.FIENDBLADE_LONGSWORD);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.FIRE_DRAGONSWORD_LONGSWORD);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.FLAMEBERGE_LONGSWORD);
     }
 }

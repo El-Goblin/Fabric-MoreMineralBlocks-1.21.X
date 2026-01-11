@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "S": {
+      "item": "minecraft:golden_sword"
+    }
+  },
+  "pattern": [
+    "  G",
+    " G ",
+    "S  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "moremineralblocks:golden_longsword"
+  }
+}

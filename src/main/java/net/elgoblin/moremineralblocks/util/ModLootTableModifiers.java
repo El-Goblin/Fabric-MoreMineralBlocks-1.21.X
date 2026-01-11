@@ -94,6 +94,12 @@ public class ModLootTableModifiers {
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(16.0f, 32.0f)).build());
 
+            LootPool.Builder endCity = LootPool.builder()
+                    .rolls(ConstantLootNumberProvider.create(1))
+                    .conditionally(RandomChanceLootCondition.builder(1f))
+                    .with(ItemEntry.builder(ModItems.CHAOS_ORB))
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(24f, 48f)).build());
+
             LootPool.Builder trialChambers = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
                     .conditionally(RandomChanceLootCondition.builder(0.25f))
@@ -102,19 +108,25 @@ public class ModLootTableModifiers {
 
             LootPool.Builder fishingJunk = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.15f))
+                    .conditionally(RandomChanceLootCondition.builder(0.33f))
+                    .with(ItemEntry.builder(ModItems.CHAOS_ORB))
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
+            LootPool.Builder fishingFish = LootPool.builder()
+                    .rolls(ConstantLootNumberProvider.create(1))
+                    .conditionally(RandomChanceLootCondition.builder(0.1f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 
             LootPool.Builder fishingTreasure = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.4f))
+                    .conditionally(RandomChanceLootCondition.builder(0.75f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
-                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0f, 6.0f)).build());
 
             LootPool.Builder piglinBartering = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(0.15f))
+                    .conditionally(RandomChanceLootCondition.builder(0.10f))
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0f, 8.0f)).build());
 
@@ -320,16 +332,27 @@ public class ModLootTableModifiers {
                 tableBuilder.pool(trialChambers.build());
             }
 
-            // Fishing Junk
+            // End Cities
+
+            if (LootTables.END_CITY_TREASURE_CHEST.equals(key)) {
+                tableBuilder.pool(endCity.build());
+            }
+
+            // Sheep
+            if (LootTables.PINK_SHEEP_ENTITY.equals(key)) {
+                tableBuilder.pool(fishingFish.build());
+            }
+
+            // Fishing
 
             if (LootTables.FISHING_JUNK_GAMEPLAY.equals(key)) {
                 tableBuilder.pool(fishingJunk.build());
             }
-
-            // Fishing Treasure
-
             if (LootTables.FISHING_TREASURE_GAMEPLAY.equals(key)) {
                 tableBuilder.pool(fishingTreasure.build());
+            }
+            if (LootTables.FISHING_FISH_GAMEPLAY.equals(key)) {
+                tableBuilder.pool(fishingFish.build());
             }
 
             // Piglin Bartering

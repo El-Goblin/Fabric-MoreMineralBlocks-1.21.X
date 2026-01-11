@@ -1,5 +1,14 @@
 {
   "values": [
-    "moremineralblocks:legendary_sword"
+    "moremineralblocks:legendary_sword",
+    "moremineralblocks:wooden_longsword",
+    "moremineralblocks:stone_longsword",
+    "moremineralblocks:golden_longsword",
+    "moremineralblocks:iron_longsword",
+    "moremineralblocks:diamond_longsword",
+    "moremineralblocks:netherite_longsword",
+    "moremineralblocks:fiendblade_longsword",
+    "moremineralblocks:fire_dragonsword_longsword",
+    "moremineralblocks:flameberge_longsword"
   ]
 }

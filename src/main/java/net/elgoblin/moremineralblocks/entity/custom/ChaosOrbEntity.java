@@ -1,7 +1,6 @@
 package net.elgoblin.moremineralblocks.entity.custom;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
-import net.elgoblin.moremineralblocks.StateSaverAndLoader;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
@@ -74,7 +73,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             "minecraft:resistance", ModParticles.CHAOS_ORB_RESISTANCE_PARTICLE,
             "minecraft:speed", ModParticles.CHAOS_ORB_SPEED_PARTICLE,
             "minecraft:strength", ModParticles.CHAOS_ORB_STRENGTH_PARTICLE);
-    private Random random = Random.create();
+    private final Random random = Random.create();
 
     private boolean tunneler = false;
     private LinkedList<BlockPos> tunnelQueue = new LinkedList<>();
@@ -107,8 +106,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //            this::crash
     ));
     private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
-            this::beginThunderstorm
-//            this::randomizePlayersPositions
+            this::beginThunderstorm,
+            this::randomizePlayersPositions
 //            this::createSkyblock
             // Skyblock se va a ir agregando en cada llamado hasta que salga una vez.
     ));
@@ -479,25 +478,14 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void randomizePlayersPositions(HitResult hitResult) {
-        List<ServerPlayerEntity> players = this.getServer().getPlayerManager().getPlayerList();
-
-        for (ServerPlayerEntity playerEntity : players) {
-            if (playerEntity == null) {
-                continue;
-            }
-            ServerWorld dimension = playerEntity.getServer().getWorld(playerEntity.getWorld().getRegistryKey());
-            TeleportTarget teleportTarget = new TeleportTarget(dimension,
-                    new Vec3d((double)this.random.nextBetween((int) (playerEntity.getX()-2000.0D), (int) (playerEntity.getX()+2000.0D)),
-                            playerEntity.getY(),
-                            (double)this.random.nextBetween((int) (playerEntity.getZ()-2000.0D), (int) (playerEntity.getZ()+2000.0D))),
-                    new Vec3d(0, 0, 0),
-                    playerEntity.getYaw(),
-                    playerEntity.getPitch(),
-                    TeleportTarget.NO_OP);
-            playerEntity.teleportTo(teleportTarget);
-            playerEntity.sendMessage(Text.of("tpeado"));
+        int forceTeleport = random.nextInt(20);
+        if (forceTeleport == 0 && this.getOwner() instanceof PlayerEntity) {
+            // Notar que de esta forma se aumenta la estadistica de veces usadas el item. Me parece correcto
+            ModItems.CHAOS_MIRROR.use(this.getWorld(), (PlayerEntity) this.getOwner(), Hand.MAIN_HAND);
         }
-
+        else {
+            this.dropStack(ModItems.CHAOS_MIRROR.getDefaultStack());
+        }
     }
 
     private void applyBeaconEffect(HitResult hitResult, Box boundingBox) {

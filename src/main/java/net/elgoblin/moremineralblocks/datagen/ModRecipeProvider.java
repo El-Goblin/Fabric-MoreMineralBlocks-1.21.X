@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks.datagen;
 
 import net.elgoblin.moremineralblocks.block.ModBlocks;
+import net.elgoblin.moremineralblocks.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Block;
@@ -15,7 +16,11 @@ import net.minecraft.recipe.BlastingRecipe;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.book.RecipeCategory;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -799,8 +804,58 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PRISMARINE_BRICK_WALL, Blocks.PRISMARINE_BRICKS);
         offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, ModBlocks.DARK_PRISMARINE_WALL, Blocks.DARK_PRISMARINE);
 
+        // OTHER
 
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.TRANSPORTATION, ModItems.MAGIC_MIRROR, 1)
+                .input(ModItems.MIRROR)
+                .criterion(hasItem(ModItems.MIRROR), conditionsFromItem(ModItems.MIRROR))
+                .offerTo(exporter);
 
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.WOODEN_LONGSWORD)
+                .pattern("  P")
+                .pattern(" P ")
+                .pattern("S  ")
+                .input('S', Items.WOODEN_SWORD)
+                .input('P', ItemTags.PLANKS)
+                .criterion(hasItem(Items.WOODEN_SWORD), conditionsFromItem(Items.WOODEN_SWORD))
+                .offerTo(exporter);
 
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.STONE_LONGSWORD)
+                .pattern("  C")
+                .pattern(" C ")
+                .pattern("S  ")
+                .input('S', Items.STONE_SWORD)
+                .input('C', ItemTags.STONE_TOOL_MATERIALS)
+                .criterion(hasItem(Items.STONE_SWORD), conditionsFromItem(Items.STONE_SWORD))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.IRON_LONGSWORD)
+                .pattern("  I")
+                .pattern(" I ")
+                .pattern("S  ")
+                .input('S', Items.IRON_SWORD)
+                .input('I', Items.IRON_INGOT)
+                .criterion(hasItem(Items.IRON_SWORD), conditionsFromItem(Items.IRON_SWORD))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.GOLDEN_LONGSWORD)
+                .pattern("  G")
+                .pattern(" G ")
+                .pattern("S  ")
+                .input('S', Items.GOLDEN_SWORD)
+                .input('G', Items.GOLD_INGOT)
+                .criterion(hasItem(Items.GOLDEN_SWORD), conditionsFromItem(Items.GOLDEN_SWORD))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.DIAMOND_LONGSWORD)
+                .pattern("  D")
+                .pattern(" D ")
+                .pattern("S  ")
+                .input('S', Items.DIAMOND_SWORD)
+                .input('D', Items.DIAMOND)
+                .criterion(hasItem(Items.DIAMOND_SWORD), conditionsFromItem(Items.DIAMOND_SWORD))
+                .offerTo(exporter);
+
+        offerNetheriteUpgradeRecipe(exporter, ModItems.DIAMOND_LONGSWORD, RecipeCategory.COMBAT,ModItems.NETHERITE_LONGSWORD);
     }
 }

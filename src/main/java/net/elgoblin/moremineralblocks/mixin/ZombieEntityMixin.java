@@ -25,7 +25,7 @@ public class ZombieEntityMixin extends HostileEntity {
     at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/ZombieEntity;equipStack(Lnet/minecraft/entity/EquipmentSlot;Lnet/minecraft/item/ItemStack;)V"),
     index = 1)
     private ItemStack replaceSwordForFlameberge(ItemStack originalEquipment) {
-        if (originalEquipment.getItem() == Items.IRON_SWORD && random.nextInt(1) == 0) {
+        if (originalEquipment.getItem() == Items.IRON_SWORD && random.nextInt(2) == 0) {
             return new ItemStack(ModItems.FLAMEBERGE_LONGSWORD);
         }
         else {
