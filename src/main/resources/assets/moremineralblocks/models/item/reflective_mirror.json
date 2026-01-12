@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "moremineralblocks:item/mirror"
+    "layer0": "moremineralblocks:item/reflective_mirror"
   }
 }

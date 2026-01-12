@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks.block;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.block.custom.ProtectorBlock;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
@@ -709,17 +710,17 @@ public class ModBlocks {
 
     // DEEPSLATE_EMERALD_ORE
 
-    public static final Block DEEPSLATE_EMERALD_ORE_STAIRS = registerBlock("deepslate_emerald_ore_stairs",
-            new StairsBlock(Blocks.DEEPSLATE_EMERALD_ORE.getDefaultState(),
-                    AbstractBlock.Settings.create().strength(2).requiresTool()));
-    public static final Block DEEPSLATE_EMERALD_ORE_SLAB = registerBlock("deepslate_emerald_ore_slab",
-            new SlabBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
-    public static final Block DEEPSLATE_EMERALD_ORE_FENCE = registerBlock("deepslate_emerald_ore_fence",
-            new FenceBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
-    public static final Block DEEPSLATE_EMERALD_ORE_FENCE_GATE = registerBlock("deepslate_emerald_ore_fence_gate",
-            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(2).requiresTool()));
-    public static final Block DEEPSLATE_EMERALD_ORE_WALL = registerBlock("deepslate_emerald_ore_wall",
-            new WallBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
+//    public static final Block DEEPSLATE_EMERALD_ORE_STAIRS = registerBlock("deepslate_emerald_ore_stairs",
+//            new StairsBlock(Blocks.DEEPSLATE_EMERALD_ORE.getDefaultState(),
+//                    AbstractBlock.Settings.create().strength(2).requiresTool()));
+//    public static final Block DEEPSLATE_EMERALD_ORE_SLAB = registerBlock("deepslate_emerald_ore_slab",
+//            new SlabBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
+//    public static final Block DEEPSLATE_EMERALD_ORE_FENCE = registerBlock("deepslate_emerald_ore_fence",
+//            new FenceBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
+//    public static final Block DEEPSLATE_EMERALD_ORE_FENCE_GATE = registerBlock("deepslate_emerald_ore_fence_gate",
+//            new FenceGateBlock(WoodType.ACACIA, AbstractBlock.Settings.create().strength(2).requiresTool()));
+//    public static final Block DEEPSLATE_EMERALD_ORE_WALL = registerBlock("deepslate_emerald_ore_wall",
+//            new WallBlock(AbstractBlock.Settings.create().strength(2).requiresTool()));
 
     // PRISMARINE
 
@@ -727,6 +728,10 @@ public class ModBlocks {
             new WallBlock(AbstractBlock.Settings.create().strength(1.5F, 6.0F).requiresTool()));
     public static final Block DARK_PRISMARINE_WALL = registerBlock("dark_prismarine_wall",
             new WallBlock(AbstractBlock.Settings.create().strength(1.5F, 6.0F).requiresTool()));
+
+    // Others
+
+    public static final Block PROTECTOR_BLOCK = registerBlock("protector_block", new ProtectorBlock(AbstractBlock.Settings.create().strength(4f, 6f).requiresTool()));
 
 
     // Otra funcion de ayuda para registrar bloques nuevos
@@ -1038,11 +1043,11 @@ public class ModBlocks {
             entries.add(ModBlocks.ICE_FENCE_GATE);
             entries.add(ModBlocks.ICE_WALL);
 
-            entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_STAIRS);
-            entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_SLAB);
-            entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE);
-            entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE_GATE);
-            entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_WALL);
+//            entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_STAIRS);
+//            entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_SLAB);
+//            entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE);
+//            entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE_GATE);
+//            entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_WALL);
 
             entries.add(ModBlocks.PRISMARINE_BRICK_WALL);
             entries.add(ModBlocks.DARK_PRISMARINE_WALL);

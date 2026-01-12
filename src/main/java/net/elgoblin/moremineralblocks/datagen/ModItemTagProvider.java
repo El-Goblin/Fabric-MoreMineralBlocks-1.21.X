@@ -18,10 +18,10 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        getOrCreateTagBuilder(ModTags.Items.TRANSFORMABLE_ITEMS)
-                .add(Items.COAL)
-                .add(Items.STICK)
-                .add(Items.APPLE);
+//        getOrCreateTagBuilder(ModTags.Items.TRANSFORMABLE_ITEMS)
+//                .add(Items.COAL)
+//                .add(Items.STICK)
+//                .add(Items.APPLE);
 
         getOrCreateTagBuilder(ItemTags.PICKAXES).add(ModItems.LEGENDARY_PICKAXE);
         getOrCreateTagBuilder(ItemTags.SHOVELS).add(ModItems.LEGENDARY_SHOVEL);

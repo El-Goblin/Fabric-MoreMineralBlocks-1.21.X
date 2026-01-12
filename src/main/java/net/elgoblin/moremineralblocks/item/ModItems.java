@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks.item;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.item.custom.*;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
@@ -24,7 +25,7 @@ public class ModItems {
     );
     public static final Item LEGENDARY_AXE = registerItem(
             "legendary_axe",
-            new LegendaryAxeItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(AxeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
+            new LegendaryAxeItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(AxeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 5.0F, -2.6F)).rarity(Rarity.EPIC))
     );
     public static final Item LEGENDARY_HOE = registerItem(
             "legendary_hoe",
@@ -78,12 +79,13 @@ public class ModItems {
             new LongSwordItem(ToolMaterials.NETHERITE, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.NETHERITE, 5, -2.4F, 1, 2)))
     );
 
-    public static final Item MIRROR = registerItem("mirror", new MirrorItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
+    public static final Item REFLECTIVE_MIRROR = registerItem("reflective_mirror", new MirrorItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
     public static final Item MAGIC_MIRROR = registerItem("magic_mirror", new MagicMirrorItem(new Item.Settings().maxCount(64).rarity(Rarity.UNCOMMON)));
     public static final Item CHAOS_MIRROR = registerItem("chaos_mirror", new ChaosMirrorItem(new Item.Settings().maxCount(64).rarity(Rarity.UNCOMMON)));
 
 
     public static final Item CHAOS_ORB = registerItem("chaos_orb", new ChaosOrbItem(new Item.Settings()));
+    public static final Item FLASH = registerItem("flash", new FlashItem(new Item.Settings()));
 
 //    public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
 
@@ -100,28 +102,42 @@ public class ModItems {
             //entries.add(RAW_PINK_GARNET);
         });
 
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
+            entries.add(ModBlocks.PROTECTOR_BLOCK);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
+            entries.add(LEGENDARY_SWORD);
+            entries.add(LEGENDARY_AXE);
+            entries.add(WOODEN_LONGSWORD);
+            entries.add(STONE_LONGSWORD);
+            entries.add(GOLDEN_LONGSWORD);
+            entries.add(DIAMOND_LONGSWORD);
+            entries.add(NETHERITE_LONGSWORD);
+            entries.add(FIENDBLADE_LONGSWORD);
+            entries.add(FLAMEBERGE_LONGSWORD);
+            entries.add(FIRE_DRAGONSWORD_LONGSWORD);
+            entries.add(FLASH);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
+            entries.add(CHAOS_ORB);
+            entries.add(INFINITE_ITEMSTACK);
+        });
+
         // Esto lo pone en la tab de ingredients en creativo
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(LEGENDARY_PICKAXE);
             entries.add(LEGENDARY_SHOVEL);
             entries.add(LEGENDARY_AXE);
             entries.add(LEGENDARY_HOE);
-            entries.add(LEGENDARY_SWORD);
-            entries.add(WOODEN_LONGSWORD);
-            entries.add(STONE_LONGSWORD);
-            entries.add(IRON_LONGSWORD);
-            entries.add(GOLDEN_LONGSWORD);
-            entries.add(DIAMOND_LONGSWORD);
-            entries.add(NETHERITE_LONGSWORD);
-            entries.add(FLAMEBERGE_LONGSWORD);
-            entries.add(FIRE_DRAGONSWORD_LONGSWORD);
-            entries.add(FIENDBLADE_LONGSWORD);
             entries.add(LEGENDARY_ROCKET);
             entries.add(SURVIVAL_DEBUG_STICK);
             entries.add(INFINITE_ITEMSTACK);
             entries.add(MAGIC_MIRROR);
-            entries.add(MIRROR);
+            entries.add(REFLECTIVE_MIRROR);
             entries.add(CHAOS_MIRROR);
+            entries.add(FLASH);
         });
     }
 }

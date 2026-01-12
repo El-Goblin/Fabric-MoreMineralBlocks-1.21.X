@@ -5,12 +5,9 @@ import net.elgoblin.moremineralblocks.item.ModItems;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
@@ -56,7 +53,7 @@ public class ChaosMirrorItem extends Item {
                             Identifier world_ID = dimension.getRegistryKey().getValue();
 
                             Vec3d currentCoordinates = playerEntity.getPos();
-                            ItemStack magicMirror = ModItems.MIRROR.getDefaultStack();
+                            ItemStack magicMirror = ModItems.REFLECTIVE_MIRROR.getDefaultStack();
                             magicMirror.set(ModDataComponentTypes.COORDINATES, currentCoordinates);
                             magicMirror.set(ModDataComponentTypes.SERVERWORLD, world_ID);
 

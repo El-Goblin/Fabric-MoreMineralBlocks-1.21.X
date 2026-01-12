@@ -43,7 +43,6 @@
     "moremineralblocks:sculk_fence_gate",
     "moremineralblocks:packed_ice_fence_gate",
     "moremineralblocks:blue_ice_fence_gate",
-    "moremineralblocks:ice_fence_gate",
-    "moremineralblocks:deepslate_emerald_ore_fence_gate"
+    "moremineralblocks:ice_fence_gate"
   ]
 }

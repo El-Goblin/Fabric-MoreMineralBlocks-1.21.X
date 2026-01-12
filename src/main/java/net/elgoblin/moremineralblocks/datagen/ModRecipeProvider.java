@@ -12,15 +12,10 @@ import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
-import net.minecraft.recipe.BlastingRecipe;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -807,8 +802,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         // OTHER
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.TRANSPORTATION, ModItems.MAGIC_MIRROR, 1)
-                .input(ModItems.MIRROR)
-                .criterion(hasItem(ModItems.MIRROR), conditionsFromItem(ModItems.MIRROR))
+                .input(ModItems.REFLECTIVE_MIRROR)
+                .criterion(hasItem(ModItems.REFLECTIVE_MIRROR), conditionsFromItem(ModItems.REFLECTIVE_MIRROR))
                 .offerTo(exporter);
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.WOODEN_LONGSWORD)
@@ -854,6 +849,22 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input('S', Items.DIAMOND_SWORD)
                 .input('D', Items.DIAMOND)
                 .criterion(hasItem(Items.DIAMOND_SWORD), conditionsFromItem(Items.DIAMOND_SWORD))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, ModBlocks.PROTECTOR_BLOCK)
+                .pattern("DED")
+                .pattern("DHD")
+                .pattern("ABA")
+                .input('D', Blocks.DIAMOND_BLOCK)
+                .input('E', Items.END_CRYSTAL)
+                .input('H', Items.HEAVY_CORE)
+                .input('B', Blocks.BEACON)
+                .input('A', Blocks.RESPAWN_ANCHOR)
+                .criterion(hasItem(Blocks.DIAMOND_BLOCK), conditionsFromItem(Blocks.DIAMOND_BLOCK))
+                .criterion(hasItem(Blocks.BEACON), conditionsFromItem(Blocks.BEACON))
+                .criterion(hasItem(Blocks.RESPAWN_ANCHOR), conditionsFromItem(Blocks.RESPAWN_ANCHOR))
+                .criterion(hasItem(Items.END_CRYSTAL), conditionsFromItem(Items.END_CRYSTAL))
+                .criterion(hasItem(Items.HEAVY_CORE), conditionsFromItem(Items.HEAVY_CORE))
                 .offerTo(exporter);
 
         offerNetheriteUpgradeRecipe(exporter, ModItems.DIAMOND_LONGSWORD, RecipeCategory.COMBAT,ModItems.NETHERITE_LONGSWORD);

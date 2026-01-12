@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks;
 
 import net.elgoblin.moremineralblocks.block.ModBlocks;
+import net.elgoblin.moremineralblocks.client.InfiniteItemRenderer;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.entity.client.DevilmonModel;
 import net.elgoblin.moremineralblocks.entity.client.MantisModel;
@@ -14,6 +15,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.option.KeyBinding;
@@ -56,6 +58,8 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.REDSTONE_TRAPDOOR, RenderLayer.getCutout());
 
         EntityRendererRegistry.register(ModEntities.CHAOS_ORB, FlyingItemEntityRenderer::new);
+
+        BuiltinItemRendererRegistry.INSTANCE.register(ModItems.INFINITE_ITEMSTACK, new InfiniteItemRenderer());
 
 //        ClientTickEvents.END_CLIENT_TICK.register(client -> {
 //

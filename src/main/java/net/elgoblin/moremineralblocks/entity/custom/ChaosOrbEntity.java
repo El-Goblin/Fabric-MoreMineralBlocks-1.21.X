@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks.entity.custom;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
@@ -10,11 +11,16 @@ import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.terrain.SingleBlockSphereJob;
 import net.elgoblin.moremineralblocks.terrain.SkyBlockJob;
 import net.elgoblin.moremineralblocks.terrain.TerrainManager;
+import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FoodComponent;
+import net.minecraft.component.type.FoodComponents;
+import net.minecraft.component.type.SuspiciousStewEffectsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
@@ -39,6 +45,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerChunkManager;
@@ -122,19 +129,19 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     public ChaosOrbEntity(EntityType<? extends ChaosOrbEntity> entityType, World world) {
         super(entityType, world);
-        //this.addSkyBlock();
+//        this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
     public ChaosOrbEntity(World world, LivingEntity owner) {
         super(ModEntities.CHAOS_ORB, owner, world);
-        //this.addSkyBlock();
+//        this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
     public ChaosOrbEntity(World world, double x, double y, double z) {
         super(ModEntities.CHAOS_ORB, x, y, z, world);
-        //this.addSkyBlock();
+//        this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
@@ -172,8 +179,13 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     BlockPos blockToRemove = tunnelQueue.pop();
                     BlockState currentState = world.getBlockState(blockToRemove);
 
-                    if (!currentState.isAir()) {
-                        world.setBlockState(blockToRemove, Blocks.AIR.getDefaultState(), 50);
+                    MinecraftServer server = this.getServer();
+                    if (server != null) {
+                        ProtectorManager protectorManager = ProtectorManager.getProtectorManager(this.getServer());
+
+                        if (!currentState.isAir() && !protectorManager.isProtected(blockToRemove)) {
+                            world.setBlockState(blockToRemove, Blocks.AIR.getDefaultState(), 50);
+                        }
                     }
                 }
             }
@@ -523,8 +535,30 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void getFood(HitResult hitResult) {
-        ItemStack food = Items.COOKED_BEEF.getDefaultStack();
-        food.setCount(16);
+        List<Item> foodItems = new ArrayList<>();
+
+        for (Item item : Registries.ITEM) {
+            if (item.getComponents().get(DataComponentTypes.FOOD) != null && !(item instanceof PotionItem) && !(item instanceof OminousBottleItem)) {
+                foodItems.add(item);
+            }
+        }
+
+        ItemStack food = foodItems.get(random.nextInt(foodItems.size())).getDefaultStack();
+        if (food.getItem() != Items.ENCHANTED_GOLDEN_APPLE && food.getItem() != Items.GOLDEN_APPLE) {
+            food.setCount(32);
+        }
+        // For Suspicious Stew, you need to add a random effect
+        if (food.getItem() == Items.SUSPICIOUS_STEW) {
+            List<RegistryEntry<StatusEffect>> statusEffects = Registries.STATUS_EFFECT.streamEntries()
+                    .map(entry -> (RegistryEntry<StatusEffect>) entry)
+                    .toList();
+            RegistryEntry<StatusEffect> effectEntry = statusEffects.get(random.nextInt(statusEffects.size()));
+
+            SuspiciousStewEffectsComponent.StewEffect chosenEffect = new SuspiciousStewEffectsComponent.StewEffect(effectEntry, 160);
+
+            food.set(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, new SuspiciousStewEffectsComponent(List.of(chosenEffect)));
+            food.setCount(1);
+        }
         this.dropStack(food, 0);
     }
 
@@ -622,6 +656,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         rareItems.add(Items.TOTEM_OF_UNDYING.getDefaultStack());
         rareItems.add(Items.TRIDENT.getDefaultStack());
         rareItems.add(Items.SHULKER_BOX.getDefaultStack());
+        rareItems.add(ModBlocks.PROTECTOR_BLOCK.asItem().getDefaultStack());
 
         ItemStack mendingBook = Items.ENCHANTED_BOOK.getDefaultStack();
         RegistryEntry<Enchantment> mendingEntry =
@@ -1028,6 +1063,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         mythicItems.add(ModItems.LEGENDARY_SWORD.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_ROCKET.getDefaultStack());
         mythicItems.add(ModItems.SURVIVAL_DEBUG_STICK.getDefaultStack());
+        mythicItems.add(ModItems.FLASH.getDefaultStack());
         mythicItems.add(Items.LIGHT.getDefaultStack());
 
         ItemStack bedrock = Items.BEDROCK.getDefaultStack();

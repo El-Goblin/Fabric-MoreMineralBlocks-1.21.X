@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks.item.custom;
 
 import net.elgoblin.moremineralblocks.entity.custom.ChaosOrbEntity;
+import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -10,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SnowballItem;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -35,6 +37,12 @@ public class ChaosOrbItem extends SnowballItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (!world.isClient) {
+            MinecraftServer server = world.getServer();
+            if (server != null) {
+                user.sendMessage(Text.of(ProtectorManager.getProtectorManager(server).listOfIntervals.toString()));
+            }
+        }
         ItemStack itemStack = user.getStackInHand(hand);
         world.playSound(
                 null,

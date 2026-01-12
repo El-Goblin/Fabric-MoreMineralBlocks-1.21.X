@@ -354,12 +354,12 @@ public class ModItemGroups {
                         entries.add(ModBlocks.ICE_FENCE_GATE);
                         entries.add(ModBlocks.ICE_WALL);
 
-                        entries.add(Blocks.DEEPSLATE_EMERALD_ORE);
-                        entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_STAIRS);
-                        entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_SLAB);
-                        entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE);
-                        entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE_GATE);
-                        entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_WALL);
+//                        entries.add(Blocks.DEEPSLATE_EMERALD_ORE);
+//                        entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_STAIRS);
+//                        entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_SLAB);
+//                        entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE);
+//                        entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE_GATE);
+//                        entries.add(ModBlocks.DEEPSLATE_EMERALD_ORE_WALL);
 
                         entries.add(ModBlocks.PRISMARINE_BRICK_WALL);
                         entries.add(ModBlocks.DARK_PRISMARINE_WALL);

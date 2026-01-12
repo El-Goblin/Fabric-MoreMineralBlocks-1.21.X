@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks;
 
 import net.elgoblin.moremineralblocks.block.ModBlocks;
+import net.elgoblin.moremineralblocks.block.entity.ModBlockEntities;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
@@ -9,6 +10,7 @@ import net.elgoblin.moremineralblocks.entity.custom.MantisEntity;
 import net.elgoblin.moremineralblocks.item.ModItemGroups;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
+import net.elgoblin.moremineralblocks.persistence.StateSaverAndLoader;
 import net.elgoblin.moremineralblocks.structure.MoreMineralBlocksStructure;
 import net.elgoblin.moremineralblocks.structure.MoreMineralBlocksStructurePlacement;
 import net.elgoblin.moremineralblocks.terrain.TerrainManager;
@@ -38,7 +40,7 @@ public class MoreMineralBlocks implements ModInitializer, ServerWorldEvents.Load
 	public static final String MOD_ID = "moremineralblocks";
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-//	private static StateSaverAndLoader stateSaverAndLoader;
+	private static StateSaverAndLoader stateSaverAndLoader;
 
 	@Override
 	public void onInitialize() {
@@ -52,6 +54,7 @@ public class MoreMineralBlocks implements ModInitializer, ServerWorldEvents.Load
 		ModEntities.registerModEntities();
 		ModLootTableModifiers.modifyLootTables();
 		ModParticles.registerParticles();
+		ModBlockEntities.registerBlockEntities();
 		MoreMineralBlocksStructurePlacement.registerStructurePlacementTypes();
 		MoreMineralBlocksStructure.registerStructureTypes();
 

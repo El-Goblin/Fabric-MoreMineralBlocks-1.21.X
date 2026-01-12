@@ -1,5 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "builtin/entity",
+  "loader": "fabric-rendering:builtin_item_renderer",
   "textures": {
     "layer0": "moremineralblocks:item/infinite_itemstack"
   }

@@ -136,7 +136,8 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(ModBlocks.POLISHED_REDSTONE_SLAB)
                 .add(ModBlocks.POLISHED_REDSTONE_WALL)
                 .add(ModBlocks.POLISHED_REDSTONE_FENCE)
-                .add(ModBlocks.POLISHED_REDSTONE_FENCE_GATE);
+                .add(ModBlocks.POLISHED_REDSTONE_FENCE_GATE)
+                .add(ModBlocks.PROTECTOR_BLOCK);
 
 
         getOrCreateTagBuilder(BlockTags.NEEDS_STONE_TOOL)
@@ -438,9 +439,9 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
         getOrCreateTagBuilder(BlockTags.FENCE_GATES).add(ModBlocks.ICE_FENCE_GATE);
         getOrCreateTagBuilder(BlockTags.WALLS).add(ModBlocks.ICE_WALL);
 
-        getOrCreateTagBuilder(BlockTags.FENCES).add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE);
-        getOrCreateTagBuilder(BlockTags.FENCE_GATES).add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE_GATE);
-        getOrCreateTagBuilder(BlockTags.WALLS).add(ModBlocks.DEEPSLATE_EMERALD_ORE_WALL);
+//        getOrCreateTagBuilder(BlockTags.FENCES).add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE);
+//        getOrCreateTagBuilder(BlockTags.FENCE_GATES).add(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE_GATE);
+//        getOrCreateTagBuilder(BlockTags.WALLS).add(ModBlocks.DEEPSLATE_EMERALD_ORE_WALL);
 
         // PRISMARINE
 
@@ -704,7 +705,9 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(ModBlocks.ICE_STAIRS)
                 .add(ModBlocks.ICE_SLAB)
                 .add(ModBlocks.ICE_FENCE)
-                .add(ModBlocks.ICE_FENCE_GATE);
+                .add(ModBlocks.ICE_FENCE_GATE)
+
+                .add(ModBlocks.PROTECTOR_BLOCK);
 
 
 

@@ -31,7 +31,7 @@ public class ModModelProvider extends FabricModelProvider {
         //blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.RAW_PINK_GARNET_BLOCK);
         //blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.PINK_GARNET_DEEPSLATE_ORE);
         //blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.PINK_GARNET_ORE);
-        //blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.MAGIC_BLOCK);
+        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.PROTECTOR_BLOCK);
 
         BlockStateModelGenerator.BlockTexturePool goldPool = blockStateModelGenerator.registerCubeAllModelTexturePool(Blocks.GOLD_BLOCK);
         goldPool.stairs(ModBlocks.GOLD_STAIRS);
@@ -385,17 +385,19 @@ public class ModModelProvider extends FabricModelProvider {
         icePool.fenceGate(ModBlocks.ICE_FENCE_GATE);
         icePool.wall(ModBlocks.ICE_WALL);
 
-        BlockStateModelGenerator.BlockTexturePool deepslateEmeraldOrePool = blockStateModelGenerator.registerCubeAllModelTexturePool(Blocks.DEEPSLATE_EMERALD_ORE);
-        deepslateEmeraldOrePool.stairs(ModBlocks.DEEPSLATE_EMERALD_ORE_STAIRS);
-        deepslateEmeraldOrePool.slab(ModBlocks.DEEPSLATE_EMERALD_ORE_SLAB);
-        deepslateEmeraldOrePool.fence(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE);
-        deepslateEmeraldOrePool.fenceGate(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE_GATE);
-        deepslateEmeraldOrePool.wall(ModBlocks.DEEPSLATE_EMERALD_ORE_WALL);
+//        BlockStateModelGenerator.BlockTexturePool deepslateEmeraldOrePool = blockStateModelGenerator.registerCubeAllModelTexturePool(Blocks.DEEPSLATE_EMERALD_ORE);
+//        deepslateEmeraldOrePool.stairs(ModBlocks.DEEPSLATE_EMERALD_ORE_STAIRS);
+//        deepslateEmeraldOrePool.slab(ModBlocks.DEEPSLATE_EMERALD_ORE_SLAB);
+//        deepslateEmeraldOrePool.fence(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE);
+//        deepslateEmeraldOrePool.fenceGate(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE_GATE);
+//        deepslateEmeraldOrePool.wall(ModBlocks.DEEPSLATE_EMERALD_ORE_WALL);
 
         BlockStateModelGenerator.BlockTexturePool prismarineBricksPool = blockStateModelGenerator.registerCubeAllModelTexturePool(Blocks.PRISMARINE_BRICKS);
         BlockStateModelGenerator.BlockTexturePool darkPrismarinePool = blockStateModelGenerator.registerCubeAllModelTexturePool(Blocks.DARK_PRISMARINE);
         prismarineBricksPool.wall(ModBlocks.PRISMARINE_BRICK_WALL);
         darkPrismarinePool.wall(ModBlocks.DARK_PRISMARINE_WALL);
+
+
     }
 
     private static Model item(TextureKey... requiredTextureKeys) {
@@ -414,6 +416,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.LEGENDARY_AXE, Models.HANDHELD);
         itemModelGenerator.register(ModItems.LEGENDARY_HOE, Models.HANDHELD);
         itemModelGenerator.register(ModItems.LEGENDARY_SWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.LEGENDARY_SWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.WOODEN_LONGSWORD, LONGSWORD);
         itemModelGenerator.register(ModItems.STONE_LONGSWORD, LONGSWORD);
         itemModelGenerator.register(ModItems.IRON_LONGSWORD, LONGSWORD);
@@ -423,6 +426,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.FLAMEBERGE_LONGSWORD, LONGSWORD);
         itemModelGenerator.register(ModItems.FIRE_DRAGONSWORD_LONGSWORD, LONGSWORD);
         itemModelGenerator.register(ModItems.FIENDBLADE_LONGSWORD, LONGSWORD);
+        itemModelGenerator.register(ModItems.FLASH, Models.HANDHELD);
         //itemModelGenerator.register(ModItems.MAGIC_MIRROR, Models.HANDHELD);
         //itemModelGenerator.register(ModItems.GOLDEN_MAGIC_MIRROR, Models.HANDHELD);
         //itemModelGenerator.register(ModItems.CHAOS_MIRROR, Models.HANDHELD);

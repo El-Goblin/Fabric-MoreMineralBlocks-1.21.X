@@ -35,7 +35,8 @@ public class ModDataComponentTypes {
 //    public static final ComponentType<Integer> CUMULATED_DAMAGE_TAKEN = register(
 //            "cumulated_damage_taken", builder -> builder.codec(Codecs.rangedInt(0, 100)).packetCodec(PacketCodecs.VAR_INT).cache()
 //    );
-    public static final ComponentType<ItemStack> CHOSEN_INFINITE_ITEM = register("chosen_infinite_item", builder -> builder.codec(ItemStack.CODEC));
+    public static final ComponentType<ItemStack> CHOSEN_INFINITE_ITEM = register("chosen_infinite_item",
+        builder -> builder.codec(ItemStack.CODEC).packetCodec(ItemStack.PACKET_CODEC).cache());
 
 
     private static <T>ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builderOperator) {

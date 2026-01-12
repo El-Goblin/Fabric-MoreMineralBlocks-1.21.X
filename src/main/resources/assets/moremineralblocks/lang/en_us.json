@@ -313,6 +313,8 @@
   "block.moremineralblocks.prismarine_brick_wall": "Prismarine Brick Wall",
   "block.moremineralblocks.dark_prismarine_wall": "Dark Prismarine Wall",
 
+  "block.moremineralblocks.protector_block": "Protector",
+
 
 
 
@@ -345,12 +347,20 @@
   "item.moremineralblocks.fiendblade_longsword": "Fiendblade",
   "item.moremineralblocks.chaos_orb": "Chaos Orb",
 
+  "item.moremineralblocks.magic_mirror": "Magic Mirror",
+  "item.moremineralblocks.chaos_mirror": "Chaos Mirror",
+  "item.moremineralblocks.reflective_mirror": "Reflective Mirror",
+
+  "item.moremineralblocks.flash": "Flash",
+
   "effect.moremineralblocks.slimey": "Slimey",
   "effect.moremineralblocks.blinking": "Blinking",
   "effect.moremineralblocks.counter_blink": "Counter Blink",
   "effect.moremineralblocks.fragile": "Fragile",
 
-  "entity.moremineralblocks.chaos_orb": "Chaos Orb"
+  "entity.moremineralblocks.chaos_orb": "Chaos Orb",
+
+  "itemgroup.moremineralblocks.mod_blocks": "More Mineral Blocks"
 
 
 }

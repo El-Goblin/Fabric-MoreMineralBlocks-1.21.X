@@ -239,6 +239,7 @@
     "moremineralblocks:ice_stairs",
     "moremineralblocks:ice_slab",
     "moremineralblocks:ice_fence",
-    "moremineralblocks:ice_fence_gate"
+    "moremineralblocks:ice_fence_gate",
+    "moremineralblocks:protector_block"
   ]
 }

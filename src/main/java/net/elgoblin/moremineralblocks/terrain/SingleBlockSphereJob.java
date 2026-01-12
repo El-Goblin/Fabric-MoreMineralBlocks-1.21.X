@@ -1,9 +1,11 @@
 package net.elgoblin.moremineralblocks.terrain;
 
+import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.ArrayDeque;
@@ -22,6 +24,7 @@ public class SingleBlockSphereJob implements TerrainJob{
     private final int radiusSquared;
     private Block toPlace;
     int blocksAdvanced;
+    ProtectorManager protectorManager;
 
     public SingleBlockSphereJob(World world, PlayerEntity player, BlockPos center, int radius, Block toPlace) {
         this.world = world;
@@ -32,6 +35,10 @@ public class SingleBlockSphereJob implements TerrainJob{
         this.blocksAdvanced = 0;
         this.player = player;
 
+        if (world.getServer() != null) {
+            protectorManager = ProtectorManager.getProtectorManager(world.getServer());
+        }
+
         this.advanceX = new ArrayDeque<>();
         this.advanceZ = new ArrayDeque<>();
         this.advanceEquals = new ArrayDeque<>();
@@ -41,25 +48,25 @@ public class SingleBlockSphereJob implements TerrainJob{
         int blocksBroken = 0;
         // Romper X positivo y Z positivo
         positionToModify.set(center.getX() + advanceDelta[0], center.getY() + advanceDelta[1], center.getZ() + advanceDelta[2]);
-        if (!world.getBlockState(positionToModify).isAir()) {
+        if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
             world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
             blocksBroken++;
         }
         // Romper X negativo y Z positivo
         positionToModify.set(center.getX() - advanceDelta[0], center.getY() + advanceDelta[1], center.getZ() + advanceDelta[2]);
-        if (!world.getBlockState(positionToModify).isAir()) {
+        if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
             world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
             blocksBroken++;
         }
         // Romper X positivo y Z negativo
         positionToModify.set(center.getX() + advanceDelta[0], center.getY() + advanceDelta[1], center.getZ() - advanceDelta[2]);
-        if (!world.getBlockState(positionToModify).isAir()) {
+        if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
             world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
             blocksBroken++;
         }
         // Romper X negativo y Z negativo
         positionToModify.set(center.getX() - advanceDelta[0], center.getY() + advanceDelta[1], center.getZ() - advanceDelta[2]);
-        if (!world.getBlockState(positionToModify).isAir()) {
+        if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
             world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
             blocksBroken++;
         }
@@ -89,11 +96,11 @@ public class SingleBlockSphereJob implements TerrainJob{
     private int processY(BlockPos.Mutable positionToModify) {
         if (blocksAdvanced <= radius) {
             positionToModify.set(center.getX(), center.getY() + blocksAdvanced, center.getZ());
-            if (!world.getBlockState(positionToModify).isAir()) {
+            if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
                 world.setBlockState(positionToModify.set(center.getX(), center.getY() + blocksAdvanced, center.getZ()), toPlace.getDefaultState(), 50);
             }
             positionToModify.set(center.getX(), center.getY() - blocksAdvanced, center.getZ());
-            if (!world.getBlockState(positionToModify).isAir()) {
+            if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
                 world.setBlockState(positionToModify.set(center.getX(), center.getY() - blocksAdvanced, center.getZ()), toPlace.getDefaultState(), 50);
             }
             // En todas las iteraciones subo en Y 1 vez. Si pude subir en Y, sumo en X
@@ -125,25 +132,25 @@ public class SingleBlockSphereJob implements TerrainJob{
 
             // Romper X positivo
             positionToModify.set(center.getX() + advanceDelta[0], center.getY() + advanceDelta[1], center.getZ());
-            if (!world.getBlockState(positionToModify).isAir()) {
+            if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
                 world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
                 blocksBroken++;
             }
             // Romper X negativo
             positionToModify.set(center.getX() - advanceDelta[0], center.getY() + advanceDelta[1], center.getZ());
-            if (!world.getBlockState(positionToModify).isAir()) {
+            if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
                 world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
                 blocksBroken++;
             }
             // Romper Z positivo
             positionToModify.set(center.getX(), center.getY() + advanceDelta[1], center.getZ() + advanceDelta[0]);
-            if (!world.getBlockState(positionToModify).isAir()) {
+            if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
                 world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
                 blocksBroken++;
             }
             // Romper Z negativo
             positionToModify.set(center.getX(), center.getY() + advanceDelta[1], center.getZ() - advanceDelta[0]);
-            if (!world.getBlockState(positionToModify).isAir()) {
+            if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
                 world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
                 blocksBroken++;
             }
@@ -152,25 +159,25 @@ public class SingleBlockSphereJob implements TerrainJob{
 
             // Romper X positivo
             positionToModify.set(center.getX() + advanceDelta[0], center.getY() + advanceDelta[1], center.getZ());
-            if (!world.getBlockState(positionToModify).isAir()) {
+            if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
                 world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
                 blocksBroken++;
             }
             // Romper X negativo
             positionToModify.set(center.getX() - advanceDelta[0], center.getY() + advanceDelta[1], center.getZ());
-            if (!world.getBlockState(positionToModify).isAir()) {
+            if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
                 world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
                 blocksBroken++;
             }
             // Romper Z positivo
             positionToModify.set(center.getX(), center.getY() + advanceDelta[1], center.getZ() + advanceDelta[0]);
-            if (!world.getBlockState(positionToModify).isAir()) {
+            if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
                 world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
                 blocksBroken++;
             }
             // Romper Z negativo
             positionToModify.set(center.getX(), center.getY() + advanceDelta[1], center.getZ() - advanceDelta[0]);
-            if (!world.getBlockState(positionToModify).isAir()) {
+            if (!world.getBlockState(positionToModify).isAir() && !protectorManager.isProtected(positionToModify)) {
                 world.setBlockState(positionToModify, toPlace.getDefaultState(), 50);
                 blocksBroken++;
             }

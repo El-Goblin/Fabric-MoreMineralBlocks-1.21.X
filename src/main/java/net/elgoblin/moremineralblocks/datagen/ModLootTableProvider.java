@@ -320,6 +320,8 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
 
         addDrop(ModBlocks.DARK_PRISMARINE_WALL);
         addDrop(ModBlocks.PRISMARINE_BRICK_WALL);
+
+        addDrop(ModBlocks.PROTECTOR_BLOCK);
     }
 
     public LootTable.Builder multipleOreDrops(Block drop, Item item, float minDrops, float maxDrops) {

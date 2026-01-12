@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:respawn_anchor"
+    },
+    "B": {
+      "item": "minecraft:beacon"
+    },
+    "D": {
+      "item": "minecraft:diamond_block"
+    },
+    "E": {
+      "item": "minecraft:end_crystal"
+    },
+    "H": {
+      "item": "minecraft:heavy_core"
+    }
+  },
+  "pattern": [
+    "DED",
+    "DHD",
+    "ABA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "moremineralblocks:protector_block"
+  }
+}

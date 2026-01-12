@@ -1,6 +1,9 @@
-package net.elgoblin.moremineralblocks;
+package net.elgoblin.moremineralblocks.persistence;
 
+import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.PersistentState;
@@ -31,6 +34,8 @@ public class StateSaverAndLoader extends PersistentState {
         markDirty();
     }
 
+    public void setDirty() {markDirty();}
+
 //    // CODEC — describes how to read/write this state
 //    public static final Codec<StateSaverAndLoader> CODEC = RecordCodecBuilder.create(instance ->
 //            instance.group(
@@ -47,9 +52,7 @@ public class StateSaverAndLoader extends PersistentState {
     }
 
     public static StateSaverAndLoader createFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        return new StateSaverAndLoader(
-                nbt.getBoolean("skyblock_happened")
-        );
+        return new StateSaverAndLoader(nbt.getBoolean("skyblock_happened"));
     }
 
     public static StateSaverAndLoader loadSave(MinecraftServer server) {

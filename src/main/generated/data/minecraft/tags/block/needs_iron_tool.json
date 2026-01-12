@@ -105,6 +105,7 @@
     "moremineralblocks:polished_redstone_slab",
     "moremineralblocks:polished_redstone_wall",
     "moremineralblocks:polished_redstone_fence",
-    "moremineralblocks:polished_redstone_fence_gate"
+    "moremineralblocks:polished_redstone_fence_gate",
+    "moremineralblocks:protector_block"
   ]
 }
