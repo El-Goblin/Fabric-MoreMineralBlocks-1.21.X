@@ -416,7 +416,6 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.LEGENDARY_AXE, Models.HANDHELD);
         itemModelGenerator.register(ModItems.LEGENDARY_HOE, Models.HANDHELD);
         itemModelGenerator.register(ModItems.LEGENDARY_SWORD, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.LEGENDARY_SWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.WOODEN_LONGSWORD, LONGSWORD);
         itemModelGenerator.register(ModItems.STONE_LONGSWORD, LONGSWORD);
         itemModelGenerator.register(ModItems.IRON_LONGSWORD, LONGSWORD);
@@ -426,6 +425,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.FLAMEBERGE_LONGSWORD, LONGSWORD);
         itemModelGenerator.register(ModItems.FIRE_DRAGONSWORD_LONGSWORD, LONGSWORD);
         itemModelGenerator.register(ModItems.FIENDBLADE_LONGSWORD, LONGSWORD);
+        itemModelGenerator.register(ModItems.LEGENDARY_LONGSWORD, LONGSWORD);
         itemModelGenerator.register(ModItems.FLASH, Models.HANDHELD);
         //itemModelGenerator.register(ModItems.MAGIC_MIRROR, Models.HANDHELD);
         //itemModelGenerator.register(ModItems.GOLDEN_MAGIC_MIRROR, Models.HANDHELD);

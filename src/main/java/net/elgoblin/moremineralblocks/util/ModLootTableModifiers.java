@@ -136,6 +136,12 @@ public class ModLootTableModifiers {
                     .with(ItemEntry.builder(ModItems.CHAOS_ORB))
                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0f, 8.0f)).build());
 
+            LootPool.Builder trialChamberPot = LootPool.builder()
+                    .rolls(ConstantLootNumberProvider.create(1))
+                    .conditionally(RandomChanceLootCondition.builder(0.5f))
+                    .with(ItemEntry.builder(ModItems.CHAOS_ORB))
+                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 2.0f)).build());
+
             // Start chest
 
             if (LootTables.SPAWN_BONUS_CHEST.equals(key)) {
@@ -336,6 +342,9 @@ public class ModLootTableModifiers {
             }
             if (LootTables.TRIAL_CHAMBERS_ENTRANCE_CHEST.equals(key)) {
                 tableBuilder.pool(trialChambers.build());
+            }
+            if (LootTables.TRIAL_CHAMBERS_CORRIDOR_POT.equals(key)) {
+                tableBuilder.pool(trialChamberPot.build());
             }
 
             // End Cities

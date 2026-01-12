@@ -101,6 +101,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::getEnchantedBook,
             this::smallPrize,
             this::xp,
+            this::getUnobtainableBlocks,
             this::getInfiniteItem
     ));
     private List<BiConsumer<HitResult, Box>> areaChaosEffects = new ArrayList<>(List.of(
@@ -626,6 +627,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         prizes.add(new ItemStack(Items.OBSIDIAN, 20));
         prizes.add(new ItemStack(Items.BLUE_BED, 1));
         prizes.add(new ItemStack(Items.ENDER_PEARL, 16));
+        prizes.add(new ItemStack(Items.BLAZE_ROD, 12));
         prizes.add(new ItemStack(Items.POINTED_DRIPSTONE, 12));
         prizes.add(new ItemStack(Items.TURTLE_HELMET, 1));
         prizes.add(new ItemStack(Items.SCAFFOLDING, 64));
@@ -1053,6 +1055,52 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //        }
 //    }
 
+    private void getUnobtainableBlocks(HitResult hitResult) {
+        List<ItemStack> unobtainableBlocks = new ArrayList<>();
+
+        ItemStack light = Items.LIGHT.getDefaultStack();
+        light.setCount(32);
+        unobtainableBlocks.add(light);
+
+        ItemStack bedrock = Items.BEDROCK.getDefaultStack();
+        bedrock.setCount(64);
+        unobtainableBlocks.add(bedrock);
+
+        ItemStack reinforcedDeepslate = Items.REINFORCED_DEEPSLATE.getDefaultStack();
+        reinforcedDeepslate.setCount(64);
+        unobtainableBlocks.add(reinforcedDeepslate);
+
+        ItemStack endPortalFrame = Items.END_PORTAL_FRAME.getDefaultStack();
+        endPortalFrame.setCount(12);
+        unobtainableBlocks.add(endPortalFrame);
+
+        ItemStack buddingAmethyst = Items.BUDDING_AMETHYST.getDefaultStack();
+        buddingAmethyst.setCount(64);
+        unobtainableBlocks.add(buddingAmethyst);
+
+        ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
+        unobtainableBlocks.add(trialSpawner);
+
+        ItemStack spawner = Items.SPAWNER.getDefaultStack();
+        unobtainableBlocks.add(spawner);
+
+        int nextItem = this.random.nextBetween(0, (int) unobtainableBlocks.size()-1);
+        ItemStack reward = unobtainableBlocks.get(nextItem);
+
+        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
+
+        int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
+        unobtainableBlocks.add(spawnEggs.get(nextEgg));
+
+        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
+            ItemStack newEgg = spawnEggs.get(nextEgg);
+            newEgg.setCount(1);
+            this.dropStack(newEgg, 0);
+        }
+
+        this.dropStack(reward, 0);
+    }
+
     private void getMythicItem(HitResult hitResult) {
         List<ItemStack> mythicItems = new ArrayList<>();
 
@@ -1064,52 +1112,28 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         mythicItems.add(ModItems.LEGENDARY_ROCKET.getDefaultStack());
         mythicItems.add(ModItems.SURVIVAL_DEBUG_STICK.getDefaultStack());
         mythicItems.add(ModItems.FLASH.getDefaultStack());
-        mythicItems.add(Items.LIGHT.getDefaultStack());
-
-        ItemStack bedrock = Items.BEDROCK.getDefaultStack();
-        bedrock.setCount(64);
-        mythicItems.add(bedrock);
-
-        ItemStack reinforcedDeepslate = Items.REINFORCED_DEEPSLATE.getDefaultStack();
-        reinforcedDeepslate.setCount(64);
-        mythicItems.add(reinforcedDeepslate);
-
-        ItemStack endPortalFrame = Items.END_PORTAL_FRAME.getDefaultStack();
-        endPortalFrame.setCount(12);
-        mythicItems.add(endPortalFrame);
-
-        ItemStack buddingAmethyst = Items.BUDDING_AMETHYST.getDefaultStack();
-        buddingAmethyst.setCount(64);
-        mythicItems.add(buddingAmethyst);
-
-//        ItemStack lootingBook = Items.ENCHANTED_BOOK.getDefaultStack();
-//        RegistryEntry<Enchantment> lootingEntry =
-//                this.getWorld().getRegistryManager()
-//                        .get(RegistryKeys.ENCHANTMENT)
-//                        .getEntry(Enchantments.LOOTING)
-//                        .orElseThrow();
-//        lootingBook.addEnchantment(lootingEntry, 5);
-//        mythicItems.add(lootingBook);
-
-        ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
-        mythicItems.add(trialSpawner);
-
-        ItemStack spawner = Items.SPAWNER.getDefaultStack();
-        mythicItems.add(spawner);
-
-        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
-
-        int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
-        mythicItems.add(spawnEggs.get(nextEgg));
 
         int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);
         ItemStack reward = mythicItems.get(nextItem);
 
-        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
-            ItemStack newEgg = spawnEggs.get(nextEgg);
-            newEgg.setCount(1);
-            this.dropStack(newEgg, 0);
-        }
         this.dropStack(reward, 0);
     }
+
+//    private void giveRole(HitResult hitResult) {
+//        List<ItemStack> mythicItems = new ArrayList<>();
+//
+//        mythicItems.add(ModItems.LEGENDARY_PICKAXE.getDefaultStack());
+//        mythicItems.add(ModItems.LEGENDARY_SHOVEL.getDefaultStack());
+//        mythicItems.add(ModItems.LEGENDARY_AXE.getDefaultStack());
+//        mythicItems.add(ModItems.LEGENDARY_HOE.getDefaultStack());
+//        mythicItems.add(ModItems.LEGENDARY_SWORD.getDefaultStack());
+//        mythicItems.add(ModItems.LEGENDARY_ROCKET.getDefaultStack());
+//        mythicItems.add(ModItems.SURVIVAL_DEBUG_STICK.getDefaultStack());
+//        mythicItems.add(ModItems.FLASH.getDefaultStack());
+//
+//        int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);
+//        ItemStack reward = mythicItems.get(nextItem);
+//
+//        this.dropStack(reward, 0);
+//    }
 }

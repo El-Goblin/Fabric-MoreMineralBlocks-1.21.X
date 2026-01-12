@@ -78,6 +78,10 @@ public class ModItems {
             "fiendblade_longsword",
             new LongSwordItem(ToolMaterials.NETHERITE, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.NETHERITE, 5, -2.4F, 1, 2)))
     );
+    public static final Item LEGENDARY_LONGSWORD = registerItem(
+            "legendary_longsword",
+            new LegendaryLongSwordItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(LongSwordItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, (int) 11.0F, -2.4F, 1, 5)).rarity(Rarity.EPIC))
+    );
 
     public static final Item REFLECTIVE_MIRROR = registerItem("reflective_mirror", new MirrorItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
     public static final Item MAGIC_MIRROR = registerItem("magic_mirror", new MagicMirrorItem(new Item.Settings().maxCount(64).rarity(Rarity.UNCOMMON)));
@@ -117,6 +121,7 @@ public class ModItems {
             entries.add(FIENDBLADE_LONGSWORD);
             entries.add(FLAMEBERGE_LONGSWORD);
             entries.add(FIRE_DRAGONSWORD_LONGSWORD);
+            entries.add(LEGENDARY_LONGSWORD);
             entries.add(FLASH);
         });
 

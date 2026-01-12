@@ -37,5 +37,6 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.FIENDBLADE_LONGSWORD);
         getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.FIRE_DRAGONSWORD_LONGSWORD);
         getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.FLAMEBERGE_LONGSWORD);
+        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.LEGENDARY_LONGSWORD);
     }
 }
