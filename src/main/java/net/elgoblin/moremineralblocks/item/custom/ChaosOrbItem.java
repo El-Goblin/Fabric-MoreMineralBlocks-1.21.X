@@ -37,12 +37,6 @@ public class ChaosOrbItem extends SnowballItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient) {
-            MinecraftServer server = world.getServer();
-            if (server != null) {
-                user.sendMessage(Text.of(ProtectorManager.getProtectorManager(server).listOfIntervals.toString()));
-            }
-        }
         ItemStack itemStack = user.getStackInHand(hand);
         world.playSound(
                 null,
