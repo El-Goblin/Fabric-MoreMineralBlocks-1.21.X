@@ -5,8 +5,8 @@ import net.elgoblin.moremineralblocks.block.entity.ModBlockEntities;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
-import net.elgoblin.moremineralblocks.entity.custom.DevilmonEntity;
-import net.elgoblin.moremineralblocks.entity.custom.MantisEntity;
+//import net.elgoblin.moremineralblocks.entity.custom.DevilmonEntity;
+//import net.elgoblin.moremineralblocks.entity.custom.MantisEntity;
 import net.elgoblin.moremineralblocks.item.ModItemGroups;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
@@ -57,9 +57,9 @@ public class MoreMineralBlocks implements ModInitializer, ServerWorldEvents.Load
 		ModBlockEntities.registerBlockEntities();
 		MoreMineralBlocksStructurePlacement.registerStructurePlacementTypes();
 		MoreMineralBlocksStructure.registerStructureTypes();
-
-		FabricDefaultAttributeRegistry.register(ModEntities.MANTIS, MantisEntity.createAttributes());
-		FabricDefaultAttributeRegistry.register(ModEntities.DEVILMON, DevilmonEntity.createAttributes());
+//
+//		FabricDefaultAttributeRegistry.register(ModEntities.MANTIS, MantisEntity.createAttributes());
+//		FabricDefaultAttributeRegistry.register(ModEntities.DEVILMON, DevilmonEntity.createAttributes());
 
 
 		ServerTickEvents.END_SERVER_TICK.register(minecraftServer -> {

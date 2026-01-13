@@ -16,10 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.FoodComponent;
-import net.minecraft.component.type.FoodComponents;
 import net.minecraft.component.type.SuspiciousStewEffectsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
@@ -45,7 +42,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerChunkManager;
@@ -101,7 +97,6 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::getEnchantedBook,
             this::smallPrize,
             this::xp,
-            this::getUnobtainableBlocks,
             this::getInfiniteItem
     ));
     private List<BiConsumer<HitResult, Box>> areaChaosEffects = new ArrayList<>(List.of(
@@ -334,7 +329,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         // Como es esto un tipo???
         List<EntityType<?>> mobs = Registries.ENTITY_TYPE.stream()
-                .filter(type -> type.create(MinecraftClient.getInstance().world) instanceof MobEntity)
+                .filter(type -> type.getSpawnGroup() != SpawnGroup.MISC)
                 .toList();
 
         int nextEntity = this.random.nextBetween(0, mobs.size()-1);
@@ -1055,66 +1050,104 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //        }
 //    }
 
-    private void getUnobtainableBlocks(HitResult hitResult) {
-        List<ItemStack> unobtainableBlocks = new ArrayList<>();
-
-        ItemStack light = Items.LIGHT.getDefaultStack();
-        light.setCount(32);
-        unobtainableBlocks.add(light);
-
-        ItemStack bedrock = Items.BEDROCK.getDefaultStack();
-        bedrock.setCount(64);
-        unobtainableBlocks.add(bedrock);
-
-        ItemStack reinforcedDeepslate = Items.REINFORCED_DEEPSLATE.getDefaultStack();
-        reinforcedDeepslate.setCount(64);
-        unobtainableBlocks.add(reinforcedDeepslate);
-
-        ItemStack endPortalFrame = Items.END_PORTAL_FRAME.getDefaultStack();
-        endPortalFrame.setCount(12);
-        unobtainableBlocks.add(endPortalFrame);
-
-        ItemStack buddingAmethyst = Items.BUDDING_AMETHYST.getDefaultStack();
-        buddingAmethyst.setCount(64);
-        unobtainableBlocks.add(buddingAmethyst);
-
-        ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
-        unobtainableBlocks.add(trialSpawner);
-
-        ItemStack spawner = Items.SPAWNER.getDefaultStack();
-        unobtainableBlocks.add(spawner);
-
-        int nextItem = this.random.nextBetween(0, (int) unobtainableBlocks.size()-1);
-        ItemStack reward = unobtainableBlocks.get(nextItem);
-
-        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
-
-        int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
-        unobtainableBlocks.add(spawnEggs.get(nextEgg));
-
-        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
-            ItemStack newEgg = spawnEggs.get(nextEgg);
-            newEgg.setCount(1);
-            this.dropStack(newEgg, 0);
-        }
-
-        this.dropStack(reward, 0);
-    }
+//    private void getUnobtainableBlocks(HitResult hitResult) {
+//        List<ItemStack> unobtainableBlocks = new ArrayList<>();
+//
+//        ItemStack light = Items.LIGHT.getDefaultStack();
+//        light.setCount(32);
+//        unobtainableBlocks.add(light);
+//
+//        ItemStack bedrock = Items.BEDROCK.getDefaultStack();
+//        bedrock.setCount(64);
+//        unobtainableBlocks.add(bedrock);
+//
+//        ItemStack reinforcedDeepslate = Items.REINFORCED_DEEPSLATE.getDefaultStack();
+//        reinforcedDeepslate.setCount(64);
+//        unobtainableBlocks.add(reinforcedDeepslate);
+//
+//        ItemStack endPortalFrame = Items.END_PORTAL_FRAME.getDefaultStack();
+//        endPortalFrame.setCount(12);
+//        unobtainableBlocks.add(endPortalFrame);
+//
+//        ItemStack buddingAmethyst = Items.BUDDING_AMETHYST.getDefaultStack();
+//        buddingAmethyst.setCount(64);
+//        unobtainableBlocks.add(buddingAmethyst);
+//
+//        ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
+//        unobtainableBlocks.add(trialSpawner);
+//
+//        ItemStack spawner = Items.SPAWNER.getDefaultStack();
+//        unobtainableBlocks.add(spawner);
+//
+//        int nextItem = this.random.nextBetween(0, (int) unobtainableBlocks.size()-1);
+//        ItemStack reward = unobtainableBlocks.get(nextItem);
+//
+//        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
+//
+//        int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
+//        unobtainableBlocks.add(spawnEggs.get(nextEgg));
+//
+//        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
+//            ItemStack newEgg = spawnEggs.get(nextEgg);
+//            newEgg.setCount(1);
+//            this.dropStack(newEgg, 0);
+//        }
+//
+//        this.dropStack(reward, 0);
+//    }
 
     private void getMythicItem(HitResult hitResult) {
         List<ItemStack> mythicItems = new ArrayList<>();
+
+        ItemStack light = Items.LIGHT.getDefaultStack();
+        light.setCount(32);
+        mythicItems.add(light);
+
+        ItemStack bedrock = Items.BEDROCK.getDefaultStack();
+        bedrock.setCount(64);
+        mythicItems.add(bedrock);
+
+        ItemStack reinforcedDeepslate = Items.REINFORCED_DEEPSLATE.getDefaultStack();
+        reinforcedDeepslate.setCount(64);
+        mythicItems.add(reinforcedDeepslate);
+
+        ItemStack endPortalFrame = Items.END_PORTAL_FRAME.getDefaultStack();
+        endPortalFrame.setCount(12);
+        mythicItems.add(endPortalFrame);
+
+        ItemStack buddingAmethyst = Items.BUDDING_AMETHYST.getDefaultStack();
+        buddingAmethyst.setCount(64);
+        mythicItems.add(buddingAmethyst);
+
+        ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
+        mythicItems.add(trialSpawner);
+
+        ItemStack spawner = Items.SPAWNER.getDefaultStack();
+        mythicItems.add(spawner);
+
+        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
 
         mythicItems.add(ModItems.LEGENDARY_PICKAXE.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_SHOVEL.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_AXE.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_HOE.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_SWORD.getDefaultStack());
+        mythicItems.add(ModItems.LEGENDARY_LONGSWORD.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_ROCKET.getDefaultStack());
         mythicItems.add(ModItems.SURVIVAL_DEBUG_STICK.getDefaultStack());
         mythicItems.add(ModItems.FLASH.getDefaultStack());
 
         int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);
         ItemStack reward = mythicItems.get(nextItem);
+
+        int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
+        mythicItems.add(spawnEggs.get(nextEgg));
+
+        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
+            ItemStack newEgg = spawnEggs.get(nextEgg);
+            newEgg.setCount(1);
+            this.dropStack(newEgg, 0);
+        }
 
         this.dropStack(reward, 0);
     }

@@ -3,10 +3,10 @@ package net.elgoblin.moremineralblocks;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.client.InfiniteItemRenderer;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
-import net.elgoblin.moremineralblocks.entity.client.DevilmonModel;
-import net.elgoblin.moremineralblocks.entity.client.MantisModel;
-import net.elgoblin.moremineralblocks.entity.client.MantisRenderer;
-import net.elgoblin.moremineralblocks.entity.client.DevilmonRenderer;
+//import net.elgoblin.moremineralblocks.entity.client.DevilmonModel;
+//import net.elgoblin.moremineralblocks.entity.client.MantisModel;
+//import net.elgoblin.moremineralblocks.entity.client.MantisRenderer;
+//import net.elgoblin.moremineralblocks.entity.client.DevilmonRenderer;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.particle.custom.ChaosOrbFeedbackParticle;
@@ -70,11 +70,11 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
 ////            }
 //        });
 
-        EntityModelLayerRegistry.registerModelLayer(MantisModel.MANTIS, MantisModel::getTexturedModelData);
-        EntityRendererRegistry.register(ModEntities.MANTIS, MantisRenderer::new);
-
-        EntityModelLayerRegistry.registerModelLayer(DevilmonModel.DEVILMON, DevilmonModel::getTexturedModelData);
-        EntityRendererRegistry.register(ModEntities.DEVILMON, DevilmonRenderer::new);
+//        EntityModelLayerRegistry.registerModelLayer(MantisModel.MANTIS, MantisModel::getTexturedModelData);
+//        EntityRendererRegistry.register(ModEntities.MANTIS, MantisRenderer::new);
+//
+//        EntityModelLayerRegistry.registerModelLayer(DevilmonModel.DEVILMON, DevilmonModel::getTexturedModelData);
+//        EntityRendererRegistry.register(ModEntities.DEVILMON, DevilmonRenderer::new);
 
         ParticleFactoryRegistry.getInstance().register(ModParticles.PICKAXE_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_HASTE_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
