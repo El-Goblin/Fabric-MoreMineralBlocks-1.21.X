@@ -49,7 +49,7 @@ public class MirrorItem extends Item {
                 }
             }
         }
-        itemStack.decrement(1);
+        itemStack.decrementUnlessCreative(1, user);
         return super.use(world, user, hand);
     }
 }

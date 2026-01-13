@@ -70,7 +70,7 @@ public class ChaosMirrorItem extends Item {
                 }
             }
         }
-        itemStack.decrement(1);
+        itemStack.decrementUnlessCreative(1, user);
         return super.use(world, user, hand);
     }
 }
