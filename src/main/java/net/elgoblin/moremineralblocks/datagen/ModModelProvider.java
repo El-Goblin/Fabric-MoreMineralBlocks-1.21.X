@@ -430,5 +430,6 @@ public class ModModelProvider extends FabricModelProvider {
         //itemModelGenerator.register(ModItems.MAGIC_MIRROR, Models.HANDHELD);
         //itemModelGenerator.register(ModItems.GOLDEN_MAGIC_MIRROR, Models.HANDHELD);
         //itemModelGenerator.register(ModItems.CHAOS_MIRROR, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.LA_LECHONA, Models.HANDHELD);
     }
 }

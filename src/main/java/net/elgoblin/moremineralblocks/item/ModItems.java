@@ -13,6 +13,8 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 
+import static net.minecraft.item.Items.BUCKET;
+
 public class ModItems {
 
     public static final Item LEGENDARY_PICKAXE = registerItem(
@@ -91,6 +93,8 @@ public class ModItems {
     public static final Item CHAOS_ORB = registerItem("chaos_orb", new ChaosOrbItem(new Item.Settings()));
     public static final Item FLASH = registerItem("flash", new FlashItem(new Item.Settings()));
 
+    public static final Item LA_LECHONA = registerItem("la_lechona", new LaLechonaItem(new Item.Settings().recipeRemainder(BUCKET).maxCount(1)));
+
 //    public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
 
     private static Item registerItem(String name, Item item) {
@@ -116,6 +120,7 @@ public class ModItems {
             entries.add(WOODEN_LONGSWORD);
             entries.add(STONE_LONGSWORD);
             entries.add(GOLDEN_LONGSWORD);
+            entries.add(IRON_LONGSWORD);
             entries.add(DIAMOND_LONGSWORD);
             entries.add(NETHERITE_LONGSWORD);
             entries.add(FIENDBLADE_LONGSWORD);
@@ -143,6 +148,11 @@ public class ModItems {
             entries.add(REFLECTIVE_MIRROR);
             entries.add(CHAOS_MIRROR);
             entries.add(FLASH);
+            entries.add(LA_LECHONA);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(entries -> {
+            entries.add(LA_LECHONA);
         });
     }
 }

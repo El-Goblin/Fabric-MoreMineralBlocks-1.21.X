@@ -21,12 +21,15 @@ import net.minecraft.component.type.SuspiciousStewEffectsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MagmaCubeEntity;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.entity.passive.AxolotlEntity;
@@ -103,6 +106,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::applyBeaconEffect
     ));
     private List<BiConsumer<HitResult, Box>> selfAreaChaosEffects = new ArrayList<>(List.of(
+            this::increaseInteractionRange,
             this::fragile
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
@@ -119,7 +123,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //            this::adventureGamemode
 //            this::onanaHands,
             this::blinking,
-            this::moveXBlocks
+            this::moveXBlocks,
+            this::changeScale
     ));
 
 
@@ -449,14 +454,121 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
 
+    private void increaseInteractionRange(HitResult hitResult, Box boundingBox) {
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
+
+        for (LivingEntity entity : entities) {
+            if (entity instanceof PlayerEntity player) {
+                player.sendMessage(Text.of("+1"));
+
+                Identifier entityInteractionRangeModifierID = Identifier.of(MoreMineralBlocks.MOD_ID + ":entity_interaction_range_modifier");
+                Identifier blockInteractionRangeModifierID = Identifier.of(MoreMineralBlocks.MOD_ID + ":block_interaction_range_modifier");
+
+                if (player.getAttributes().hasModifierForAttribute(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE, entityInteractionRangeModifierID)) {
+                    EntityAttributeModifier rangeModifier = new EntityAttributeModifier(entityInteractionRangeModifierID
+                            , player.getAttributes().getModifierValue(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE, entityInteractionRangeModifierID) + 1
+                            , EntityAttributeModifier.Operation.ADD_VALUE);
+
+                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE);
+                    if (entityInteractionRangeInstance != null) {
+                        entityInteractionRangeInstance.removeModifier(entityInteractionRangeModifierID);
+                        entityInteractionRangeInstance.addPersistentModifier(rangeModifier);
+                    }
+                } else {
+                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE);
+                    EntityAttributeModifier rangeModifier = new EntityAttributeModifier(entityInteractionRangeModifierID
+                            , 1
+                            , EntityAttributeModifier.Operation.ADD_VALUE);
+
+                    if (entityInteractionRangeInstance != null) {
+                        entityInteractionRangeInstance.addPersistentModifier(rangeModifier);
+                    }
+                }
+
+                if (player.getAttributes().hasModifierForAttribute(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE, blockInteractionRangeModifierID)) {
+                    EntityAttributeModifier rangeModifier = new EntityAttributeModifier(blockInteractionRangeModifierID
+                            , player.getAttributes().getModifierValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE, blockInteractionRangeModifierID) + 1
+                            , EntityAttributeModifier.Operation.ADD_VALUE);
+
+                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE);
+                    if (entityInteractionRangeInstance != null) {
+                        entityInteractionRangeInstance.removeModifier(blockInteractionRangeModifierID);
+                        entityInteractionRangeInstance.addPersistentModifier(rangeModifier);
+                    }
+                } else {
+                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE);
+                    EntityAttributeModifier rangeModifier = new EntityAttributeModifier(blockInteractionRangeModifierID
+                            , 1
+                            , EntityAttributeModifier.Operation.ADD_VALUE);
+
+                    if (entityInteractionRangeInstance != null) {
+                        entityInteractionRangeInstance.addPersistentModifier(rangeModifier);
+                    }
+                }
+            }
+        }
+    }
+
+    private record ScalePack(
+            double scale,
+            double max_hp,
+            double step_height,
+            double fall_height,
+//            double fall_damage,
+            double speed,
+            double jump,
+            double block_interaction_range,
+            double entity_interaction_range,
+            double block_break_speed) {
+
+    };
+
+    private static final List<ScalePack> scalePacks = new ArrayList<ScalePack>(List.of(
+            new ScalePack(0.25,10, 0.6, 2, 0.08, 0.4, 3.5, 2.5, 1),
+            new ScalePack(0.5, 16, 0.6, 2.5, 0.09, 0.42, 4, 3, 1),
+            new ScalePack(1.5, 24, 1, 4.5,  0.125, 0.525, 5, 4, 2),
+            new ScalePack(2, 30, 1, 6,  0.15, 0.63, 6.5, 4.5, 2)));
+
+    private void applyAttributeChange(RegistryEntry<EntityAttribute> attribute, double value, LivingEntity player) {
+        EntityAttributeInstance currentStat = player.getAttributeInstance(attribute);
+        if (currentStat != null) {
+            currentStat.setBaseValue(value);
+        }
+    }
+
+    private void changeScale(HitResult hitResult, Box boundingBox) {
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
+
+        ScalePack chosenPack = scalePacks.get(random.nextInt(scalePacks.size()));
+
+        if (entities.isEmpty() && this.getOwner() != null) {
+            entities.add((LivingEntity) this.getOwner());
+        }
+
+        for (LivingEntity entity : entities) {
+            applyAttributeChange(EntityAttributes.GENERIC_SCALE, chosenPack.scale, entity);
+
+            if (entity instanceof PlayerEntity player) {
+                applyAttributeChange(EntityAttributes.GENERIC_MAX_HEALTH, chosenPack.max_hp, player);
+                applyAttributeChange(EntityAttributes.GENERIC_STEP_HEIGHT, chosenPack.step_height, player);
+                applyAttributeChange(EntityAttributes.GENERIC_SAFE_FALL_DISTANCE, chosenPack.fall_height, player);
+                applyAttributeChange(EntityAttributes.GENERIC_MOVEMENT_SPEED, chosenPack.speed, player);
+                applyAttributeChange(EntityAttributes.GENERIC_JUMP_STRENGTH, chosenPack.jump, player);
+                applyAttributeChange(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE, chosenPack.block_interaction_range, player);
+                applyAttributeChange(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE, chosenPack.entity_interaction_range, player);
+                applyAttributeChange(EntityAttributes.PLAYER_BLOCK_BREAK_SPEED, chosenPack.block_break_speed, player);
+
+                player.giveItemStack(new ItemStack(ModItems.LA_LECHONA));
+            }
+        }
+    }
+
     private void moveXBlocks(HitResult hitResult, Box boundingBox) {
         List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
 
         boolean goDown = this.random.nextBoolean();
 
-        if (entities.isEmpty() && this.getOwner() != null) {
-            entities.add((LivingEntity) this.getOwner());
-        }
+
         for (LivingEntity entity : entities) {
 
             // Ocurre cuando se muere el player antes de que se calcule la lista
@@ -563,31 +675,32 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         List<Item> items = new ArrayList<>();
 
         for (Item item : Registries.ITEM) {
-//            if (!(item instanceof ToolItem) && !(item instanceof EnderEyeItem) && !(item.getComponents().contains(DataComponentTypes.FOOD))) {
-//                boolean isMusicDisc = item.getComponents().contains(DataComponentTypes.JUKEBOX_PLAYABLE);
-//                if (!isMusicDisc) {
-                    boolean isBlock = item instanceof BlockItem;
-                    boolean isBucket = item instanceof FluidModificationItem;
-                    boolean isSpawnEgg = item instanceof SpawnEggItem;
-                    boolean isThrowableProjectile = item instanceof EnderPearlItem ||
-                                                    item instanceof EggItem ||
-                                                    item instanceof SnowballItem ||
-                                                    item instanceof FireChargeItem ||
-                                                    item instanceof BoneMealItem ||
-                                                    item instanceof WindChargeItem ||
-                                                    item instanceof ChaosOrbItem;
-                    boolean isDye = item instanceof DyeItem;
-                    boolean isBoat = item instanceof BoatItem;
-                    boolean isInkSac = item instanceof InkSacItem || item instanceof GlowInkSacItem;
-                    boolean isMinecart = item instanceof MinecartItem;
-                    if (isBlock || isBucket || isSpawnEgg || isThrowableProjectile || isDye || isBoat || isInkSac || isMinecart) {
-                        items.add(item);
-//                    }
-//                }
-            }
+//            if (item.getComponents().contains(DataComponentTypes.FOOD)) {
+//                items.add(item);
+//            }
+                boolean isBlock = item instanceof BlockItem;
+                boolean isBucket = item instanceof FluidModificationItem;
+                boolean isSpawnEgg = item instanceof SpawnEggItem;
+                boolean isThrowableProjectile = item instanceof EnderPearlItem ||
+                        item instanceof EggItem ||
+                        item instanceof SnowballItem ||
+                        item instanceof FireChargeItem ||
+                        item instanceof BoneMealItem ||
+                        item instanceof WindChargeItem ||
+                        item instanceof ChaosOrbItem;
+                boolean isDye = item instanceof DyeItem;
+                boolean isBoat = item instanceof BoatItem;
+                boolean isInkSac = item instanceof InkSacItem || item instanceof GlowInkSacItem;
+                boolean isMinecart = item instanceof MinecartItem;
+                if (isBlock || isBucket || isSpawnEgg || isThrowableProjectile || isDye || isBoat || isInkSac || isMinecart) {
+                    items.add(item);
+                }
         }
 
         Item chosenItem = items.get(random.nextInt(items.size()-1));
+//        if (chosenItem.getComponents().contains(DataComponentTypes.FOOD)) {
+//            infiniteItem.set(DataComponentTypes.FOOD ,chosenItem.getComponents().get(DataComponentTypes.FOOD));
+//        }
         if (this.getOwner() != null) {
             this.getOwner().sendMessage(Text.of(chosenItem.getName()));
         }
@@ -687,7 +800,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         rareItems.add(diamonds);
 
         ItemStack goldenCarrots = Items.GOLDEN_CARROT.getDefaultStack();
-        goldenCarrots.setCount(32);
+        goldenCarrots.setCount(64);
         rareItems.add(goldenCarrots);
 
         ItemStack netherite = Items.NETHERITE_INGOT.getDefaultStack();
@@ -699,16 +812,16 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         rareItems.add(bookshelves);
 
         ItemStack goldenApples = Items.ENCHANTED_GOLDEN_APPLE.getDefaultStack();
-        goldenApples.setCount(2);
+        goldenApples.setCount(8);
         rareItems.add(goldenApples);
 
         ItemStack sponges = Items.SPONGE.getDefaultStack();
         sponges.setCount(64);
         rareItems.add(sponges);
 
-        ItemStack iron_ingots = Items.IRON_INGOT.getDefaultStack();
-        iron_ingots.setCount(64);
-        rareItems.add(iron_ingots);
+        ItemStack iron_blocks = Items.IRON_BLOCK.getDefaultStack();
+        iron_blocks.setCount(16);
+        rareItems.add(iron_blocks);
 
         int nextItem = this.random.nextBetween(0, (int) rareItems.size()-1);
         ItemStack reward = rareItems.get(nextItem);

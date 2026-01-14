@@ -16,13 +16,26 @@ public class FlashItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
-            ItemStack itemstack = user.getStackInHand(hand);
+
+            Vec3d previousVelocity = user.getVelocity();
+            float previousPitch = user.getPitch();
+            float previousYaw = user.getYaw();
+            float previousBodyYaw = user.getBodyYaw();
+            float previousHeadYaw = user.getHeadYaw();
 
             user.getItemCooldownManager().set(this, 50);
 
-            Vec3d target = user.getPos().add(user.getRotationVec(1.0F).multiply(5));
-//            user.setVelocity(0,0,0);
+            Vec3d target = user.getPos().add(user.getRotationVec(1.0F).multiply(8));
             user.requestTeleport(target.x, target.y, target.z);
+
+            user.setVelocity(previousVelocity);
+            user.setPitch(previousPitch);
+            user.setYaw(previousYaw);
+            user.setBodyYaw(previousBodyYaw);
+            user.setHeadYaw(previousHeadYaw);
+
+            user.velocityModified = true;
+
             user.fallDistance = 0;
         }
         return super.use(world, user, hand);
