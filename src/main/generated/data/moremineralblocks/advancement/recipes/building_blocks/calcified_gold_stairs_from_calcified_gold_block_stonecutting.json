@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:calcified_gold_stairs_from_calcified_gold_block_stonecutting"
+        "recipe": "moremineralblocks:calcified_gold_stairs_from_calcified_gold_block_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:calcified_gold_stairs_from_calcified_gold_block_stonecutting"
+      "moremineralblocks:calcified_gold_stairs_from_calcified_gold_block_stonecutting"
     ]
   }
 }

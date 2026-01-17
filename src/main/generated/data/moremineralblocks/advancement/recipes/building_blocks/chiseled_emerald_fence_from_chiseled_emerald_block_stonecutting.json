@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:chiseled_emerald_fence_from_chiseled_emerald_block_stonecutting"
+        "recipe": "moremineralblocks:chiseled_emerald_fence_from_chiseled_emerald_block_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:chiseled_emerald_fence_from_chiseled_emerald_block_stonecutting"
+      "moremineralblocks:chiseled_emerald_fence_from_chiseled_emerald_block_stonecutting"
     ]
   }
 }

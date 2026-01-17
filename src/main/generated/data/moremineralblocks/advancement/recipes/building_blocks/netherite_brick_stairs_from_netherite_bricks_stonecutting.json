@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:netherite_brick_stairs_from_netherite_bricks_stonecutting"
+        "recipe": "moremineralblocks:netherite_brick_stairs_from_netherite_bricks_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:netherite_brick_stairs_from_netherite_bricks_stonecutting"
+      "moremineralblocks:netherite_brick_stairs_from_netherite_bricks_stonecutting"
     ]
   }
 }

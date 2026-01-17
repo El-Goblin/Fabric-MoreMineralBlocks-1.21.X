@@ -18,27 +18,27 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-//        getOrCreateTagBuilder(ModTags.Items.TRANSFORMABLE_ITEMS)
+//        valueLookupBuilder(ModTags.Items.TRANSFORMABLE_ITEMS)
 //                .add(Items.COAL)
 //                .add(Items.STICK)
 //                .add(Items.APPLE);
 
-        getOrCreateTagBuilder(ModTags.Items.LEGENDARY_REPAIR);
+        valueLookupBuilder(ModTags.Items.LEGENDARY_REPAIR);
 
-        getOrCreateTagBuilder(ItemTags.PICKAXES).add(ModItems.LEGENDARY_PICKAXE);
-        getOrCreateTagBuilder(ItemTags.SHOVELS).add(ModItems.LEGENDARY_SHOVEL);
-        getOrCreateTagBuilder(ItemTags.AXES).add(ModItems.LEGENDARY_AXE);
-        getOrCreateTagBuilder(ItemTags.HOES).add(ModItems.LEGENDARY_HOE);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.LEGENDARY_SWORD);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.WOODEN_LONGSWORD);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.STONE_LONGSWORD);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.GOLDEN_LONGSWORD);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.IRON_LONGSWORD);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.DIAMOND_LONGSWORD);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.NETHERITE_LONGSWORD);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.FIENDBLADE_LONGSWORD);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.FIRE_DRAGONSWORD_LONGSWORD);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.FLAMEBERGE_LONGSWORD);
-        getOrCreateTagBuilder(ItemTags.SWORDS).add(ModItems.LEGENDARY_LONGSWORD);
+        valueLookupBuilder(ItemTags.PICKAXES).add(ModItems.LEGENDARY_PICKAXE);
+        valueLookupBuilder(ItemTags.SHOVELS).add(ModItems.LEGENDARY_SHOVEL);
+        valueLookupBuilder(ItemTags.AXES).add(ModItems.LEGENDARY_AXE);
+        valueLookupBuilder(ItemTags.HOES).add(ModItems.LEGENDARY_HOE);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.LEGENDARY_SWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.WOODEN_LONGSWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.STONE_LONGSWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.GOLDEN_LONGSWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.IRON_LONGSWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.DIAMOND_LONGSWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.NETHERITE_LONGSWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.FIENDBLADE_LONGSWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.FIRE_DRAGONSWORD_LONGSWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.FLAMEBERGE_LONGSWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.LEGENDARY_LONGSWORD);
     }
 }
