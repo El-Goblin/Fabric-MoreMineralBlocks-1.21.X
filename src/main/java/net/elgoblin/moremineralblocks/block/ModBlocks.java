@@ -967,7 +967,7 @@ public class ModBlocks {
     // Funcion de ayuda para registrar bloques nuevos
     private static void registerBlockItem(String name, Block block) {
         Registry.register(Registries.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, name),
-                new BlockItem(block,new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, name)))));
+                new BlockItem(block,new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, name))).useBlockPrefixedTranslationKey()));
     }
 
     public static void registerModBlocks() {

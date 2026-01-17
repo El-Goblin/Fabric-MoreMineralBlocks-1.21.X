@@ -3,10 +3,14 @@ package net.elgoblin.moremineralblocks.datagen;
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.item.ModItems;
+import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Blocks;
-import net.minecraft.data.client.*;
+import net.minecraft.client.data.BlockStateModelGenerator;
+import net.minecraft.client.data.ItemModelGenerator;
+import net.minecraft.client.data.Models;
+import net.minecraft.client.data.TextureKey;
+import net.minecraft.client.model.Model;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
@@ -400,11 +404,12 @@ public class ModModelProvider extends FabricModelProvider {
 
     }
 
-    private static Model item(TextureKey... requiredTextureKeys) {
-        return new Model(Optional.of(Identifier.of(MoreMineralBlocks.MOD_ID+":item/longswords_parent")), Optional.empty(), requiredTextureKeys);
-    }
-
-    public static final Model LONGSWORD = item(TextureKey.LAYER0);
+//    private static Model item(TextureKey... requiredTextureKeys) {
+//        return new Model(Optional.of(Identifier.of(MoreMineralBlocks.MOD_ID+":item/longswords_parent")), Optional.empty(), requiredTextureKeys);
+//    }
+//
+//    public static final Model LONGSWORD = item(TextureKey.LAYER0);
+//public static final Model LONGSWORD = Models.item(Identifier.of(MoreMineralBlocks.MOD_ID, "item/longswords_parent"));
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
@@ -416,16 +421,16 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.LEGENDARY_AXE, Models.HANDHELD);
         itemModelGenerator.register(ModItems.LEGENDARY_HOE, Models.HANDHELD);
         itemModelGenerator.register(ModItems.LEGENDARY_SWORD, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.WOODEN_LONGSWORD, LONGSWORD);
-        itemModelGenerator.register(ModItems.STONE_LONGSWORD, LONGSWORD);
-        itemModelGenerator.register(ModItems.IRON_LONGSWORD, LONGSWORD);
-        itemModelGenerator.register(ModItems.GOLDEN_LONGSWORD, LONGSWORD);
-        itemModelGenerator.register(ModItems.DIAMOND_LONGSWORD, LONGSWORD);
-        itemModelGenerator.register(ModItems.NETHERITE_LONGSWORD, LONGSWORD);
-        itemModelGenerator.register(ModItems.FLAMEBERGE_LONGSWORD, LONGSWORD);
-        itemModelGenerator.register(ModItems.FIRE_DRAGONSWORD_LONGSWORD, LONGSWORD);
-        itemModelGenerator.register(ModItems.FIENDBLADE_LONGSWORD, LONGSWORD);
-        itemModelGenerator.register(ModItems.LEGENDARY_LONGSWORD, LONGSWORD);
+        itemModelGenerator.register(ModItems.WOODEN_LONGSWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.STONE_LONGSWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.IRON_LONGSWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.GOLDEN_LONGSWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.DIAMOND_LONGSWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.NETHERITE_LONGSWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.FLAMEBERGE_LONGSWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.FIRE_DRAGONSWORD_LONGSWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.FIENDBLADE_LONGSWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.LEGENDARY_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.FLASH, Models.HANDHELD);
         //itemModelGenerator.register(ModItems.MAGIC_MIRROR, Models.HANDHELD);
         //itemModelGenerator.register(ModItems.GOLDEN_MAGIC_MIRROR, Models.HANDHELD);

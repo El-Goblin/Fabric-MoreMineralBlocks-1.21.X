@@ -1,5 +1,5 @@
 {
-  "parent": "moremineralblocks:item/longswords_parent",
+  "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "moremineralblocks:item/netherite_longsword"
   }
