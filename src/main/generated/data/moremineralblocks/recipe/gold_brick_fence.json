@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "item": "moremineralblocks:gold_bricks"
-    }
+    "#": "minecraft:stick",
+    "W": "moremineralblocks:gold_bricks"
   },
   "pattern": [
     "W#W",

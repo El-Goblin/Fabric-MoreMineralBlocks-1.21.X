@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "moremineralblocks:polished_netherite_block"
-  },
+  "ingredient": "moremineralblocks:polished_netherite_block",
   "result": {
     "count": 1,
     "id": "moremineralblocks:polished_netherite_stairs"

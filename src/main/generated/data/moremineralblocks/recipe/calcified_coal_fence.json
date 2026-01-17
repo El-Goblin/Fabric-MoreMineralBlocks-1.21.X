@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "item": "moremineralblocks:calcified_coal_block"
-    }
+    "#": "minecraft:stick",
+    "W": "moremineralblocks:calcified_coal_block"
   },
   "pattern": [
     "W#W",

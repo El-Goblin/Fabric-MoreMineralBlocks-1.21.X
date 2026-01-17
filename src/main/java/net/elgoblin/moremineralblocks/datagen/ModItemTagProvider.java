@@ -23,6 +23,8 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 //                .add(Items.STICK)
 //                .add(Items.APPLE);
 
+        getOrCreateTagBuilder(ModTags.Items.LEGENDARY_REPAIR);
+
         getOrCreateTagBuilder(ItemTags.PICKAXES).add(ModItems.LEGENDARY_PICKAXE);
         getOrCreateTagBuilder(ItemTags.SHOVELS).add(ModItems.LEGENDARY_SHOVEL);
         getOrCreateTagBuilder(ItemTags.AXES).add(ModItems.LEGENDARY_AXE);

@@ -22,8 +22,7 @@ public class BlinkingEffect extends StatusEffect {
     }
 
     @Override
-    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
-        World world = entity.getWorld();
+    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
         if (!world.isClient) {
             for (int i = 0; i < 16; i++) {
                 double d = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * 16.0;
@@ -55,7 +54,7 @@ public class BlinkingEffect extends StatusEffect {
             }
         }
 
-        return super.applyUpdateEffect(entity, amplifier);
+        return super.applyUpdateEffect(world, entity, amplifier);
     }
 
     @Override

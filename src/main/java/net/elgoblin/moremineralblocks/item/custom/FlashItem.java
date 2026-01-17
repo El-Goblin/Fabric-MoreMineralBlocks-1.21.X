@@ -2,9 +2,8 @@ package net.elgoblin.moremineralblocks.item.custom;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -14,7 +13,7 @@ public class FlashItem extends Item {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
 
             Vec3d previousVelocity = user.getVelocity();
@@ -23,7 +22,7 @@ public class FlashItem extends Item {
             float previousBodyYaw = user.getBodyYaw();
             float previousHeadYaw = user.getHeadYaw();
 
-            user.getItemCooldownManager().set(this, 50);
+            user.getItemCooldownManager().set(user.getStackInHand(hand), 50);
 
             Vec3d target = user.getPos().add(user.getRotationVec(1.0F).multiply(8));
             user.requestTeleport(target.x, target.y, target.z);

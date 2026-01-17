@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "moremineralblocks:polished_coal_block"
-  },
+  "ingredient": "moremineralblocks:polished_coal_block",
   "result": {
     "count": 2,
     "id": "moremineralblocks:polished_coal_fence"

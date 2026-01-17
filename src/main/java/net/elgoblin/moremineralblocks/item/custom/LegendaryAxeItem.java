@@ -7,23 +7,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Oxidizable;
 import net.minecraft.block.PillarBlock;
-import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.FoodComponent;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.ToolComponent;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -34,8 +28,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class LegendaryAxeItem extends AxeItem {
-    public LegendaryAxeItem(ToolMaterial material, Settings settings) {
-        super(material, settings);
+    public LegendaryAxeItem(ToolMaterial material, float attackDamage, float attackSpeed, Settings settings) {
+        super(material, attackDamage, attackSpeed, settings);
     }
 
     // Con esto hago que no pierda durabilidad al atacar cosas
@@ -44,7 +38,7 @@ public class LegendaryAxeItem extends AxeItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
 
         ItemEnchantmentsComponent oldEnchantments = itemStack.get(DataComponentTypes.ENCHANTMENTS);
@@ -63,7 +57,7 @@ public class LegendaryAxeItem extends AxeItem {
         itemStack.set(ModDataComponentTypes.OTHER_ENCHANTMENTS, oldEnchantments);
         itemStack.set(ModDataComponentTypes.OTHER_STORED_ENCHANTMENTS, oldStoredEnchantments);
 
-        return TypedActionResult.pass(user.getStackInHand(hand));
+        return ActionResult.PASS;
     }
 
     protected static boolean shouldCancelStripAttempt(ItemUsageContext context) {
@@ -121,7 +115,7 @@ public class LegendaryAxeItem extends AxeItem {
                 world.setBlockState(blockPos, (BlockState)optional.get(), Block.NOTIFY_ALL_AND_REDRAW);
                 world.emitGameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Emitter.of(playerEntity, (BlockState)optional.get()));
 
-                return ActionResult.success(world.isClient);
+                return ActionResult.SUCCESS;
             }
         }
     }

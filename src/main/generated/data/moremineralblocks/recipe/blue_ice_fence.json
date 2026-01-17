@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "item": "minecraft:blue_ice"
-    }
+    "#": "minecraft:stick",
+    "W": "minecraft:blue_ice"
   },
   "pattern": [
     "W#W",

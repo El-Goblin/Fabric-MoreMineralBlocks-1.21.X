@@ -1,7 +1,7 @@
 package net.elgoblin.moremineralblocks;
 
 import net.elgoblin.moremineralblocks.block.ModBlocks;
-import net.elgoblin.moremineralblocks.client.InfiniteItemRenderer;
+//import net.elgoblin.moremineralblocks.client.InfiniteItemRenderer;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 //import net.elgoblin.moremineralblocks.entity.client.DevilmonModel;
 //import net.elgoblin.moremineralblocks.entity.client.MantisModel;
@@ -59,7 +59,7 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.CHAOS_ORB, FlyingItemEntityRenderer::new);
 
-        BuiltinItemRendererRegistry.INSTANCE.register(ModItems.INFINITE_ITEMSTACK, new InfiniteItemRenderer());
+//        BuiltinItemRendererRegistry.INSTANCE.register(ModItems.INFINITE_ITEMSTACK, new InfiniteItemRenderer());
 
 //        ClientTickEvents.END_CLIENT_TICK.register(client -> {
 //

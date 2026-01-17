@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "moremineralblocks:lapis_bricks"
-  },
+  "ingredient": "moremineralblocks:lapis_bricks",
   "result": {
     "count": 2,
     "id": "moremineralblocks:lapis_brick_slab"

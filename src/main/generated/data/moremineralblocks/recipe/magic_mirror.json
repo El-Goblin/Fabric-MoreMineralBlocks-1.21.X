@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "moremineralblocks:reflective_mirror"
-    }
+    "moremineralblocks:reflective_mirror"
   ],
   "result": {
     "count": 1,

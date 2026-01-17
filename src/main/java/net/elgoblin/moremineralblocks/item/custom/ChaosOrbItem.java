@@ -1,23 +1,18 @@
 package net.elgoblin.moremineralblocks.item.custom;
 
 import net.elgoblin.moremineralblocks.entity.custom.ChaosOrbEntity;
-import net.elgoblin.moremineralblocks.util.ProtectorManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.thrown.SnowballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SnowballItem;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Position;
 import net.minecraft.util.math.random.Random;
@@ -36,7 +31,7 @@ public class ChaosOrbItem extends SnowballItem {
     private net.minecraft.util.math.random.Random random = Random.create();
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         world.playSound(
                 null,
@@ -50,7 +45,7 @@ public class ChaosOrbItem extends SnowballItem {
         );
         if (!world.isClient) {
 
-            ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(world, user);
+            ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(world, user, user.getStackInHand(hand));
             chaosOrbEntity.setItem(itemStack);
             chaosOrbEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(chaosOrbEntity);
@@ -58,12 +53,12 @@ public class ChaosOrbItem extends SnowballItem {
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         itemStack.decrementUnlessCreative(1, user);
-        return TypedActionResult.success(itemStack, world.isClient());
+        return ActionResult.SUCCESS;
     }
 
     @Override
     public ProjectileEntity createEntity(World world, Position pos, ItemStack stack, Direction direction) {
-        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(world, pos.getX(), pos.getY(), pos.getZ());
+        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
         chaosOrbEntity.setItem(stack);
         return chaosOrbEntity;
     }

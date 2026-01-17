@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "moremineralblocks:netherite_bricks"
-  },
+  "ingredient": "moremineralblocks:netherite_bricks",
   "result": {
     "count": 1,
     "id": "moremineralblocks:netherite_brick_stairs"

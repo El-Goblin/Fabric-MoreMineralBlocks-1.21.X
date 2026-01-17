@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "R": {
-      "item": "minecraft:coal"
-    }
+    "R": "minecraft:coal"
   },
   "pattern": [
     "RR",

@@ -324,12 +324,12 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.PROTECTOR_BLOCK);
     }
 
-    public LootTable.Builder multipleOreDrops(Block drop, Item item, float minDrops, float maxDrops) {
-        RegistryWrapper.Impl<Enchantment> impl = this.registryLookup.getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
-        return this.dropsWithSilkTouch(drop, (LootPoolEntry.Builder<?>)this.applyExplosionDecay(drop, ((LeafEntry.Builder<?>)ItemEntry.builder(item)
-                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(minDrops, maxDrops))))
-                                .apply(ApplyBonusLootFunction.oreDrops(impl.getOrThrow(Enchantments.FORTUNE)))
-                )
-        );
-    }
+//    public LootTable.Builder multipleOreDrops(Block drop, Item item, float minDrops, float maxDrops) {
+//        RegistryWrapper.Impl<Enchantment> impl = this.registryLookup.getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
+//        return this.dropsWithSilkTouch(drop, (LootPoolEntry.Builder<?>)this.applyExplosionDecay(drop, ((LeafEntry.Builder<?>)ItemEntry.builder(item)
+//                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(minDrops, maxDrops))))
+//                                .apply(ApplyBonusLootFunction.oreDrops(impl.getOrThrow(Enchantments.FORTUNE)))
+//                )
+//        );
+//    }
 }

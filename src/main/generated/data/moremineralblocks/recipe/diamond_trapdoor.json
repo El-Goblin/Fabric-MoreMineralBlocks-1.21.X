@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "R": {
-      "item": "minecraft:diamond"
-    }
+    "R": "minecraft:diamond"
   },
   "pattern": [
     "RR",

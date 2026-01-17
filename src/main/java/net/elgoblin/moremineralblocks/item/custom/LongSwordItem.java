@@ -1,55 +1,43 @@
 package net.elgoblin.moremineralblocks.item.custom;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
-import net.minecraft.component.ComponentMap;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import java.util.List;
-import java.util.UUID;
-
 public class LongSwordItem extends SwordItem {
 
-    public LongSwordItem(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, settings);
+    public LongSwordItem(ToolMaterial material, float attackDamage, float attackSpeed, float entityInteractionRange, float sweepingDamage, Settings settings) {
+        super(material, attackDamage, attackSpeed, settings.attributeModifiers(createAttributeModifiers(attackDamage, attackSpeed, entityInteractionRange, sweepingDamage)));
     }
 
-    public static AttributeModifiersComponent createAttributeModifiers(ToolMaterial material, int baseAttackDamage, float attackSpeed, float interactionRange, float sweepingDamage) {
+    public static AttributeModifiersComponent createAttributeModifiers(float attackDamage, float attackSpeed, float interactionRange, float sweepingDamage) {
         return AttributeModifiersComponent.builder()
                 .add(
-                        EntityAttributes.GENERIC_ATTACK_DAMAGE,
-                        new EntityAttributeModifier(BASE_ATTACK_DAMAGE_MODIFIER_ID, baseAttackDamage + material.getAttackDamage(), EntityAttributeModifier.Operation.ADD_VALUE),
+                        EntityAttributes.ATTACK_DAMAGE,
+                        new EntityAttributeModifier(Identifier.of(MoreMineralBlocks.MOD_ID), attackDamage, EntityAttributeModifier.Operation.ADD_VALUE),
                         AttributeModifierSlot.MAINHAND
                 )
                 .add(
-                        EntityAttributes.GENERIC_ATTACK_SPEED,
-                        new EntityAttributeModifier(BASE_ATTACK_SPEED_MODIFIER_ID, attackSpeed, EntityAttributeModifier.Operation.ADD_VALUE),
+                        EntityAttributes.ATTACK_SPEED,
+                        new EntityAttributeModifier(Identifier.of(MoreMineralBlocks.MOD_ID), attackSpeed, EntityAttributeModifier.Operation.ADD_VALUE),
                         AttributeModifierSlot.MAINHAND
                 )
                 .add(
-                        EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE,
+                        EntityAttributes.ENTITY_INTERACTION_RANGE,
                         new EntityAttributeModifier(Identifier.of(MoreMineralBlocks.MOD_ID), interactionRange, EntityAttributeModifier.Operation.ADD_VALUE),
                         AttributeModifierSlot.MAINHAND
                 )
                 .add(
-                        EntityAttributes.PLAYER_SWEEPING_DAMAGE_RATIO,
+                        EntityAttributes.SWEEPING_DAMAGE_RATIO,
                         new EntityAttributeModifier(Identifier.of(MoreMineralBlocks.MOD_ID), sweepingDamage, EntityAttributeModifier.Operation.ADD_VALUE),
                         AttributeModifierSlot.MAINHAND
                 )
@@ -66,7 +54,7 @@ public class LongSwordItem extends SwordItem {
             boolean inMainHand = ((PlayerEntity) entity).getMainHandStack() == stack;
             boolean offHandFree = ((PlayerEntity) entity).getOffHandStack().isEmpty();
 
-            EntityAttributeInstance attackSpeed = ((PlayerEntity) entity).getAttributeInstance(EntityAttributes.GENERIC_ATTACK_SPEED);
+            EntityAttributeInstance attackSpeed = ((PlayerEntity) entity).getAttributeInstance(EntityAttributes.ATTACK_SPEED);
 
             if (inMainHand && !offHandFree) {
 

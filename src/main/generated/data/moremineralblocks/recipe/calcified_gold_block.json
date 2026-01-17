@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "minecraft:gold_block"
-    },
-    {
-      "item": "minecraft:calcite"
-    }
+    "minecraft:gold_block",
+    "minecraft:calcite"
   ],
   "result": {
     "count": 2,

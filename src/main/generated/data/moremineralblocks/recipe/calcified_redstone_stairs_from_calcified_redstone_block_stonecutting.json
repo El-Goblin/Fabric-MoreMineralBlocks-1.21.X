@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "moremineralblocks:calcified_redstone_block"
-  },
+  "ingredient": "moremineralblocks:calcified_redstone_block",
   "result": {
     "count": 1,
     "id": "moremineralblocks:calcified_redstone_stairs"

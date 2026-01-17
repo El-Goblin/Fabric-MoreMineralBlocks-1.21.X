@@ -5,6 +5,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +17,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -64,7 +64,7 @@ public class InfiniteItem extends SpawnEggItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
 
         if (!hasBeenUsed(user.getStackInHand(hand))) {
             Hand otherHand = hand.equals(Hand.MAIN_HAND) ? Hand.OFF_HAND : Hand.MAIN_HAND;
@@ -80,8 +80,8 @@ public class InfiniteItem extends SpawnEggItem {
                 ItemStack originalStack = new ItemStack(this, 1);
                 originalStack.set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, chosenItem);
 
-                TypedActionResult<ItemStack> result = chosenItem.use(world, user, hand);
-                return TypedActionResult.success(originalStack);
+                ActionResult result = chosenItem.use(world, user, hand);
+                return ActionResult.SUCCESS;
             }
         }
         return super.use(world, user, hand);
@@ -131,7 +131,7 @@ public class InfiniteItem extends SpawnEggItem {
                     if (entity instanceof PassiveEntity) {
                         mobEntity = ((PassiveEntity)entity).createChild(world, (PassiveEntity)entity);
                     } else {
-                        mobEntity = entityType.create(world);
+                        mobEntity = entityType.create(world, SpawnReason.BREEDING);
                     }
 
                     if (mobEntity == null) {

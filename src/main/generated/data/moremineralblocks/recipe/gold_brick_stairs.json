@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "moremineralblocks:gold_bricks"
-    }
+    "#": "moremineralblocks:gold_bricks"
   },
   "pattern": [
     "#  ",

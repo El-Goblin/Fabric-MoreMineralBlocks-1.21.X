@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "moremineralblocks:redstone_bricks"
-  },
+  "ingredient": "moremineralblocks:redstone_bricks",
   "result": {
     "count": 1,
     "id": "moremineralblocks:redstone_brick_stairs"

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "moremineralblocks:lapis_bricks"
-    }
+    "#": "moremineralblocks:lapis_bricks"
   },
   "pattern": [
     "#  ",

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "moremineralblocks:polished_netherite_block"
-    }
+    "#": "moremineralblocks:polished_netherite_block"
   },
   "pattern": [
     "###",

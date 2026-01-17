@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "item": "moremineralblocks:lapis_bricks"
-    }
+    "#": "minecraft:stick",
+    "W": "moremineralblocks:lapis_bricks"
   },
   "pattern": [
     "#W#",

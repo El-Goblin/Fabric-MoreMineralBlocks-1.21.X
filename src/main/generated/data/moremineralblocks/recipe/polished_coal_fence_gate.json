@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "item": "moremineralblocks:polished_coal_block"
-    }
+    "#": "minecraft:stick",
+    "W": "moremineralblocks:polished_coal_block"
   },
   "pattern": [
     "#W#",

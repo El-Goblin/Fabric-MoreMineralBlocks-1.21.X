@@ -11,18 +11,8 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 
 public class ModEffects {
-
-    public static final RegistryEntry<StatusEffect> SLIMEY = registerStatusEffect("slimey",
-            new SlimeyEffect(StatusEffectCategory.NEUTRAL, 0x00ff20)
-                    .addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED,
-                            Identifier.of(MoreMineralBlocks.MOD_ID, "slimey"), -0.25f,
-                            EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-
     public static final RegistryEntry<StatusEffect> BLINKING = registerStatusEffect("blinking",
             new BlinkingEffect(StatusEffectCategory.NEUTRAL, 0x00ff20));
-
-//    public static final RegistryEntry<StatusEffect> CHAOS = registerStatusEffect("chaos",
-//            new ChaosEffect(StatusEffectCategory.NEUTRAL, 0x00ff20));
 
 //    public static final RegistryEntry<StatusEffect> ADVENTURE = registerStatusEffect("adventure",
 //            new AdventureEffect(StatusEffectCategory.NEUTRAL, 0x00ff20));

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "moremineralblocks:amethyst_bricks"
-    }
+    "#": "moremineralblocks:amethyst_bricks"
   },
   "pattern": [
     "###"

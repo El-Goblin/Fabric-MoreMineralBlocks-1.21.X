@@ -353,10 +353,10 @@ public class ModLootTableModifiers {
                 tableBuilder.pool(endCity.build());
             }
 
-            // Sheep
-            if (LootTables.PINK_SHEEP_ENTITY.equals(key)) {
-                tableBuilder.pool(fishingFish.build());
-            }
+//            // Sheep
+//            if (LootTables.PINK_SHEEP_ENTITY.equals(key)) {
+//                tableBuilder.pool(fishingFish.build());
+//            }
 
             // Fishing
 

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "minecraft:amethyst_block"
-    },
-    {
-      "item": "minecraft:calcite"
-    }
+    "minecraft:amethyst_block",
+    "minecraft:calcite"
   ],
   "result": {
     "count": 2,

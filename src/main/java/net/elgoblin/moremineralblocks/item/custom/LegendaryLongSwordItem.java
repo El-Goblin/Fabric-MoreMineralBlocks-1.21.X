@@ -8,16 +8,15 @@ import net.minecraft.component.type.ToolComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class LegendaryLongSwordItem extends LongSwordItem {
-    public LegendaryLongSwordItem(ToolMaterial material, Settings settings) {
-        super(material, settings);
+    public LegendaryLongSwordItem(ToolMaterial material, float attackDamage, float attackSpeed, float entityInteractionRange, float sweepingDamage, Settings settings) {
+        super(material, attackDamage, attackSpeed, entityInteractionRange, sweepingDamage, settings);
     }
 
     // Con esto hago que no pierda durabilidad al atacar cosas
@@ -26,7 +25,7 @@ public class LegendaryLongSwordItem extends LongSwordItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
 
         ItemEnchantmentsComponent oldEnchantments = itemStack.get(DataComponentTypes.ENCHANTMENTS);
@@ -45,7 +44,7 @@ public class LegendaryLongSwordItem extends LongSwordItem {
         itemStack.set(ModDataComponentTypes.OTHER_ENCHANTMENTS, oldEnchantments);
         itemStack.set(ModDataComponentTypes.OTHER_STORED_ENCHANTMENTS, oldStoredEnchantments);
 
-        return TypedActionResult.pass(user.getStackInHand(hand));
+        return ActionResult.PASS;
     }
 
     @Override

@@ -9,7 +9,7 @@ import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.terrain.SingleBlockSphereJob;
-import net.elgoblin.moremineralblocks.terrain.SkyBlockJob;
+//import net.elgoblin.moremineralblocks.terrain.SkyBlockJob;
 import net.elgoblin.moremineralblocks.terrain.TerrainManager;
 import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.block.Block;
@@ -17,6 +17,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.SuspiciousStewEffectsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
@@ -89,7 +90,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::spawnMobPack,
             this::getMythicItem,
             this::spawnSkeletonHorse,
-            this::breakGameProgression,
+//            this::breakGameProgression,
             this::getArmorSet,
             this::getToolsSet,
             this::spawn5ChaosOrbs,
@@ -134,26 +135,27 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
-    public ChaosOrbEntity(World world, LivingEntity owner) {
-        super(ModEntities.CHAOS_ORB, owner, world);
+    public ChaosOrbEntity(World world, LivingEntity owner, ItemStack stack) {
+        super(ModEntities.CHAOS_ORB, owner, world, stack);
 //        this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
-    public ChaosOrbEntity(World world, double x, double y, double z) {
-        super(ModEntities.CHAOS_ORB, x, y, z, world);
+    public ChaosOrbEntity(World world, double x, double y, double z, ItemStack stack) {
+        super(ModEntities.CHAOS_ORB, x, y, z, world, stack);
 //        this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
     }
 
-    private void addSkyBlock() {
-        MinecraftServer server = this.getWorld().getServer();
-        if (server != null) {
-            if (!MoreMineralBlocks.getStateSaverAndLoader(server).hasSkyblockHappened()) {
-                this.globalChaosEffects.add(this::createSkyblock);
-            }
-        }
-    }
+
+//    private void addSkyBlock() {
+//        MinecraftServer server = this.getWorld().getServer();
+//        if (server != null) {
+//            if (!MoreMineralBlocks.getStateSaverAndLoader(server).hasSkyblockHappened()) {
+//                this.globalChaosEffects.add(this::createSkyblock);
+//            }
+//        }
+//    }
 
     @Override
     public void tick() {
@@ -223,7 +225,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
         Entity entity = entityHitResult.getEntity();
-        entity.damage(this.getDamageSources().thrown(this, this.getOwner()), 0);
+        if (!entity.getWorld().isClient) {
+            entity.damage((ServerWorld) entity.getWorld(), this.getDamageSources().thrown(this, this.getOwner()), 0);
+        }
     }
 
     @Override
@@ -344,7 +348,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         Identifier entityTypeID = Registries.ENTITY_TYPE.getId(entityType);
 
         while (spawnsToPerform-- > 0) {
-            Entity entity = entityType.create(this.getWorld());
+            Entity entity = entityType.create(this.getWorld(), SpawnReason.EVENT);
 
             switch (entityTypeID.toString()) {
 
@@ -359,18 +363,18 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     nextEntity = this.random.nextBetween(0, mobs.size() - 1);
                     entityType = mobs.get(nextEntity);
                     entityTypeID = Registries.ENTITY_TYPE.getId(entityType);
-                    entity = entityType.create(this.getWorld());
+                    entity = entityType.create(this.getWorld(), SpawnReason.EVENT);
                     spawnsToPerform++;
                     break;
 
 
                 case "minecraft:bat", "minecraft:bee", "minecraft:chicken", "minecraft:cod", "minecraft:frog", "minecraft:pufferfish", "minecraft:rabbit", "minecraft:salmon", "minecraft:silverfish", "minecraft:endermite", "minecraft:tadpole":
-                    Entity entity2 = entityType.create(this.getWorld());
+                    Entity entity2 = entityType.create(this.getWorld(), SpawnReason.EVENT);
                     if (entity2 != null) {
                         entity2.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
                         this.getWorld().spawnEntity(entity2);
                     }
-                    Entity entity3 = entityType.create(this.getWorld());
+                    Entity entity3 = entityType.create(this.getWorld(), SpawnReason.EVENT);
                     if (entity3 != null) {
                         entity3.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
                         this.getWorld().spawnEntity(entity3);
@@ -379,7 +383,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
                 case "minecraft:tropical_fish":
                     for (int i = 0 ; i < 3 ; i++) {
-                        entity = entityType.create(this.getWorld());
+                        entity = entityType.create(this.getWorld(), SpawnReason.EVENT);
                         if (entity != null) {
                             TropicalFishEntity.Variant variant = TROPICAL_FISH_VARIANTS.get(random.nextBetween(0, TROPICAL_FISH_VARIANTS.size()-1));
                             int variantInt = variant.variety().getId() & 65535 |  (variant.baseColor().getId() & 0xFF) << 16 | (variant.patternColor().getId() & 0xFF) << 24;
@@ -430,7 +434,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void spawnSkeletonHorse(HitResult hitResult) {
-        SkeletonHorseEntity skeletonHorseEntity = EntityType.SKELETON_HORSE.create(this.getWorld());
+        SkeletonHorseEntity skeletonHorseEntity = EntityType.SKELETON_HORSE.create(this.getWorld(), SpawnReason.EVENT);
         if (skeletonHorseEntity != null) {
             skeletonHorseEntity.setTrapped(true);
             skeletonHorseEntity.setBreedingAge(0);
@@ -445,7 +449,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             if (this.getServer() != null) {
                 ServerWorld world = this.getServer().getOverworld();
                 world.setWeather(0, UniformIntProvider.create(3600, 15600).get(world.getRandom()), true, true);
-                LightningEntity bolt = EntityType.LIGHTNING_BOLT.create(this.getWorld());
+                LightningEntity bolt = EntityType.LIGHTNING_BOLT.create(this.getWorld(), SpawnReason.EVENT);
                 if (bolt != null) {
                     bolt.refreshPositionAndAngles(hitResult.getPos(),1f, 1f);
                     this.getWorld().spawnEntity(bolt);
@@ -459,23 +463,23 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         for (LivingEntity entity : entities) {
             if (entity instanceof PlayerEntity player) {
-                player.sendMessage(Text.of("+1"));
+                player.sendMessage(Text.of("+1"), true);
 
                 Identifier entityInteractionRangeModifierID = Identifier.of(MoreMineralBlocks.MOD_ID + ":entity_interaction_range_modifier");
                 Identifier blockInteractionRangeModifierID = Identifier.of(MoreMineralBlocks.MOD_ID + ":block_interaction_range_modifier");
 
-                if (player.getAttributes().hasModifierForAttribute(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE, entityInteractionRangeModifierID)) {
+                if (player.getAttributes().hasModifierForAttribute(EntityAttributes.ENTITY_INTERACTION_RANGE, entityInteractionRangeModifierID)) {
                     EntityAttributeModifier rangeModifier = new EntityAttributeModifier(entityInteractionRangeModifierID
-                            , player.getAttributes().getModifierValue(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE, entityInteractionRangeModifierID) + 1
+                            , player.getAttributes().getModifierValue(EntityAttributes.ENTITY_INTERACTION_RANGE, entityInteractionRangeModifierID) + 1
                             , EntityAttributeModifier.Operation.ADD_VALUE);
 
-                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE);
+                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.ENTITY_INTERACTION_RANGE);
                     if (entityInteractionRangeInstance != null) {
                         entityInteractionRangeInstance.removeModifier(entityInteractionRangeModifierID);
                         entityInteractionRangeInstance.addPersistentModifier(rangeModifier);
                     }
                 } else {
-                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE);
+                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.ENTITY_INTERACTION_RANGE);
                     EntityAttributeModifier rangeModifier = new EntityAttributeModifier(entityInteractionRangeModifierID
                             , 1
                             , EntityAttributeModifier.Operation.ADD_VALUE);
@@ -485,18 +489,18 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     }
                 }
 
-                if (player.getAttributes().hasModifierForAttribute(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE, blockInteractionRangeModifierID)) {
+                if (player.getAttributes().hasModifierForAttribute(EntityAttributes.BLOCK_INTERACTION_RANGE, blockInteractionRangeModifierID)) {
                     EntityAttributeModifier rangeModifier = new EntityAttributeModifier(blockInteractionRangeModifierID
-                            , player.getAttributes().getModifierValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE, blockInteractionRangeModifierID) + 1
+                            , player.getAttributes().getModifierValue(EntityAttributes.BLOCK_INTERACTION_RANGE, blockInteractionRangeModifierID) + 1
                             , EntityAttributeModifier.Operation.ADD_VALUE);
 
-                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE);
+                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.BLOCK_INTERACTION_RANGE);
                     if (entityInteractionRangeInstance != null) {
                         entityInteractionRangeInstance.removeModifier(blockInteractionRangeModifierID);
                         entityInteractionRangeInstance.addPersistentModifier(rangeModifier);
                     }
                 } else {
-                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE);
+                    EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.BLOCK_INTERACTION_RANGE);
                     EntityAttributeModifier rangeModifier = new EntityAttributeModifier(blockInteractionRangeModifierID
                             , 1
                             , EntityAttributeModifier.Operation.ADD_VALUE);
@@ -546,17 +550,17 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
 
         for (LivingEntity entity : entities) {
-            applyAttributeChange(EntityAttributes.GENERIC_SCALE, chosenPack.scale, entity);
+            applyAttributeChange(EntityAttributes.SCALE, chosenPack.scale, entity);
 
             if (entity instanceof PlayerEntity player) {
-                applyAttributeChange(EntityAttributes.GENERIC_MAX_HEALTH, chosenPack.max_hp, player);
-                applyAttributeChange(EntityAttributes.GENERIC_STEP_HEIGHT, chosenPack.step_height, player);
-                applyAttributeChange(EntityAttributes.GENERIC_SAFE_FALL_DISTANCE, chosenPack.fall_height, player);
-                applyAttributeChange(EntityAttributes.GENERIC_MOVEMENT_SPEED, chosenPack.speed, player);
-                applyAttributeChange(EntityAttributes.GENERIC_JUMP_STRENGTH, chosenPack.jump, player);
-                applyAttributeChange(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE, chosenPack.block_interaction_range, player);
-                applyAttributeChange(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE, chosenPack.entity_interaction_range, player);
-                applyAttributeChange(EntityAttributes.PLAYER_BLOCK_BREAK_SPEED, chosenPack.block_break_speed, player);
+                applyAttributeChange(EntityAttributes.MAX_HEALTH, chosenPack.max_hp, player);
+                applyAttributeChange(EntityAttributes.STEP_HEIGHT, chosenPack.step_height, player);
+                applyAttributeChange(EntityAttributes.SAFE_FALL_DISTANCE, chosenPack.fall_height, player);
+                applyAttributeChange(EntityAttributes.MOVEMENT_SPEED, chosenPack.speed, player);
+                applyAttributeChange(EntityAttributes.JUMP_STRENGTH, chosenPack.jump, player);
+                applyAttributeChange(EntityAttributes.BLOCK_INTERACTION_RANGE, chosenPack.block_interaction_range, player);
+                applyAttributeChange(EntityAttributes.ENTITY_INTERACTION_RANGE, chosenPack.entity_interaction_range, player);
+                applyAttributeChange(EntityAttributes.BLOCK_BREAK_SPEED, chosenPack.block_break_speed, player);
 
                 player.giveItemStack(new ItemStack(ModItems.LA_LECHONA));
             }
@@ -587,10 +591,12 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                         entity.getPitch(),
                         TeleportTarget.NO_OP);
                 entity.teleportTo(teleportTarget);
-                if (goDown) {
-                    entity.sendMessage(Text.of("-20"));
-                } else {
-                    entity.sendMessage(Text.of("+20"));
+                if (entity instanceof PlayerEntity player) {
+                    if (goDown) {
+                        player.sendMessage(Text.of("-20"), true);
+                    } else {
+                        player.sendMessage(Text.of("+20"), true);
+                    }
                 }
             }
         }
@@ -604,7 +610,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             ModItems.CHAOS_MIRROR.use(this.getWorld(), (PlayerEntity) this.getOwner(), Hand.MAIN_HAND);
         }
         else {
-            this.dropStack(ModItems.CHAOS_MIRROR.getDefaultStack());
+            this.dropStack((ServerWorld) this.getWorld(), ModItems.CHAOS_MIRROR.getDefaultStack());
         }
     }
 
@@ -628,16 +634,16 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
 
-    private void crash(HitResult hitResult) {
-        // Esto nunca va a funcionar porque el chaosOrb corre en server
-        // Quizas podria hacer que el chequeo lo haga en ChaosOrbItem como hacia para el tunel
-        // No se si vale la pena tener este efecto y ademas mepa que va a generar una banda de bugs
-        if (this.getWorld().isClient) {
-            LivingEntity entity = (LivingEntity) this.getOwner();
-            if (entity != null) { entity.sendMessage(Text.of("crash"));}
-            throw new RuntimeException("Chaos Crash");
-        }
-    }
+//    private void crash(HitResult hitResult) {
+//        // Esto nunca va a funcionar porque el chaosOrb corre en server
+//        // Quizas podria hacer que el chequeo lo haga en ChaosOrbItem como hacia para el tunel
+//        // No se si vale la pena tener este efecto y ademas mepa que va a generar una banda de bugs
+//        if (this.getWorld().isClient) {
+//            LivingEntity entity = (LivingEntity) this.getOwner();
+//            if (entity != null) { entity.sendMessage(Text.of("crash"));}
+//            throw new RuntimeException("Chaos Crash");
+//        }
+//    }
 
     private void saveAndQuit(HitResult hitResult) {
     }
@@ -646,7 +652,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         List<Item> foodItems = new ArrayList<>();
 
         for (Item item : Registries.ITEM) {
-            if (item.getComponents().get(DataComponentTypes.FOOD) != null && !(item instanceof PotionItem) && !(item instanceof OminousBottleItem)) {
+            if (item.getComponents().get(DataComponentTypes.FOOD) != null && !(item instanceof PotionItem)) {
                 foodItems.add(item);
             }
         }
@@ -665,9 +671,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             SuspiciousStewEffectsComponent.StewEffect chosenEffect = new SuspiciousStewEffectsComponent.StewEffect(effectEntry, 160);
 
             food.set(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, new SuspiciousStewEffectsComponent(List.of(chosenEffect)));
-            food.setCount(1);
+            food.setCount(4);
         }
-        this.dropStack(food, 0);
+        this.dropStack((ServerWorld) this.getWorld(), food, 0);
     }
 
     private void getInfiniteItem(HitResult hitResult) {
@@ -701,20 +707,20 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //        if (chosenItem.getComponents().contains(DataComponentTypes.FOOD)) {
 //            infiniteItem.set(DataComponentTypes.FOOD ,chosenItem.getComponents().get(DataComponentTypes.FOOD));
 //        }
-        if (this.getOwner() != null) {
-            this.getOwner().sendMessage(Text.of(chosenItem.getName()));
+        if (this.getOwner() != null && this.getOwner() instanceof PlayerEntity player) {
+            player.sendMessage(Text.of(chosenItem.getName()), true);
         }
         infiniteItem.set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, chosenItem.getDefaultStack());
-        this.dropStack(infiniteItem, 0);
+        this.dropStack((ServerWorld) this.getWorld(), infiniteItem, 0);
     }
 
     private void getEnchantedBook(HitResult hitResult) {
         ItemStack enchantedBook = Items.ENCHANTED_BOOK.getDefaultStack();
-        List<Enchantment> enchantments = this.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).stream().toList();
+        List<Enchantment> enchantments = this.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).stream().toList();
         Enchantment enchantment = enchantments.get(random.nextBetween(0, enchantments.size() - 1));
-        RegistryEntry<Enchantment> enchantmentEntry = this.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(enchantment);
+        RegistryEntry<Enchantment> enchantmentEntry = this.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(enchantment);
         enchantedBook.addEnchantment(enchantmentEntry, random.nextBetween(1, enchantment.getMaxLevel()));
-        this.dropStack(enchantedBook, 0);
+        this.dropStack((ServerWorld) this.getWorld(), enchantedBook, 0);
     }
 
     private void xp(HitResult hitResult) {
@@ -744,94 +750,101 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         ItemStack reward = prizes.get(nextItem);
 
         if (reward.getItem() == Items.POINTED_DRIPSTONE) {
-            this.dropStack(new ItemStack(Items.LAVA_BUCKET, 1), 0);
-            this.dropStack(new ItemStack(Items.WATER_BUCKET, 1), 0);
-            this.dropStack(new ItemStack(Items.CAULDRON, 1), 0);
+            this.dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.LAVA_BUCKET, 1), 0);
+            this.dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.WATER_BUCKET, 1), 0);
+            this.dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.CAULDRON, 1), 0);
         }
         if (reward.getItem() == Items.STONE) {
-            this.dropStack(new ItemStack(Items.STONE, 64), 0);
-            this.dropStack(new ItemStack(Items.STONE, 64), 0);
+            this.dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.STONE, 64), 0);
+            this.dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.STONE, 64), 0);
         }
 
-        this.dropStack(reward, 0);
+        this.dropStack((ServerWorld) this.getWorld(), reward, 0);
     }
 
-    private void breakGameProgression(HitResult hitResult) {
-        List<ItemStack> rareItems = new ArrayList<>();
-        rareItems.add(Items.ELYTRA.getDefaultStack());
-        rareItems.add(Items.MACE.getDefaultStack());
-        rareItems.add(Items.DRAGON_EGG.getDefaultStack());
-        rareItems.add(Items.BEACON.getDefaultStack());
-        rareItems.add(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE.getDefaultStack());
-        rareItems.add(Items.TOTEM_OF_UNDYING.getDefaultStack());
-        rareItems.add(Items.TRIDENT.getDefaultStack());
-        rareItems.add(Items.SHULKER_BOX.getDefaultStack());
-        rareItems.add(ModBlocks.PROTECTOR_BLOCK.asItem().getDefaultStack());
-
-        ItemStack mendingBook = Items.ENCHANTED_BOOK.getDefaultStack();
-        RegistryEntry<Enchantment> mendingEntry =
-                this.getWorld().getRegistryManager()
-                        .get(RegistryKeys.ENCHANTMENT)
-                        .getEntry(Enchantments.MENDING)
-                        .orElseThrow();
-        mendingBook.addEnchantment(mendingEntry, 1);
-        rareItems.add(mendingBook);
-
-        ItemStack fortuneBook = Items.ENCHANTED_BOOK.getDefaultStack();
-        RegistryEntry<Enchantment> fortuneEntry =
-                this.getWorld().getRegistryManager()
-                        .get(RegistryKeys.ENCHANTMENT)
-                        .getEntry(Enchantments.FORTUNE)
-                        .orElseThrow();
-        fortuneBook.addEnchantment(fortuneEntry, 3);
-        rareItems.add(fortuneBook);
-
-        ItemStack lootingBook = Items.ENCHANTED_BOOK.getDefaultStack();
-        RegistryEntry<Enchantment> lootingEntry =
-                this.getWorld().getRegistryManager()
-                        .get(RegistryKeys.ENCHANTMENT)
-                        .getEntry(Enchantments.LOOTING)
-                        .orElseThrow();
-        lootingBook.addEnchantment(lootingEntry, 3);
-        rareItems.add(lootingBook);
-
-        ItemStack diamonds = Items.DIAMOND.getDefaultStack();
-        diamonds.setCount(32);
-        rareItems.add(diamonds);
-
-        ItemStack goldenCarrots = Items.GOLDEN_CARROT.getDefaultStack();
-        goldenCarrots.setCount(64);
-        rareItems.add(goldenCarrots);
-
-        ItemStack netherite = Items.NETHERITE_INGOT.getDefaultStack();
-        netherite.setCount(2);
-        rareItems.add(netherite);
-
-        ItemStack bookshelves = Items.BOOKSHELF.getDefaultStack();
-        bookshelves.setCount(15);
-        rareItems.add(bookshelves);
-
-        ItemStack goldenApples = Items.ENCHANTED_GOLDEN_APPLE.getDefaultStack();
-        goldenApples.setCount(8);
-        rareItems.add(goldenApples);
-
-        ItemStack sponges = Items.SPONGE.getDefaultStack();
-        sponges.setCount(64);
-        rareItems.add(sponges);
-
-        ItemStack iron_blocks = Items.IRON_BLOCK.getDefaultStack();
-        iron_blocks.setCount(16);
-        rareItems.add(iron_blocks);
-
-        int nextItem = this.random.nextBetween(0, (int) rareItems.size()-1);
-        ItemStack reward = rareItems.get(nextItem);
-
-        if (reward.getItem() == Items.BOOKSHELF) {
-            this.dropStack(Items.ENCHANTING_TABLE.getDefaultStack(), 0);
-        }
-
-        this.dropStack(reward, 0);
-    }
+//    private void breakGameProgression(HitResult hitResult) {
+//        List<ItemStack> rareItems = new ArrayList<>();
+//        rareItems.add(Items.ELYTRA.getDefaultStack());
+//        rareItems.add(Items.MACE.getDefaultStack());
+//        rareItems.add(Items.DRAGON_EGG.getDefaultStack());
+//        rareItems.add(Items.BEACON.getDefaultStack());
+//        rareItems.add(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE.getDefaultStack());
+//        rareItems.add(Items.TOTEM_OF_UNDYING.getDefaultStack());
+//        rareItems.add(Items.TRIDENT.getDefaultStack());
+//        rareItems.add(Items.SHULKER_BOX.getDefaultStack());
+//        rareItems.add(ModBlocks.PROTECTOR_BLOCK.asItem().getDefaultStack());
+//
+//        ItemStack mendingBook = Items.ENCHANTED_BOOK.getDefaultStack();
+//
+//        mendingEntry = this.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOr(Enchantments.MENDING);
+//        mendingBook.set(DataComponentTypes.STORED_ENCHANTMENTS,
+//                new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT)
+//                        .add(mendingEntry, 1);
+//
+//
+//        RegistryEntry<Enchantment> mendingEntry =
+//                this.getWorld().getRegistryManager()
+//                        .getOrThrow(RegistryKeys.ENCHANTMENT)
+//                        .getEntry(Enchantments.MENDING)
+//                        .orElseThrow();
+//        mendingBook.addEnchantment(mendingEntry, 1);
+//        rareItems.add(mendingBook);
+//
+//        ItemStack fortuneBook = Items.ENCHANTED_BOOK.getDefaultStack();
+//        RegistryEntry<Enchantment> fortuneEntry =
+//                this.getWorld().getRegistryManager()
+//                        .get(RegistryKeys.ENCHANTMENT)
+//                        .getEntry(Enchantments.FORTUNE)
+//                        .orElseThrow();
+//        fortuneBook.addEnchantment(fortuneEntry, 3);
+//        rareItems.add(fortuneBook);
+//
+//        ItemStack lootingBook = Items.ENCHANTED_BOOK.getDefaultStack();
+//        RegistryEntry<Enchantment> lootingEntry =
+//                this.getWorld().getRegistryManager()
+//                        .get(RegistryKeys.ENCHANTMENT)
+//                        .getEntry(Enchantments.LOOTING)
+//                        .orElseThrow();
+//        lootingBook.addEnchantment(lootingEntry, 3);
+//        rareItems.add(lootingBook);
+//
+//        ItemStack diamonds = Items.DIAMOND.getDefaultStack();
+//        diamonds.setCount(32);
+//        rareItems.add(diamonds);
+//
+//        ItemStack goldenCarrots = Items.GOLDEN_CARROT.getDefaultStack();
+//        goldenCarrots.setCount(64);
+//        rareItems.add(goldenCarrots);
+//
+//        ItemStack netherite = Items.NETHERITE_INGOT.getDefaultStack();
+//        netherite.setCount(2);
+//        rareItems.add(netherite);
+//
+//        ItemStack bookshelves = Items.BOOKSHELF.getDefaultStack();
+//        bookshelves.setCount(15);
+//        rareItems.add(bookshelves);
+//
+//        ItemStack goldenApples = Items.ENCHANTED_GOLDEN_APPLE.getDefaultStack();
+//        goldenApples.setCount(8);
+//        rareItems.add(goldenApples);
+//
+//        ItemStack sponges = Items.SPONGE.getDefaultStack();
+//        sponges.setCount(64);
+//        rareItems.add(sponges);
+//
+//        ItemStack iron_blocks = Items.IRON_BLOCK.getDefaultStack();
+//        iron_blocks.setCount(16);
+//        rareItems.add(iron_blocks);
+//
+//        int nextItem = this.random.nextBetween(0, (int) rareItems.size()-1);
+//        ItemStack reward = rareItems.get(nextItem);
+//
+//        if (reward.getItem() == Items.BOOKSHELF) {
+//            this.dropStack((ServerWorld) this.getWorld(), Items.ENCHANTING_TABLE.getDefaultStack(), 0);
+//        }
+//
+//        this.dropStack((ServerWorld) this.getWorld(), reward, 0);
+//    }
 
     private void explosion(HitResult hitResult) {
         int kase = random.nextBetween(1, 20);
@@ -885,31 +898,33 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void spawn5ChaosOrbs(HitResult hitResult) {
-        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        ItemStack chaosOrbs = new ItemStack(ModItems.CHAOS_ORB, 5);
+
+        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( -1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, 1.0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, -1.0f, 0.5f, 0.0f);
 
         this.getWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, 0.0f, 0f, 0f);
 
@@ -932,92 +947,92 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
     // TODO
-    private void createSkyblock(HitResult hitResult) {
-
-        if (this.getServer() != null) {
-            List<ServerPlayerEntity> players = this.getServer().getPlayerManager().getPlayerList();
-
-            World world = this.getWorld();
-
-            int tpX = random.nextInt(1) == 0 ? random.nextBetween(10000, 20000) : random.nextBetween(-20000, -10000);
-            int tpZ = random.nextInt(1) == 0 ? random.nextBetween(10000, 20000) : random.nextBetween(-20000, -10000);
-
-            for (ServerPlayerEntity playerEntity : players) {
-                if (playerEntity == null) {
-                    continue;
-                }
-                StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 600, 0);
-                playerEntity.addStatusEffect(slowFall);
-
-                ServerWorld dimension = (ServerWorld) world;
-                TeleportTarget teleportTarget = new TeleportTarget(dimension,
-                        new Vec3d(tpX,
-                                150,
-                                tpZ),
-                        new Vec3d(0, 0, 0),
-                        0,
-                        0,
-                        TeleportTarget.NO_OP);
-                playerEntity.teleportTo(teleportTarget);
-                BlockPos asd = new BlockPos((int) playerEntity.getX() - (int) playerEntity.getX() % 16 + 11, 66, (int) playerEntity.getZ() - (int) playerEntity.getZ() % 16 + 11);
-                playerEntity.setSpawnPoint(playerEntity.getWorld().getRegistryKey(), asd, 0, true, false);
-            }
-
-            if (this.getOwner() != null) {
-                ChunkPos islandChunkPos = new ChunkPos(tpX >> 4, tpZ >> 4);
-
-                for (int x = -1 ; x < 2 ; x++) {
-                    for (int z = -1 ; z < 2 ; z++) {
-                        ChunkPos chunkPos = new ChunkPos(islandChunkPos.x + x, islandChunkPos.z + z);
-
-                        ServerChunkManager chunkManager = (ServerChunkManager) world.getChunkManager();
-                        WorldChunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
-
-                        ChunkSection[] sections = chunk.getSectionArray();
-                        Registry<Biome> registry = world.getRegistryManager().get(RegistryKeys.BIOME);
-                        ReadableContainer<RegistryEntry<Biome>> readableContainer = new PalettedContainer<>(registry.getIndexedEntries(), registry.entryOf(BiomeKeys.SNOWY_TAIGA), PalettedContainer.PaletteProvider.BIOME);
-
-                        Box chunkBox = new Box(chunkPos.getStartX(), 0, chunkPos.getStartZ(), chunkPos.getEndX() + 1, world.getHeight(), chunkPos.getEndZ() + 1);
-                        for (Entity entity : world.getOtherEntities(this.getOwner(), chunkBox)) {
-                            entity.remove(Entity.RemovalReason.DISCARDED);
-                        }
-
-                        chunk.clear();
-                        for (int i = 0 ; i < sections.length ; i++) {
-                            ChunkSection empty = new ChunkSection(new PalettedContainer<>(Block.STATE_IDS, Blocks.AIR.getDefaultState(), PalettedContainer.PaletteProvider.BLOCK_STATE), readableContainer);
-                            sections[i] = empty;
-                        }
-
-                        chunk.setLightOn(false);
-                        ServerLightingProvider lighting = chunkManager.getLightingProvider();
-                        lighting.enqueue(chunkPos.x, chunkPos.z);
-                        chunk.setNeedsSaving(true);
-
-                        ChunkDataS2CPacket packet = new ChunkDataS2CPacket(chunk, chunkManager.getLightingProvider(), null, null);
-                        chunkManager.sendToNearbyPlayers(this.getOwner(), packet);
-                    }
-                }
-
-                ChunkPos chunkPos = new ChunkPos(islandChunkPos.x, islandChunkPos.z);
-                MinecraftServer server = world.getServer();
-                if (server != null) {
-                    StructureTemplateManager structureManager = world.getServer().getStructureTemplateManager();
-                    StructureTemplate template = structureManager.getTemplateOrBlank(Identifier.of(MoreMineralBlocks.MOD_ID, "skyblock_start"));
-
-                    StructurePlacementData settings = new StructurePlacementData()
-                            .setRotation(BlockRotation.NONE)
-                            .setMirror(BlockMirror.NONE)
-                            .setIgnoreEntities(false);
-
-
-                    template.place((ServerWorldAccess) world, chunkPos.getBlockPos(4, 63, 4), chunkPos.getBlockPos(4,63,4), settings, world.getRandom(), 50);
-                }
-                TerrainManager.TERRAIN_MANAGER.addJob(new SkyBlockJob(world, chunkPos, (PlayerEntity) this.getOwner()));
-
-                MoreMineralBlocks.getStateSaverAndLoader(this.getServer()).setSkyBlockHappened(true);
-            }
-        }
-    }
+//    private void createSkyblock(HitResult hitResult) {
+//
+//        if (this.getServer() != null) {
+//            List<ServerPlayerEntity> players = this.getServer().getPlayerManager().getPlayerList();
+//
+//            World world = this.getWorld();
+//
+//            int tpX = random.nextInt(1) == 0 ? random.nextBetween(10000, 20000) : random.nextBetween(-20000, -10000);
+//            int tpZ = random.nextInt(1) == 0 ? random.nextBetween(10000, 20000) : random.nextBetween(-20000, -10000);
+//
+//            for (ServerPlayerEntity playerEntity : players) {
+//                if (playerEntity == null) {
+//                    continue;
+//                }
+//                StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, 600, 0);
+//                playerEntity.addStatusEffect(slowFall);
+//
+//                ServerWorld dimension = (ServerWorld) world;
+//                TeleportTarget teleportTarget = new TeleportTarget(dimension,
+//                        new Vec3d(tpX,
+//                                150,
+//                                tpZ),
+//                        new Vec3d(0, 0, 0),
+//                        0,
+//                        0,
+//                        TeleportTarget.NO_OP);
+//                playerEntity.teleportTo(teleportTarget);
+//                BlockPos asd = new BlockPos((int) playerEntity.getX() - (int) playerEntity.getX() % 16 + 11, 66, (int) playerEntity.getZ() - (int) playerEntity.getZ() % 16 + 11);
+//                playerEntity.setSpawnPoint(playerEntity.getWorld().getRegistryKey(), asd, 0, true, false);
+//            }
+//
+//            if (this.getOwner() != null) {
+//                ChunkPos islandChunkPos = new ChunkPos(tpX >> 4, tpZ >> 4);
+//
+//                for (int x = -1 ; x < 2 ; x++) {
+//                    for (int z = -1 ; z < 2 ; z++) {
+//                        ChunkPos chunkPos = new ChunkPos(islandChunkPos.x + x, islandChunkPos.z + z);
+//
+//                        ServerChunkManager chunkManager = (ServerChunkManager) world.getChunkManager();
+//                        WorldChunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
+//
+//                        ChunkSection[] sections = chunk.getSectionArray();
+//                        Registry<Biome> registry = world.getRegistryManager().get(RegistryKeys.BIOME);
+//                        ReadableContainer<RegistryEntry<Biome>> readableContainer = new PalettedContainer<>(registry.getIndexedEntries(), registry.entryOf(BiomeKeys.SNOWY_TAIGA), PalettedContainer.PaletteProvider.BIOME);
+//
+//                        Box chunkBox = new Box(chunkPos.getStartX(), 0, chunkPos.getStartZ(), chunkPos.getEndX() + 1, world.getHeight(), chunkPos.getEndZ() + 1);
+//                        for (Entity entity : world.getOtherEntities(this.getOwner(), chunkBox)) {
+//                            entity.remove(Entity.RemovalReason.DISCARDED);
+//                        }
+//
+//                        chunk.clear();
+//                        for (int i = 0 ; i < sections.length ; i++) {
+//                            ChunkSection empty = new ChunkSection(new PalettedContainer<>(Block.STATE_IDS, Blocks.AIR.getDefaultState(), PalettedContainer.PaletteProvider.BLOCK_STATE), readableContainer);
+//                            sections[i] = empty;
+//                        }
+//
+//                        chunk.setLightOn(false);
+//                        ServerLightingProvider lighting = chunkManager.getLightingProvider();
+//                        lighting.enqueue(chunkPos.x, chunkPos.z);
+//                        chunk.setNeedsSaving(true);
+//
+//                        ChunkDataS2CPacket packet = new ChunkDataS2CPacket(chunk, chunkManager.getLightingProvider(), null, null);
+//                        chunkManager.sendToNearbyPlayers(this.getOwner(), packet);
+//                    }
+//                }
+//
+//                ChunkPos chunkPos = new ChunkPos(islandChunkPos.x, islandChunkPos.z);
+//                MinecraftServer server = world.getServer();
+//                if (server != null) {
+//                    StructureTemplateManager structureManager = world.getServer().getStructureTemplateManager();
+//                    StructureTemplate template = structureManager.getTemplateOrBlank(Identifier.of(MoreMineralBlocks.MOD_ID, "skyblock_start"));
+//
+//                    StructurePlacementData settings = new StructurePlacementData()
+//                            .setRotation(BlockRotation.NONE)
+//                            .setMirror(BlockMirror.NONE)
+//                            .setIgnoreEntities(false);
+//
+//
+//                    template.place((ServerWorldAccess) world, chunkPos.getBlockPos(4, 63, 4), chunkPos.getBlockPos(4,63,4), settings, world.getRandom(), 50);
+//                }
+//                TerrainManager.TERRAIN_MANAGER.addJob(new SkyBlockJob(world, chunkPos, (PlayerEntity) this.getOwner()));
+//
+//                MoreMineralBlocks.getStateSaverAndLoader(this.getServer()).setSkyBlockHappened(true);
+//            }
+//        }
+//    }
 
 //    private void createStructure(HitResult hitResult) {
 //        hitResult.getPos();
@@ -1028,39 +1043,39 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         switch (material) {
             case 0:
-                this.dropStack(Items.WOODEN_AXE.getDefaultStack(), 0);
-                this.dropStack(Items.WOODEN_SHOVEL.getDefaultStack(), 0);
-                this.dropStack(Items.WOODEN_SWORD.getDefaultStack(), 0);
-                this.dropStack(Items.WOODEN_PICKAXE.getDefaultStack(), 0);
-                this.dropStack(Items.WOODEN_HOE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.WOODEN_AXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.WOODEN_SHOVEL.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.WOODEN_SWORD.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.WOODEN_PICKAXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.WOODEN_HOE.getDefaultStack(), 0);
                 break;
             case 1:
-                this.dropStack(Items.STONE_AXE.getDefaultStack(), 0);
-                this.dropStack(Items.STONE_SHOVEL.getDefaultStack(), 0);
-                this.dropStack(Items.STONE_SWORD.getDefaultStack(), 0);
-                this.dropStack(Items.STONE_PICKAXE.getDefaultStack(), 0);
-                this.dropStack(Items.STONE_HOE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.STONE_AXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.STONE_SHOVEL.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.STONE_SWORD.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.STONE_PICKAXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.STONE_HOE.getDefaultStack(), 0);
                 break;
             case 2:
-                this.dropStack(Items.IRON_AXE.getDefaultStack(), 0);
-                this.dropStack(Items.IRON_SHOVEL.getDefaultStack(), 0);
-                this.dropStack(Items.IRON_SWORD.getDefaultStack(), 0);
-                this.dropStack(Items.IRON_PICKAXE.getDefaultStack(), 0);
-                this.dropStack(Items.IRON_HOE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_AXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_SHOVEL.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_SWORD.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_PICKAXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_HOE.getDefaultStack(), 0);
                 break;
             case 3:
-                this.dropStack(Items.GOLDEN_AXE.getDefaultStack(), 0);
-                this.dropStack(Items.GOLDEN_SHOVEL.getDefaultStack(), 0);
-                this.dropStack(Items.GOLDEN_SWORD.getDefaultStack(), 0);
-                this.dropStack(Items.GOLDEN_PICKAXE.getDefaultStack(), 0);
-                this.dropStack(Items.GOLDEN_HOE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_AXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_SHOVEL.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_SWORD.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_PICKAXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_HOE.getDefaultStack(), 0);
                 break;
             case 4:
-                this.dropStack(Items.DIAMOND_AXE.getDefaultStack(), 0);
-                this.dropStack(Items.DIAMOND_SHOVEL.getDefaultStack(), 0);
-                this.dropStack(Items.DIAMOND_SWORD.getDefaultStack(), 0);
-                this.dropStack(Items.DIAMOND_PICKAXE.getDefaultStack(), 0);
-                this.dropStack(Items.DIAMOND_HOE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_AXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_SHOVEL.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_SWORD.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_PICKAXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_HOE.getDefaultStack(), 0);
                 break;
         }
     }
@@ -1070,38 +1085,38 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         switch (material) {
             case 0:
-                this.dropStack(Items.LEATHER_HELMET.getDefaultStack(), 0);
-                this.dropStack(Items.LEATHER_HORSE_ARMOR.getDefaultStack(), 0);
-                this.dropStack(Items.LEATHER_CHESTPLATE.getDefaultStack(), 0);
-                this.dropStack(Items.LEATHER_LEGGINGS.getDefaultStack(), 0);
-                this.dropStack(Items.LEATHER_BOOTS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.LEATHER_HELMET.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.LEATHER_HORSE_ARMOR.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.LEATHER_CHESTPLATE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.LEATHER_LEGGINGS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.LEATHER_BOOTS.getDefaultStack(), 0);
                 break;
             case 1:
-                this.dropStack(Items.IRON_HELMET.getDefaultStack(), 0);
-                this.dropStack(Items.IRON_HORSE_ARMOR.getDefaultStack(), 0);
-                this.dropStack(Items.IRON_CHESTPLATE.getDefaultStack(), 0);
-                this.dropStack(Items.IRON_LEGGINGS.getDefaultStack(), 0);
-                this.dropStack(Items.IRON_BOOTS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_HELMET.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_HORSE_ARMOR.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_CHESTPLATE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_LEGGINGS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_BOOTS.getDefaultStack(), 0);
                 break;
             case 2:
-                this.dropStack(Items.GOLDEN_HELMET.getDefaultStack(), 0);
-                this.dropStack(Items.GOLDEN_HORSE_ARMOR.getDefaultStack(), 0);
-                this.dropStack(Items.GOLDEN_CHESTPLATE.getDefaultStack(), 0);
-                this.dropStack(Items.GOLDEN_LEGGINGS.getDefaultStack(), 0);
-                this.dropStack(Items.GOLDEN_BOOTS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_HELMET.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_HORSE_ARMOR.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_CHESTPLATE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_LEGGINGS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_BOOTS.getDefaultStack(), 0);
                 break;
             case 3:
-                this.dropStack(Items.DIAMOND_HELMET.getDefaultStack(), 0);
-                this.dropStack(Items.DIAMOND_HORSE_ARMOR.getDefaultStack(), 0);
-                this.dropStack(Items.DIAMOND_CHESTPLATE.getDefaultStack(), 0);
-                this.dropStack(Items.DIAMOND_LEGGINGS.getDefaultStack(), 0);
-                this.dropStack(Items.DIAMOND_BOOTS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_HELMET.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_HORSE_ARMOR.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_CHESTPLATE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_LEGGINGS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_BOOTS.getDefaultStack(), 0);
                 break;
             case 4:
-                this.dropStack(Items.CHAINMAIL_HELMET.getDefaultStack(), 0);
-                this.dropStack(Items.CHAINMAIL_CHESTPLATE.getDefaultStack(), 0);
-                this.dropStack(Items.CHAINMAIL_LEGGINGS.getDefaultStack(), 0);
-                this.dropStack(Items.CHAINMAIL_BOOTS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.CHAINMAIL_HELMET.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.CHAINMAIL_CHESTPLATE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.CHAINMAIL_LEGGINGS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getWorld(), Items.CHAINMAIL_BOOTS.getDefaultStack(), 0);
                 break;
         }
     }
@@ -1259,10 +1274,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
             ItemStack newEgg = spawnEggs.get(nextEgg);
             newEgg.setCount(1);
-            this.dropStack(newEgg, 0);
+            this.dropStack((ServerWorld) this.getWorld(), newEgg, 0);
         }
 
-        this.dropStack(reward, 0);
+        this.dropStack((ServerWorld) this.getWorld(), reward, 0);
     }
 
 //    private void giveRole(HitResult hitResult) {

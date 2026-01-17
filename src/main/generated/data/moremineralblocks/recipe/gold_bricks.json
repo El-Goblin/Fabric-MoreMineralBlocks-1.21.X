@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "R": {
-      "item": "minecraft:gold_block"
-    }
+    "R": "minecraft:gold_block"
   },
   "pattern": [
     "RR",

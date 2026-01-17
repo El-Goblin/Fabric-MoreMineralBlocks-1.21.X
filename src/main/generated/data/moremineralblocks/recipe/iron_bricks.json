@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "R": {
-      "item": "minecraft:iron_block"
-    }
+    "R": "minecraft:iron_block"
   },
   "pattern": [
     "RR",

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "moremineralblocks:calcified_emerald_block"
-    }
+    "#": "moremineralblocks:calcified_emerald_block"
   },
   "pattern": [
     "###"

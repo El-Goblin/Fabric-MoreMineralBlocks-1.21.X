@@ -73,7 +73,7 @@ public class MoreMineralBlocks implements ModInitializer, ServerWorldEvents.Load
 				DamageSources sources = new DamageSources(registryManager);
 				DamageSource newSource = sources.generic();
 				if (!entity.getWorld().isClient && source.getType() != newSource.getType()) {
-					entity.damage(newSource, damageTaken*2);
+					entity.damage((ServerWorld) entity.getWorld(),newSource, damageTaken*2);
 				}
 			}
 

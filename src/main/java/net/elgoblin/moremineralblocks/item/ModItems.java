@@ -2,6 +2,7 @@ package net.elgoblin.moremineralblocks.item;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
+import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.item.custom.*;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
@@ -10,6 +11,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 
@@ -19,81 +22,111 @@ public class ModItems {
 
     public static final Item LEGENDARY_PICKAXE = registerItem(
             "legendary_pickaxe",
-            new LegendaryPickaxeItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(PickaxeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
+            new LegendaryPickaxeItem(ModToolMaterials.LEGENDARY, 1.0F, -2.8F, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_pickaxe")))
+                    .fireproof().rarity(Rarity.EPIC))
     );
     public static final Item LEGENDARY_SHOVEL = registerItem(
             "legendary_shovel",
-            new LegendaryShovelItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(ShovelItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
+            new LegendaryShovelItem(ModToolMaterials.LEGENDARY, 1.0F, -2.8F, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_shovel")))
+                    .fireproof().rarity(Rarity.EPIC))
     );
     public static final Item LEGENDARY_AXE = registerItem(
             "legendary_axe",
-            new LegendaryAxeItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(AxeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 5.0F, -2.6F)).rarity(Rarity.EPIC))
+            new LegendaryAxeItem(ModToolMaterials.LEGENDARY, 5.0F, -2.6F, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_axe")))
+                    .fireproof().rarity(Rarity.EPIC))
     );
     public static final Item LEGENDARY_HOE = registerItem(
             "legendary_hoe",
-            new LegendaryHoeItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, 1.0F, -2.8F)).rarity(Rarity.EPIC))
+            new LegendaryHoeItem(ModToolMaterials.LEGENDARY, 1.0F, -2.8F, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_hoe")))
+                    .fireproof().rarity(Rarity.EPIC))
     );
     public static final Item LEGENDARY_SWORD = registerItem(
             "legendary_sword",
-            new LegendarySwordItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(SwordItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, (int) 9.0F, -2.0F)).rarity(Rarity.EPIC))
+            new LegendarySwordItem(ModToolMaterials.LEGENDARY, 9.0F, -2.0F, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_sword")))
+                    .fireproof().rarity(Rarity.EPIC))
     );
-    public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings().maxCount(1).fireproof().rarity(Rarity.EPIC)));
-    public static final Item INFINITE_ITEMSTACK = registerItem("infinite_itemstack", new InfiniteItem(EntityType.ARMADILLO, 2, 3, new Item.Settings().maxDamage(0).maxCount(1).rarity(Rarity.EPIC)));
+    public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings()
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_rocket")))
+            .maxCount(1).fireproof().rarity(Rarity.EPIC)));
+    public static final Item INFINITE_ITEMSTACK = registerItem("infinite_itemstack", new InfiniteItem(EntityType.ARMADILLO, 2, 3,
+            new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "infinite_itemstack")))
+                    .maxDamage(0).maxCount(1).rarity(Rarity.EPIC)));
     public static final Item SURVIVAL_DEBUG_STICK = registerItem("survival_debug_stick", new SurvivalDebugStickItem(new Item.Settings()
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "survival_debug_stick")))
             .maxCount(1)
             .rarity(Rarity.EPIC)
             .component(DataComponentTypes.DEBUG_STICK_STATE, DebugStickStateComponent.DEFAULT)
             .component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
     public static final Item WOODEN_LONGSWORD = registerItem(
             "wooden_longsword",
-            new LongSwordItem(ToolMaterials.WOOD, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.WOOD, 5, -2.4F, 1, 2)))
-    );
+            new LongSwordItem(ToolMaterial.WOOD, 5, -2.4F, 1, 2, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "wooden_longsword")))));
     public static final Item STONE_LONGSWORD = registerItem(
             "stone_longsword",
-            new LongSwordItem(ToolMaterials.STONE, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.STONE, 5, -2.4F, 1, 2)))
-    );
+            new LongSwordItem(ToolMaterial.STONE, 5, -2.4F, 1, 2, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "stone_longsword")))));
     public static final Item IRON_LONGSWORD = registerItem(
             "iron_longsword",
-            new LongSwordItem(ToolMaterials.IRON, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.IRON, 5, -2.4F, 1, 2)))
-    );
+            new LongSwordItem(ToolMaterial.IRON, 5, -2.4F, 1, 2, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "iron_longsword")))));
     public static final Item GOLDEN_LONGSWORD = registerItem(
             "golden_longsword",
-            new LongSwordItem(ToolMaterials.GOLD, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.GOLD, 5, -2.4F, 1, 2)))
-    );
+            new LongSwordItem(ToolMaterial.GOLD, 5, -2.4F, 1, 2, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "golden_longsword")))));
     public static final Item DIAMOND_LONGSWORD = registerItem(
             "diamond_longsword",
-            new LongSwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 5, -2.4F, 1, 2)))
-    );
+            new LongSwordItem(ToolMaterial.DIAMOND, 5, -2.4F, 1, 2, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "diamond_longsword")))));
     public static final Item NETHERITE_LONGSWORD = registerItem(
             "netherite_longsword",
-            new LongSwordItem(ToolMaterials.NETHERITE, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.NETHERITE, 5, -2.4F, 1, 2)))
-    );
+            new LongSwordItem(ToolMaterial.NETHERITE, 5, -2.4F, 1, 2, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "netherite_longsword")))));
     public static final Item FLAMEBERGE_LONGSWORD = registerItem(
             "flameberge_longsword",
-            new LongSwordItem(ToolMaterials.IRON, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.IRON, 5, -2.4F, 1, 2)))
-    );
+            new LongSwordItem(ToolMaterial.IRON, 5, -2.4F, 1, 2, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "flameberge_longsword")))));
     public static final Item FIRE_DRAGONSWORD_LONGSWORD = registerItem(
             "fire_dragonsword_longsword",
-            new LongSwordItem(ToolMaterials.NETHERITE, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.NETHERITE, 5, -2.4F, 1, 2)))
-    );
+            new LongSwordItem(ToolMaterial.NETHERITE, 5, -2.4F, 1, 2, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "fire_dragonsword_longsword")))));
     public static final Item FIENDBLADE_LONGSWORD = registerItem(
             "fiendblade_longsword",
-            new LongSwordItem(ToolMaterials.NETHERITE, new Item.Settings().attributeModifiers(LongSwordItem.createAttributeModifiers(ToolMaterials.NETHERITE, 5, -2.4F, 1, 2)))
-    );
+            new LongSwordItem(ToolMaterial.NETHERITE, 5, -2.4F, 1, 2, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "fiendblade_longsword")))));
     public static final Item LEGENDARY_LONGSWORD = registerItem(
             "legendary_longsword",
-            new LegendaryLongSwordItem(ModToolMaterials.LEGENDARY, new Item.Settings().fireproof().attributeModifiers(LongSwordItem.createAttributeModifiers(ModToolMaterials.LEGENDARY, (int) 11.0F, -2.4F, 1, 5)).rarity(Rarity.EPIC))
+            new LegendaryLongSwordItem(ModToolMaterials.LEGENDARY, 11.0F, -2.4F, 1, 5, new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_longsword")))
+                    .fireproof().rarity(Rarity.EPIC))
     );
 
-    public static final Item REFLECTIVE_MIRROR = registerItem("reflective_mirror", new MirrorItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
-    public static final Item MAGIC_MIRROR = registerItem("magic_mirror", new MagicMirrorItem(new Item.Settings().maxCount(64).rarity(Rarity.UNCOMMON)));
-    public static final Item CHAOS_MIRROR = registerItem("chaos_mirror", new ChaosMirrorItem(new Item.Settings().maxCount(64).rarity(Rarity.UNCOMMON)));
 
 
-    public static final Item CHAOS_ORB = registerItem("chaos_orb", new ChaosOrbItem(new Item.Settings()));
-    public static final Item FLASH = registerItem("flash", new FlashItem(new Item.Settings()));
+    public static final Item REFLECTIVE_MIRROR = registerItem("reflective_mirror", new MirrorItem(new Item.Settings()
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "reflective_mirror")))
+            .maxCount(1).rarity(Rarity.UNCOMMON)));
+    public static final Item MAGIC_MIRROR = registerItem("magic_mirror", new MagicMirrorItem(new Item.Settings()
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "magic_mirror")))
+            .maxCount(64).rarity(Rarity.UNCOMMON)));
+    public static final Item CHAOS_MIRROR = registerItem("chaos_mirror", new ChaosMirrorItem(new Item.Settings()
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "chaos_mirror")))
+            .maxCount(64).rarity(Rarity.UNCOMMON)));
 
-    public static final Item LA_LECHONA = registerItem("la_lechona", new LaLechonaItem(new Item.Settings().recipeRemainder(BUCKET).maxCount(1)));
+
+    public static final Item CHAOS_ORB = registerItem("chaos_orb", new ChaosOrbItem(new Item.Settings()
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "chaos_orb")))));
+    public static final Item FLASH = registerItem("flash", new FlashItem(new Item.Settings()
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "flash")))));
+
+    public static final Item LA_LECHONA = registerItem("la_lechona", new Item(new Item.Settings()
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "la_lechona")))
+            .recipeRemainder(BUCKET).component(DataComponentTypes.CONSUMABLE, ModDataComponentTypes.LA_LECHONA).useRemainder(BUCKET).maxCount(1)));
 
 //    public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
 
@@ -148,7 +181,7 @@ public class ModItems {
             entries.add(REFLECTIVE_MIRROR);
             entries.add(CHAOS_MIRROR);
             entries.add(FLASH);
-            entries.add(LA_LECHONA);
+//            entries.add(LA_LECHONA);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(entries -> {

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "moremineralblocks:coal_bricks"
-    }
+    "#": "moremineralblocks:coal_bricks"
   },
   "pattern": [
     "###",

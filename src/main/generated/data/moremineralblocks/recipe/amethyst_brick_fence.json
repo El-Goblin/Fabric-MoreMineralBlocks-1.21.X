@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "item": "moremineralblocks:amethyst_bricks"
-    }
+    "#": "minecraft:stick",
+    "W": "moremineralblocks:amethyst_bricks"
   },
   "pattern": [
     "W#W",

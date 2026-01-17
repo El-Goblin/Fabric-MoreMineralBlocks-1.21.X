@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "item": "minecraft:calcite"
-    }
+    "#": "minecraft:stick",
+    "W": "minecraft:calcite"
   },
   "pattern": [
     "W#W",

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "minecraft:lapis_block"
-    },
-    {
-      "item": "minecraft:calcite"
-    }
+    "minecraft:lapis_block",
+    "minecraft:calcite"
   ],
   "result": {
     "count": 2,

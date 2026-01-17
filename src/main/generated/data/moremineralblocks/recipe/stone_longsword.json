@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "C": {
-      "tag": "minecraft:stone_tool_materials"
-    },
-    "S": {
-      "item": "minecraft:stone_sword"
-    }
+    "C": "#minecraft:stone_tool_materials",
+    "S": "minecraft:stone_sword"
   },
   "pattern": [
     "  C",

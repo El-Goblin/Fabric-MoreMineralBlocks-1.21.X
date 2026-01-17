@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "moremineralblocks:polished_emerald_block"
-    }
+    "#": "moremineralblocks:polished_emerald_block"
   },
   "pattern": [
     "#  ",

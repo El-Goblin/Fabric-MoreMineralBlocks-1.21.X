@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "moremineralblocks:chiseled_emerald_block"
-  },
+  "ingredient": "moremineralblocks:chiseled_emerald_block",
   "result": {
     "count": 2,
     "id": "moremineralblocks:chiseled_emerald_fence_gate"

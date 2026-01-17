@@ -2,10 +2,13 @@ package net.elgoblin.moremineralblocks.component;
 
 import com.mojang.serialization.Codec;
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.effect.LaLechonaConsumeEffect;
 import net.minecraft.component.ComponentType;
+import net.minecraft.component.type.ConsumableComponent;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.consume.ClearAllEffectsConsumeEffect;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -18,6 +21,8 @@ import net.minecraft.util.math.Vec3d;
 import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.function.UnaryOperator;
+
+import static net.minecraft.component.type.ConsumableComponents.drink;
 
 public class ModDataComponentTypes {
 
@@ -37,6 +42,8 @@ public class ModDataComponentTypes {
 //    );
     public static final ComponentType<ItemStack> CHOSEN_INFINITE_ITEM = register("chosen_infinite_item",
         builder -> builder.codec(ItemStack.CODEC).packetCodec(ItemStack.PACKET_CODEC).cache());
+
+    public static final ConsumableComponent LA_LECHONA = drink().consumeEffect(LaLechonaConsumeEffect.INSTANCE).build();
 
 
     private static <T>ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builderOperator) {

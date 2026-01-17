@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "moremineralblocks:diamond_bricks"
-  },
+  "ingredient": "moremineralblocks:diamond_bricks",
   "result": {
     "count": 2,
     "id": "moremineralblocks:diamond_brick_fence"

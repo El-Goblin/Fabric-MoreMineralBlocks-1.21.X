@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "moremineralblocks:calcified_gold_block"
-    }
+    "#": "moremineralblocks:calcified_gold_block"
   },
   "pattern": [
     "###",

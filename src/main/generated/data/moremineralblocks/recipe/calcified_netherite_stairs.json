@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "moremineralblocks:calcified_netherite_block"
-    }
+    "#": "moremineralblocks:calcified_netherite_block"
   },
   "pattern": [
     "#  ",

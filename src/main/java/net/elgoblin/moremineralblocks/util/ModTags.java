@@ -12,6 +12,7 @@ public class ModTags {
 
         public static final TagKey<Block> NEEDS_LEGENDARY_TOOL = createTag("needs_legendary_tool");
         public static final TagKey<Block> INCORRECT_FOR_LEGENDARY_TOOL = createTag("incorrect_for_legendary_tool");
+        public static final TagKey<Block> INCORRECT_FOR_SURVIVAL_DEBUG_STICK = createTag("incorrect_for_survival_debug_stick");
 
         private static TagKey<Block> createTag(String name) {
             return TagKey.of(RegistryKeys.BLOCK, Identifier.of(MoreMineralBlocks.MOD_ID, name));
@@ -21,6 +22,7 @@ public class ModTags {
     public static class Items {
         // Este es el grupo de items que van a transformarse en diamantes en el magic block
         public static final TagKey<Item> TRANSFORMABLE_ITEMS = createTag("transformable_items");
+        public static final TagKey<Item> LEGENDARY_REPAIR = createTag("legendary_repair");
 
         private static TagKey<Item> createTag(String name) {
             return TagKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, name));

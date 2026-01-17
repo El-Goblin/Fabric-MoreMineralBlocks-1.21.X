@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "moremineralblocks:calcified_amethyst_block"
-  },
+  "ingredient": "moremineralblocks:calcified_amethyst_block",
   "result": {
     "count": 1,
     "id": "moremineralblocks:calcified_amethyst_wall"

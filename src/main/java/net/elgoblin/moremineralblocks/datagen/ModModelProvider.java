@@ -385,12 +385,12 @@ public class ModModelProvider extends FabricModelProvider {
         icePool.fenceGate(ModBlocks.ICE_FENCE_GATE);
         icePool.wall(ModBlocks.ICE_WALL);
 
-//        BlockStateModelGenerator.BlockTexturePool deepslateEmeraldOrePool = blockStateModelGenerator.registerCubeAllModelTexturePool(Blocks.DEEPSLATE_EMERALD_ORE);
-//        deepslateEmeraldOrePool.stairs(ModBlocks.DEEPSLATE_EMERALD_ORE_STAIRS);
-//        deepslateEmeraldOrePool.slab(ModBlocks.DEEPSLATE_EMERALD_ORE_SLAB);
-//        deepslateEmeraldOrePool.fence(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE);
-//        deepslateEmeraldOrePool.fenceGate(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE_GATE);
-//        deepslateEmeraldOrePool.wall(ModBlocks.DEEPSLATE_EMERALD_ORE_WALL);
+        BlockStateModelGenerator.BlockTexturePool deepslateEmeraldOrePool = blockStateModelGenerator.registerCubeAllModelTexturePool(Blocks.DEEPSLATE_EMERALD_ORE);
+        deepslateEmeraldOrePool.stairs(ModBlocks.DEEPSLATE_EMERALD_ORE_STAIRS);
+        deepslateEmeraldOrePool.slab(ModBlocks.DEEPSLATE_EMERALD_ORE_SLAB);
+        deepslateEmeraldOrePool.fence(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE);
+        deepslateEmeraldOrePool.fenceGate(ModBlocks.DEEPSLATE_EMERALD_ORE_FENCE_GATE);
+        deepslateEmeraldOrePool.wall(ModBlocks.DEEPSLATE_EMERALD_ORE_WALL);
 
         BlockStateModelGenerator.BlockTexturePool prismarineBricksPool = blockStateModelGenerator.registerCubeAllModelTexturePool(Blocks.PRISMARINE_BRICKS);
         BlockStateModelGenerator.BlockTexturePool darkPrismarinePool = blockStateModelGenerator.registerCubeAllModelTexturePool(Blocks.DARK_PRISMARINE);

@@ -6,6 +6,7 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.MinecraftServer;
@@ -30,7 +31,7 @@ public class AdventureEffect extends StatusEffect {
     }
 
     @Override
-    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
         if (!entity.getWorld().isClient) {
             counter = counter+1;
             if (entity.isPlayer()) {
@@ -42,11 +43,13 @@ public class AdventureEffect extends StatusEffect {
                 }
             }
             if (counter % 100 == 0) {
-                entity.sendMessage(Text.of("Pasaron 5 segundos"));
+                if (entity instanceof PlayerEntity player) {
+                    player.sendMessage(Text.of("Pasaron 5 segundos"), true);
+                }
             }
         }
 
-        return super.applyUpdateEffect(entity, amplifier);
+        return super.applyUpdateEffect(world, entity, amplifier);
     }
 
     @Override

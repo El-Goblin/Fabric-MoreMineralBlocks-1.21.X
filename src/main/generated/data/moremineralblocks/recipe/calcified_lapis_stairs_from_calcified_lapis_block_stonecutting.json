@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "moremineralblocks:calcified_lapis_block"
-  },
+  "ingredient": "moremineralblocks:calcified_lapis_block",
   "result": {
     "count": 1,
     "id": "moremineralblocks:calcified_lapis_stairs"

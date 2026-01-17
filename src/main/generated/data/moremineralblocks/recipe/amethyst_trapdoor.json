@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "R": {
-      "item": "minecraft:amethyst_shard"
-    }
+    "R": "minecraft:amethyst_shard"
   },
   "pattern": [
     "RRR",
