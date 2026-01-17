@@ -13,9 +13,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class LegendarySwordItem extends SwordItem {
-    public LegendarySwordItem(ToolMaterial material, float attackDamage, float attackSpeed, Settings settings) {
-        super(material, attackDamage, attackSpeed, settings);
+public class LegendarySwordItem extends Item {
+    public LegendarySwordItem(Settings settings, ToolMaterial material, float attackDamage, float attackSpeed) {
+        super(settings.sword(material, attackDamage, attackSpeed));
     }
 
     // Con esto hago que no pierda durabilidad al atacar cosas
@@ -50,10 +50,5 @@ public class LegendarySwordItem extends SwordItem {
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         ToolComponent toolComponent = stack.get(DataComponentTypes.TOOL);
         return toolComponent != null;
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        return false;
     }
 }

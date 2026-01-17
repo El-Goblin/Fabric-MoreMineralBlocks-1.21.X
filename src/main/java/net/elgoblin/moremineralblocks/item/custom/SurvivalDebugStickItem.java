@@ -29,15 +29,6 @@ public class SurvivalDebugStickItem extends DebugStickItem {
     }
 
     @Override
-    public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
-        if (!world.isClient) {
-            this.use(miner, state, world, pos, false, miner.getStackInHand(Hand.MAIN_HAND));
-        }
-
-        return false;
-    }
-
-    @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         PlayerEntity playerEntity = context.getPlayer();
         World world = context.getWorld();

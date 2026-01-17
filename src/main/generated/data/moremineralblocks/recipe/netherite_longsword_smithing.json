@@ -3,7 +3,6 @@
   "addition": "#minecraft:netherite_tool_materials",
   "base": "moremineralblocks:diamond_longsword",
   "result": {
-    "count": 1,
     "id": "moremineralblocks:netherite_longsword"
   },
   "template": "minecraft:netherite_upgrade_smithing_template"

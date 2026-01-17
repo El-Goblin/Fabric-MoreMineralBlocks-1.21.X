@@ -1,7 +1,7 @@
 package net.elgoblin.moremineralblocks.mixin;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.elgoblin.moremineralblocks.util.ProtectorManager;
+//import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.explosion.Explosion;
@@ -23,14 +23,14 @@ public class ExplosionMixin {
     @Shadow
     private ObjectArrayList<BlockPos> affectedBlocks; // shadow the private field
 
-    @Inject(
-            method = "collectBlocksAndDamageEntities",
-            at = @At("TAIL")
-    )
-    private void protectBlocksFromExplosion(CallbackInfo ci) {
-        if (!(world instanceof ServerWorld serverWorld)) return;
-
-        ProtectorManager manager = ProtectorManager.getProtectorManager(serverWorld.getServer());
-        affectedBlocks.removeIf(manager::isProtected);
-    }
+//    @Inject(
+//            method = "collectBlocksAndDamageEntities",
+//            at = @At("TAIL")
+//    )
+//    private void protectBlocksFromExplosion(CallbackInfo ci) {
+//        if (!(world instanceof ServerWorld serverWorld)) return;
+//
+//        ProtectorManager manager = ProtectorManager.getProtectorManager(serverWorld.getServer());
+//        affectedBlocks.removeIf(manager::isProtected);
+//    }
 }

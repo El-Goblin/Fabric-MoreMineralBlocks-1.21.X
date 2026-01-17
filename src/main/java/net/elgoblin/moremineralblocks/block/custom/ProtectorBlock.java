@@ -3,7 +3,7 @@ package net.elgoblin.moremineralblocks.block.custom;
 import com.mojang.serialization.MapCodec;
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.elgoblin.moremineralblocks.block.entity.custom.ProtectorBlockEntity;
-import net.elgoblin.moremineralblocks.util.ProtectorManager;
+//import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;

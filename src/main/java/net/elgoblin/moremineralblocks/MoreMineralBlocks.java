@@ -10,7 +10,6 @@ import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItemGroups;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
-import net.elgoblin.moremineralblocks.persistence.StateSaverAndLoader;
 import net.elgoblin.moremineralblocks.structure.MoreMineralBlocksStructure;
 import net.elgoblin.moremineralblocks.structure.MoreMineralBlocksStructurePlacement;
 import net.elgoblin.moremineralblocks.terrain.TerrainManager;
@@ -36,11 +35,11 @@ import net.minecraft.world.event.GameEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MoreMineralBlocks implements ModInitializer, ServerWorldEvents.Load{
+public class MoreMineralBlocks implements ModInitializer{
 	public static final String MOD_ID = "moremineralblocks";
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	private static StateSaverAndLoader stateSaverAndLoader;
+//	private static StateSaverAndLoader stateSaverAndLoader;
 
 	@Override
 	public void onInitialize() {
@@ -188,12 +187,12 @@ public class MoreMineralBlocks implements ModInitializer, ServerWorldEvents.Load
 //        });
 	}
 
-	@Override
-	public void onWorldLoad(MinecraftServer minecraftServer, ServerWorld serverWorld) {
-		StateSaverAndLoader.loadSave(minecraftServer);
-	}
-
-	public static StateSaverAndLoader getStateSaverAndLoader(MinecraftServer minecraftServer) {
-		return StateSaverAndLoader.loadSave(minecraftServer);
-	}
+//	@Override
+//	public void onWorldLoad(MinecraftServer minecraftServer, ServerWorld serverWorld) {
+//		StateSaverAndLoader.loadSave(minecraftServer);
+//	}
+//
+//	public static StateSaverAndLoader getStateSaverAndLoader(MinecraftServer minecraftServer) {
+//		return StateSaverAndLoader.loadSave(minecraftServer);
+//	}
 }

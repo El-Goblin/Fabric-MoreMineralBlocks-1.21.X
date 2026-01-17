@@ -2,6 +2,7 @@ package net.elgoblin.moremineralblocks.item.custom;
 
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -23,6 +24,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class InfiniteItem extends SpawnEggItem {
     public InfiniteItem(EntityType<? extends MobEntity> type, int primaryColor, int secondaryColor, Settings settings) {
@@ -154,14 +156,14 @@ public class InfiniteItem extends SpawnEggItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
         if (stack.get(ModDataComponentTypes.CHOSEN_INFINITE_ITEM) != null) {
-            tooltip.add(Text.literal("Infinite stack of " + stack.get(ModDataComponentTypes.CHOSEN_INFINITE_ITEM).getName().getString()));
+            textConsumer.accept(Text.literal("Infinite stack of " + stack.get(ModDataComponentTypes.CHOSEN_INFINITE_ITEM).getName().getString()));
         }
         else {
-            tooltip.add(Text.literal("Empty infinite stack"));
+            textConsumer.accept(Text.literal("Empty infinite stack"));
         }
 
-        super.appendTooltip(stack, context, tooltip, type);
+        super.appendTooltip(stack, context, displayComponent, textConsumer, type);
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.ToolComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.ActionResult;
@@ -15,8 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class LegendaryLongSwordItem extends LongSwordItem {
-    public LegendaryLongSwordItem(ToolMaterial material, float attackDamage, float attackSpeed, float entityInteractionRange, float sweepingDamage, Settings settings) {
-        super(material, attackDamage, attackSpeed, entityInteractionRange, sweepingDamage, settings);
+    public LegendaryLongSwordItem(Settings settings, ToolMaterial material, float attackDamage, float attackSpeed, float entityInteractionRange, float sweepingDamage) {
+        super(settings, material, attackDamage, attackSpeed, entityInteractionRange, sweepingDamage);
     }
 
     // Con esto hago que no pierda durabilidad al atacar cosas
@@ -51,10 +52,5 @@ public class LegendaryLongSwordItem extends LongSwordItem {
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         ToolComponent toolComponent = stack.get(DataComponentTypes.TOOL);
         return toolComponent != null;
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        return false;
     }
 }

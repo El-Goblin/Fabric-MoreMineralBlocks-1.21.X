@@ -11,7 +11,7 @@ import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.terrain.SingleBlockSphereJob;
 //import net.elgoblin.moremineralblocks.terrain.SkyBlockJob;
 import net.elgoblin.moremineralblocks.terrain.TerrainManager;
-import net.elgoblin.moremineralblocks.util.ProtectorManager;
+//import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -184,9 +184,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
                     MinecraftServer server = this.getServer();
                     if (server != null) {
-                        ProtectorManager protectorManager = ProtectorManager.getProtectorManager(this.getServer());
+//                        ProtectorManager protectorManager = ProtectorManager.getProtectorManager(this.getServer());
 
-                        if (!currentState.isAir() && !protectorManager.isProtected(blockToRemove)) {
+                        if (!currentState.isAir()) {
                             world.setBlockState(blockToRemove, Blocks.AIR.getDefaultState(), 50);
                         }
                     }
@@ -309,30 +309,30 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                 this.targetsOrSelfChaosEffects.size();
     }
 
-    private static final List<TropicalFishEntity.Variant> TROPICAL_FISH_VARIANTS = List.of(
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.STRIPEY, DyeColor.ORANGE, DyeColor.GRAY),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.GRAY, DyeColor.GRAY),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.GRAY, DyeColor.BLUE),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.CLAYFISH, DyeColor.WHITE, DyeColor.GRAY),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SUNSTREAK, DyeColor.BLUE, DyeColor.GRAY),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.KOB, DyeColor.ORANGE, DyeColor.WHITE),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SPOTTY, DyeColor.PINK, DyeColor.LIGHT_BLUE),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BLOCKFISH, DyeColor.PURPLE, DyeColor.YELLOW),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.CLAYFISH, DyeColor.WHITE, DyeColor.RED),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SPOTTY, DyeColor.WHITE, DyeColor.YELLOW),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.GLITTER, DyeColor.WHITE, DyeColor.GRAY),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.CLAYFISH, DyeColor.WHITE, DyeColor.ORANGE),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.DASHER, DyeColor.CYAN, DyeColor.PINK),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BRINELY, DyeColor.LIME, DyeColor.LIGHT_BLUE),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BETTY, DyeColor.RED, DyeColor.WHITE),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SNOOPER, DyeColor.GRAY, DyeColor.RED),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BLOCKFISH, DyeColor.RED, DyeColor.WHITE),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.WHITE, DyeColor.YELLOW),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.KOB, DyeColor.RED, DyeColor.WHITE),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SUNSTREAK, DyeColor.GRAY, DyeColor.WHITE),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.DASHER, DyeColor.CYAN, DyeColor.YELLOW),
-            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.YELLOW, DyeColor.YELLOW)
-    );
+//    private static final List<TropicalFishEntity.Variant> TROPICAL_FISH_VARIANTS = List.of(
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.STRIPEY, DyeColor.ORANGE, DyeColor.GRAY),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.GRAY, DyeColor.GRAY),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.GRAY, DyeColor.BLUE),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.CLAYFISH, DyeColor.WHITE, DyeColor.GRAY),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SUNSTREAK, DyeColor.BLUE, DyeColor.GRAY),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.KOB, DyeColor.ORANGE, DyeColor.WHITE),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SPOTTY, DyeColor.PINK, DyeColor.LIGHT_BLUE),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BLOCKFISH, DyeColor.PURPLE, DyeColor.YELLOW),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.CLAYFISH, DyeColor.WHITE, DyeColor.RED),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SPOTTY, DyeColor.WHITE, DyeColor.YELLOW),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.GLITTER, DyeColor.WHITE, DyeColor.GRAY),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.CLAYFISH, DyeColor.WHITE, DyeColor.ORANGE),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.DASHER, DyeColor.CYAN, DyeColor.PINK),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BRINELY, DyeColor.LIME, DyeColor.LIGHT_BLUE),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BETTY, DyeColor.RED, DyeColor.WHITE),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SNOOPER, DyeColor.GRAY, DyeColor.RED),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.BLOCKFISH, DyeColor.RED, DyeColor.WHITE),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.WHITE, DyeColor.YELLOW),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.KOB, DyeColor.RED, DyeColor.WHITE),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.SUNSTREAK, DyeColor.GRAY, DyeColor.WHITE),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.DASHER, DyeColor.CYAN, DyeColor.YELLOW),
+//            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.YELLOW, DyeColor.YELLOW)
+//    );
 
     private void spawnMobPack(HitResult hitResult) {
 
@@ -381,29 +381,29 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     }
                     break;
 
-                case "minecraft:tropical_fish":
-                    for (int i = 0 ; i < 3 ; i++) {
-                        entity = entityType.create(this.getWorld(), SpawnReason.EVENT);
-                        if (entity != null) {
-                            TropicalFishEntity.Variant variant = TROPICAL_FISH_VARIANTS.get(random.nextBetween(0, TROPICAL_FISH_VARIANTS.size()-1));
-                            int variantInt = variant.variety().getId() & 65535 |  (variant.baseColor().getId() & 0xFF) << 16 | (variant.patternColor().getId() & 0xFF) << 24;
+//                case "minecraft:tropical_fish":
+//                    for (int i = 0 ; i < 3 ; i++) {
+//                        entity = entityType.create(this.getWorld(), SpawnReason.EVENT);
+//                        if (entity != null) {
+//                            TropicalFishEntity.Variant variant = TROPICAL_FISH_VARIANTS.get(random.nextBetween(0, TROPICAL_FISH_VARIANTS.size()-1));
+//                            int variantInt = variant.variety().getId() & 65535 |  (variant.baseColor().getId() & 0xFF) << 16 | (variant.patternColor().getId() & 0xFF) << 24;
+//
+//                            NbtCompound nbt = new NbtCompound();
+//                            entity.writeNbt(nbt);
+//                            nbt.putInt("Variant", variantInt);
+//                            entity.readNbt(nbt);
+//                            entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
+//                            this.getWorld().spawnEntity(entity);
+//                        }
+//                    }
+//                    break;
 
-                            NbtCompound nbt = new NbtCompound();
-                            entity.writeNbt(nbt);
-                            nbt.putInt("Variant", variantInt);
-                            entity.readNbt(nbt);
-                            entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-                            this.getWorld().spawnEntity(entity);
-                        }
-                    }
-                    break;
-
-                case "minecraft:axolotl":
-                    spawnsToPerform -= 3;
-                    if (entity != null) {
-                        ((AxolotlEntity) entity).setVariant(AxolotlEntity.Variant.byId(random.nextBetween(0,4)));
-                    }
-                    break;
+//                case "minecraft:axolotl":
+//                    spawnsToPerform -= 3;
+//                    if (entity != null) {
+//                        ((AxolotlEntity) entity).setVariant(AxolotlEntity.Variant.byId(random.nextBetween(0,4)));
+//                    }
+//                    break;
 
                 case "minecraft:elder_guardian":
                     spawnsToPerform-=4;

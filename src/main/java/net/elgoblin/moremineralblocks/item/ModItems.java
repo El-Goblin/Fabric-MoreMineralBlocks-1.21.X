@@ -22,9 +22,10 @@ public class ModItems {
 
     public static final Item LEGENDARY_PICKAXE = registerItem(
             "legendary_pickaxe",
-            new LegendaryPickaxeItem(ModToolMaterials.LEGENDARY, 1.0F, -2.8F, new Item.Settings()
+            new LegendaryPickaxeItem(new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_pickaxe")))
-                    .fireproof().rarity(Rarity.EPIC))
+                    .fireproof().rarity(Rarity.EPIC),
+                    ModToolMaterials.LEGENDARY, 1.0F, -2.8F)
     );
     public static final Item LEGENDARY_SHOVEL = registerItem(
             "legendary_shovel",
@@ -46,9 +47,10 @@ public class ModItems {
     );
     public static final Item LEGENDARY_SWORD = registerItem(
             "legendary_sword",
-            new LegendarySwordItem(ModToolMaterials.LEGENDARY, 9.0F, -2.0F, new Item.Settings()
+            new LegendarySwordItem(new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_sword")))
-                    .fireproof().rarity(Rarity.EPIC))
+                    .fireproof().rarity(Rarity.EPIC),
+                    ModToolMaterials.LEGENDARY, 9.0F, -2.0F)
     );
     public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings()
             .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_rocket")))
@@ -65,46 +67,56 @@ public class ModItems {
             .component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
     public static final Item WOODEN_LONGSWORD = registerItem(
             "wooden_longsword",
-            new LongSwordItem(ToolMaterial.WOOD, 5, -2.4F, 1, 2, new Item.Settings()
-                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "wooden_longsword")))));
+            new LongSwordItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "wooden_longsword"))),
+                    ToolMaterial.WOOD, 5, -2.4F, 1, 2));
     public static final Item STONE_LONGSWORD = registerItem(
             "stone_longsword",
-            new LongSwordItem(ToolMaterial.STONE, 5, -2.4F, 1, 2, new Item.Settings()
-                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "stone_longsword")))));
+            new LongSwordItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "stone_longsword"))),
+                    ToolMaterial.STONE, 5, -2.4F, 1, 2));
     public static final Item IRON_LONGSWORD = registerItem(
             "iron_longsword",
-            new LongSwordItem(ToolMaterial.IRON, 5, -2.4F, 1, 2, new Item.Settings()
-                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "iron_longsword")))));
+            new LongSwordItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "iron_longsword"))),
+                    ToolMaterial.IRON, 5, -2.4F, 1, 2));
     public static final Item GOLDEN_LONGSWORD = registerItem(
             "golden_longsword",
-            new LongSwordItem(ToolMaterial.GOLD, 5, -2.4F, 1, 2, new Item.Settings()
-                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "golden_longsword")))));
+            new LongSwordItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "golden_longsword"))),
+                    ToolMaterial.GOLD, 5, -2.4F, 1, 2));
     public static final Item DIAMOND_LONGSWORD = registerItem(
             "diamond_longsword",
-            new LongSwordItem(ToolMaterial.DIAMOND, 5, -2.4F, 1, 2, new Item.Settings()
-                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "diamond_longsword")))));
+            new LongSwordItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "diamond_longsword"))),
+                    ToolMaterial.DIAMOND, 5, -2.4F, 1, 2));
     public static final Item NETHERITE_LONGSWORD = registerItem(
             "netherite_longsword",
-            new LongSwordItem(ToolMaterial.NETHERITE, 5, -2.4F, 1, 2, new Item.Settings()
-                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "netherite_longsword")))));
+            new LongSwordItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "netherite_longsword"))),
+                    ToolMaterial.NETHERITE, 5, -2.4F, 1, 2));
     public static final Item FLAMEBERGE_LONGSWORD = registerItem(
             "flameberge_longsword",
-            new LongSwordItem(ToolMaterial.IRON, 5, -2.4F, 1, 2, new Item.Settings()
-                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "flameberge_longsword")))));
+            new LongSwordItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "flameberge_longsword"))),
+                    ToolMaterial.IRON, 5, -2.4F, 1, 2));
     public static final Item FIRE_DRAGONSWORD_LONGSWORD = registerItem(
             "fire_dragonsword_longsword",
-            new LongSwordItem(ToolMaterial.NETHERITE, 5, -2.4F, 1, 2, new Item.Settings()
-                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "fire_dragonsword_longsword")))));
+            new LongSwordItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "fire_dragonsword_longsword"))),
+                    ToolMaterial.NETHERITE, 5, -2.4F, 1, 2));
     public static final Item FIENDBLADE_LONGSWORD = registerItem(
             "fiendblade_longsword",
-            new LongSwordItem(ToolMaterial.NETHERITE, 5, -2.4F, 1, 2, new Item.Settings()
-                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "fiendblade_longsword")))));
+            new LongSwordItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "fiendblade_longsword"))),
+                    ToolMaterial.NETHERITE, 5, -2.4F, 1, 2));
     public static final Item LEGENDARY_LONGSWORD = registerItem(
             "legendary_longsword",
-            new LegendaryLongSwordItem(ModToolMaterials.LEGENDARY, 11.0F, -2.4F, 1, 5, new Item.Settings()
+            new LegendaryLongSwordItem(new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_longsword")))
-                    .fireproof().rarity(Rarity.EPIC))
-    );
+                    .fireproof().rarity(Rarity.EPIC),
+            ModToolMaterials.LEGENDARY, 11.0F, -2.4F, 1, 5
+    ));
 
 
 

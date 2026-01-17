@@ -13,9 +13,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class LegendaryPickaxeItem extends PickaxeItem {
-    public LegendaryPickaxeItem(ToolMaterial material, float attackDamage, float attackSpeed, Settings settings) {
-        super(material, attackDamage, attackSpeed, settings);
+public class LegendaryPickaxeItem extends Item{
+    public LegendaryPickaxeItem(Settings settings, ToolMaterial material, float attackDamage, float attackSpeed) {
+        super(settings.pickaxe(material, attackDamage, attackSpeed));
     }
 
     // Con esto hago que no pierda durabilidad al atacar cosas
@@ -76,10 +76,5 @@ public class LegendaryPickaxeItem extends PickaxeItem {
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         ToolComponent toolComponent = stack.get(DataComponentTypes.TOOL);
         return toolComponent != null;
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        return false;
     }
 }

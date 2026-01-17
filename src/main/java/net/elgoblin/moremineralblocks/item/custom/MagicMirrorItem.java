@@ -29,39 +29,39 @@ public class MagicMirrorItem extends Item {
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
 
-        ItemStack itemStack = user.getStackInHand(hand);
-
-        if (!world.isClient) {
-            MinecraftServer server = world.getServer();
-
-            if (server != null) {
-
-                ServerWorld overworld = server.getWorld(World.OVERWORLD);
-                ServerPlayerEntity serverPlayer = (ServerPlayerEntity) user;
-
-                boolean hasSetSpawnPoint = serverPlayer.getSpawnPointPosition() != null;
-                Vec3d coordinates = Vec3d.of(hasSetSpawnPoint ? serverPlayer.getSpawnPointPosition() : (overworld != null) ? overworld.getSpawnPos() : new Vec3i(0, 64, 0));
-
-                RegistryKey<World> spawnDimension = serverPlayer.getSpawnPointDimension();
-                ServerWorld targetWorld = server.getWorld(spawnDimension);
-
-                Pair<ServerWorld, Vec3d> target = new Pair<>(targetWorld, coordinates);
-
-                if (hasSetSpawnPoint && targetWorld != null) {
-                    target = getRespawnPosition(targetWorld, serverPlayer.getSpawnPointPosition(), serverPlayer.isSpawnForced());
-                }
-
-
-                TeleportTarget teleportTarget = new TeleportTarget(target.getLeft(),
-                        target.getRight(),
-                        new Vec3d(0, 0, 0),
-                        user.getYaw(),
-                        user.getPitch(),
-                        TeleportTarget.NO_OP);
-                user.teleportTo(teleportTarget);
-            }
-        }
-        itemStack.decrementUnlessCreative(1, user);
+//        ItemStack itemStack = user.getStackInHand(hand);
+//
+//        if (!world.isClient) {
+//            MinecraftServer server = world.getServer();
+//
+//            if (server != null) {
+//
+//                ServerWorld overworld = server.getWorld(World.OVERWORLD);
+//                ServerPlayerEntity serverPlayer = (ServerPlayerEntity) user;
+//
+//                boolean hasSetSpawnPoint = serverPlayer.getSpawnPointPosition() != null;
+//                Vec3d coordinates = Vec3d.of(hasSetSpawnPoint ? serverPlayer.getSpawnPointPosition() : (overworld != null) ? overworld.getSpawnPos() : new Vec3i(0, 64, 0));
+//
+//                RegistryKey<World> spawnDimension = serverPlayer.getSpawnPointDimension();
+//                ServerWorld targetWorld = server.getWorld(spawnDimension);
+//
+//                Pair<ServerWorld, Vec3d> target = new Pair<>(targetWorld, coordinates);
+//
+//                if (hasSetSpawnPoint && targetWorld != null) {
+//                    target = getRespawnPosition(targetWorld, serverPlayer.getSpawnPointPosition(), serverPlayer.isSpawnForced());
+//                }
+//
+//
+//                TeleportTarget teleportTarget = new TeleportTarget(target.getLeft(),
+//                        target.getRight(),
+//                        new Vec3d(0, 0, 0),
+//                        user.getYaw(),
+//                        user.getPitch(),
+//                        TeleportTarget.NO_OP);
+//                user.teleportTo(teleportTarget);
+//            }
+//        }
+//        itemStack.decrementUnlessCreative(1, user);
         return super.use(world, user, hand);
     }
 

@@ -97,9 +97,4 @@ public class LegendaryShovelItem extends ShovelItem {
         ToolComponent toolComponent = stack.get(DataComponentTypes.TOOL);
         return toolComponent != null;
     }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        return false;
-    }
 }

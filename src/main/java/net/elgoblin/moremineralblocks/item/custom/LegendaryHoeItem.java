@@ -83,9 +83,4 @@ public class LegendaryHoeItem extends HoeItem {
             }
         }
     }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        return false;
-    }
 }
