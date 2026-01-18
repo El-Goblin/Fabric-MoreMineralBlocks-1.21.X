@@ -32,7 +32,7 @@ public class SurvivalDebugStickItem extends DebugStickItem {
     public ActionResult useOnBlock(ItemUsageContext context) {
         PlayerEntity playerEntity = context.getPlayer();
         World world = context.getWorld();
-        if (!world.isClient && playerEntity != null) {
+        if (!world.isClient() && playerEntity != null) {
             BlockPos blockPos = context.getBlockPos();
             if (!this.use(playerEntity, world.getBlockState(blockPos), world, blockPos, true, context.getStack())) {
                 return ActionResult.FAIL;

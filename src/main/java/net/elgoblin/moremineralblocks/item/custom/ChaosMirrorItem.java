@@ -31,7 +31,7 @@ public class ChaosMirrorItem extends Item {
 
         ItemStack itemStack = user.getStackInHand(hand);
 
-        if (!world.isClient) {
+        if (!world.isClient()) {
             MinecraftServer server = world.getServer();
 
             if (server != null) {
@@ -46,13 +46,13 @@ public class ChaosMirrorItem extends Item {
                         continue;
                     }
 
-                    if (playerEntity.getServer() != null) {
-                        ServerWorld dimension = playerEntity.getServer().getWorld(playerEntity.getWorld().getRegistryKey());
+                    if (playerEntity.getEntityWorld().getServer() != null) {
+                        ServerWorld dimension = playerEntity.getEntityWorld().getServer().getWorld(playerEntity.getEntityWorld().getRegistryKey());
 
                         if (dimension != null) {
                             Identifier world_ID = dimension.getRegistryKey().getValue();
 
-                            Vec3d currentCoordinates = playerEntity.getPos();
+                            Vec3d currentCoordinates = playerEntity.getEntityPos();
                             ItemStack magicMirror = ModItems.REFLECTIVE_MIRROR.getDefaultStack();
                             magicMirror.set(ModDataComponentTypes.COORDINATES, currentCoordinates);
                             magicMirror.set(ModDataComponentTypes.SERVERWORLD, world_ID);

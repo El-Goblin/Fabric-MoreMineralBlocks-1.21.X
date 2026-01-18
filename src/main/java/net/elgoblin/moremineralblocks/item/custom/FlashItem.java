@@ -14,7 +14,7 @@ public class FlashItem extends Item {
 
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
 
             Vec3d previousVelocity = user.getVelocity();
             float previousPitch = user.getPitch();
@@ -24,7 +24,7 @@ public class FlashItem extends Item {
 
             user.getItemCooldownManager().set(user.getStackInHand(hand), 50);
 
-            Vec3d target = user.getPos().add(user.getRotationVec(1.0F).multiply(8));
+            Vec3d target = user.getEntityPos().add(user.getRotationVec(1.0F).multiply(8));
             user.requestTeleport(target.x, target.y, target.z);
 
             user.setVelocity(previousVelocity);

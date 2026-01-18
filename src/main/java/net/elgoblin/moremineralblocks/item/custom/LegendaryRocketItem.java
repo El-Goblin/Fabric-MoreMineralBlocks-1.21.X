@@ -20,7 +20,7 @@ public class LegendaryRocketItem extends FireworkRocketItem {
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         if (user.isGliding()) {
             ItemStack itemStack = user.getStackInHand(hand);
-            if (!world.isClient) {
+            if (!world.isClient()) {
                 FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(world, itemStack, user);
                 world.spawnEntity(fireworkRocketEntity);
                 user.incrementStat(Stats.USED.getOrCreateStat(this));

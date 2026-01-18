@@ -65,21 +65,21 @@ public class MagicMirrorItem extends Item {
         return super.use(world, user, hand);
     }
 
-    public Pair<ServerWorld, Vec3d> getRespawnPosition(ServerWorld world, BlockPos writtenSpawnPosition, boolean spawnForced) {
-        BlockState blockState = world.getBlockState(writtenSpawnPosition);
-        Block block = blockState.getBlock();
-
-        if (block instanceof BedBlock && BedBlock.isBedWorking(world)) {
-            return new Pair<>(world, new Vec3d(writtenSpawnPosition.getX(), writtenSpawnPosition.getY(), writtenSpawnPosition.getZ()));
-        }
-        else if (block instanceof RespawnAnchorBlock && (spawnForced || (Integer)blockState.get(RespawnAnchorBlock.CHARGES) > 0) && RespawnAnchorBlock.isNether(world)) {
-            return new Pair<>(world, new Vec3d(writtenSpawnPosition.getX(), writtenSpawnPosition.getY(), writtenSpawnPosition.getZ()));
-        }
-        else {
-            MinecraftServer server = world.getServer();
-            ServerWorld overworld = server.getWorld(World.OVERWORLD);
-            BlockPos worldSpawnPos = world.getSpawnPos();
-            return new Pair<>(overworld, (overworld != null) ? new Vec3d(worldSpawnPos.getX(), worldSpawnPos.getY(), worldSpawnPos.getZ()) : new Vec3d(0,64,0));
-        }
-    }
+//    public Pair<ServerWorld, Vec3d> getRespawnPosition(ServerWorld world, BlockPos writtenSpawnPosition, boolean spawnForced) {
+//        BlockState blockState = world.getBlockState(writtenSpawnPosition);
+//        Block block = blockState.getBlock();
+//
+//        if (block instanceof BedBlock && BedBlock.isBedWorking(world)) {
+//            return new Pair<>(world, new Vec3d(writtenSpawnPosition.getX(), writtenSpawnPosition.getY(), writtenSpawnPosition.getZ()));
+//        }
+//        else if (block instanceof RespawnAnchorBlock && (spawnForced || (Integer)blockState.get(RespawnAnchorBlock.CHARGES) > 0) && RespawnAnchorBlock.isNether(world)) {
+//            return new Pair<>(world, new Vec3d(writtenSpawnPosition.getX(), writtenSpawnPosition.getY(), writtenSpawnPosition.getZ()));
+//        }
+//        else {
+//            MinecraftServer server = world.getServer();
+//            ServerWorld overworld = server.getWorld(World.OVERWORLD);
+//            BlockPos worldSpawnPos = world.getSpawnPos();
+//            return new Pair<>(overworld, (overworld != null) ? new Vec3d(worldSpawnPos.getX(), worldSpawnPos.getY(), worldSpawnPos.getZ()) : new Vec3d(0,64,0));
+//        }
+//    }
 }

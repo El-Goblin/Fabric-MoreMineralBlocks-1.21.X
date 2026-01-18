@@ -149,7 +149,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
 
 //    private void addSkyBlock() {
-//        MinecraftServer server = this.getWorld().getServer();
+//        MinecraftServer server = this.getEntityWorld().getServer();
 //        if (server != null) {
 //            if (!MoreMineralBlocks.getStateSaverAndLoader(server).hasSkyblockHappened()) {
 //                this.globalChaosEffects.add(this::createSkyblock);
@@ -162,7 +162,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         super.tick();
 
         if (this.tunneler) {
-            if (!this.getWorld().isClient) {
+            if (!this.getEntityWorld().isClient()) {
                 BlockPos center = new BlockPos(new Vec3i((int) this.getX(), (int) this.getY(), (int) this.getZ()));
 
                 for (int x = -5; x <= 5; x++) {
@@ -177,12 +177,12 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                         }
                     }
                 }
-                World world = this.getWorld();
+                World world = this.getEntityWorld();
                 while (!tunnelQueue.isEmpty()) {
                     BlockPos blockToRemove = tunnelQueue.pop();
                     BlockState currentState = world.getBlockState(blockToRemove);
 
-                    MinecraftServer server = this.getServer();
+                    MinecraftServer server = this.getEntityWorld().getServer();
                     if (server != null) {
 //                        ProtectorManager protectorManager = ProtectorManager.getProtectorManager(this.getServer());
 
@@ -225,16 +225,16 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
         Entity entity = entityHitResult.getEntity();
-        if (!entity.getWorld().isClient) {
-            entity.damage((ServerWorld) entity.getWorld(), this.getDamageSources().thrown(this, this.getOwner()), 0);
+        if (!entity.getEntityWorld().isClient()) {
+            entity.damage((ServerWorld) entity.getEntityWorld(), this.getDamageSources().thrown(this, this.getOwner()), 0);
         }
     }
 
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
-        if (!this.getWorld().isClient) {
-            this.getWorld().sendEntityStatus(this, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
+        if (!this.getEntityWorld().isClient()) {
+            this.getEntityWorld().sendEntityStatus(this, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
 
             int eventCategory = nextCategory();
             int nextEffect;
@@ -348,7 +348,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         Identifier entityTypeID = Registries.ENTITY_TYPE.getId(entityType);
 
         while (spawnsToPerform-- > 0) {
-            Entity entity = entityType.create(this.getWorld(), SpawnReason.EVENT);
+            Entity entity = entityType.create(this.getEntityWorld(), SpawnReason.EVENT);
 
             switch (entityTypeID.toString()) {
 
@@ -363,27 +363,27 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     nextEntity = this.random.nextBetween(0, mobs.size() - 1);
                     entityType = mobs.get(nextEntity);
                     entityTypeID = Registries.ENTITY_TYPE.getId(entityType);
-                    entity = entityType.create(this.getWorld(), SpawnReason.EVENT);
+                    entity = entityType.create(this.getEntityWorld(), SpawnReason.EVENT);
                     spawnsToPerform++;
                     break;
 
 
                 case "minecraft:bat", "minecraft:bee", "minecraft:chicken", "minecraft:cod", "minecraft:frog", "minecraft:pufferfish", "minecraft:rabbit", "minecraft:salmon", "minecraft:silverfish", "minecraft:endermite", "minecraft:tadpole":
-                    Entity entity2 = entityType.create(this.getWorld(), SpawnReason.EVENT);
+                    Entity entity2 = entityType.create(this.getEntityWorld(), SpawnReason.EVENT);
                     if (entity2 != null) {
                         entity2.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-                        this.getWorld().spawnEntity(entity2);
+                        this.getEntityWorld().spawnEntity(entity2);
                     }
-                    Entity entity3 = entityType.create(this.getWorld(), SpawnReason.EVENT);
+                    Entity entity3 = entityType.create(this.getEntityWorld(), SpawnReason.EVENT);
                     if (entity3 != null) {
                         entity3.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-                        this.getWorld().spawnEntity(entity3);
+                        this.getEntityWorld().spawnEntity(entity3);
                     }
                     break;
 
 //                case "minecraft:tropical_fish":
 //                    for (int i = 0 ; i < 3 ; i++) {
-//                        entity = entityType.create(this.getWorld(), SpawnReason.EVENT);
+//                        entity = entityType.create(this.getEntityWorld(), SpawnReason.EVENT);
 //                        if (entity != null) {
 //                            TropicalFishEntity.Variant variant = TROPICAL_FISH_VARIANTS.get(random.nextBetween(0, TROPICAL_FISH_VARIANTS.size()-1));
 //                            int variantInt = variant.variety().getId() & 65535 |  (variant.baseColor().getId() & 0xFF) << 16 | (variant.patternColor().getId() & 0xFF) << 24;
@@ -393,7 +393,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //                            nbt.putInt("Variant", variantInt);
 //                            entity.readNbt(nbt);
 //                            entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-//                            this.getWorld().spawnEntity(entity);
+//                            this.getEntityWorld().spawnEntity(entity);
 //                        }
 //                    }
 //                    break;
@@ -428,38 +428,38 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
             if (entity != null) {
                 entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-                this.getWorld().spawnEntity(entity);
+                this.getEntityWorld().spawnEntity(entity);
             }
         }
     }
 
     private void spawnSkeletonHorse(HitResult hitResult) {
-        SkeletonHorseEntity skeletonHorseEntity = EntityType.SKELETON_HORSE.create(this.getWorld(), SpawnReason.EVENT);
+        SkeletonHorseEntity skeletonHorseEntity = EntityType.SKELETON_HORSE.create(this.getEntityWorld(), SpawnReason.EVENT);
         if (skeletonHorseEntity != null) {
             skeletonHorseEntity.setTrapped(true);
             skeletonHorseEntity.setBreedingAge(0);
             skeletonHorseEntity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
 
-            this.getWorld().spawnEntity(skeletonHorseEntity);
+            this.getEntityWorld().spawnEntity(skeletonHorseEntity);
         }
     }
 
     private void beginThunderstorm(HitResult hitResult) {
-        if (!this.getWorld().isClient) {
-            if (this.getServer() != null) {
-                ServerWorld world = this.getServer().getOverworld();
+        if (!this.getEntityWorld().isClient()) {
+            if (this.getEntityWorld().getServer() != null) {
+                ServerWorld world = this.getEntityWorld().getServer().getOverworld();
                 world.setWeather(0, UniformIntProvider.create(3600, 15600).get(world.getRandom()), true, true);
-                LightningEntity bolt = EntityType.LIGHTNING_BOLT.create(this.getWorld(), SpawnReason.EVENT);
+                LightningEntity bolt = EntityType.LIGHTNING_BOLT.create(this.getEntityWorld(), SpawnReason.EVENT);
                 if (bolt != null) {
                     bolt.refreshPositionAndAngles(hitResult.getPos(),1f, 1f);
-                    this.getWorld().spawnEntity(bolt);
+                    this.getEntityWorld().spawnEntity(bolt);
                 }
             }
         }
     }
 
     private void increaseInteractionRange(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
+        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
 
         for (LivingEntity entity : entities) {
             if (entity instanceof PlayerEntity player) {
@@ -541,7 +541,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void changeScale(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
+        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
 
         ScalePack chosenPack = scalePacks.get(random.nextInt(scalePacks.size()));
 
@@ -568,7 +568,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void moveXBlocks(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
+        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
 
         boolean goDown = this.random.nextBoolean();
 
@@ -580,8 +580,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                 continue;
             }
 
-            if (this.getServer() != null) {
-                ServerWorld server = this.getServer().getWorld(entity.getWorld().getRegistryKey());
+            if (this.getEntityWorld().getServer() != null) {
+                ServerWorld server = this.getEntityWorld().getServer().getWorld(entity.getEntityWorld().getRegistryKey());
                 TeleportTarget teleportTarget = new TeleportTarget(server,
                         new Vec3d(entity.getX(),
                                 entity.getY() + (goDown ? -20 : 20),
@@ -607,16 +607,16 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         int forceTeleport = random.nextInt(20);
         if (forceTeleport == 0 && this.getOwner() instanceof PlayerEntity) {
             // Notar que de esta forma se aumenta la estadistica de veces usadas el item. Me parece correcto
-            ModItems.CHAOS_MIRROR.use(this.getWorld(), (PlayerEntity) this.getOwner(), Hand.MAIN_HAND);
+            ModItems.CHAOS_MIRROR.use(this.getEntityWorld(), (PlayerEntity) this.getOwner(), Hand.MAIN_HAND);
         }
         else {
-            this.dropStack((ServerWorld) this.getWorld(), ModItems.CHAOS_MIRROR.getDefaultStack());
+            this.dropStack((ServerWorld) this.getEntityWorld(), ModItems.CHAOS_MIRROR.getDefaultStack());
         }
     }
 
     private void applyBeaconEffect(HitResult hitResult, Box boundingBox) {
 
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(32.0, 200.0, 32.0));
+        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(32.0, 200.0, 32.0));
         List<RegistryEntry<StatusEffect>> pool = BeaconBlockEntity.EFFECTS_BY_LEVEL.stream().flatMap(List::stream).toList();
 
         long poolSize = pool.size();
@@ -624,7 +624,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         int nextLevel = this.random.nextBetween(0, 9);
         RegistryEntry<StatusEffect> effect = pool.get(nextEffect);
         SimpleParticleType effectParticle = particleMap.get(effect.getIdAsString());
-        ((ServerWorld) this.getWorld()).spawnParticles(effectParticle,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        ((ServerWorld) this.getEntityWorld()).spawnParticles(effectParticle,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
             StatusEffectInstance effectInstance = new StatusEffectInstance(effect, 24000, nextLevel);
@@ -638,7 +638,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //        // Esto nunca va a funcionar porque el chaosOrb corre en server
 //        // Quizas podria hacer que el chequeo lo haga en ChaosOrbItem como hacia para el tunel
 //        // No se si vale la pena tener este efecto y ademas mepa que va a generar una banda de bugs
-//        if (this.getWorld().isClient) {
+//        if (this.getEntityWorld().isClient) {
 //            LivingEntity entity = (LivingEntity) this.getOwner();
 //            if (entity != null) { entity.sendMessage(Text.of("crash"));}
 //            throw new RuntimeException("Chaos Crash");
@@ -673,7 +673,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             food.set(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, new SuspiciousStewEffectsComponent(List.of(chosenEffect)));
             food.setCount(4);
         }
-        this.dropStack((ServerWorld) this.getWorld(), food, 0);
+        this.dropStack((ServerWorld) this.getEntityWorld(), food, 0);
     }
 
     private void getInfiniteItem(HitResult hitResult) {
@@ -711,23 +711,23 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             player.sendMessage(Text.of(chosenItem.getName()), true);
         }
         infiniteItem.set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, chosenItem.getDefaultStack());
-        this.dropStack((ServerWorld) this.getWorld(), infiniteItem, 0);
+        this.dropStack((ServerWorld) this.getEntityWorld(), infiniteItem, 0);
     }
 
     private void getEnchantedBook(HitResult hitResult) {
         ItemStack enchantedBook = Items.ENCHANTED_BOOK.getDefaultStack();
-        List<Enchantment> enchantments = this.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).stream().toList();
+        List<Enchantment> enchantments = this.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).stream().toList();
         Enchantment enchantment = enchantments.get(random.nextBetween(0, enchantments.size() - 1));
         RegistryEntry<Enchantment> enchantmentEntry = this.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(enchantment);
         enchantedBook.addEnchantment(enchantmentEntry, random.nextBetween(1, enchantment.getMaxLevel()));
-        this.dropStack((ServerWorld) this.getWorld(), enchantedBook, 0);
+        this.dropStack((ServerWorld) this.getEntityWorld(), enchantedBook, 0);
     }
 
     private void xp(HitResult hitResult) {
         //float prizeMultiplier = (int) Math.pow((random.nextFloat()+1),5);
-        //ExperienceOrbEntity.spawn((ServerWorld) this.getWorld(), this.getPos(), (int) (random.nextBetween(32, 128) * prizeMultiplier));
+        //ExperienceOrbEntity.spawn((ServerWorld) this.getEntityWorld(), this.getPos(), (int) (random.nextBetween(32, 128) * prizeMultiplier));
         // El segundo boostea ligeramente las chances para arriba
-        ExperienceOrbEntity.spawn((ServerWorld) this.getWorld(), this.getPos(), (int) Math.pow(Math.min(random.nextBetween(8,32), random.nextBetween(16,32)),3));
+        ExperienceOrbEntity.spawn((ServerWorld) this.getEntityWorld(), this.getEntityPos(), (int) Math.pow(Math.min(random.nextBetween(8,32), random.nextBetween(16,32)),3));
     }
 
     private void smallPrize(HitResult hitResult) {
@@ -750,16 +750,16 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         ItemStack reward = prizes.get(nextItem);
 
         if (reward.getItem() == Items.POINTED_DRIPSTONE) {
-            this.dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.LAVA_BUCKET, 1), 0);
-            this.dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.WATER_BUCKET, 1), 0);
-            this.dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.CAULDRON, 1), 0);
+            this.dropStack((ServerWorld) this.getEntityWorld(), new ItemStack(Items.LAVA_BUCKET, 1), 0);
+            this.dropStack((ServerWorld) this.getEntityWorld(), new ItemStack(Items.WATER_BUCKET, 1), 0);
+            this.dropStack((ServerWorld) this.getEntityWorld(), new ItemStack(Items.CAULDRON, 1), 0);
         }
         if (reward.getItem() == Items.STONE) {
-            this.dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.STONE, 64), 0);
-            this.dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.STONE, 64), 0);
+            this.dropStack((ServerWorld) this.getEntityWorld(), new ItemStack(Items.STONE, 64), 0);
+            this.dropStack((ServerWorld) this.getEntityWorld(), new ItemStack(Items.STONE, 64), 0);
         }
 
-        this.dropStack((ServerWorld) this.getWorld(), reward, 0);
+        this.dropStack((ServerWorld) this.getEntityWorld(), reward, 0);
     }
 
 //    private void breakGameProgression(HitResult hitResult) {
@@ -776,14 +776,14 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //
 //        ItemStack mendingBook = Items.ENCHANTED_BOOK.getDefaultStack();
 //
-//        mendingEntry = this.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOr(Enchantments.MENDING);
+//        mendingEntry = this.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOr(Enchantments.MENDING);
 //        mendingBook.set(DataComponentTypes.STORED_ENCHANTMENTS,
 //                new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT)
 //                        .add(mendingEntry, 1);
 //
 //
 //        RegistryEntry<Enchantment> mendingEntry =
-//                this.getWorld().getRegistryManager()
+//                this.getEntityWorld().getRegistryManager()
 //                        .getOrThrow(RegistryKeys.ENCHANTMENT)
 //                        .getEntry(Enchantments.MENDING)
 //                        .orElseThrow();
@@ -792,7 +792,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //
 //        ItemStack fortuneBook = Items.ENCHANTED_BOOK.getDefaultStack();
 //        RegistryEntry<Enchantment> fortuneEntry =
-//                this.getWorld().getRegistryManager()
+//                this.getEntityWorld().getRegistryManager()
 //                        .get(RegistryKeys.ENCHANTMENT)
 //                        .getEntry(Enchantments.FORTUNE)
 //                        .orElseThrow();
@@ -801,7 +801,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //
 //        ItemStack lootingBook = Items.ENCHANTED_BOOK.getDefaultStack();
 //        RegistryEntry<Enchantment> lootingEntry =
-//                this.getWorld().getRegistryManager()
+//                this.getEntityWorld().getRegistryManager()
 //                        .get(RegistryKeys.ENCHANTMENT)
 //                        .getEntry(Enchantments.LOOTING)
 //                        .orElseThrow();
@@ -840,23 +840,23 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //        ItemStack reward = rareItems.get(nextItem);
 //
 //        if (reward.getItem() == Items.BOOKSHELF) {
-//            this.dropStack((ServerWorld) this.getWorld(), Items.ENCHANTING_TABLE.getDefaultStack(), 0);
+//            this.dropStack((ServerWorld) this.getEntityWorld(), Items.ENCHANTING_TABLE.getDefaultStack(), 0);
 //        }
 //
-//        this.dropStack((ServerWorld) this.getWorld(), reward, 0);
+//        this.dropStack((ServerWorld) this.getEntityWorld(), reward, 0);
 //    }
 
     private void explosion(HitResult hitResult) {
         int kase = random.nextBetween(1, 20);
 
         if (kase == 20) {
-            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 127.0, World.ExplosionSourceType.BLOCK);
+            this.getEntityWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 127.0, World.ExplosionSourceType.BLOCK);
         }
         else if (kase > 17 && this.getOwner() != null) {
-            this.getWorld().createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 1.0, World.ExplosionSourceType.BLOCK);
+            this.getEntityWorld().createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 1.0, World.ExplosionSourceType.BLOCK);
         }
         else {
-            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 5.0, World.ExplosionSourceType.BLOCK);
+            this.getEntityWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 5.0, World.ExplosionSourceType.BLOCK);
         }
     }
 
@@ -867,68 +867,68 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
 //        if (kase == 20) {
 //            if (this.getOwner() != null) {
-//                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 127);
+//                fireballEntity = new FireballEntity(this.getEntityWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 127);
 //            }
 //            else {
-//                LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
+//                LivingEntity dummy = new PigEntity(EntityType.PIG, this.getEntityWorld());
 //                dummy.setPosition(this.getX(), this.getY(), this.getZ());
-//                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
+//                fireballEntity = new FireballEntity(this.getEntityWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
 //            }
 //        }
 //        else {
 //            if (this.getOwner() != null) {
-//                fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 3);
+//                fireballEntity = new FireballEntity(this.getEntityWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 3);
 //            }
 //            else {
-//                LivingEntity dummy = new PigEntity(EntityType.PIG, this.getWorld());
+//                LivingEntity dummy = new PigEntity(EntityType.PIG, this.getEntityWorld());
 //                dummy.setPosition(this.getX(), this.getY(), this.getZ());
-//                fireballEntity = new FireballEntity(this.getWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
+//                fireballEntity = new FireballEntity(this.getEntityWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
 //            }
 //        }
 
         if (kase > 17 && kase < 20 && this.getOwner() != null) {
-            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 1);
+            fireballEntity = new FireballEntity(this.getEntityWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 1);
             fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
         }
         else {
-            fireballEntity = new FireballEntity(this.getWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 4);
+            fireballEntity = new FireballEntity(this.getEntityWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 4);
             fireballEntity.setPosition(this.getX(), this.getY(), this.getZ());
         }
-        this.getWorld().spawnEntity(fireballEntity);
+        this.getEntityWorld().spawnEntity(fireballEntity);
     }
 
     private void spawn5ChaosOrbs(HitResult hitResult) {
         ItemStack chaosOrbs = new ItemStack(ModItems.CHAOS_ORB, 5);
 
-        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
+        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
-        this.getWorld().spawnEntity(chaosOrbEntity);
+        this.getEntityWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
+        chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( -1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
-        this.getWorld().spawnEntity(chaosOrbEntity);
+        this.getEntityWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
+        chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, 1.0f, 0.5f, 0.0f);
 
-        this.getWorld().spawnEntity(chaosOrbEntity);
+        this.getEntityWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
+        chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, -1.0f, 0.5f, 0.0f);
 
-        this.getWorld().spawnEntity(chaosOrbEntity);
+        this.getEntityWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
+        chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
         chaosOrbEntity.setOwner(this.getOwner());
         chaosOrbEntity.setVelocity( 0f, 2.0f, 0.0f, 0f, 0f);
 
-        this.getWorld().spawnEntity(chaosOrbEntity);
+        this.getEntityWorld().spawnEntity(chaosOrbEntity);
     }
 
     private void voidSphere(HitResult hitResult) {
@@ -937,7 +937,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             randomNumber = random.nextFloat();
         }
         int radius = Math.max((int) (-1 * (5.6f * Math.log(randomNumber * 1369)/Math.log(1.375f) - 127)), 10);
-        World world = this.getWorld();
+        World world = this.getEntityWorld();
         BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, (int) hitResult.getPos().y, (int) hitResult.getPos().z));
 
         if (this.getOwner() != null) {
@@ -952,7 +952,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //        if (this.getServer() != null) {
 //            List<ServerPlayerEntity> players = this.getServer().getPlayerManager().getPlayerList();
 //
-//            World world = this.getWorld();
+//            World world = this.getEntityWorld();
 //
 //            int tpX = random.nextInt(1) == 0 ? random.nextBetween(10000, 20000) : random.nextBetween(-20000, -10000);
 //            int tpZ = random.nextInt(1) == 0 ? random.nextBetween(10000, 20000) : random.nextBetween(-20000, -10000);
@@ -975,7 +975,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //                        TeleportTarget.NO_OP);
 //                playerEntity.teleportTo(teleportTarget);
 //                BlockPos asd = new BlockPos((int) playerEntity.getX() - (int) playerEntity.getX() % 16 + 11, 66, (int) playerEntity.getZ() - (int) playerEntity.getZ() % 16 + 11);
-//                playerEntity.setSpawnPoint(playerEntity.getWorld().getRegistryKey(), asd, 0, true, false);
+//                playerEntity.setSpawnPoint(playerEntity.getEntityWorld().getRegistryKey(), asd, 0, true, false);
 //            }
 //
 //            if (this.getOwner() != null) {
@@ -1043,39 +1043,39 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         switch (material) {
             case 0:
-                this.dropStack((ServerWorld) this.getWorld(), Items.WOODEN_AXE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.WOODEN_SHOVEL.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.WOODEN_SWORD.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.WOODEN_PICKAXE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.WOODEN_HOE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.WOODEN_AXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.WOODEN_SHOVEL.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.WOODEN_SWORD.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.WOODEN_PICKAXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.WOODEN_HOE.getDefaultStack(), 0);
                 break;
             case 1:
-                this.dropStack((ServerWorld) this.getWorld(), Items.STONE_AXE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.STONE_SHOVEL.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.STONE_SWORD.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.STONE_PICKAXE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.STONE_HOE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.STONE_AXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.STONE_SHOVEL.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.STONE_SWORD.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.STONE_PICKAXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.STONE_HOE.getDefaultStack(), 0);
                 break;
             case 2:
-                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_AXE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_SHOVEL.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_SWORD.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_PICKAXE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_HOE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.IRON_AXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.IRON_SHOVEL.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.IRON_SWORD.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.IRON_PICKAXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.IRON_HOE.getDefaultStack(), 0);
                 break;
             case 3:
-                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_AXE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_SHOVEL.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_SWORD.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_PICKAXE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_HOE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.GOLDEN_AXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.GOLDEN_SHOVEL.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.GOLDEN_SWORD.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.GOLDEN_PICKAXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.GOLDEN_HOE.getDefaultStack(), 0);
                 break;
             case 4:
-                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_AXE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_SHOVEL.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_SWORD.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_PICKAXE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_HOE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.DIAMOND_AXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.DIAMOND_SHOVEL.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.DIAMOND_SWORD.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.DIAMOND_PICKAXE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.DIAMOND_HOE.getDefaultStack(), 0);
                 break;
         }
     }
@@ -1085,45 +1085,45 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         switch (material) {
             case 0:
-                this.dropStack((ServerWorld) this.getWorld(), Items.LEATHER_HELMET.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.LEATHER_HORSE_ARMOR.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.LEATHER_CHESTPLATE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.LEATHER_LEGGINGS.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.LEATHER_BOOTS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.LEATHER_HELMET.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.LEATHER_HORSE_ARMOR.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.LEATHER_CHESTPLATE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.LEATHER_LEGGINGS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.LEATHER_BOOTS.getDefaultStack(), 0);
                 break;
             case 1:
-                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_HELMET.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_HORSE_ARMOR.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_CHESTPLATE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_LEGGINGS.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.IRON_BOOTS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.IRON_HELMET.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.IRON_HORSE_ARMOR.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.IRON_CHESTPLATE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.IRON_LEGGINGS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.IRON_BOOTS.getDefaultStack(), 0);
                 break;
             case 2:
-                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_HELMET.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_HORSE_ARMOR.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_CHESTPLATE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_LEGGINGS.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.GOLDEN_BOOTS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.GOLDEN_HELMET.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.GOLDEN_HORSE_ARMOR.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.GOLDEN_CHESTPLATE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.GOLDEN_LEGGINGS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.GOLDEN_BOOTS.getDefaultStack(), 0);
                 break;
             case 3:
-                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_HELMET.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_HORSE_ARMOR.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_CHESTPLATE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_LEGGINGS.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.DIAMOND_BOOTS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.DIAMOND_HELMET.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.DIAMOND_HORSE_ARMOR.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.DIAMOND_CHESTPLATE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.DIAMOND_LEGGINGS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.DIAMOND_BOOTS.getDefaultStack(), 0);
                 break;
             case 4:
-                this.dropStack((ServerWorld) this.getWorld(), Items.CHAINMAIL_HELMET.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.CHAINMAIL_CHESTPLATE.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.CHAINMAIL_LEGGINGS.getDefaultStack(), 0);
-                this.dropStack((ServerWorld) this.getWorld(), Items.CHAINMAIL_BOOTS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.CHAINMAIL_HELMET.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.CHAINMAIL_CHESTPLATE.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.CHAINMAIL_LEGGINGS.getDefaultStack(), 0);
+                this.dropStack((ServerWorld) this.getEntityWorld(), Items.CHAINMAIL_BOOTS.getDefaultStack(), 0);
                 break;
         }
     }
 
     private void fragile(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
-        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
+        ((ServerWorld) this.getEntityWorld()).spawnParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
             StatusEffectInstance effect = new StatusEffectInstance(ModEffects.FRAGILE, 6000, 0);
@@ -1134,12 +1134,12 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void counterBlinking(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
+        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
         if (entities.isEmpty() && this.getOwner() != null) {
             entities.add((LivingEntity) this.getOwner());
         }
 
-        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_COUNTER_BLINK_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        ((ServerWorld) this.getEntityWorld()).spawnParticles(ModParticles.CHAOS_ORB_COUNTER_BLINK_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
             StatusEffectInstance effect = new StatusEffectInstance(ModEffects.COUNTER_BLINK, 9600, 0);
@@ -1150,11 +1150,11 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void blinking(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(8.0, 4.0, 8.0));
+        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(8.0, 4.0, 8.0));
         if (entities.isEmpty() && this.getOwner() != null) {
             entities.add((LivingEntity) this.getOwner());
         }
-        ((ServerWorld) this.getWorld()).spawnParticles(ModParticles.CHAOS_ORB_BLINKING_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        ((ServerWorld) this.getEntityWorld()).spawnParticles(ModParticles.CHAOS_ORB_BLINKING_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
             StatusEffectInstance effect = new StatusEffectInstance(ModEffects.BLINKING, 1200, 0);
@@ -1274,10 +1274,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
             ItemStack newEgg = spawnEggs.get(nextEgg);
             newEgg.setCount(1);
-            this.dropStack((ServerWorld) this.getWorld(), newEgg, 0);
+            this.dropStack((ServerWorld) this.getEntityWorld(), newEgg, 0);
         }
 
-        this.dropStack((ServerWorld) this.getWorld(), reward, 0);
+        this.dropStack((ServerWorld) this.getEntityWorld(), reward, 0);
     }
 
 //    private void giveRole(HitResult hitResult) {

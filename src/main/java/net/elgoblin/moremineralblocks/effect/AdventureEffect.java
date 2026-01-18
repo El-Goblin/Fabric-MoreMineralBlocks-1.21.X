@@ -32,14 +32,16 @@ public class AdventureEffect extends StatusEffect {
 
     @Override
     public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
-        if (!entity.getWorld().isClient) {
+        if (!entity.getEntityWorld().isClient()) {
             counter = counter+1;
             if (entity.isPlayer()) {
-                MinecraftServer server = entity.getServer();
-                List<ServerPlayerEntity> list = server.getPlayerManager().getPlayerList();
-                if (!list.isEmpty()) {
-                    ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)list.get(0);
-                    serverPlayerEntity.changeGameMode(GameMode.ADVENTURE);
+                MinecraftServer server = entity.getEntityWorld().getServer();
+                if (server != null) {
+                    List<ServerPlayerEntity> list = server.getPlayerManager().getPlayerList();
+                    if (!list.isEmpty()) {
+                        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)list.get(0);
+                        serverPlayerEntity.changeGameMode(GameMode.ADVENTURE);
+                    }
                 }
             }
             if (counter % 100 == 0) {

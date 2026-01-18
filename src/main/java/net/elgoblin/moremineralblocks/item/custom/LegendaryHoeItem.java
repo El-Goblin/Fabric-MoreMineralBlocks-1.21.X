@@ -73,7 +73,7 @@ public class LegendaryHoeItem extends HoeItem {
             if (predicate.test(context)) {
                 PlayerEntity playerEntity = context.getPlayer();
                 world.playSound(playerEntity, blockPos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                if (!world.isClient) {
+                if (!world.isClient()) {
                     consumer.accept(context);
                 }
 

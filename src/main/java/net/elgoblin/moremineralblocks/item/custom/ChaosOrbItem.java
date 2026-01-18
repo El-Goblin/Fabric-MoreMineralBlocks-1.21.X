@@ -43,7 +43,7 @@ public class ChaosOrbItem extends SnowballItem {
                 0.5F,
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
         );
-        if (!world.isClient) {
+        if (!world.isClient()) {
 
             ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(world, user, user.getStackInHand(hand));
             chaosOrbEntity.setItem(itemStack);

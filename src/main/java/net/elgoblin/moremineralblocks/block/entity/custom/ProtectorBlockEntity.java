@@ -21,7 +21,7 @@ public class ProtectorBlockEntity extends BlockEntity {
     public void setWorld(World world) {
         super.setWorld(world);
 
-        if (!world.isClient && !hasBeenRegistered) {
+        if (!world.isClient() && !hasBeenRegistered) {
             MinecraftServer server = world.getServer();
             if (server != null) {
 //                ProtectorManager protectorManager = ProtectorManager.getProtectorManager(server);
@@ -35,7 +35,7 @@ public class ProtectorBlockEntity extends BlockEntity {
 
     @Override
     public void markRemoved() {
-        if (world != null && !world.isClient && hasBeenRegistered) {
+        if (world != null && !world.isClient() && hasBeenRegistered) {
             MinecraftServer server = world.getServer();
             if (server != null) {
 //                ProtectorManager protectorManager = ProtectorManager.getProtectorManager(server);

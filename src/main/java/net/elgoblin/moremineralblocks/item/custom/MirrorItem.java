@@ -26,7 +26,7 @@ public class MirrorItem extends Item {
 
         ItemStack itemStack = user.getStackInHand(hand);
 
-        if (!world.isClient) {
+        if (!world.isClient()) {
             MinecraftServer server = world.getServer();
 
             if (server != null) {

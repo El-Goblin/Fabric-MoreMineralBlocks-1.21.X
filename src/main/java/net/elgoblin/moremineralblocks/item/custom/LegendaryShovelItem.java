@@ -54,7 +54,7 @@ public class LegendaryShovelItem extends ShovelItem {
             }
 
             if (blockState3 != null) {
-                if (!world.isClient) {
+                if (!world.isClient()) {
                     world.setBlockState(blockPos, blockState3, Block.NOTIFY_ALL_AND_REDRAW);
                     world.emitGameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Emitter.of(playerEntity, blockState3));
                 }

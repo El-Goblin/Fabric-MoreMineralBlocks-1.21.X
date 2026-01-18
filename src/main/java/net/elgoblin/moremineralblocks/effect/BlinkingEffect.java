@@ -23,7 +23,7 @@ public class BlinkingEffect extends StatusEffect {
 
     @Override
     public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             for (int i = 0; i < 16; i++) {
                 double d = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * 16.0;
                 double e = MathHelper.clamp(
@@ -34,7 +34,7 @@ public class BlinkingEffect extends StatusEffect {
                     entity.stopRiding();
                 }
 
-                Vec3d vec3d = entity.getPos();
+                Vec3d vec3d = entity.getEntityPos();
                 if (entity.teleport(d, e, f, true)) {
                     world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(entity));
                     SoundCategory soundCategory;

@@ -53,7 +53,7 @@ public class LongSwordItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             boolean inMainHand = ((PlayerEntity) entity).getMainHandStack() == stack;
             boolean offHandFree = ((PlayerEntity) entity).getOffHandStack().isEmpty();
 

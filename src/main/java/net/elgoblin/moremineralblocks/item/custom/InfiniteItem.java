@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 
 public class InfiniteItem extends SpawnEggItem {
     public InfiniteItem(EntityType<? extends MobEntity> type, int primaryColor, int secondaryColor, Settings settings) {
-        super(type, settings);
+        super(settings.spawnEgg(type));
     }
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
@@ -126,7 +126,7 @@ public class InfiniteItem extends SpawnEggItem {
         if (hasBeenUsed(stack)) {
             ItemStack chosen = stack.get(ModDataComponentTypes.CHOSEN_INFINITE_ITEM);
             if (chosen != null && chosen.getItem() instanceof SpawnEggItem) {
-                if (!((SpawnEggItem) chosen.getItem()).isOfSameEntityType(world.getRegistryManager(), chosen, entityType)) {
+                if (!((SpawnEggItem) chosen.getItem()).isOfSameEntityType(chosen, entityType)) {
                     return Optional.empty();
                 } else {
                     MobEntity mobEntity;
