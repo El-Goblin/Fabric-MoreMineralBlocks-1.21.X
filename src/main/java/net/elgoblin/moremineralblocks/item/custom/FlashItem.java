@@ -33,7 +33,7 @@ public class FlashItem extends Item {
             user.setBodyYaw(previousBodyYaw);
             user.setHeadYaw(previousHeadYaw);
 
-            user.velocityModified = true;
+            user.velocityDirty = true;
 
             user.fallDistance = 0;
         }
