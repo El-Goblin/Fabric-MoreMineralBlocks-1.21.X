@@ -3,19 +3,18 @@ package net.elgoblin.moremineralblocks.item.custom;
 import com.google.common.collect.BiMap;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Oxidizable;
-import net.minecraft.block.PillarBlock;
+import net.minecraft.block.*;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.ToolComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.*;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -32,33 +31,12 @@ public class LegendaryAxeItem extends AxeItem {
         super(material, attackDamage, attackSpeed, settings);
     }
 
-    // Con esto hago que no pierda durabilidad al atacar cosas
-    @Override
-    public void postDamageEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    }
-
-    @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-
-        ItemEnchantmentsComponent oldEnchantments = itemStack.get(DataComponentTypes.ENCHANTMENTS);
-        ItemEnchantmentsComponent oldStoredEnchantments = itemStack.get(DataComponentTypes.STORED_ENCHANTMENTS);
-
-        ItemEnchantmentsComponent newEnchantments = itemStack.get(ModDataComponentTypes.OTHER_ENCHANTMENTS);
-        ItemEnchantmentsComponent newStoredEnchantments = itemStack.get(ModDataComponentTypes.OTHER_STORED_ENCHANTMENTS);
-
-        itemStack.set(DataComponentTypes.ENCHANTMENTS, newEnchantments);
-        itemStack.set(DataComponentTypes.STORED_ENCHANTMENTS, newStoredEnchantments);
-
-        if (newEnchantments == null) {
-            itemStack.set(DataComponentTypes.STORED_ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT);
-            itemStack.set(DataComponentTypes.ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT);
-        }
-        itemStack.set(ModDataComponentTypes.OTHER_ENCHANTMENTS, oldEnchantments);
-        itemStack.set(ModDataComponentTypes.OTHER_STORED_ENCHANTMENTS, oldStoredEnchantments);
-
-        return ActionResult.PASS;
-    }
+//    // Con esto hago que no pierda durabilidad al atacar cosas
+//    @Override
+//    public void postDamageEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+//        stack.setDamage(0);
+////        super.postDamageEntity(stack, target, attacker);
+//    }
 
     protected static boolean shouldCancelStripAttempt(ItemUsageContext context) {
         PlayerEntity playerEntity = context.getPlayer();
@@ -100,6 +78,20 @@ public class LegendaryAxeItem extends AxeItem {
         World world = context.getWorld();
         BlockPos blockPos = context.getBlockPos();
         PlayerEntity playerEntity = context.getPlayer();
+
+        BlockPos position = context.getBlockPos();
+        if (!context.getWorld().isClient()) {
+            if (context.getWorld().getBlockEntity(position) instanceof Inventory inventory) {
+                context.getStack().set(ModDataComponentTypes.LINKED_CHEST, position);
+                if (context.getPlayer() != null) {
+                    context.getPlayer().sendMessage(Text.of(position.toString()), false);
+                }
+            }
+        }
+        if (context.getWorld().getBlockEntity(position) instanceof Inventory inventory) {
+            return ActionResult.SUCCESS;
+        }
+
         if (shouldCancelStripAttempt(context)) {
             return ActionResult.PASS;
         } else {
@@ -125,4 +117,10 @@ public class LegendaryAxeItem extends AxeItem {
         ToolComponent toolComponent = stack.get(DataComponentTypes.TOOL);
         return toolComponent != null;
     }
+
+//    @Override
+//    public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+//        stack.setDamage(0);
+////        super.postHit(stack, target, attacker);
+//    }
 }

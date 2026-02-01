@@ -361,7 +361,12 @@
 
   "entity.moremineralblocks.chaos_orb": "Chaos Orb",
 
-  "itemgroup.moremineralblocks.mod_blocks": "More Mineral Blocks"
+  "itemgroup.moremineralblocks.mod_blocks": "More Mineral Blocks",
+
+
+  "key.category.moremineralblocks.legendary_tools": "Legendary Tools",
+  "key.moremineralblocks.switch_enchantments": "Switch Enchantments",
+  "enchantment.moremineralblocks.linker": "Linker"
 
 
 }

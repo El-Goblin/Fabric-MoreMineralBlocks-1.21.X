@@ -15,6 +15,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.Unit;
 
 import static net.minecraft.item.Items.BUCKET;
 
@@ -24,32 +25,32 @@ public class ModItems {
             "legendary_pickaxe",
             new LegendaryPickaxeItem(new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_pickaxe")))
-                    .fireproof().rarity(Rarity.EPIC),
+                    .fireproof().rarity(Rarity.EPIC).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE),
                     ModToolMaterials.LEGENDARY, 1.0F, -2.8F)
     );
     public static final Item LEGENDARY_SHOVEL = registerItem(
             "legendary_shovel",
             new LegendaryShovelItem(ModToolMaterials.LEGENDARY, 1.0F, -2.8F, new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_shovel")))
-                    .fireproof().rarity(Rarity.EPIC))
+                    .fireproof().rarity(Rarity.EPIC).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE))
     );
     public static final Item LEGENDARY_AXE = registerItem(
             "legendary_axe",
             new LegendaryAxeItem(ModToolMaterials.LEGENDARY, 5.0F, -2.6F, new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_axe")))
-                    .fireproof().rarity(Rarity.EPIC))
+                    .fireproof().rarity(Rarity.EPIC).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE))
     );
     public static final Item LEGENDARY_HOE = registerItem(
             "legendary_hoe",
             new LegendaryHoeItem(ModToolMaterials.LEGENDARY, 1.0F, -2.8F, new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_hoe")))
-                    .fireproof().rarity(Rarity.EPIC))
+                    .fireproof().rarity(Rarity.EPIC).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE))
     );
     public static final Item LEGENDARY_SWORD = registerItem(
             "legendary_sword",
             new LegendarySwordItem(new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_sword")))
-                    .fireproof().rarity(Rarity.EPIC),
+                    .fireproof().rarity(Rarity.EPIC).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE),
                     ModToolMaterials.LEGENDARY, 9.0F, -2.0F)
     );
     public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings()
@@ -114,7 +115,7 @@ public class ModItems {
             "legendary_longsword",
             new LegendaryLongSwordItem(new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_longsword")))
-                    .fireproof().rarity(Rarity.EPIC),
+                    .fireproof().rarity(Rarity.EPIC).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE),
             ModToolMaterials.LEGENDARY, 11.0F, -2.4F, 1, 5
     ));
 
@@ -133,7 +134,7 @@ public class ModItems {
 
     public static final Item CHAOS_ORB = registerItem("chaos_orb", new ChaosOrbItem(new Item.Settings()
             .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "chaos_orb")))));
-    public static final Item FLASH = registerItem("flash", new FlashItem(new Item.Settings()
+    public static final Item FLASH = registerItem("flash", new FlashItem(new Item.Settings().maxCount(1)
             .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "flash")))));
 
     public static final Item LA_LECHONA = registerItem("la_lechona", new Item(new Item.Settings()

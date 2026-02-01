@@ -3,15 +3,18 @@ package net.elgoblin.moremineralblocks.item.custom;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.ToolComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.*;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -35,6 +38,19 @@ public class LegendaryShovelItem extends ShovelItem {
         World world = context.getWorld();
         BlockPos blockPos = context.getBlockPos();
         BlockState blockState = world.getBlockState(blockPos);
+
+        if (!context.getWorld().isClient()) {
+            if (context.getWorld().getBlockEntity(blockPos) instanceof Inventory inventory) {
+                context.getStack().set(ModDataComponentTypes.LINKED_CHEST, blockPos);
+                if (context.getPlayer() != null) {
+                    context.getPlayer().sendMessage(Text.of(blockPos.toString()), false);
+                }
+            }
+        }
+        if (context.getWorld().getBlockEntity(blockPos) instanceof Inventory inventory) {
+            return ActionResult.SUCCESS;
+        }
+
         if (context.getSide() == Direction.DOWN) {
             return ActionResult.PASS;
         } else {
@@ -65,31 +81,6 @@ public class LegendaryShovelItem extends ShovelItem {
             }
         }
     }
-
-    @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-
-        ItemEnchantmentsComponent oldEnchantments = itemStack.get(DataComponentTypes.ENCHANTMENTS);
-        ItemEnchantmentsComponent oldStoredEnchantments = itemStack.get(DataComponentTypes.STORED_ENCHANTMENTS);
-
-        ItemEnchantmentsComponent newEnchantments = itemStack.get(ModDataComponentTypes.OTHER_ENCHANTMENTS);
-        ItemEnchantmentsComponent newStoredEnchantments = itemStack.get(ModDataComponentTypes.OTHER_STORED_ENCHANTMENTS);
-
-        itemStack.set(DataComponentTypes.ENCHANTMENTS, newEnchantments);
-        itemStack.set(DataComponentTypes.STORED_ENCHANTMENTS, newStoredEnchantments);
-
-        if (newEnchantments == null) {
-            itemStack.set(DataComponentTypes.STORED_ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT);
-            itemStack.set(DataComponentTypes.ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT);
-        }
-        itemStack.set(ModDataComponentTypes.OTHER_ENCHANTMENTS, oldEnchantments);
-        itemStack.set(ModDataComponentTypes.OTHER_STORED_ENCHANTMENTS, oldStoredEnchantments);
-
-        return ActionResult.PASS;
-    }
-
-
 
     // Al overridear esto y sacarle la parte de
     @Override

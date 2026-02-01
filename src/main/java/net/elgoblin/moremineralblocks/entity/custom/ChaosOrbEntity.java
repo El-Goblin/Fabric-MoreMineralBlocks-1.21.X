@@ -20,6 +20,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.SuspiciousStewEffectsComponent;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -44,6 +45,7 @@ import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
@@ -89,42 +91,42 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     private List<Consumer<HitResult>> pointChaosEffects = new ArrayList<>(List.of(
             this::spawnMobPack,
             this::getMythicItem,
-            this::spawnSkeletonHorse,
+//            this::spawnSkeletonHorse,
 //            this::breakGameProgression,
-            this::getArmorSet,
-            this::getToolsSet,
+//            this::getArmorSet,
+//            this::getToolsSet,
             this::spawn5ChaosOrbs,
             this::voidSphere,
-            this::explosion,
-            this::fireExplosion,
+//            this::explosion, // Ponerle timer
+//            this::fireExplosion, // Ponerle timer
             this::getFood,
-            this::getEnchantedBook,
-            this::smallPrize,
-            this::xp,
-            this::getInfiniteItem
+//            this::getEnchantedBook,
+            this::smallPrize
+//            this::xp
+//            this::getInfiniteItem
     ));
     private List<BiConsumer<HitResult, Box>> areaChaosEffects = new ArrayList<>(List.of(
             this::applyBeaconEffect
     ));
     private List<BiConsumer<HitResult, Box>> selfAreaChaosEffects = new ArrayList<>(List.of(
-            this::increaseInteractionRange,
-            this::fragile
+            this::increaseInteractionRange
+//            this::fragile
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
 //            this::crash
     ));
     private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
-            this::beginThunderstorm,
+//            this::beginThunderstorm,
             this::randomizePlayersPositions
 //            this::createSkyblock
             // Skyblock se va a ir agregando en cada llamado hasta que salga una vez.
     ));
     private List<BiConsumer<HitResult, Box>> targetsOrSelfChaosEffects = new ArrayList<>(List.of(
-            this::counterBlinking,
-//            this::adventureGamemode
-//            this::onanaHands,
-            this::blinking,
-            this::moveXBlocks,
+//            this::counterBlinking,
+////            this::adventureGamemode
+////            this::onanaHands,
+//            this::blinking,
+//            this::moveXBlocks,
             this::changeScale
     ));
 
@@ -463,7 +465,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         for (LivingEntity entity : entities) {
             if (entity instanceof PlayerEntity player) {
-                player.sendMessage(Text.of("+1"), true);
+                player.sendMessage(Text.of("+1"), false);
 
                 Identifier entityInteractionRangeModifierID = Identifier.of(MoreMineralBlocks.MOD_ID + ":entity_interaction_range_modifier");
                 Identifier blockInteractionRangeModifierID = Identifier.of(MoreMineralBlocks.MOD_ID + ":block_interaction_range_modifier");
@@ -530,8 +532,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     private static final List<ScalePack> scalePacks = new ArrayList<ScalePack>(List.of(
             new ScalePack(0.25,10, 0.6, 2, 0.08, 0.4, 3.5, 2.5, 1),
             new ScalePack(0.5, 16, 0.6, 2.5, 0.09, 0.42, 4, 3, 1),
-            new ScalePack(1.5, 24, 1, 4.5,  0.125, 0.525, 5, 4, 2),
-            new ScalePack(2, 30, 1, 6,  0.15, 0.63, 6.5, 4.5, 2)));
+            new ScalePack(1.5, 24, 1.126, 4.5,  0.125, 0.52, 5, 4, 2),
+            new ScalePack(2, 30, 1.126, 6,  0.15, 0.62, 6.5, 4.5, 2)));
 
     private void applyAttributeChange(RegistryEntry<EntityAttribute> attribute, double value, LivingEntity player) {
         EntityAttributeInstance currentStat = player.getAttributeInstance(attribute);
@@ -545,7 +547,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
         ScalePack chosenPack = scalePacks.get(random.nextInt(scalePacks.size()));
 
-        if (entities.isEmpty() && this.getOwner() != null) {
+        if (this.getOwner() != null && entities.contains((LivingEntity) this.getOwner())) {
             entities.add((LivingEntity) this.getOwner());
         }
 
@@ -593,9 +595,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                 entity.teleportTo(teleportTarget);
                 if (entity instanceof PlayerEntity player) {
                     if (goDown) {
-                        player.sendMessage(Text.of("-20"), true);
+                        player.sendMessage(Text.of("-20"), false);
                     } else {
-                        player.sendMessage(Text.of("+20"), true);
+                        player.sendMessage(Text.of("+20"), false);
                     }
                 }
             }
@@ -708,7 +710,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //            infiniteItem.set(DataComponentTypes.FOOD ,chosenItem.getComponents().get(DataComponentTypes.FOOD));
 //        }
         if (this.getOwner() != null && this.getOwner() instanceof PlayerEntity player) {
-            player.sendMessage(Text.of(chosenItem.getName()), true);
+            player.sendMessage(Text.of(chosenItem.getName()), false);
         }
         infiniteItem.set(ModDataComponentTypes.CHOSEN_INFINITE_ITEM, chosenItem.getDefaultStack());
         this.dropStack((ServerWorld) this.getEntityWorld(), infiniteItem, 0);
@@ -762,89 +764,73 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         this.dropStack((ServerWorld) this.getEntityWorld(), reward, 0);
     }
 
-//    private void breakGameProgression(HitResult hitResult) {
-//        List<ItemStack> rareItems = new ArrayList<>();
-//        rareItems.add(Items.ELYTRA.getDefaultStack());
-//        rareItems.add(Items.MACE.getDefaultStack());
-//        rareItems.add(Items.DRAGON_EGG.getDefaultStack());
-//        rareItems.add(Items.BEACON.getDefaultStack());
-//        rareItems.add(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE.getDefaultStack());
-//        rareItems.add(Items.TOTEM_OF_UNDYING.getDefaultStack());
-//        rareItems.add(Items.TRIDENT.getDefaultStack());
-//        rareItems.add(Items.SHULKER_BOX.getDefaultStack());
-//        rareItems.add(ModBlocks.PROTECTOR_BLOCK.asItem().getDefaultStack());
-//
-//        ItemStack mendingBook = Items.ENCHANTED_BOOK.getDefaultStack();
-//
-//        mendingEntry = this.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOr(Enchantments.MENDING);
-//        mendingBook.set(DataComponentTypes.STORED_ENCHANTMENTS,
-//                new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT)
-//                        .add(mendingEntry, 1);
-//
-//
-//        RegistryEntry<Enchantment> mendingEntry =
-//                this.getEntityWorld().getRegistryManager()
-//                        .getOrThrow(RegistryKeys.ENCHANTMENT)
-//                        .getEntry(Enchantments.MENDING)
-//                        .orElseThrow();
-//        mendingBook.addEnchantment(mendingEntry, 1);
-//        rareItems.add(mendingBook);
-//
-//        ItemStack fortuneBook = Items.ENCHANTED_BOOK.getDefaultStack();
-//        RegistryEntry<Enchantment> fortuneEntry =
-//                this.getEntityWorld().getRegistryManager()
-//                        .get(RegistryKeys.ENCHANTMENT)
-//                        .getEntry(Enchantments.FORTUNE)
-//                        .orElseThrow();
-//        fortuneBook.addEnchantment(fortuneEntry, 3);
-//        rareItems.add(fortuneBook);
-//
-//        ItemStack lootingBook = Items.ENCHANTED_BOOK.getDefaultStack();
-//        RegistryEntry<Enchantment> lootingEntry =
-//                this.getEntityWorld().getRegistryManager()
-//                        .get(RegistryKeys.ENCHANTMENT)
-//                        .getEntry(Enchantments.LOOTING)
-//                        .orElseThrow();
-//        lootingBook.addEnchantment(lootingEntry, 3);
-//        rareItems.add(lootingBook);
-//
-//        ItemStack diamonds = Items.DIAMOND.getDefaultStack();
-//        diamonds.setCount(32);
-//        rareItems.add(diamonds);
-//
-//        ItemStack goldenCarrots = Items.GOLDEN_CARROT.getDefaultStack();
-//        goldenCarrots.setCount(64);
-//        rareItems.add(goldenCarrots);
-//
-//        ItemStack netherite = Items.NETHERITE_INGOT.getDefaultStack();
-//        netherite.setCount(2);
-//        rareItems.add(netherite);
-//
-//        ItemStack bookshelves = Items.BOOKSHELF.getDefaultStack();
-//        bookshelves.setCount(15);
-//        rareItems.add(bookshelves);
-//
-//        ItemStack goldenApples = Items.ENCHANTED_GOLDEN_APPLE.getDefaultStack();
-//        goldenApples.setCount(8);
-//        rareItems.add(goldenApples);
-//
-//        ItemStack sponges = Items.SPONGE.getDefaultStack();
-//        sponges.setCount(64);
-//        rareItems.add(sponges);
-//
-//        ItemStack iron_blocks = Items.IRON_BLOCK.getDefaultStack();
-//        iron_blocks.setCount(16);
-//        rareItems.add(iron_blocks);
-//
-//        int nextItem = this.random.nextBetween(0, (int) rareItems.size()-1);
-//        ItemStack reward = rareItems.get(nextItem);
-//
-//        if (reward.getItem() == Items.BOOKSHELF) {
-//            this.dropStack((ServerWorld) this.getEntityWorld(), Items.ENCHANTING_TABLE.getDefaultStack(), 0);
-//        }
-//
-//        this.dropStack((ServerWorld) this.getEntityWorld(), reward, 0);
-//    }
+    private void breakGameProgression(HitResult hitResult) {
+        List<ItemStack> rareItems = new ArrayList<>();
+        rareItems.add(Items.ELYTRA.getDefaultStack());
+        rareItems.add(Items.MACE.getDefaultStack());
+        rareItems.add(Items.DRAGON_EGG.getDefaultStack());
+        rareItems.add(Items.BEACON.getDefaultStack());
+        rareItems.add(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE.getDefaultStack());
+        rareItems.add(Items.TOTEM_OF_UNDYING.getDefaultStack());
+        rareItems.add(Items.TRIDENT.getDefaultStack());
+        rareItems.add(Items.SHULKER_BOX.getDefaultStack());
+        rareItems.add(ModBlocks.PROTECTOR_BLOCK.asItem().getDefaultStack());
+
+        RegistryEntryLookup<Enchantment> enchantments = this.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+
+        ItemStack mendingBook = Items.ENCHANTED_BOOK.getDefaultStack();
+        RegistryEntry<Enchantment> mendingEntry = enchantments.getOrThrow(Enchantments.MENDING);
+        mendingBook.addEnchantment(mendingEntry, 1);
+        rareItems.add(mendingBook);
+
+        ItemStack fortuneBook = Items.ENCHANTED_BOOK.getDefaultStack();
+        RegistryEntry<Enchantment> fortuneEntry = enchantments.getOrThrow(Enchantments.FORTUNE);
+        fortuneBook.addEnchantment(fortuneEntry, 3);
+        rareItems.add(fortuneBook);
+
+        ItemStack lootingBook = Items.ENCHANTED_BOOK.getDefaultStack();
+        RegistryEntry<Enchantment> lootingEntry = enchantments.getOrThrow(Enchantments.LOOTING);
+        lootingBook.addEnchantment(lootingEntry, 3);
+        rareItems.add(lootingBook);
+
+
+        ItemStack diamonds = Items.DIAMOND.getDefaultStack();
+        diamonds.setCount(32);
+        rareItems.add(diamonds);
+
+        ItemStack goldenCarrots = Items.GOLDEN_CARROT.getDefaultStack();
+        goldenCarrots.setCount(64);
+        rareItems.add(goldenCarrots);
+
+        ItemStack netherite = Items.NETHERITE_INGOT.getDefaultStack();
+        netherite.setCount(2);
+        rareItems.add(netherite);
+
+        ItemStack bookshelves = Items.BOOKSHELF.getDefaultStack();
+        bookshelves.setCount(15);
+        rareItems.add(bookshelves);
+
+        ItemStack goldenApples = Items.ENCHANTED_GOLDEN_APPLE.getDefaultStack();
+        goldenApples.setCount(8);
+        rareItems.add(goldenApples);
+
+        ItemStack sponges = Items.SPONGE.getDefaultStack();
+        sponges.setCount(64);
+        rareItems.add(sponges);
+
+        ItemStack iron_blocks = Items.IRON_BLOCK.getDefaultStack();
+        iron_blocks.setCount(16);
+        rareItems.add(iron_blocks);
+
+        int nextItem = this.random.nextBetween(0, (int) rareItems.size()-1);
+        ItemStack reward = rareItems.get(nextItem);
+
+        if (reward.getItem() == Items.BOOKSHELF) {
+            this.dropStack((ServerWorld) this.getEntityWorld(), Items.ENCHANTING_TABLE.getDefaultStack(), 0);
+        }
+
+        this.dropStack((ServerWorld) this.getEntityWorld(), reward, 0);
+    }
 
     private void explosion(HitResult hitResult) {
         int kase = random.nextBetween(1, 20);
@@ -1239,21 +1225,21 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         reinforcedDeepslate.setCount(64);
         mythicItems.add(reinforcedDeepslate);
 
-        ItemStack endPortalFrame = Items.END_PORTAL_FRAME.getDefaultStack();
-        endPortalFrame.setCount(12);
-        mythicItems.add(endPortalFrame);
+//        ItemStack endPortalFrame = Items.END_PORTAL_FRAME.getDefaultStack();
+//        endPortalFrame.setCount(12);
+//        mythicItems.add(endPortalFrame);
 
         ItemStack buddingAmethyst = Items.BUDDING_AMETHYST.getDefaultStack();
-        buddingAmethyst.setCount(64);
+        buddingAmethyst.setCount(8);
         mythicItems.add(buddingAmethyst);
 
-        ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
-        mythicItems.add(trialSpawner);
+//        ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
+//        mythicItems.add(trialSpawner);
+//
+//        ItemStack spawner = Items.SPAWNER.getDefaultStack();
+//        mythicItems.add(spawner);
 
-        ItemStack spawner = Items.SPAWNER.getDefaultStack();
-        mythicItems.add(spawner);
-
-        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
+//        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
 
         mythicItems.add(ModItems.LEGENDARY_PICKAXE.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_SHOVEL.getDefaultStack());
@@ -1268,14 +1254,14 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);
         ItemStack reward = mythicItems.get(nextItem);
 
-        int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
-        mythicItems.add(spawnEggs.get(nextEgg));
-
-        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
-            ItemStack newEgg = spawnEggs.get(nextEgg);
-            newEgg.setCount(1);
-            this.dropStack((ServerWorld) this.getEntityWorld(), newEgg, 0);
-        }
+//        int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
+//        mythicItems.add(spawnEggs.get(nextEgg));
+//
+//        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
+//            ItemStack newEgg = spawnEggs.get(nextEgg);
+//            newEgg.setCount(1);
+//            this.dropStack((ServerWorld) this.getEntityWorld(), newEgg, 0);
+//        }
 
         this.dropStack((ServerWorld) this.getEntityWorld(), reward, 0);
     }

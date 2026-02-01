@@ -54,20 +54,22 @@ public class LongSwordItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
         if (!world.isClient()) {
-            boolean inMainHand = ((PlayerEntity) entity).getMainHandStack() == stack;
-            boolean offHandFree = ((PlayerEntity) entity).getOffHandStack().isEmpty();
+            if (entity instanceof PlayerEntity) {
+                boolean inMainHand = ((PlayerEntity) entity).getMainHandStack() == stack;
+                boolean offHandFree = ((PlayerEntity) entity).getOffHandStack().isEmpty();
 
-            EntityAttributeInstance attackSpeed = ((PlayerEntity) entity).getAttributeInstance(EntityAttributes.ATTACK_SPEED);
+                EntityAttributeInstance attackSpeed = ((PlayerEntity) entity).getAttributeInstance(EntityAttributes.ATTACK_SPEED);
 
-            if (inMainHand && !offHandFree) {
+                if (inMainHand && !offHandFree) {
 
-                if (attackSpeed != null && !attackSpeed.hasModifier(nonFreeOffHandPenalty)) {
-                    attackSpeed.addTemporaryModifier(new EntityAttributeModifier(nonFreeOffHandPenalty, -0.6f, EntityAttributeModifier.Operation.ADD_VALUE));
+                    if (attackSpeed != null && !attackSpeed.hasModifier(nonFreeOffHandPenalty)) {
+                        attackSpeed.addTemporaryModifier(new EntityAttributeModifier(nonFreeOffHandPenalty, -0.6f, EntityAttributeModifier.Operation.ADD_VALUE));
+                    }
                 }
-            }
-            else {
-                if (attackSpeed != null && attackSpeed.hasModifier(nonFreeOffHandPenalty)) {
-                    attackSpeed.removeModifier(nonFreeOffHandPenalty);
+                else {
+                    if (attackSpeed != null && attackSpeed.hasModifier(nonFreeOffHandPenalty)) {
+                        attackSpeed.removeModifier(nonFreeOffHandPenalty);
+                    }
                 }
             }
         }

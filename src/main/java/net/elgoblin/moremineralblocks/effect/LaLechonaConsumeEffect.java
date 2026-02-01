@@ -21,6 +21,7 @@ public record LaLechonaConsumeEffect() implements ConsumeEffect {
 
     @Override
     public boolean onConsume(World world, ItemStack stack, LivingEntity user) {
+        applyAttributeChange(EntityAttributes.SCALE, 1, user);
         applyAttributeChange(EntityAttributes.MAX_HEALTH, 20, user);
         applyAttributeChange(EntityAttributes.STEP_HEIGHT, 0.6, user);
         applyAttributeChange(EntityAttributes.SAFE_FALL_DISTANCE, 3, user);

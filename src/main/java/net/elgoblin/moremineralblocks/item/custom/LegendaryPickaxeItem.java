@@ -1,13 +1,17 @@
 package net.elgoblin.moremineralblocks.item.custom;
 
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.ToolComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.*;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -23,8 +27,26 @@ public class LegendaryPickaxeItem extends Item{
     public void postDamageEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     }
 
-//    public TypedActionResult<ItemStack> advanceEnchantments(PlayerEntity user) {
-//        ItemStack itemStack = user.getMainHandStack();
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        BlockPos position = context.getBlockPos();
+        if (!context.getWorld().isClient()) {
+            if (context.getWorld().getBlockEntity(position) instanceof Inventory inventory) {
+                context.getStack().set(ModDataComponentTypes.LINKED_CHEST, position);
+                if (context.getPlayer() != null) {
+                    context.getPlayer().sendMessage(Text.of(position.toString()), false);
+                }
+            }
+        }
+        if (context.getWorld().getBlockEntity(position) instanceof Inventory inventory) {
+            return ActionResult.SUCCESS;
+        }
+        return super.useOnBlock(context);
+    }
+
+    //    @Override
+//    public ActionResult use(World world, PlayerEntity user, Hand hand) {
+//        ItemStack itemStack = user.getStackInHand(hand);
 //
 //        ItemEnchantmentsComponent oldEnchantments = itemStack.get(DataComponentTypes.ENCHANTMENTS);
 //        ItemEnchantmentsComponent oldStoredEnchantments = itemStack.get(DataComponentTypes.STORED_ENCHANTMENTS);
@@ -42,32 +64,8 @@ public class LegendaryPickaxeItem extends Item{
 //        itemStack.set(ModDataComponentTypes.OTHER_ENCHANTMENTS, oldEnchantments);
 //        itemStack.set(ModDataComponentTypes.OTHER_STORED_ENCHANTMENTS, oldStoredEnchantments);
 //
-//        return TypedActionResult.pass(user.getMainHandStack());
+//        return ActionResult.PASS;
 //    }
-
-
-    @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-
-        ItemEnchantmentsComponent oldEnchantments = itemStack.get(DataComponentTypes.ENCHANTMENTS);
-        ItemEnchantmentsComponent oldStoredEnchantments = itemStack.get(DataComponentTypes.STORED_ENCHANTMENTS);
-
-        ItemEnchantmentsComponent newEnchantments = itemStack.get(ModDataComponentTypes.OTHER_ENCHANTMENTS);
-        ItemEnchantmentsComponent newStoredEnchantments = itemStack.get(ModDataComponentTypes.OTHER_STORED_ENCHANTMENTS);
-
-        itemStack.set(DataComponentTypes.ENCHANTMENTS, newEnchantments);
-        itemStack.set(DataComponentTypes.STORED_ENCHANTMENTS, newStoredEnchantments);
-
-        if (newEnchantments == null) {
-            itemStack.set(DataComponentTypes.STORED_ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT);
-            itemStack.set(DataComponentTypes.ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT);
-        }
-        itemStack.set(ModDataComponentTypes.OTHER_ENCHANTMENTS, oldEnchantments);
-        itemStack.set(ModDataComponentTypes.OTHER_STORED_ENCHANTMENTS, oldStoredEnchantments);
-
-        return ActionResult.PASS;
-    }
 
 
 

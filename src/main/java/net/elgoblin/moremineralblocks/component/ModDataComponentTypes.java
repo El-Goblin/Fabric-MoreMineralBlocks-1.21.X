@@ -32,7 +32,11 @@ public class ModDataComponentTypes {
     public static final ComponentType<ItemEnchantmentsComponent> OTHER_ENCHANTMENTS = register(
             "other_enchantments", builder -> builder.codec(ItemEnchantmentsComponent.CODEC).packetCodec(ItemEnchantmentsComponent.PACKET_CODEC).cache()
     );
+    public static final ComponentType<String> ENCHANTMENT_SET = register("enchantment_set", builder -> builder.codec(Codec.STRING));
 
+
+    public static final ComponentType<BlockPos> LINKED_CHEST = register("linked_chest", builder -> builder.codec(BlockPos.CODEC));
+    public static final ComponentType<BlockPos> OTHER_LINKED_CHEST = register("other_linked_chest", builder -> builder.codec(BlockPos.CODEC));
     public static final ComponentType<Vec3d> COORDINATES = register("coordinates", builder -> builder.codec(Vec3d.CODEC));
     public static final ComponentType<Identifier> SERVERWORLD = register("server_id", builder -> builder.codec(Identifier.CODEC));
 

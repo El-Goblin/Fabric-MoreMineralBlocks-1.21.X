@@ -8,11 +8,14 @@ import net.elgoblin.moremineralblocks.entity.ModEntities;
 //import net.elgoblin.moremineralblocks.entity.client.MantisRenderer;
 //import net.elgoblin.moremineralblocks.entity.client.DevilmonRenderer;
 import net.elgoblin.moremineralblocks.item.ModItems;
+import net.minecraft.client.item.ItemModelManager;
+import net.elgoblin.moremineralblocks.networking.LegendaryToolsSwitchEnchantmentPayload;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.particle.custom.ChaosOrbFeedbackParticle;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -22,6 +25,8 @@ import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 
@@ -38,8 +43,14 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
         //return user.getMainHandStack().getItem().
     //};
 
+    private static KeyBinding keyBinding;
+
     @Override
     public void onInitializeClient() {
+        KeyBinding.Category LEGENDARY_TOOLS = KeyBinding.Category.create(Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_tools"));
+        KeyBinding switchEnchantments = KeyBindingHelper.registerKeyBinding(
+                new KeyBinding("key.moremineralblocks.switch_enchantments", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_K, LEGENDARY_TOOLS));
+
         BlockRenderLayerMap.putBlock(ModBlocks.GOLD_DOOR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(ModBlocks.GOLD_TRAPDOOR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(ModBlocks.AMETHYST_DOOR, BlockRenderLayer.TRANSLUCENT);
@@ -58,6 +69,16 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
         BlockRenderLayerMap.putBlock(ModBlocks.REDSTONE_TRAPDOOR, BlockRenderLayer.CUTOUT);
 
         EntityRendererRegistry.register(ModEntities.CHAOS_ORB, FlyingItemEntityRenderer::new);
+
+
+        ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
+            while (switchEnchantments.wasPressed()) {
+//                if (minecraftClient.player != null) {
+//                    minecraftClient.player.sendMessage(Text.of("asd"), false);
+//                }
+                ClientPlayNetworking.send(new LegendaryToolsSwitchEnchantmentPayload());
+            }
+        });
 
 //        BuiltinItemRendererRegistry.INSTANCE.register(ModItems.INFINITE_ITEMSTACK, new InfiniteItemRenderer());
 

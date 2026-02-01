@@ -18,12 +18,26 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-//        valueLookupBuilder(ModTags.Items.TRANSFORMABLE_ITEMS)
-//                .add(Items.COAL)
-//                .add(Items.STICK)
-//                .add(Items.APPLE);
+        valueLookupBuilder(ModTags.Items.LEGENDARY_TOOLS)
+                .add(ModItems.LEGENDARY_AXE)
+                .add(ModItems.LEGENDARY_PICKAXE)
+                .add(ModItems.LEGENDARY_SHOVEL)
+                .add(ModItems.LEGENDARY_SWORD)
+                .add(ModItems.LEGENDARY_LONGSWORD)
+                .add(ModItems.LEGENDARY_HOE);
 
         valueLookupBuilder(ModTags.Items.LEGENDARY_REPAIR);
+
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.LEGENDARY_LONGSWORD);
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.WOODEN_LONGSWORD);
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.STONE_LONGSWORD);
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.IRON_LONGSWORD);
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.GOLDEN_LONGSWORD);
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.DIAMOND_LONGSWORD);
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.NETHERITE_LONGSWORD);
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.FIENDBLADE_LONGSWORD);
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.FLAMEBERGE_LONGSWORD);
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.FIRE_DRAGONSWORD_LONGSWORD);
 
         valueLookupBuilder(ItemTags.PICKAXES).add(ModItems.LEGENDARY_PICKAXE);
         valueLookupBuilder(ItemTags.SHOVELS).add(ModItems.LEGENDARY_SHOVEL);

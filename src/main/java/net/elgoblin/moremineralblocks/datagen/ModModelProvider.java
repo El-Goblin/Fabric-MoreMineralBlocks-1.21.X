@@ -2,17 +2,23 @@ package net.elgoblin.moremineralblocks.datagen;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
+import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Models;
-import net.minecraft.client.data.TextureKey;
+import net.minecraft.client.data.*;
+import net.minecraft.client.item.ItemAsset;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.render.item.model.ConditionItemModel;
+import net.minecraft.client.render.item.model.ItemModel;
+import net.minecraft.client.render.item.model.SelectItemModel;
+import net.minecraft.client.render.item.property.bool.CustomModelDataFlagProperty;
+import net.minecraft.client.render.item.property.bool.HasComponentProperty;
+import net.minecraft.client.render.item.property.numeric.CustomModelDataFloatProperty;
 import net.minecraft.util.Identifier;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ModModelProvider extends FabricModelProvider {
@@ -440,5 +446,25 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.INFINITE_ITEMSTACK, Models.HANDHELD);
         itemModelGenerator.register(ModItems.SURVIVAL_DEBUG_STICK, Models.HANDHELD);
         itemModelGenerator.register(ModItems.LA_LECHONA, Models.HANDHELD);
+
+
+//        ItemModel.Unbaked unbakedLegendaryPickaxe = ItemModels.basic(itemModelGenerator.upload(ModItems.LEGENDARY_PICKAXE, Models.HANDHELD));
+//        ItemModel.Unbaked unbakedLegendaryPickaxeSet2Enchantments = ItemModels.basic(itemModelGenerator.registerSubModel(ModItems.LEGENDARY_PICKAXE, "_set_2_enchantments", Models.HANDHELD));
+//
+//
+//        ItemModel.Unbaked unbakedSword = ItemModels.basic(itemModelGenerator.upload(ModItems.LEGENDARY_SWORD, Models.HANDHELD));
+//        ItemModel.Unbaked unbakedSword2 = ItemModels.basic(itemModelGenerator.registerSubModel(ModItems.LEGENDARY_SWORD, "_used", Models.HANDHELD));
+//
+////        List<SelectItemModel.SwitchCase<Float>> cases = List.of(
+////                new SelectItemModel.SwitchCase<>(List.of(0.0f), unbakedSword2)
+//////                new SelectItemModel.SwitchCase<>(List.of(1), unbakedSword2)
+//////                new SelectItemModel.SwitchCase<>(List.of(2), unbakedSword3)
+////        );
+//
+//
+//
+//        itemModelGenerator.output.accept(ModItems.LEGENDARY_SWORD,
+//                new ItemAsset(new ,
+//                        new ItemAsset.Properties(false, false, 1)).model());
     }
 }

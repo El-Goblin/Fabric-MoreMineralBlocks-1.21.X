@@ -4,24 +4,30 @@ import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.block.entity.ModBlockEntities;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
+import net.elgoblin.moremineralblocks.enchantment.ModEnchantmentEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 //import net.elgoblin.moremineralblocks.entity.custom.DevilmonEntity;
 //import net.elgoblin.moremineralblocks.entity.custom.MantisEntity;
 import net.elgoblin.moremineralblocks.item.ModItemGroups;
 import net.elgoblin.moremineralblocks.item.ModItems;
+import net.elgoblin.moremineralblocks.item.ModToolMaterials;
+import net.elgoblin.moremineralblocks.networking.LegendaryToolsSwitchEnchantmentPayload;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.structure.MoreMineralBlocksStructure;
 import net.elgoblin.moremineralblocks.structure.MoreMineralBlocksStructurePlacement;
 import net.elgoblin.moremineralblocks.terrain.TerrainManager;
 import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
+import net.elgoblin.moremineralblocks.util.ModTags;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -29,7 +35,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.slf4j.Logger;
@@ -56,9 +61,25 @@ public class MoreMineralBlocks implements ModInitializer{
 		ModBlockEntities.registerBlockEntities();
 		MoreMineralBlocksStructurePlacement.registerStructurePlacementTypes();
 		MoreMineralBlocksStructure.registerStructureTypes();
+		ModEnchantmentEffects.registerEnchantmentEffects();
+
+
 //
 //		FabricDefaultAttributeRegistry.register(ModEntities.MANTIS, MantisEntity.createAttributes());
 //		FabricDefaultAttributeRegistry.register(ModEntities.DEVILMON, DevilmonEntity.createAttributes());
+
+		PayloadTypeRegistry.playC2S().register(LegendaryToolsSwitchEnchantmentPayload.ID, LegendaryToolsSwitchEnchantmentPayload.CODEC);
+
+		ServerPlayNetworking.registerGlobalReceiver(LegendaryToolsSwitchEnchantmentPayload.ID,
+				(payload, context) -> {
+			    	context.server().execute(() -> {
+						ServerPlayerEntity player = context.player();
+						ItemStack mainHandStack = player.getMainHandStack();
+						if (mainHandStack.isIn(ModTags.Items.LEGENDARY_TOOLS)) {
+							ModToolMaterials.advanceEnchantments(mainHandStack);
+						}
+					});
+				});
 
 
 		ServerTickEvents.END_SERVER_TICK.register(minecraftServer -> {
