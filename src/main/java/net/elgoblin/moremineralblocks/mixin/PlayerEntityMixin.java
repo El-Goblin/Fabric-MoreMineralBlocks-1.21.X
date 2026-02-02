@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 public abstract class PlayerEntityMixin {
 
     @ModifyArgs(
-            method = "doSweepingAttack(Lnet/minecraft/entity/Entity;FFLnet/minecraft/entity/damage/DamageSource;F)V",
+            method = "doSweepingAttack(Lnet/minecraft/entity/Entity;FLnet/minecraft/entity/damage/DamageSource;F)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/util/math/Box;expand(DDD)Lnet/minecraft/util/math/Box;"

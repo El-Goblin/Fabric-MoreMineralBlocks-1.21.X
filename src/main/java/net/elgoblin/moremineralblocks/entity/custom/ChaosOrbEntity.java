@@ -91,42 +91,42 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     private List<Consumer<HitResult>> pointChaosEffects = new ArrayList<>(List.of(
             this::spawnMobPack,
             this::getMythicItem,
-//            this::spawnSkeletonHorse,
-//            this::breakGameProgression,
-//            this::getArmorSet,
-//            this::getToolsSet,
+            this::spawnSkeletonHorse,
+            this::breakGameProgression,
+            this::getArmorSet,
+            this::getToolsSet,
             this::spawn5ChaosOrbs,
             this::voidSphere,
-//            this::explosion, // Ponerle timer
-//            this::fireExplosion, // Ponerle timer
+            this::explosion, // Ponerle timer
+            this::fireExplosion, // Ponerle timer
             this::getFood,
-//            this::getEnchantedBook,
-            this::smallPrize
-//            this::xp
+            this::getEnchantedBook,
+            this::smallPrize,
+            this::xp
 //            this::getInfiniteItem
     ));
     private List<BiConsumer<HitResult, Box>> areaChaosEffects = new ArrayList<>(List.of(
             this::applyBeaconEffect
     ));
     private List<BiConsumer<HitResult, Box>> selfAreaChaosEffects = new ArrayList<>(List.of(
-            this::increaseInteractionRange
-//            this::fragile
+            this::increaseInteractionRange,
+            this::fragile
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
 //            this::crash
     ));
     private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
-//            this::beginThunderstorm,
+            this::beginThunderstorm,
             this::randomizePlayersPositions
 //            this::createSkyblock
             // Skyblock se va a ir agregando en cada llamado hasta que salga una vez.
     ));
     private List<BiConsumer<HitResult, Box>> targetsOrSelfChaosEffects = new ArrayList<>(List.of(
-//            this::counterBlinking,
-////            this::adventureGamemode
-////            this::onanaHands,
-//            this::blinking,
-//            this::moveXBlocks,
+            this::counterBlinking,
+//            this::adventureGamemode
+//            this::onanaHands,
+            this::blinking,
+            this::moveXBlocks,
             this::changeScale
     ));
 

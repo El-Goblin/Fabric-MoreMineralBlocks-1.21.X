@@ -13,6 +13,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -37,10 +38,11 @@ public abstract class EntityMixin implements KillerToolSaver {
         return this.killerTool;
     }
 
-    @Inject(at = @At("RETURN"), method = "dropStack(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/entity/ItemEntity;", cancellable = true)
+    @Inject(at = @At("RETURN"), method = "dropStack(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/entity/ItemEntity;", cancellable = true)
     private void carryDropsToLinkedChest(
             ServerWorld world,
             ItemStack stack,
+            Vec3d yOffset,
             CallbackInfoReturnable<List<ItemStack>> cir) {
 
         if (!world.isClient()) {
