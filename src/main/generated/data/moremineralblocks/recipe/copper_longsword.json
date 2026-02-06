@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "#minecraft:copper_tool_materials",
+    "S": "minecraft:copper_sword"
+  },
+  "pattern": [
+    "  C",
+    " C ",
+    "S  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "moremineralblocks:copper_longsword"
+  }
+}

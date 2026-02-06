@@ -422,29 +422,30 @@ public class ModModelProvider extends FabricModelProvider {
         //itemModelGenerator.register(ModItems.PINK_GARNET, Models.GENERATED);
         //itemModelGenerator.register(ModItems.RAW_PINK_GARNET, Models.GENERATED);
         //itemModelGenerator.register(ModItems.CHISEL, Models.GENERATED);
-        itemModelGenerator.register(ModItems.LEGENDARY_PICKAXE, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.LEGENDARY_SHOVEL, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.LEGENDARY_AXE, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.LEGENDARY_HOE, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.LEGENDARY_SWORD, Models.HANDHELD);
+//        itemModelGenerator.register(ModItems.LEGENDARY_PICKAXE, Models.HANDHELD);
+//        itemModelGenerator.register(ModItems.LEGENDARY_SHOVEL, Models.HANDHELD);
+//        itemModelGenerator.register(ModItems.LEGENDARY_AXE, Models.HANDHELD);
+//        itemModelGenerator.register(ModItems.LEGENDARY_HOE, Models.HANDHELD);
+//        itemModelGenerator.register(ModItems.LEGENDARY_SWORD, Models.HANDHELD);
+//        itemModelGenerator.register(ModItems.LEGENDARY_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.WOODEN_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.STONE_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.IRON_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.GOLDEN_LONGSWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.COPPER_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.DIAMOND_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.NETHERITE_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.FLAMEBERGE_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.FIRE_DRAGONSWORD_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.FIENDBLADE_LONGSWORD, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.LEGENDARY_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.FLASH, Models.HANDHELD);
         itemModelGenerator.register(ModItems.MAGIC_MIRROR, Models.HANDHELD);
         itemModelGenerator.register(ModItems.REFLECTIVE_MIRROR, Models.HANDHELD);
         itemModelGenerator.register(ModItems.CHAOS_MIRROR, Models.HANDHELD);
         itemModelGenerator.register(ModItems.CHAOS_ORB, Models.HANDHELD);
         itemModelGenerator.register(ModItems.LEGENDARY_ROCKET, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.INFINITE_ITEMSTACK, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.SURVIVAL_DEBUG_STICK, Models.HANDHELD);
+//        itemModelGenerator.register(ModItems.INFINITE_ITEMSTACK, Models.HANDHELD);
+//        itemModelGenerator.register(ModItems.SURVIVAL_DEBUG_STICK, Models.HANDHELD);
         itemModelGenerator.register(ModItems.LA_LECHONA, Models.HANDHELD);
 
 

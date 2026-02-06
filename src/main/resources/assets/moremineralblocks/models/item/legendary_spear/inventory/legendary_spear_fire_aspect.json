@@ -1,0 +1,7 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "moremineralblocks:item/legendary_spear/inventory/legendary_spear_fire_aspect_animation"
+    }
+
+}

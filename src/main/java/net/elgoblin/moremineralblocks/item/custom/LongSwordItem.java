@@ -19,14 +19,14 @@ import org.jetbrains.annotations.Nullable;
 public class LongSwordItem extends Item {
 
     public LongSwordItem(Settings settings, ToolMaterial material, float attackDamage, float attackSpeed, float entityInteractionRange, float sweepingDamage) {
-        super(settings.sword(material, attackDamage, attackSpeed).attributeModifiers(createAttributeModifiers(attackDamage, attackSpeed, entityInteractionRange, sweepingDamage)));
+        super(settings.sword(material, attackDamage, attackSpeed).attributeModifiers(createAttributeModifiers(material, attackDamage, attackSpeed, entityInteractionRange, sweepingDamage)));
     }
 
-    public static AttributeModifiersComponent createAttributeModifiers(float attackDamage, float attackSpeed, float interactionRange, float sweepingDamage) {
+    public static AttributeModifiersComponent createAttributeModifiers(ToolMaterial material, float attackDamage, float attackSpeed, float interactionRange, float sweepingDamage) {
         return AttributeModifiersComponent.builder()
                 .add(
                         EntityAttributes.ATTACK_DAMAGE,
-                        new EntityAttributeModifier(Identifier.of(MoreMineralBlocks.MOD_ID), attackDamage, EntityAttributeModifier.Operation.ADD_VALUE),
+                        new EntityAttributeModifier(Identifier.of(MoreMineralBlocks.MOD_ID), attackDamage + material.attackDamageBonus(), EntityAttributeModifier.Operation.ADD_VALUE),
                         AttributeModifierSlot.MAINHAND
                 )
                 .add(

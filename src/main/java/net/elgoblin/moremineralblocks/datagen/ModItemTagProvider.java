@@ -24,7 +24,8 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
                 .add(ModItems.LEGENDARY_SHOVEL)
                 .add(ModItems.LEGENDARY_SWORD)
                 .add(ModItems.LEGENDARY_LONGSWORD)
-                .add(ModItems.LEGENDARY_HOE);
+                .add(ModItems.LEGENDARY_HOE)
+                .add(ModItems.LEGENDARY_SPEAR);
 
         valueLookupBuilder(ModTags.Items.LEGENDARY_REPAIR);
 
@@ -33,12 +34,14 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.STONE_LONGSWORD);
         valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.IRON_LONGSWORD);
         valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.GOLDEN_LONGSWORD);
+        valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.COPPER_LONGSWORD);
         valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.DIAMOND_LONGSWORD);
         valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.NETHERITE_LONGSWORD);
         valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.FIENDBLADE_LONGSWORD);
         valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.FLAMEBERGE_LONGSWORD);
         valueLookupBuilder(ModTags.Items.LONGSWORDS).add(ModItems.FIRE_DRAGONSWORD_LONGSWORD);
 
+        valueLookupBuilder(ItemTags.SPEARS).add(ModItems.LEGENDARY_SPEAR);
         valueLookupBuilder(ItemTags.PICKAXES).add(ModItems.LEGENDARY_PICKAXE);
         valueLookupBuilder(ItemTags.SHOVELS).add(ModItems.LEGENDARY_SHOVEL);
         valueLookupBuilder(ItemTags.AXES).add(ModItems.LEGENDARY_AXE);
@@ -47,6 +50,7 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         valueLookupBuilder(ItemTags.SWORDS).add(ModItems.WOODEN_LONGSWORD);
         valueLookupBuilder(ItemTags.SWORDS).add(ModItems.STONE_LONGSWORD);
         valueLookupBuilder(ItemTags.SWORDS).add(ModItems.GOLDEN_LONGSWORD);
+        valueLookupBuilder(ItemTags.SWORDS).add(ModItems.COPPER_LONGSWORD);
         valueLookupBuilder(ItemTags.SWORDS).add(ModItems.IRON_LONGSWORD);
         valueLookupBuilder(ItemTags.SWORDS).add(ModItems.DIAMOND_LONGSWORD);
         valueLookupBuilder(ItemTags.SWORDS).add(ModItems.NETHERITE_LONGSWORD);

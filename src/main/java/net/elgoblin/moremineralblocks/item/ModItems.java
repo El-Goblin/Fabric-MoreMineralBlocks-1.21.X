@@ -76,6 +76,11 @@ public class ModItems {
             new LongSwordItem(new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "stone_longsword"))),
                     ToolMaterial.STONE, 5, -2.4F, 1, 2));
+    public static final Item COPPER_LONGSWORD = registerItem(
+            "copper_longsword",
+            new LongSwordItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "copper_longsword"))),
+                    ToolMaterial.COPPER, 5, -2.4F, 1, 2));
     public static final Item IRON_LONGSWORD = registerItem(
             "iron_longsword",
             new LongSwordItem(new Item.Settings()
@@ -118,6 +123,22 @@ public class ModItems {
                     .fireproof().rarity(Rarity.EPIC).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE),
             ModToolMaterials.LEGENDARY, 11.0F, -2.4F, 1, 5
     ));
+    public static final Item LEGENDARY_SPEAR = registerItem(
+            "legendary_spear",
+            new LegendarySpearItem(new Item.Settings()
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_spear")))
+                    .fireproof().rarity(Rarity.EPIC).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE),
+                    ModToolMaterials.LEGENDARY,
+                            1.25F,
+                            1.5F,
+                            0.25F,
+                            2F,
+                            6F,
+                            5F,
+                            5.1F,
+                            7F,
+                            4.6F
+            ));
 
 
 
@@ -161,18 +182,20 @@ public class ModItems {
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
-            entries.add(LEGENDARY_SWORD);
-            entries.add(LEGENDARY_AXE);
             entries.add(WOODEN_LONGSWORD);
             entries.add(STONE_LONGSWORD);
             entries.add(GOLDEN_LONGSWORD);
+            entries.add(COPPER_LONGSWORD);
             entries.add(IRON_LONGSWORD);
             entries.add(DIAMOND_LONGSWORD);
             entries.add(NETHERITE_LONGSWORD);
             entries.add(FIENDBLADE_LONGSWORD);
             entries.add(FLAMEBERGE_LONGSWORD);
             entries.add(FIRE_DRAGONSWORD_LONGSWORD);
+            entries.add(LEGENDARY_SWORD);
+            entries.add(LEGENDARY_AXE);
             entries.add(LEGENDARY_LONGSWORD);
+            entries.add(LEGENDARY_SPEAR);
             entries.add(FLASH);
         });
 

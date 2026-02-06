@@ -19,6 +19,9 @@ import net.elgoblin.moremineralblocks.terrain.TerrainManager;
 import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
 import net.elgoblin.moremineralblocks.util.ModTags;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -32,10 +35,12 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.event.GameEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +67,39 @@ public class MoreMineralBlocks implements ModInitializer{
 		MoreMineralBlocksStructurePlacement.registerStructurePlacementTypes();
 		MoreMineralBlocksStructure.registerStructureTypes();
 		ModEnchantmentEffects.registerEnchantmentEffects();
+
+		BiomeModifications.create(Identifier.of("savanna_temp_change"))
+				.add(ModificationPhase.REPLACEMENTS,
+						BiomeSelectors.includeByKey(BiomeKeys.SAVANNA),
+						(biomeSelectionContext, biomeModificationContext) -> {
+
+							biomeModificationContext.getWeather().setTemperature(0.5f);
+							biomeModificationContext.getWeather().setDownfall(1f);
+
+						}
+				);
+
+		BiomeModifications.create(Identifier.of("savanna_temp_change"))
+				.add(ModificationPhase.REPLACEMENTS,
+						BiomeSelectors.includeByKey(BiomeKeys.SAVANNA_PLATEAU),
+						(biomeSelectionContext, biomeModificationContext) -> {
+
+							biomeModificationContext.getWeather().setTemperature(0.5f);
+							biomeModificationContext.getWeather().setDownfall(1f);
+
+						}
+				);
+
+		BiomeModifications.create(Identifier.of("savanna_temp_change"))
+				.add(ModificationPhase.REPLACEMENTS,
+						BiomeSelectors.includeByKey(BiomeKeys.WINDSWEPT_SAVANNA),
+						(biomeSelectionContext, biomeModificationContext) -> {
+
+							biomeModificationContext.getWeather().setTemperature(0.5f);
+							biomeModificationContext.getWeather().setDownfall(1f);
+
+						}
+				);
 
 
 //

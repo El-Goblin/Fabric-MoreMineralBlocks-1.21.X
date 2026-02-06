@@ -780,6 +780,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .criterion(hasItem(Items.STONE_SWORD), conditionsFromItem(Items.STONE_SWORD))
                         .offerTo(exporter);
 
+                createShaped(RecipeCategory.COMBAT, ModItems.COPPER_LONGSWORD)
+                        .pattern("  C")
+                        .pattern(" C ")
+                        .pattern("S  ")
+                        .input('S', Items.COPPER_SWORD)
+                        .input('C', ItemTags.COPPER_TOOL_MATERIALS)
+                        .criterion(hasItem(Items.COPPER_SWORD), conditionsFromItem(Items.COPPER_SWORD))
+                        .offerTo(exporter);
+
                 createShaped(RecipeCategory.COMBAT, ModItems.IRON_LONGSWORD)
                         .pattern("  I")
                         .pattern(" I ")
