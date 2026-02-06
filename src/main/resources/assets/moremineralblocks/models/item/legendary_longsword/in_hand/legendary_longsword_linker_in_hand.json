@@ -1,5 +1,5 @@
 {
-    "parent": "moremineralblocks:item/legendary_longsword/in_hand/longsword_in_hand_parent",
+    "parent": "moremineralblocks:item/longsword_in_hand_parent",
     "textures": {
         "layer0": "moremineralblocks:item/legendary_longsword/in_hand/legendary_longsword_linker_in_hand"
     }

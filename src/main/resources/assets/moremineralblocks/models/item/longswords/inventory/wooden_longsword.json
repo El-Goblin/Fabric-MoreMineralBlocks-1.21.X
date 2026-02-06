@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/handheld",
+    "textures": {
+        "layer0": "moremineralblocks:item/longswords/inventory/wooden_longsword"
+    }
+}
