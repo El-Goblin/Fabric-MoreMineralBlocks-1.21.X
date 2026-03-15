@@ -83,6 +83,7 @@ public class LegendaryAxeItem extends AxeItem {
         if (!context.getWorld().isClient()) {
             if (context.getWorld().getBlockEntity(position) instanceof Inventory inventory) {
                 context.getStack().set(ModDataComponentTypes.LINKED_CHEST, position);
+                context.getStack().set(ModDataComponentTypes.SERVERWORLD, context.getWorld().getRegistryKey().getValue());
                 if (context.getPlayer() != null) {
                     context.getPlayer().sendMessage(Text.of(position.toString()), false);
                 }

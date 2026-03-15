@@ -39,6 +39,7 @@ public class ModDataComponentTypes {
     public static final ComponentType<BlockPos> OTHER_LINKED_CHEST = register("other_linked_chest", builder -> builder.codec(BlockPos.CODEC));
     public static final ComponentType<Vec3d> COORDINATES = register("coordinates", builder -> builder.codec(Vec3d.CODEC));
     public static final ComponentType<Identifier> SERVERWORLD = register("server_id", builder -> builder.codec(Identifier.CODEC));
+    public static final ComponentType<Identifier> OTHER_SERVERWORLD = register("other_server_id", builder -> builder.codec(Identifier.CODEC));
 
 
 //    public static final ComponentType<Integer> CUMULATED_DAMAGE_TAKEN = register(

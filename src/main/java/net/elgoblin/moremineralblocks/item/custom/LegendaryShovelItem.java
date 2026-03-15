@@ -42,6 +42,7 @@ public class LegendaryShovelItem extends ShovelItem {
         if (!context.getWorld().isClient()) {
             if (context.getWorld().getBlockEntity(blockPos) instanceof Inventory inventory) {
                 context.getStack().set(ModDataComponentTypes.LINKED_CHEST, blockPos);
+                context.getStack().set(ModDataComponentTypes.SERVERWORLD, context.getWorld().getRegistryKey().getValue());
                 if (context.getPlayer() != null) {
                     context.getPlayer().sendMessage(Text.of(blockPos.toString()), false);
                 }

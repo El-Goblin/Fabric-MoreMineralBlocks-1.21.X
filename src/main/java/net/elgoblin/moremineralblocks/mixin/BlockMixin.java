@@ -11,7 +11,12 @@ import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,13 +45,23 @@ public abstract class BlockMixin {
         if (!tool.isEmpty() && tool.isIn(ModTags.Items.LEGENDARY_TOOLS) && ModEnchantments.getLevel(tool, ModEnchantments.LINKER) > 0) {
 
             BlockPos storagePos = tool.get(ModDataComponentTypes.LINKED_CHEST);
+            Identifier dimension = tool.get(ModDataComponentTypes.SERVERWORLD);
+            ServerWorld targetWorld = world;
+            MinecraftServer server = world.getServer();
 
-            if (storagePos != null && world.isChunkLoaded(storagePos) && world.getBlockEntity(storagePos) instanceof Inventory deposit) {
-                Block blockAtLinkedPosition = world.getBlockState(storagePos).getBlock();
+            if (server != null && dimension != null) {
+                targetWorld = server.getWorld(RegistryKey.of(RegistryKeys.WORLD, dimension));
+                if (targetWorld == null) {
+                    targetWorld = world;
+                }
+            }
+
+            if (storagePos != null && targetWorld.isChunkLoaded(storagePos) && targetWorld.getBlockEntity(storagePos) instanceof Inventory deposit) {
+                Block blockAtLinkedPosition = targetWorld.getBlockState(storagePos).getBlock();
 
                 if (deposit instanceof ChestBlockEntity && blockAtLinkedPosition instanceof ChestBlock) {
                     deposit = ChestBlock.getInventory((ChestBlock) blockAtLinkedPosition,
-                            world.getBlockState(storagePos), world, storagePos, true
+                            targetWorld.getBlockState(storagePos), targetWorld, storagePos, true
                     );
                 }
 
