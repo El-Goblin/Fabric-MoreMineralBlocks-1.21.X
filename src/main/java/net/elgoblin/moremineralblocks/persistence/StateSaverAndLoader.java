@@ -11,7 +11,7 @@
 //
 //public class StateSaverAndLoader extends PersistentState {
 //
-//    private boolean skyBlockHappened = false;
+////    private boolean skyBlockHappened = false;
 //
 //    private StateSaverAndLoader(boolean skyBlockHappened) {
 //        this.skyBlockHappened = skyBlockHappened;
@@ -51,9 +51,9 @@
 //        return nbt;
 //    }
 //
-//    public static StateSaverAndLoader createFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-//        return new StateSaverAndLoader(nbt.getBoolean("skyblock_happened"));
-//    }
+////    public static StateSaverAndLoader createFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+////        return new StateSaverAndLoader(nbt.getBoolean("skyblock_happened"));
+////    }
 //
 //    public static StateSaverAndLoader loadSave(MinecraftServer server) {
 //        PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();

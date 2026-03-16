@@ -12,6 +12,7 @@ import net.elgoblin.moremineralblocks.terrain.SingleBlockSphereJob;
 //import net.elgoblin.moremineralblocks.terrain.SkyBlockJob;
 import net.elgoblin.moremineralblocks.terrain.TerrainManager;
 //import net.elgoblin.moremineralblocks.util.ProtectorManager;
+import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -186,9 +187,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
                     MinecraftServer server = this.getEntityWorld().getServer();
                     if (server != null) {
-//                        ProtectorManager protectorManager = ProtectorManager.getProtectorManager(this.getServer());
+                        ProtectorManager protectorManager = ProtectorManager.getProtectorManager(this.getEntityWorld().getServer());
 
-                        if (!currentState.isAir()) {
+                        if (!currentState.isAir() && !protectorManager.isProtected(blockToRemove)) {
                             world.setBlockState(blockToRemove, Blocks.AIR.getDefaultState(), 50);
                         }
                     }
@@ -228,7 +229,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         super.onEntityHit(entityHitResult);
         Entity entity = entityHitResult.getEntity();
         if (!entity.getEntityWorld().isClient()) {
-            entity.damage((ServerWorld) entity.getEntityWorld(), this.getDamageSources().thrown(this, this.getOwner()), 0);
+            if (this.getOwner() != null) {
+                entity.damage((ServerWorld) entity.getEntityWorld(), this.getDamageSources().thrown(this, this.getOwner()), 0);
+            }
         }
     }
 
@@ -472,7 +475,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
                 if (player.getAttributes().hasModifierForAttribute(EntityAttributes.ENTITY_INTERACTION_RANGE, entityInteractionRangeModifierID)) {
                     EntityAttributeModifier rangeModifier = new EntityAttributeModifier(entityInteractionRangeModifierID
-                            , player.getAttributes().getModifierValue(EntityAttributes.ENTITY_INTERACTION_RANGE, entityInteractionRangeModifierID) + 1
+                            , MathHelper.absMax(player.getAttributes().getModifierValue(EntityAttributes.ENTITY_INTERACTION_RANGE, entityInteractionRangeModifierID) + 1, 5)
                             , EntityAttributeModifier.Operation.ADD_VALUE);
 
                     EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.ENTITY_INTERACTION_RANGE);
@@ -493,7 +496,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
                 if (player.getAttributes().hasModifierForAttribute(EntityAttributes.BLOCK_INTERACTION_RANGE, blockInteractionRangeModifierID)) {
                     EntityAttributeModifier rangeModifier = new EntityAttributeModifier(blockInteractionRangeModifierID
-                            , player.getAttributes().getModifierValue(EntityAttributes.BLOCK_INTERACTION_RANGE, blockInteractionRangeModifierID) + 1
+                            , MathHelper.absMax(player.getAttributes().getModifierValue(EntityAttributes.BLOCK_INTERACTION_RANGE, blockInteractionRangeModifierID) + 1, 5)
                             , EntityAttributeModifier.Operation.ADD_VALUE);
 
                     EntityAttributeInstance entityInteractionRangeInstance = player.getAttributeInstance(EntityAttributes.BLOCK_INTERACTION_RANGE);
@@ -607,7 +610,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     private void randomizePlayersPositions(HitResult hitResult) {
         int forceTeleport = random.nextInt(20);
-        if (forceTeleport == 0 && this.getOwner() instanceof PlayerEntity) {
+        if (forceTeleport == 0 && this.getOwner() != null && this.getOwner() instanceof PlayerEntity) {
             // Notar que de esta forma se aumenta la estadistica de veces usadas el item. Me parece correcto
             ModItems.CHAOS_MIRROR.use(this.getEntityWorld(), (PlayerEntity) this.getOwner(), Hand.MAIN_HAND);
         }
@@ -871,50 +874,53 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //                fireballEntity = new FireballEntity(this.getEntityWorld(), dummy, new Vec3d(0, -1.0f, 0), 4);
 //            }
 //        }
-
-        if (kase > 17 && kase < 20 && this.getOwner() != null) {
-            fireballEntity = new FireballEntity(this.getEntityWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 1);
-            fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
+        if (this.getOwner() != null) {
+            if (kase > 17 && kase < 20) {
+                fireballEntity = new FireballEntity(this.getEntityWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 1);
+                fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
+            }
+            else {
+                fireballEntity = new FireballEntity(this.getEntityWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 4);
+                fireballEntity.setPosition(this.getX(), this.getY(), this.getZ());
+            }
+            this.getEntityWorld().spawnEntity(fireballEntity);
         }
-        else {
-            fireballEntity = new FireballEntity(this.getEntityWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 4);
-            fireballEntity.setPosition(this.getX(), this.getY(), this.getZ());
-        }
-        this.getEntityWorld().spawnEntity(fireballEntity);
     }
 
     private void spawn5ChaosOrbs(HitResult hitResult) {
-        ItemStack chaosOrbs = new ItemStack(ModItems.CHAOS_ORB, 5);
+        if (this.getOwner() != null) {
+            ItemStack chaosOrbs = new ItemStack(ModItems.CHAOS_ORB, 5);
 
-        ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
-        chaosOrbEntity.setOwner(this.getOwner());
-        chaosOrbEntity.setVelocity( 1.0f, 2.0f, 0f, 0.5f, 0.0f);
+            ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
+            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.setVelocity( 1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
-        this.getEntityWorld().spawnEntity(chaosOrbEntity);
+            this.getEntityWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
-        chaosOrbEntity.setOwner(this.getOwner());
-        chaosOrbEntity.setVelocity( -1.0f, 2.0f, 0f, 0.5f, 0.0f);
+            chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
+            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.setVelocity( -1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
-        this.getEntityWorld().spawnEntity(chaosOrbEntity);
+            this.getEntityWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
-        chaosOrbEntity.setOwner(this.getOwner());
-        chaosOrbEntity.setVelocity( 0f, 2.0f, 1.0f, 0.5f, 0.0f);
+            chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
+            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.setVelocity( 0f, 2.0f, 1.0f, 0.5f, 0.0f);
 
-        this.getEntityWorld().spawnEntity(chaosOrbEntity);
+            this.getEntityWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
-        chaosOrbEntity.setOwner(this.getOwner());
-        chaosOrbEntity.setVelocity( 0f, 2.0f, -1.0f, 0.5f, 0.0f);
+            chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
+            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.setVelocity( 0f, 2.0f, -1.0f, 0.5f, 0.0f);
 
-        this.getEntityWorld().spawnEntity(chaosOrbEntity);
+            this.getEntityWorld().spawnEntity(chaosOrbEntity);
 
-        chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
-        chaosOrbEntity.setOwner(this.getOwner());
-        chaosOrbEntity.setVelocity( 0f, 2.0f, 0.0f, 0f, 0f);
+            chaosOrbEntity = new ChaosOrbEntity(this.getEntityWorld(), hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, chaosOrbs);
+            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.setVelocity( 0f, 2.0f, 0.0f, 0f, 0f);
 
-        this.getEntityWorld().spawnEntity(chaosOrbEntity);
+            this.getEntityWorld().spawnEntity(chaosOrbEntity);
+        }
     }
 
     private void voidSphere(HitResult hitResult) {
