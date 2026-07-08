@@ -163,6 +163,9 @@ public class ModItems {
             .recipeRemainder(BUCKET).component(DataComponentTypes.CONSUMABLE, ModDataComponentTypes.LA_LECHONA).useRemainder(BUCKET).maxCount(1)));
 
 //    public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
+public static final Item INFINITE_ITEMV2 = registerItem("infinite_itemv2", new InfiniteItemV2(new Item.Settings()
+        .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "infinite_itemv2")))
+        .maxCount(1).rarity(Rarity.EPIC).maxDamage(0)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, name), item);
@@ -217,6 +220,7 @@ public class ModItems {
             entries.add(REFLECTIVE_MIRROR);
             entries.add(CHAOS_MIRROR);
             entries.add(FLASH);
+            entries.add(INFINITE_ITEMV2);
 //            entries.add(LA_LECHONA);
         });
 

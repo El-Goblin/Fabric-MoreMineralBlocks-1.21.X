@@ -2,12 +2,18 @@ package net.elgoblin.moremineralblocks;
 
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 //import net.elgoblin.moremineralblocks.client.InfiniteItemRenderer;
+import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 //import net.elgoblin.moremineralblocks.entity.client.DevilmonModel;
 //import net.elgoblin.moremineralblocks.entity.client.MantisModel;
 //import net.elgoblin.moremineralblocks.entity.client.MantisRenderer;
 //import net.elgoblin.moremineralblocks.entity.client.DevilmonRenderer;
 import net.elgoblin.moremineralblocks.item.ModItems;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.minecraft.block.ChestBlock;
+import net.minecraft.block.entity.ChestBlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.item.ItemModelManager;
 import net.elgoblin.moremineralblocks.networking.LegendaryToolsSwitchEnchantmentPayload;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
@@ -25,8 +31,16 @@ import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.lwjgl.glfw.GLFW;
 
 
@@ -107,5 +121,39 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_COUNTER_BLINK_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_BLINKING_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE, ChaosOrbFeedbackParticle.Factory::new);
+
+        HudRenderCallback.EVENT.register(((drawContext, renderTickCounter) -> {
+            MinecraftClient client = MinecraftClient.getInstance();
+            if (client.player == null) {return;}
+
+            ItemStack mainHoldedStack = client.player.getMainHandStack();
+            ItemStack offHoldedStack = client.player.getOffHandStack();
+
+            if (mainHoldedStack.isOf(ModItems.INFINITE_ITEMV2)) {
+                renderSelectedStack(drawContext, client, client.player.getMainHandStack(), (ServerWorld) client.player.getEntityWorld());
+            }
+            else if (offHoldedStack.isOf(ModItems.INFINITE_ITEMV2)) {
+                renderSelectedStack(drawContext, client, client.player.getOffHandStack(), (ServerWorld) client.player.getEntityWorld());
+            }
+        }));
+    }
+
+    private void renderSelectedStack(DrawContext drawContext, MinecraftClient client, ItemStack stack, ServerWorld world) {
+        int width = client.getWindow().getScaledWidth();
+        int height = client.getWindow().getScaledHeight();
+
+        int x = (width / 2) + 101;
+        int y = height - 22;
+
+        ItemStack selectedStack = ModItems.CHAOS_ORB.getDefaultStack();
+
+        selectedStack.setCount(35);
+
+        if (!selectedStack.isEmpty()) {
+            drawContext.drawItem(selectedStack, x, y);
+            int number = 3456;
+            drawContext.drawStackOverlay(client.textRenderer, selectedStack, x + (int) (2*Math.log10(number)), y, "3456");
+
+        }
     }
 }

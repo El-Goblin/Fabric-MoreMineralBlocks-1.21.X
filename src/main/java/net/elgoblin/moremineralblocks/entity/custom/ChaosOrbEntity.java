@@ -84,6 +84,40 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             "minecraft:speed", ModParticles.CHAOS_ORB_SPEED_PARTICLE,
             "minecraft:strength", ModParticles.CHAOS_ORB_STRENGTH_PARTICLE);
     private final Random random = Random.create();
+    private ServerWorld world = null;
+
+    private String seededEvent = "none";
+    private final Map<String, Pair<Integer, Integer>> eventMap = Map.ofEntries(
+            Map.entry("mobpack", new Pair<>(0,0)),
+            Map.entry("mythicitem", new Pair<>(0,1)),
+            Map.entry("skeletonhorse", new Pair<>(0,2)),
+            Map.entry("progression", new Pair<>(0,3)),
+            Map.entry("armor", new Pair<>(0,4)),
+            Map.entry("tools", new Pair<>(0,5)),
+            Map.entry("chaos", new Pair<>(0,6)),
+            Map.entry("terrainsphere", new Pair<>(0,7)),
+            Map.entry("explosion", new Pair<>(0,8)),
+            Map.entry("fireexplosion", new Pair<>(0,9)),
+            Map.entry("food", new Pair<>(0,10)),
+            Map.entry("book", new Pair<>(0,11)),
+            Map.entry("prize", new Pair<>(0, 12)),
+            Map.entry("xp", new Pair<>(0, 13)),
+
+            Map.entry("beacon", new Pair<>(1,0)),
+
+            Map.entry("range", new Pair<>(2, 0)),
+            Map.entry("fragile", new Pair<>(2,1)),
+
+            Map.entry("storm", new Pair<>(4,0)),
+            Map.entry("teleport", new Pair<>(4,1)),
+
+            Map.entry("counterBlink", new Pair<>(5,0)),
+            Map.entry("blinking", new Pair<>(5,1)),
+            Map.entry("20", new Pair<>(5,2)),
+            Map.entry("scale", new Pair<>(5,3)),
+
+            Map.entry("help", new Pair<>(6,0))
+    );
 
     private boolean tunneler = false;
     private LinkedList<BlockPos> tunnelQueue = new LinkedList<>();
@@ -131,23 +165,48 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             this::changeScale
     ));
 
+    private List<Consumer<HitResult>> debugChaosEffects = new ArrayList<>(List.of(
+            this::debugHelp
+    ));
+
 
     public ChaosOrbEntity(EntityType<? extends ChaosOrbEntity> entityType, World world) {
         super(entityType, world);
 //        this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
+        if (!world.isClient()) {
+            this.world = (ServerWorld) world;
+        }
     }
 
     public ChaosOrbEntity(World world, LivingEntity owner, ItemStack stack) {
         super(ModEntities.CHAOS_ORB, owner, world, stack);
 //        this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
+        if (!world.isClient()) {
+            this.world = (ServerWorld) world;
+        }
+        if (stack.getCustomName() != null) {
+            seededEvent = stack.getCustomName().getString().toLowerCase();
+            if (stack.getCustomName().getString().equalsIgnoreCase("tunneler")) {
+                tunneler = true;
+            }
+        }
     }
 
     public ChaosOrbEntity(World world, double x, double y, double z, ItemStack stack) {
         super(ModEntities.CHAOS_ORB, x, y, z, world, stack);
 //        this.addSkyBlock();
         this.tunneler = random.nextBetween(0, this.effectCount()) == 0;
+        if (!world.isClient()) {
+            this.world = (ServerWorld) world;
+        }
+        if (stack.getCustomName() != null) {
+            seededEvent = stack.getCustomName().getString().toLowerCase();
+            if (stack.getCustomName().getString().equalsIgnoreCase("tunneler")) {
+                tunneler = true;
+            }
+        }
     }
 
 
@@ -220,8 +279,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             return 3;
         } else if (category < globalChaosEffectsInterval) {
             return 4;
+        } else { // Targets or Self Chaos Effects Interval
+            return 5;
         }
-        else { return 5;} // Targets or Self Chaos Effects Interval
     }
 
     @Override
@@ -245,55 +305,72 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             int nextEffect;
             Box boundingBox = this.getBoundingBox();
 
+            if (eventMap.containsKey(seededEvent)) {
+                eventCategory = eventMap.get(seededEvent).getLeft();
+            }
+
             switch (eventCategory) {
-                // POINT
-                case 0:
+                case 0: // POINT
                     // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
                     if (!pointChaosEffects.isEmpty()) {
                         nextEffect = random.nextBetween(0, pointChaosEffects.size()-1);
+                        if (eventMap.containsKey(seededEvent)) {
+                            nextEffect = eventMap.get(seededEvent).getRight();
+                        }
                         pointChaosEffects.get(nextEffect).accept(hitResult);
                     }
                     break;
-                //AREA
-                case 1:
-                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                case 1: //AREA
                     if (!areaChaosEffects.isEmpty()) {
                         nextEffect = random.nextBetween(0, areaChaosEffects.size()-1);
+                        if (eventMap.containsKey(seededEvent)) {
+                            nextEffect = eventMap.get(seededEvent).getRight();
+                        }
                         areaChaosEffects.get(nextEffect).accept(hitResult, boundingBox);
                     }
                     break;
-                //SELF AREA
-                case 2:
-                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                case 2: //SELF AREA
                     if (!selfAreaChaosEffects.isEmpty()) {
                         nextEffect = random.nextBetween(0, selfAreaChaosEffects.size()-1);
+                        if (eventMap.containsKey(seededEvent)) {
+                            nextEffect = eventMap.get(seededEvent).getRight();
+                        }
                         selfAreaChaosEffects.get(nextEffect).accept(hitResult, boundingBox);
                     }
                     break;
-                //SELF
-                case 3:
-                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                case 3: //SELF
                     if (!selfChaosEffects.isEmpty()) {
                         nextEffect = random.nextBetween(0, selfChaosEffects.size()-1);
+                        if (eventMap.containsKey(seededEvent)) {
+                            nextEffect = eventMap.get(seededEvent).getRight();
+                        }
                         selfChaosEffects.get(nextEffect).accept(hitResult);
                     }
                     break;
-                //GLOBAL
-                case 4:
-                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                case 4: //GLOBAL
                     if (!globalChaosEffects.isEmpty()) {
                         nextEffect = random.nextBetween(0, globalChaosEffects.size()-1);
+                        if (eventMap.containsKey(seededEvent)) {
+                            nextEffect = eventMap.get(seededEvent).getRight();
+                        }
                         globalChaosEffects.get(nextEffect).accept(hitResult);
                     }
                     break;
-                //TARGET SELF
-                case 5:
-                    // Deberia pasar siempre pero si en algun momento llega a no pasar, crashearia y seria irrecuperable el mundo salvo tocar NBTs
+                case 5: //TARGET SELF
                     if (!targetsOrSelfChaosEffects.isEmpty()) {
                         nextEffect = random.nextBetween(0, targetsOrSelfChaosEffects.size()-1);
+                        if (eventMap.containsKey(seededEvent)) {
+                            nextEffect = eventMap.get(seededEvent).getRight();
+                        }
                         targetsOrSelfChaosEffects.get(nextEffect).accept(hitResult, boundingBox);
                     }
                     break;
+                case 6: // DEBUG
+                    nextEffect = 0;
+                    if (eventMap.containsKey(seededEvent)) {
+                        nextEffect = eventMap.get(seededEvent).getRight();
+                    }
+                    debugChaosEffects.get(nextEffect).accept(hitResult);
             }
 
             this.discard();
@@ -314,6 +391,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                 this.targetsOrSelfChaosEffects.size();
     }
 
+    {
 //    private static final List<TropicalFishEntity.Variant> TROPICAL_FISH_VARIANTS = List.of(
 //            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.STRIPEY, DyeColor.ORANGE, DyeColor.GRAY),
 //            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.GRAY, DyeColor.GRAY),
@@ -338,7 +416,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.DASHER, DyeColor.CYAN, DyeColor.YELLOW),
 //            new TropicalFishEntity.Variant(TropicalFishEntity.Variety.FLOPPER, DyeColor.YELLOW, DyeColor.YELLOW)
 //    );
+    }
 
+    // Falta axolotl y tropical fish TODO
     private void spawnMobPack(HitResult hitResult) {
 
         // Como es esto un tipo???
@@ -353,7 +433,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         Identifier entityTypeID = Registries.ENTITY_TYPE.getId(entityType);
 
         while (spawnsToPerform-- > 0) {
-            Entity entity = entityType.create(this.getEntityWorld(), SpawnReason.EVENT);
+            Entity entity = entityType.create(world, SpawnReason.EVENT);
 
             switch (entityTypeID.toString()) {
 
@@ -368,27 +448,27 @@ public class ChaosOrbEntity extends ThrownItemEntity {
                     nextEntity = this.random.nextBetween(0, mobs.size() - 1);
                     entityType = mobs.get(nextEntity);
                     entityTypeID = Registries.ENTITY_TYPE.getId(entityType);
-                    entity = entityType.create(this.getEntityWorld(), SpawnReason.EVENT);
+                    entity = entityType.create(world, SpawnReason.EVENT);
                     spawnsToPerform++;
                     break;
 
 
                 case "minecraft:bat", "minecraft:bee", "minecraft:chicken", "minecraft:cod", "minecraft:frog", "minecraft:pufferfish", "minecraft:rabbit", "minecraft:salmon", "minecraft:silverfish", "minecraft:endermite", "minecraft:tadpole":
-                    Entity entity2 = entityType.create(this.getEntityWorld(), SpawnReason.EVENT);
+                    Entity entity2 = entityType.create(world, SpawnReason.EVENT);
                     if (entity2 != null) {
                         entity2.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-                        this.getEntityWorld().spawnEntity(entity2);
+                        world.spawnEntity(entity2);
                     }
-                    Entity entity3 = entityType.create(this.getEntityWorld(), SpawnReason.EVENT);
+                    Entity entity3 = entityType.create(world, SpawnReason.EVENT);
                     if (entity3 != null) {
                         entity3.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-                        this.getEntityWorld().spawnEntity(entity3);
+                        world.spawnEntity(entity3);
                     }
                     break;
 
 //                case "minecraft:tropical_fish":
 //                    for (int i = 0 ; i < 3 ; i++) {
-//                        entity = entityType.create(this.getEntityWorld(), SpawnReason.EVENT);
+//                        entity = entityType.create(world, SpawnReason.EVENT);
 //                        if (entity != null) {
 //                            TropicalFishEntity.Variant variant = TROPICAL_FISH_VARIANTS.get(random.nextBetween(0, TROPICAL_FISH_VARIANTS.size()-1));
 //                            int variantInt = variant.variety().getId() & 65535 |  (variant.baseColor().getId() & 0xFF) << 16 | (variant.patternColor().getId() & 0xFF) << 24;
@@ -398,7 +478,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //                            nbt.putInt("Variant", variantInt);
 //                            entity.readNbt(nbt);
 //                            entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-//                            this.getEntityWorld().spawnEntity(entity);
+//                            world.spawnEntity(entity);
 //                        }
 //                    }
 //                    break;
@@ -433,38 +513,36 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
             if (entity != null) {
                 entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
-                this.getEntityWorld().spawnEntity(entity);
+                world.spawnEntity(entity);
             }
         }
     }
 
     private void spawnSkeletonHorse(HitResult hitResult) {
-        SkeletonHorseEntity skeletonHorseEntity = EntityType.SKELETON_HORSE.create(this.getEntityWorld(), SpawnReason.EVENT);
+        SkeletonHorseEntity skeletonHorseEntity = EntityType.SKELETON_HORSE.create(world, SpawnReason.EVENT);
         if (skeletonHorseEntity != null) {
             skeletonHorseEntity.setTrapped(true);
             skeletonHorseEntity.setBreedingAge(0);
             skeletonHorseEntity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0.0F);
 
-            this.getEntityWorld().spawnEntity(skeletonHorseEntity);
+            world.spawnEntity(skeletonHorseEntity);
         }
     }
 
     private void beginThunderstorm(HitResult hitResult) {
-        if (!this.getEntityWorld().isClient()) {
-            if (this.getEntityWorld().getServer() != null) {
-                ServerWorld world = this.getEntityWorld().getServer().getOverworld();
-                world.setWeather(0, UniformIntProvider.create(3600, 15600).get(world.getRandom()), true, true);
-                LightningEntity bolt = EntityType.LIGHTNING_BOLT.create(this.getEntityWorld(), SpawnReason.EVENT);
-                if (bolt != null) {
-                    bolt.refreshPositionAndAngles(hitResult.getPos(),1f, 1f);
-                    this.getEntityWorld().spawnEntity(bolt);
-                }
+        if (world.getServer() != null) {
+            ServerWorld serverWorld = world.getServer().getOverworld();
+            serverWorld.setWeather(0, UniformIntProvider.create(3600, 15600).get(serverWorld.getRandom()), true, true);
+            LightningEntity bolt = EntityType.LIGHTNING_BOLT.create(world, SpawnReason.EVENT);
+            if (bolt != null) {
+                bolt.refreshPositionAndAngles(hitResult.getPos(),1f, 1f);
+                world.spawnEntity(bolt);
             }
         }
     }
 
     private void increaseInteractionRange(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
+        List<LivingEntity> entities = world.getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
 
         for (LivingEntity entity : entities) {
             if (entity instanceof PlayerEntity player) {
@@ -546,11 +624,11 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void changeScale(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
+        List<LivingEntity> entities = world.getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
 
         ScalePack chosenPack = scalePacks.get(random.nextInt(scalePacks.size()));
 
-        if (this.getOwner() != null && entities.contains((LivingEntity) this.getOwner())) {
+        if (this.getOwner() != null && !entities.contains((LivingEntity) this.getOwner())) {
             entities.add((LivingEntity) this.getOwner());
         }
 
@@ -573,10 +651,8 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void moveXBlocks(HitResult hitResult, Box boundingBox) {
-        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
-
+        List<LivingEntity> entities = world.getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(16.0, 8.0, 16.0));
         boolean goDown = this.random.nextBoolean();
-
 
         for (LivingEntity entity : entities) {
 
@@ -612,16 +688,17 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         int forceTeleport = random.nextInt(20);
         if (forceTeleport == 0 && this.getOwner() != null && this.getOwner() instanceof PlayerEntity) {
             // Notar que de esta forma se aumenta la estadistica de veces usadas el item. Me parece correcto
-            ModItems.CHAOS_MIRROR.use(this.getEntityWorld(), (PlayerEntity) this.getOwner(), Hand.MAIN_HAND);
+            ModItems.CHAOS_MIRROR.use(world, (PlayerEntity) this.getOwner(), Hand.MAIN_HAND);
         }
         else {
-            this.dropStack((ServerWorld) this.getEntityWorld(), ModItems.CHAOS_MIRROR.getDefaultStack());
+            this.dropStack(world, ModItems.CHAOS_MIRROR.getDefaultStack());
         }
     }
 
+    // Creo que se rompe lo visual TODO
     private void applyBeaconEffect(HitResult hitResult, Box boundingBox) {
 
-        List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(32.0, 200.0, 32.0));
+        List<LivingEntity> entities = world.getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(32.0, 200.0, 32.0));
         List<RegistryEntry<StatusEffect>> pool = BeaconBlockEntity.EFFECTS_BY_LEVEL.stream().flatMap(List::stream).toList();
 
         long poolSize = pool.size();
@@ -629,7 +706,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         int nextLevel = this.random.nextBetween(0, 9);
         RegistryEntry<StatusEffect> effect = pool.get(nextEffect);
         SimpleParticleType effectParticle = particleMap.get(effect.getIdAsString());
-        ((ServerWorld) this.getEntityWorld()).spawnParticles(effectParticle,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        world.spawnParticles(effectParticle,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
             StatusEffectInstance effectInstance = new StatusEffectInstance(effect, 24000, nextLevel);
@@ -657,7 +734,10 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         List<Item> foodItems = new ArrayList<>();
 
         for (Item item : Registries.ITEM) {
-            if (item.getComponents().get(DataComponentTypes.FOOD) != null && !(item instanceof PotionItem)) {
+            if (item.getComponents().get(DataComponentTypes.FOOD) != null &&
+                    !(item instanceof PotionItem) &&
+                    item != Items.MUSHROOM_STEW &&
+                    item != Items.RABBIT_STEW) {
                 foodItems.add(item);
             }
         }
@@ -666,7 +746,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         if (food.getItem() != Items.ENCHANTED_GOLDEN_APPLE && food.getItem() != Items.GOLDEN_APPLE) {
             food.setCount(32);
         }
-        // For Suspicious Stew, you need to add a random effect
+
         if (food.getItem() == Items.SUSPICIOUS_STEW) {
             List<RegistryEntry<StatusEffect>> statusEffects = Registries.STATUS_EFFECT.streamEntries()
                     .map(entry -> (RegistryEntry<StatusEffect>) entry)
@@ -721,24 +801,24 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     private void getEnchantedBook(HitResult hitResult) {
         ItemStack enchantedBook = Items.ENCHANTED_BOOK.getDefaultStack();
-        List<Enchantment> enchantments = this.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).stream().toList();
+        List<Enchantment> enchantments = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).stream().toList();
         Enchantment enchantment = enchantments.get(random.nextBetween(0, enchantments.size() - 1));
         RegistryEntry<Enchantment> enchantmentEntry = this.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(enchantment);
         enchantedBook.addEnchantment(enchantmentEntry, random.nextBetween(1, enchantment.getMaxLevel()));
-        this.dropStack((ServerWorld) this.getEntityWorld(), enchantedBook, 0);
+        this.dropStack(world, enchantedBook, 0);
     }
 
     private void xp(HitResult hitResult) {
         //float prizeMultiplier = (int) Math.pow((random.nextFloat()+1),5);
         //ExperienceOrbEntity.spawn((ServerWorld) this.getEntityWorld(), this.getPos(), (int) (random.nextBetween(32, 128) * prizeMultiplier));
         // El segundo boostea ligeramente las chances para arriba
-        ExperienceOrbEntity.spawn((ServerWorld) this.getEntityWorld(), this.getEntityPos(), (int) Math.pow(Math.min(random.nextBetween(8,32), random.nextBetween(16,32)),3));
+        ExperienceOrbEntity.spawn(world, this.getEntityPos(), (int) Math.pow(Math.min(random.nextBetween(8,32), random.nextBetween(16,32)),3));
     }
 
     private void smallPrize(HitResult hitResult) {
         List<ItemStack> prizes = new ArrayList<>();
         prizes.add(new ItemStack(Items.OAK_LOG, 64));
-        prizes.add(new ItemStack(Items.BONE, 48));
+        prizes.add(new ItemStack(Items.BONE, 64));
         prizes.add(new ItemStack(Items.COAL, 64));
         prizes.add(new ItemStack(Items.STONE, 64));
         prizes.add(new ItemStack(Items.SOUL_SAND, 64));
@@ -747,7 +827,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         prizes.add(new ItemStack(Items.BLUE_BED, 1));
         prizes.add(new ItemStack(Items.ENDER_PEARL, 16));
         prizes.add(new ItemStack(Items.BLAZE_ROD, 12));
-        prizes.add(new ItemStack(Items.POINTED_DRIPSTONE, 12));
+        prizes.add(new ItemStack(Items.POINTED_DRIPSTONE, 32));
         prizes.add(new ItemStack(Items.TURTLE_HELMET, 1));
         prizes.add(new ItemStack(Items.SCAFFOLDING, 64));
 
@@ -755,16 +835,16 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         ItemStack reward = prizes.get(nextItem);
 
         if (reward.getItem() == Items.POINTED_DRIPSTONE) {
-            this.dropStack((ServerWorld) this.getEntityWorld(), new ItemStack(Items.LAVA_BUCKET, 1), 0);
-            this.dropStack((ServerWorld) this.getEntityWorld(), new ItemStack(Items.WATER_BUCKET, 1), 0);
-            this.dropStack((ServerWorld) this.getEntityWorld(), new ItemStack(Items.CAULDRON, 1), 0);
+            this.dropStack(world, new ItemStack(Items.LAVA_BUCKET, 1), 0);
+            this.dropStack(world, new ItemStack(Items.WATER_BUCKET, 1), 0);
+            this.dropStack(world, new ItemStack(Items.CAULDRON, 1), 0);
         }
         if (reward.getItem() == Items.STONE) {
-            this.dropStack((ServerWorld) this.getEntityWorld(), new ItemStack(Items.STONE, 64), 0);
-            this.dropStack((ServerWorld) this.getEntityWorld(), new ItemStack(Items.STONE, 64), 0);
+            this.dropStack(world, new ItemStack(Items.STONE, 64), 0);
+            this.dropStack(world, new ItemStack(Items.STONE, 64), 0);
         }
 
-        this.dropStack((ServerWorld) this.getEntityWorld(), reward, 0);
+        this.dropStack(world, reward, 0);
     }
 
     private void breakGameProgression(HitResult hitResult) {
@@ -779,7 +859,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         rareItems.add(Items.SHULKER_BOX.getDefaultStack());
         rareItems.add(ModBlocks.PROTECTOR_BLOCK.asItem().getDefaultStack());
 
-        RegistryEntryLookup<Enchantment> enchantments = this.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+        RegistryEntryLookup<Enchantment> enchantments = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
 
         ItemStack mendingBook = Items.ENCHANTED_BOOK.getDefaultStack();
         RegistryEntry<Enchantment> mendingEntry = enchantments.getOrThrow(Enchantments.MENDING);
@@ -825,32 +905,29 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         iron_blocks.setCount(16);
         rareItems.add(iron_blocks);
 
-        int nextItem = this.random.nextBetween(0, (int) rareItems.size()-1);
+        int nextItem = this.random.nextBetween(0, rareItems.size() -1);
         ItemStack reward = rareItems.get(nextItem);
 
         if (reward.getItem() == Items.BOOKSHELF) {
-            this.dropStack((ServerWorld) this.getEntityWorld(), Items.ENCHANTING_TABLE.getDefaultStack(), 0);
+            this.dropStack(world, Items.ENCHANTING_TABLE.getDefaultStack(), 0);
         }
 
-        this.dropStack((ServerWorld) this.getEntityWorld(), reward, 0);
+        this.dropStack(world, reward, 0);
     }
 
     private void explosion(HitResult hitResult) {
-        int kase = random.nextBetween(1, 20);
+        int kase = random.nextInt(19);
 
-        if (kase == 20) {
-            this.getEntityWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 127.0, World.ExplosionSourceType.BLOCK);
-        }
-        else if (kase > 17 && this.getOwner() != null) {
-            this.getEntityWorld().createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 1.0, World.ExplosionSourceType.BLOCK);
+        if (kase > 16 && this.getOwner() != null) {
+            world.createExplosion(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 1.0, World.ExplosionSourceType.BLOCK);
         }
         else {
-            this.getEntityWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) 5.0, World.ExplosionSourceType.BLOCK);
+            world.createExplosion(this, this.getX(), this.getY(), this.getZ(),(float) ((kase==0) ? 127.0 : 5.0), World.ExplosionSourceType.BLOCK);
         }
     }
 
     private void fireExplosion(HitResult hitResult) {
-        int kase = random.nextBetween(1, 20);
+        int kase = random.nextInt(19);
 
         FireballEntity fireballEntity;
 
@@ -875,9 +952,9 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //            }
 //        }
         if (this.getOwner() != null) {
-            if (kase > 17 && kase < 20) {
+            if (kase > 16) {
                 fireballEntity = new FireballEntity(this.getEntityWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 1);
-                fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ());
+                fireballEntity.setPosition(this.getOwner().getX(), this.getOwner().getY()+2, this.getOwner().getZ());
             }
             else {
                 fireballEntity = new FireballEntity(this.getEntityWorld(), (LivingEntity) this.getOwner(), new Vec3d(0, -1.0f, 0), 4);
@@ -923,19 +1000,29 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         }
     }
 
+    // Test TODO
     private void voidSphere(HitResult hitResult) {
         float randomNumber = random.nextFloat();
         while (randomNumber < 0.0000000001f) {
             randomNumber = random.nextFloat();
         }
         int radius = Math.max((int) (-1 * (5.6f * Math.log(randomNumber * 1369)/Math.log(1.375f) - 127)), 10);
-        World world = this.getEntityWorld();
         BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, (int) hitResult.getPos().y, (int) hitResult.getPos().z));
+
+
 
         if (this.getOwner() != null) {
             TerrainManager.TERRAIN_MANAGER.addJob(new SingleBlockSphereJob(world, (PlayerEntity) this.getOwner(), center, radius, Blocks.AIR));
+
+            Box boundingBox = this.getBoundingBox();
+            List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(64.0, 64.0, 64.0));
             StatusEffectInstance slowFall = new StatusEffectInstance(StatusEffects.SLOW_FALLING, radius * 4, 0);
-            ((LivingEntity) this.getOwner()).addStatusEffect(slowFall);
+
+            for (LivingEntity entity : entities) {
+                if (entity instanceof PlayerEntity player) {
+                    entity.addStatusEffect(slowFall);
+                }
+            }
         }
     }
     // TODO
@@ -1115,7 +1202,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 
     private void fragile(HitResult hitResult, Box boundingBox) {
         List<LivingEntity> entities = this.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, boundingBox.expand(4.0, 2.0, 4.0));
-        ((ServerWorld) this.getEntityWorld()).spawnParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        world.spawnParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
             StatusEffectInstance effect = new StatusEffectInstance(ModEffects.FRAGILE, 6000, 0);
@@ -1131,7 +1218,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             entities.add((LivingEntity) this.getOwner());
         }
 
-        ((ServerWorld) this.getEntityWorld()).spawnParticles(ModParticles.CHAOS_ORB_COUNTER_BLINK_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        world.spawnParticles(ModParticles.CHAOS_ORB_COUNTER_BLINK_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
             StatusEffectInstance effect = new StatusEffectInstance(ModEffects.COUNTER_BLINK, 9600, 0);
@@ -1146,7 +1233,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         if (entities.isEmpty() && this.getOwner() != null) {
             entities.add((LivingEntity) this.getOwner());
         }
-        ((ServerWorld) this.getEntityWorld()).spawnParticles(ModParticles.CHAOS_ORB_BLINKING_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        world.spawnParticles(ModParticles.CHAOS_ORB_BLINKING_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {
             StatusEffectInstance effect = new StatusEffectInstance(ModEffects.BLINKING, 1200, 0);
@@ -1231,21 +1318,21 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         reinforcedDeepslate.setCount(64);
         mythicItems.add(reinforcedDeepslate);
 
-//        ItemStack endPortalFrame = Items.END_PORTAL_FRAME.getDefaultStack();
-//        endPortalFrame.setCount(12);
-//        mythicItems.add(endPortalFrame);
+        ItemStack endPortalFrame = Items.END_PORTAL_FRAME.getDefaultStack();
+        endPortalFrame.setCount(12);
+        mythicItems.add(endPortalFrame);
 
         ItemStack buddingAmethyst = Items.BUDDING_AMETHYST.getDefaultStack();
         buddingAmethyst.setCount(8);
         mythicItems.add(buddingAmethyst);
 
-//        ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
-//        mythicItems.add(trialSpawner);
-//
-//        ItemStack spawner = Items.SPAWNER.getDefaultStack();
-//        mythicItems.add(spawner);
+        ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
+        mythicItems.add(trialSpawner);
 
-//        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
+        ItemStack spawner = Items.SPAWNER.getDefaultStack();
+        mythicItems.add(spawner);
+
+        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
 
         mythicItems.add(ModItems.LEGENDARY_PICKAXE.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_SHOVEL.getDefaultStack());
@@ -1260,14 +1347,14 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);
         ItemStack reward = mythicItems.get(nextItem);
 
-//        int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
-//        mythicItems.add(spawnEggs.get(nextEgg));
-//
-//        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
-//            ItemStack newEgg = spawnEggs.get(nextEgg);
-//            newEgg.setCount(1);
-//            this.dropStack((ServerWorld) this.getEntityWorld(), newEgg, 0);
-//        }
+        int nextEgg = this.random.nextBetween(0, (int) spawnEggs.size()-1);
+        mythicItems.add(spawnEggs.get(nextEgg));
+
+        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
+            ItemStack newEgg = spawnEggs.get(nextEgg);
+            newEgg.setCount(1);
+            this.dropStack((ServerWorld) this.getEntityWorld(), newEgg, 0);
+        }
 
         this.dropStack((ServerWorld) this.getEntityWorld(), reward, 0);
     }
@@ -1289,4 +1376,33 @@ public class ChaosOrbEntity extends ThrownItemEntity {
 //
 //        this.dropStack(reward, 0);
 //    }
+
+    private void debugHelp(HitResult hitResult) {
+        if (this.getOwner() != null && this.getOwner() instanceof PlayerEntity player) {
+            player.sendMessage(Text.of("MobPack"), false);
+            player.sendMessage(Text.of("MythicItem"), false);
+            player.sendMessage(Text.of("SkeletonHorse"), false);
+            player.sendMessage(Text.of("Progression"), false);
+            player.sendMessage(Text.of("Armor"), false);
+            player.sendMessage(Text.of("Tools"), false);
+            player.sendMessage(Text.of("Chaos (5 chaos orbs)"), false);
+            player.sendMessage(Text.of("TerrainSphere"), false);
+            player.sendMessage(Text.of("Explosion"), false);
+            player.sendMessage(Text.of("FireExplosion"), false);
+            player.sendMessage(Text.of("Food"), false);
+            player.sendMessage(Text.of("Book"), false);
+            player.sendMessage(Text.of("Prize"), false);
+            player.sendMessage(Text.of("Xp"), false);
+            player.sendMessage(Text.of("Beacon"), false);
+            player.sendMessage(Text.of("Range"), false);
+            player.sendMessage(Text.of("Fragile"), false);
+            player.sendMessage(Text.of("Storm"), false);
+            player.sendMessage(Text.of("Teleport"), false);
+            player.sendMessage(Text.of("CounterBlink"), false);
+            player.sendMessage(Text.of("Blinking"), false);
+            player.sendMessage(Text.of("20"), false);
+            player.sendMessage(Text.of("Scale"), false);
+            player.sendMessage(Text.of("Tunneler"), false);
+        }
+    }
 }
