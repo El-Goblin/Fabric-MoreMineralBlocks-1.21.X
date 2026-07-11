@@ -13,9 +13,10 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public class HeldItemRendererMixin {
 
     @ModifyArg(
-            method = "renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemDisplayContext;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/OrderedRenderCommandQueue;I)V",            at = @At(
+            method = "renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemDisplayContext;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/command/render/OrderedRenderCommandQueue;I)V",
+            at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/item/ItemModelManager;clearAndUpdate"
+                    target = "Lnet/minecraft/client/item/ItemModelManager;clearAndUpdate(Lnet/minecraft/client/render/item/ItemRenderState;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemDisplayContext;Lnet/minecraft/world/World;Lnet/minecraft/client/render/item/HeldItemContext;I)V"
             ),
             index = 1
     )

@@ -29,8 +29,8 @@
 		"moremineralblocks.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.14",
-		"minecraft": "~1.21.3",
+		"fabricloader": ">=0.18.4",
+		"minecraft": "~1.21.11",
 		"java": ">=21",
 		"fabric-api": "*",
 		"fabric-key-binding-api-v1": "*"
