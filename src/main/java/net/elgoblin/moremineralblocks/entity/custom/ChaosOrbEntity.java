@@ -13,15 +13,12 @@ import net.elgoblin.moremineralblocks.terrain.SingleBlockSphereJob;
 import net.elgoblin.moremineralblocks.terrain.TerrainManager;
 //import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.elgoblin.moremineralblocks.util.ProtectorManager;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.SuspiciousStewEffectsComponent;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -35,28 +32,17 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.mob.SlimeEntity;
-import net.minecraft.entity.passive.AxolotlEntity;
-import net.minecraft.entity.passive.TropicalFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.*;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerChunkManager;
-import net.minecraft.server.world.ServerLightingProvider;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.structure.StructurePlacementData;
-import net.minecraft.structure.StructureTemplate;
-import net.minecraft.structure.StructureTemplateManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.EntityHitResult;
@@ -64,12 +50,8 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeKeys;
-import net.minecraft.world.chunk.*;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -762,7 +744,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void getInfiniteItem(HitResult hitResult) {
-        ItemStack infiniteItem = new ItemStack(ModItems.INFINITE_ITEMSTACK);
+        ItemStack infiniteItem = new ItemStack(ModItems.DIMENSION_POCKET);
         List<Item> items = new ArrayList<>();
 
         for (Item item : Registries.ITEM) {
@@ -1342,6 +1324,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         mythicItems.add(ModItems.LEGENDARY_LONGSWORD.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_ROCKET.getDefaultStack());
         mythicItems.add(ModItems.SURVIVAL_DEBUG_STICK.getDefaultStack());
+        mythicItems.add(ModItems.DIMENSION_POCKET.getDefaultStack());
         mythicItems.add(ModItems.FLASH.getDefaultStack());
 
         int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);

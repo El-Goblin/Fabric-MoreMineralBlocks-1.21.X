@@ -6,20 +6,18 @@ import net.elgoblin.moremineralblocks.effect.LaLechonaConsumeEffect;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.type.ConsumableComponent;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.consume.ClearAllEffectsConsumeEffect;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import org.apache.logging.log4j.core.jmx.Server;
 
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.UnaryOperator;
 
 import static net.minecraft.component.type.ConsumableComponents.drink;
@@ -40,6 +38,27 @@ public class ModDataComponentTypes {
     public static final ComponentType<Vec3d> COORDINATES = register("coordinates", builder -> builder.codec(Vec3d.CODEC));
     public static final ComponentType<Identifier> SERVERWORLD = register("server_id", builder -> builder.codec(Identifier.CODEC));
     public static final ComponentType<Identifier> OTHER_SERVERWORLD = register("other_server_id", builder -> builder.codec(Identifier.CODEC));
+    public static final ComponentType<Integer> INTER_GROUP_POINTER = register("inter_group_pointer", builder -> builder.codec(Codec.INT));
+
+    public static final ComponentType<Integer> SELECTED_COLOR = register("selected_color", builder -> builder.codec(Codec.INT));
+    public static final ComponentType<List<Integer>> INTRA_GROUP_POINTERS = register("intra_group_pointers", builder -> builder.codec(Codec.INT.listOf()));
+
+    public static final ComponentType<Boolean> SAFE_MODE = register("safe_mode", builder -> builder.codec(Codec.BOOL));
+
+    public static final Map<DyeColor, ComponentType<List<Integer>>> COLOR_INVENTORIES = new EnumMap<>(DyeColor.class);
+
+    public static void registerComponents() {
+        for (DyeColor color : DyeColor.values()) {
+            final String name = color.name().toLowerCase() + "_inventory_pointers";
+
+            ComponentType<List<Integer>> component = register(name, builder -> builder
+                    .codec(Codec.list(Codec.INT))
+                    .packetCodec(PacketCodecs.INTEGER.collect(PacketCodecs.toList()))
+            );
+
+            COLOR_INVENTORIES.put(color, component);
+        }
+    }
 
 
 //    public static final ComponentType<Integer> CUMULATED_DAMAGE_TAKEN = register(
@@ -58,5 +77,6 @@ public class ModDataComponentTypes {
 
     public static void registerDataComponentTypes() {
         MoreMineralBlocks.LOGGER.info("Registering Data Components for " + MoreMineralBlocks.MOD_ID);
+        registerComponents();
     }
 }

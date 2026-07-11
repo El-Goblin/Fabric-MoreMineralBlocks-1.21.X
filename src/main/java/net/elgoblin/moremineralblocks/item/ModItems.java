@@ -7,7 +7,6 @@ import net.elgoblin.moremineralblocks.item.custom.*;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DebugStickStateComponent;
-import net.minecraft.entity.EntityType;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -56,10 +55,10 @@ public class ModItems {
     public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", new LegendaryRocketItem(new Item.Settings()
             .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_rocket")))
             .maxCount(1).fireproof().rarity(Rarity.EPIC)));
-    public static final Item INFINITE_ITEMSTACK = registerItem("infinite_itemstack", new InfiniteItem(EntityType.ARMADILLO, 2, 3,
-            new Item.Settings()
-                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "infinite_itemstack")))
-                    .maxDamage(0).maxCount(1).rarity(Rarity.EPIC)));
+//    public static final Item INFINITE_ITEMSTACK = registerItem("infinite_itemstack", new InfiniteItem(EntityType.ARMADILLO, 2, 3,
+//            new Item.Settings()
+//                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "infinite_itemstack")))
+//                    .maxDamage(0).maxCount(1).rarity(Rarity.EPIC)));
     public static final Item SURVIVAL_DEBUG_STICK = registerItem("survival_debug_stick", new SurvivalDebugStickItem(new Item.Settings()
             .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "survival_debug_stick")))
             .maxCount(1)
@@ -163,8 +162,8 @@ public class ModItems {
             .recipeRemainder(BUCKET).component(DataComponentTypes.CONSUMABLE, ModDataComponentTypes.LA_LECHONA).useRemainder(BUCKET).maxCount(1)));
 
 //    public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
-public static final Item INFINITE_ITEMV2 = registerItem("infinite_itemv2", new InfiniteItemV2(new Item.Settings()
-        .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "infinite_itemv2")))
+public static final Item DIMENSION_POCKET = registerItem("dimension_pocket", new InfiniteItemV2(new Item.Settings()
+        .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "dimension_pocket")))
         .maxCount(1).rarity(Rarity.EPIC).maxDamage(0)));
 
     private static Item registerItem(String name, Item item) {
@@ -204,7 +203,7 @@ public static final Item INFINITE_ITEMV2 = registerItem("infinite_itemv2", new I
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
             entries.add(CHAOS_ORB);
-            entries.add(INFINITE_ITEMSTACK);
+//            entries.add(INFINITE_ITEMSTACK);
         });
 
         // Esto lo pone en la tab de ingredients en creativo
@@ -215,12 +214,12 @@ public static final Item INFINITE_ITEMV2 = registerItem("infinite_itemv2", new I
             entries.add(LEGENDARY_HOE);
             entries.add(LEGENDARY_ROCKET);
             entries.add(SURVIVAL_DEBUG_STICK);
-            entries.add(INFINITE_ITEMSTACK);
+//            entries.add(INFINITE_ITEMSTACK);
             entries.add(MAGIC_MIRROR);
             entries.add(REFLECTIVE_MIRROR);
             entries.add(CHAOS_MIRROR);
             entries.add(FLASH);
-            entries.add(INFINITE_ITEMV2);
+            entries.add(DIMENSION_POCKET);
 //            entries.add(LA_LECHONA);
         });
 

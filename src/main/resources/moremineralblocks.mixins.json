@@ -9,7 +9,10 @@
 		"LivingEntityMixin",
 		"EntityMixin",
 		"PlayerEntityMixin",
-		"AbstractBlockMixin"
+		"AbstractBlockMixin",
+		"MouseMixin",
+		"HandledScreenMixin",
+		"HeldItemRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

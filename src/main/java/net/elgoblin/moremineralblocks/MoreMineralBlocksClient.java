@@ -2,6 +2,9 @@ package net.elgoblin.moremineralblocks;
 
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 //import net.elgoblin.moremineralblocks.client.InfiniteItemRenderer;
+import net.elgoblin.moremineralblocks.client.ClientEvents;
+import net.elgoblin.moremineralblocks.client.InfiniteItemClientCache;
+import net.elgoblin.moremineralblocks.client.InfiniteItemstackOverlay;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 //import net.elgoblin.moremineralblocks.entity.client.DevilmonModel;
@@ -10,60 +13,40 @@ import net.elgoblin.moremineralblocks.entity.ModEntities;
 //import net.elgoblin.moremineralblocks.entity.client.DevilmonRenderer;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.item.ItemModelManager;
-import net.elgoblin.moremineralblocks.networking.LegendaryToolsSwitchEnchantmentPayload;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.particle.custom.ChaosOrbFeedbackParticle;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.lwjgl.glfw.GLFW;
 
 
 public class MoreMineralBlocksClient implements ClientModInitializer {
 
-//    private static KeyBinding switchEnchantments = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-//            "key.moremineralblocks.switch_enchantments",
-//            InputUtil.Type.KEYSYM,
-//            GLFW.GLFW_KEY_K,
-//            "category.moremineralblocks.moremineralblocks"
-//    ));
-
-    //public TypedActionResult<ItemStack> advanceEnchantments(PlayerEntity user) {
-        //return user.getMainHandStack().getItem().
-    //};
-
-    private static KeyBinding keyBinding;
+    public static final KeyBinding.Category LEGENDARY_TOOLS = KeyBinding.Category.create(Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_tools"));
+    public static KeyBinding switchEnchantments_toggleSafeMode;
+    public static KeyBinding intraGroupScroll;
+    public static KeyBinding interGroupScroll;
 
     @Override
     public void onInitializeClient() {
-        KeyBinding.Category LEGENDARY_TOOLS = KeyBinding.Category.create(Identifier.of(MoreMineralBlocks.MOD_ID, "legendary_tools"));
-        KeyBinding switchEnchantments = KeyBindingHelper.registerKeyBinding(
-                new KeyBinding("key.moremineralblocks.switch_enchantments", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_K, LEGENDARY_TOOLS));
+        switchEnchantments_toggleSafeMode = KeyBindingHelper.registerKeyBinding(
+                new KeyBinding("key.moremineralblocks.switch_enchantments_toggle_safe_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_K, LEGENDARY_TOOLS));
+        intraGroupScroll = KeyBindingHelper.registerKeyBinding(
+                new KeyBinding("key.moremineralblocks.intra_group_scroll", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_TAB, LEGENDARY_TOOLS));
+        interGroupScroll = KeyBindingHelper.registerKeyBinding(
+                new KeyBinding("key.moremineralblocks.inter_group_scroll", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_GRAVE_ACCENT, LEGENDARY_TOOLS));
 
         BlockRenderLayerMap.putBlock(ModBlocks.GOLD_DOOR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(ModBlocks.GOLD_TRAPDOOR, BlockRenderLayer.CUTOUT);
@@ -83,27 +66,10 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
         BlockRenderLayerMap.putBlock(ModBlocks.REDSTONE_TRAPDOOR, BlockRenderLayer.CUTOUT);
 
         EntityRendererRegistry.register(ModEntities.CHAOS_ORB, FlyingItemEntityRenderer::new);
-
-
-        ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
-            while (switchEnchantments.wasPressed()) {
-//                if (minecraftClient.player != null) {
-//                    minecraftClient.player.sendMessage(Text.of("asd"), false);
-//                }
-                ClientPlayNetworking.send(new LegendaryToolsSwitchEnchantmentPayload());
-            }
-        });
+        InfiniteItemstackOverlay.register();
+        ClientEvents.register();
 
 //        BuiltinItemRendererRegistry.INSTANCE.register(ModItems.INFINITE_ITEMSTACK, new InfiniteItemRenderer());
-
-//        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-//
-////            if (switchEnchantments.wasPressed()) {
-////                    if (client.player.getMainHandStack().getItem() == ModItems.LEGENDARY_PICKAXE) {
-////                        //advanceEnchantments(client.player);
-////                    }
-////            }
-//        });
 
 //        EntityModelLayerRegistry.registerModelLayer(MantisModel.MANTIS, MantisModel::getTexturedModelData);
 //        EntityRendererRegistry.register(ModEntities.MANTIS, MantisRenderer::new);
@@ -129,30 +95,45 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
             ItemStack mainHoldedStack = client.player.getMainHandStack();
             ItemStack offHoldedStack = client.player.getOffHandStack();
 
-            if (mainHoldedStack.isOf(ModItems.INFINITE_ITEMV2)) {
-                renderSelectedStack(drawContext, client, client.player.getMainHandStack(), (ServerWorld) client.player.getEntityWorld());
+            if (mainHoldedStack.isOf(ModItems.DIMENSION_POCKET)) {
+                renderSelectedStack(drawContext, client, client.player.getMainHandStack());
             }
-            else if (offHoldedStack.isOf(ModItems.INFINITE_ITEMV2)) {
-                renderSelectedStack(drawContext, client, client.player.getOffHandStack(), (ServerWorld) client.player.getEntityWorld());
+            else if (offHoldedStack.isOf(ModItems.DIMENSION_POCKET)) {
+                renderSelectedStack(drawContext, client, client.player.getOffHandStack());
             }
         }));
     }
 
-    private void renderSelectedStack(DrawContext drawContext, MinecraftClient client, ItemStack stack, ServerWorld world) {
-        int width = client.getWindow().getScaledWidth();
-        int height = client.getWindow().getScaledHeight();
+    private void renderSelectedStack(DrawContext drawContext, MinecraftClient client, ItemStack stack) {
+        BlockPos storagePos = stack.get(ModDataComponentTypes.LINKED_CHEST);
+        Identifier dimension = stack.get(ModDataComponentTypes.SERVERWORLD);
 
-        int x = (width / 2) + 101;
-        int y = height - 22;
+        if (storagePos == null || dimension == null) {
+            return;
+        }
+        ItemStack selectedStack = InfiniteItemClientCache.mainRenderedStack;
 
-        ItemStack selectedStack = ModItems.CHAOS_ORB.getDefaultStack();
+        if (!selectedStack.isEmpty() && client.player != null) {
+            int width = client.getWindow().getScaledWidth();
+            int height = client.getWindow().getScaledHeight();
 
-        selectedStack.setCount(35);
+            int hotbarLeftX = width / 2 - 90;
+            int selectedSlot = client.player.getInventory().getSelectedSlot();
+            int x = hotbarLeftX + (selectedSlot * 20) + 2;
+            int y = height - 22 + 3;
 
-        if (!selectedStack.isEmpty()) {
+            if (client.player.getOffHandStack() == stack) {
+                x = (width / 2) - 90 - 29 + 2;
+            }
+
+
             drawContext.drawItem(selectedStack, x, y);
-            int number = 3456;
-            drawContext.drawStackOverlay(client.textRenderer, selectedStack, x + (int) (2*Math.log10(number)), y, "3456");
+            drawContext.drawStackOverlay(
+                    client.textRenderer,
+                    selectedStack,
+                    x,
+                    y,
+                    String.valueOf(selectedStack.getCount()));
 
         }
     }
