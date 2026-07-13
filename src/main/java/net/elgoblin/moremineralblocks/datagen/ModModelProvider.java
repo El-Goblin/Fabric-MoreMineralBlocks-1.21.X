@@ -435,9 +435,6 @@ public class ModModelProvider extends FabricModelProvider {
 //        itemModelGenerator.register(ModItems.COPPER_LONGSWORD, Models.HANDHELD);
 //        itemModelGenerator.register(ModItems.DIAMOND_LONGSWORD, Models.HANDHELD);
 //        itemModelGenerator.register(ModItems.NETHERITE_LONGSWORD, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.FLAMEBERGE_LONGSWORD, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.FIRE_DRAGONSWORD_LONGSWORD, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.FIENDBLADE_LONGSWORD, Models.HANDHELD);
         itemModelGenerator.register(ModItems.FLASH, Models.HANDHELD);
         itemModelGenerator.register(ModItems.MAGIC_MIRROR, Models.HANDHELD);
         itemModelGenerator.register(ModItems.REFLECTIVE_MIRROR, Models.HANDHELD);

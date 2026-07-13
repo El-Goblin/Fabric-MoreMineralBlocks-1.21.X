@@ -26,6 +26,9 @@ import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ChestBlock;
 import net.minecraft.component.ComponentType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageSources;
@@ -77,6 +80,7 @@ public class MoreMineralBlocks implements ModInitializer{
 		PayloadTypeRegistry.playC2S().register(ToggleSlotPayload.ID, ToggleSlotPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(InfiniteItemStackIntraGroupScrollPayload.ID, InfiniteItemStackIntraGroupScrollPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(InfiniteItemStackInterGroupScrollPayload.ID, InfiniteItemStackInterGroupScrollPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(DimensionPocketMiddleClickQueryPayload.ID, DimensionPocketMiddleClickQueryPayload.CODEC);
 
 
 		ModItems.registerModItems();
@@ -172,6 +176,19 @@ public class MoreMineralBlocks implements ModInitializer{
 							return;
 						}
 
+						BlockState blockState = targetWorld.getBlockState(storagePos);
+						Block inventoryBlock = blockState.getBlock();
+						Inventory deposit = null;
+
+						if (inventoryBlock instanceof ChestBlock chest) {
+							deposit = ChestBlock.getInventory(chest, blockState, targetWorld, storagePos, true);
+						}
+						if (deposit == null && targetWorld.getBlockEntity(storagePos) instanceof Inventory otherInventory) {
+							deposit = otherInventory;
+						}
+
+
+
 						Integer interGroupPointer = infiniteItem.get(ModDataComponentTypes.INTER_GROUP_POINTER);
 						List<Integer> intraGroupPointers = infiniteItem.get(ModDataComponentTypes.INTRA_GROUP_POINTERS);
 
@@ -189,16 +206,16 @@ public class MoreMineralBlocks implements ModInitializer{
 						int prevGroupIntraIdx = intraGroupPointers.get(prevGroup);
 						int nextGroupIntraIdx = intraGroupPointers.get(nextGroup);
 
-						ItemStack mainStack = getStackFromGroup(infiniteItem, inventory, currentGroup, currentIntraIdx);
+						ItemStack mainStack = getStackFromGroup(infiniteItem, deposit, currentGroup, currentIntraIdx);
 
-						int currentGroupPrevIndex = findNextItem(infiniteItem, inventory, currentGroup, currentIntraIdx, -1);
-						int currentGroupNextIndex = findNextItem(infiniteItem, inventory, currentGroup, currentIntraIdx, 1);
+						int currentGroupPrevIndex = findNextItem(infiniteItem, deposit, currentGroup, currentIntraIdx, -1);
+						int currentGroupNextIndex = findNextItem(infiniteItem, deposit, currentGroup, currentIntraIdx, 1);
 
-						ItemStack prevHorizStack = getStackFromGroup(infiniteItem, inventory, currentGroup, currentGroupPrevIndex);
-						ItemStack nextHorizStack = getStackFromGroup(infiniteItem, inventory, currentGroup, currentGroupNextIndex);
+						ItemStack prevHorizStack = getStackFromGroup(infiniteItem, deposit, currentGroup, currentGroupPrevIndex);
+						ItemStack nextHorizStack = getStackFromGroup(infiniteItem, deposit, currentGroup, currentGroupNextIndex);
 
-						ItemStack prevVertStack = getStackFromGroup(infiniteItem, inventory, prevGroup, prevGroupIntraIdx);
-						ItemStack nextVertStack = getStackFromGroup(infiniteItem, inventory, nextGroup, nextGroupIntraIdx);
+						ItemStack prevVertStack = getStackFromGroup(infiniteItem, deposit, prevGroup, prevGroupIntraIdx);
+						ItemStack nextVertStack = getStackFromGroup(infiniteItem, deposit, nextGroup, nextGroupIntraIdx);
 
 						context.responseSender().sendPacket(new InfiniteItemstackV2ChestContentsResponsePayload(
 								mainStack,
@@ -229,26 +246,39 @@ public class MoreMineralBlocks implements ModInitializer{
 					ServerWorld targetWorld = context.server().getWorld(RegistryKey.of(RegistryKeys.WORLD, dimension));
 					if (targetWorld == null || !targetWorld.isPosLoaded(storagePosition)) {return;}
 
-					if (targetWorld.getBlockEntity(storagePosition) instanceof Inventory inventory) {
+					if (!(targetWorld.getBlockEntity(storagePosition) instanceof Inventory inventory)) {
+						return;
+					}
 
-						List<Integer> group = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(interGroupPointer)));
-						if (group == null) {return;}
+					BlockState blockState = targetWorld.getBlockState(storagePosition);
+					Block inventoryBlock = blockState.getBlock();
+					Inventory deposit = null;
 
-						int oldPointer = intraGroupPointers.get(interGroupPointer);
+					if (inventoryBlock instanceof ChestBlock chest) {
+						deposit = ChestBlock.getInventory(chest, blockState, targetWorld, storagePosition, true);
+					}
+					if (deposit == null && targetWorld.getBlockEntity(storagePosition) instanceof Inventory otherInventory) {
+						deposit = otherInventory;
+					}
 
-						List<Integer> newIntraGroupPointers = new ArrayList<>(intraGroupPointers);
-						int newPointer = newIntraGroupPointers.get(interGroupPointer) + payload.scroll();
+					List<Integer> group = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(interGroupPointer)));
+					if (group == null) {return;}
+
+					int oldPointer = intraGroupPointers.get(interGroupPointer);
+
+					List<Integer> newIntraGroupPointers = new ArrayList<>(intraGroupPointers);
+
+					int newPointer = newIntraGroupPointers.get(interGroupPointer) - payload.scroll();
+					if (newPointer < 0) {newPointer = group.size()-1;}
+					if (newPointer >= group.size()) {newPointer = 0;}
+
+					while (!group.isEmpty() && deposit.getStack(group.get(newPointer)).isEmpty() && newPointer != oldPointer) {
+						newPointer = newPointer - payload.scroll();
 						if (newPointer < 0) {newPointer = group.size()-1;}
 						if (newPointer >= group.size()) {newPointer = 0;}
-
-						while (!group.isEmpty() && inventory.getStack(group.get(newPointer)).isEmpty() && newPointer != oldPointer) {
-							newPointer = newPointer + payload.scroll();
-							if (newPointer < 0) {newPointer = group.size()-1;}
-							if (newPointer >= group.size()) {newPointer = 0;}
-						}
-						newIntraGroupPointers.set(interGroupPointer, newPointer);
-						activeHand.set(ModDataComponentTypes.INTRA_GROUP_POINTERS, newIntraGroupPointers);
 					}
+					newIntraGroupPointers.set(interGroupPointer, newPointer);
+					activeHand.set(ModDataComponentTypes.INTRA_GROUP_POINTERS, newIntraGroupPointers);
 		        });
 
 		ServerPlayNetworking.registerGlobalReceiver(InfiniteItemStackInterGroupScrollPayload.ID,
@@ -319,7 +349,7 @@ public class MoreMineralBlocks implements ModInitializer{
 		ServerPlayNetworking.registerGlobalReceiver(InfiniteItemSelectColorPayload.ID, (payload, context) -> {
 			context.server().execute(() -> {
 				ServerPlayerEntity player = context.player();
-				net.minecraft.screen.ScreenHandler currentHandler = player.currentScreenHandler;
+				ScreenHandler currentHandler = player.currentScreenHandler;
 
 				if (currentHandler == null) {return;}
 
@@ -370,6 +400,103 @@ public class MoreMineralBlocks implements ModInitializer{
 
 			});
 		});
+
+		ServerPlayNetworking.registerGlobalReceiver(DimensionPocketMiddleClickQueryPayload.ID,
+				(payload, context) -> {
+					context.server().execute(() -> {
+						ServerPlayerEntity player = context.player();
+						ItemStack infiniteItem = player.getMainHandStack();
+						if (!infiniteItem.isOf(ModItems.DIMENSION_POCKET)){
+							infiniteItem = player.getOffHandStack();
+						}
+						if (!infiniteItem.isOf(ModItems.DIMENSION_POCKET)) {
+							return;
+						}
+
+						if (!infiniteItem.isOf(ModItems.DIMENSION_POCKET)) return;
+
+						BlockPos storagePos = infiniteItem.get(ModDataComponentTypes.LINKED_CHEST);
+						Identifier dimension = infiniteItem.get(ModDataComponentTypes.SERVERWORLD);
+
+						if (storagePos == null || dimension == null) {
+							sendEmptyPayload(context);
+							return;
+						}
+
+						ServerWorld targetWorld = context.server().getWorld(RegistryKey.of(RegistryKeys.WORLD, dimension));
+						if (targetWorld == null || !targetWorld.isPosLoaded(storagePos)) {
+							return;
+						}
+
+						if (!(targetWorld.getBlockEntity(storagePos) instanceof Inventory inventory)) {
+							return;
+						}
+
+						BlockState blockState = targetWorld.getBlockState(storagePos);
+						Block inventoryBlock = blockState.getBlock();
+						Inventory deposit = null;
+
+						if (inventoryBlock instanceof ChestBlock chest) {
+							deposit = ChestBlock.getInventory(chest, blockState, targetWorld, storagePos, true);
+						}
+						if (deposit == null && targetWorld.getBlockEntity(storagePos) instanceof Inventory otherInventory) {
+							deposit = otherInventory;
+						}
+						if (deposit == null) {
+							return;
+						}
+
+						Integer interGroupPointer = infiniteItem.get(ModDataComponentTypes.INTER_GROUP_POINTER);
+						List<Integer> intraGroupPointers = infiniteItem.get(ModDataComponentTypes.INTRA_GROUP_POINTERS);
+
+						if (interGroupPointer == null || intraGroupPointers == null) {
+							return;
+						}
+
+						List<Integer> group = infiniteItem.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(interGroupPointer)));
+
+						if (group == null) {
+							return;
+						}
+
+						ArrayList<Integer> newIntraGroupPointers = new ArrayList<>(intraGroupPointers);
+
+						// Esta en el grupo en el que estoy?
+						for (int i = 0 ; i < group.size() ; i++) {
+							if (deposit.getStack(group.get(i)).getItem() == payload.clicked().asItem()) {
+								newIntraGroupPointers.set(interGroupPointer, i);
+								infiniteItem.set(ModDataComponentTypes.INTRA_GROUP_POINTERS, newIntraGroupPointers);
+								return;
+							}
+						}
+
+						// Esta en algun grupo?
+						int newInterGroupPointer = interGroupPointer;
+						newInterGroupPointer++;
+						if (newInterGroupPointer >= 16) {newInterGroupPointer = 0;}
+
+						while (newInterGroupPointer != interGroupPointer) {
+							group = infiniteItem.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newInterGroupPointer)));
+
+							if (group == null) {
+								return;
+							}
+
+							// Esta en el grupo en el que estoy?
+							for (int i = 0 ; i < group.size() ; i++) {
+								if (deposit.getStack(group.get(i)).getItem() == payload.clicked().asItem()) {
+									newIntraGroupPointers.set(newInterGroupPointer, i);
+									infiniteItem.set(ModDataComponentTypes.INTER_GROUP_POINTER, newInterGroupPointer);
+									infiniteItem.set(ModDataComponentTypes.INTRA_GROUP_POINTERS, newIntraGroupPointers);
+									return;
+								}
+							}
+
+							newInterGroupPointer++;
+							if (newInterGroupPointer >= 16) {newInterGroupPointer = 0;}
+						}
+					});
+				});
 
 
 		ServerTickEvents.END_SERVER_TICK.register(minecraftServer -> {

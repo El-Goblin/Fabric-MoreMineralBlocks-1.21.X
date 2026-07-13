@@ -112,7 +112,7 @@ public class ModItems {
                     ToolMaterial.NETHERITE, 5, -2.4F, 1, 2));
     public static final Item FIENDBLADE_LONGSWORD = registerItem(
             "fiendblade_longsword",
-            new LongSwordItem(new Item.Settings()
+            new FiendbladeLongSwordItem(new Item.Settings()
                     .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "fiendblade_longsword"))),
                     ToolMaterial.NETHERITE, 5, -2.4F, 1, 2));
     public static final Item LEGENDARY_LONGSWORD = registerItem(

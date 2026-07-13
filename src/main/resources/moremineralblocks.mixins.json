@@ -11,7 +11,8 @@
 		"PlayerEntityMixin",
 		"AbstractBlockMixin",
 		"MouseMixin",
-		"HandledScreenMixin"
+		"HandledScreenMixin",
+		"MinecraftClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

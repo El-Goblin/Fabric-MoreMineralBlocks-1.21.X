@@ -47,6 +47,8 @@ public class ModDataComponentTypes {
 
     public static final Map<DyeColor, ComponentType<List<Integer>>> COLOR_INVENTORIES = new EnumMap<>(DyeColor.class);
 
+//    public static final ComponentType<Float> DAMAGE_DEALT_THIS_HIT = register("damage_dealt_this_hit", builder -> builder.codec(Codec.FLOAT));
+
     public static void registerComponents() {
         for (DyeColor color : DyeColor.values()) {
             final String name = color.name().toLowerCase() + "_inventory_pointers";

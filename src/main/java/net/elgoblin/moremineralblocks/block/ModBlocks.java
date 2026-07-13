@@ -689,10 +689,10 @@ public class ModBlocks {
             new WallBlock(abstractBlockSettings("netherite_wall", netheritePack)));
 
     public static final Block NETHERITE_DOOR = registerBlock("netherite_door",
-            new DoorBlock(BlockSetType.OAK, abstractBlockSettings("netherite_door", netheritePack).nonOpaque()));
+            new DoorBlock(BlockSetType.IRON, abstractBlockSettings("netherite_door", netheritePack).nonOpaque()));
 
     public static final Block NETHERITE_TRAPDOOR = registerBlock("netherite_trapdoor",
-            new TrapdoorBlock(BlockSetType.OAK, abstractBlockSettings("netherite_trapdoor", netheritePack).nonOpaque()));
+            new TrapdoorBlock(BlockSetType.IRON, abstractBlockSettings("netherite_trapdoor", netheritePack).nonOpaque()));
 
     public static final Block POLISHED_NETHERITE_BLOCK = registerBlock("polished_netherite_block",
             new Block(abstractBlockSettings("polished_netherite_block", netheritePack).instrument(NoteBlockInstrument.BASEDRUM)));

@@ -1305,7 +1305,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         mythicItems.add(endPortalFrame);
 
         ItemStack buddingAmethyst = Items.BUDDING_AMETHYST.getDefaultStack();
-        buddingAmethyst.setCount(8);
+        buddingAmethyst.setCount(64);
         mythicItems.add(buddingAmethyst);
 
         ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultStack();
@@ -1322,6 +1322,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         mythicItems.add(ModItems.LEGENDARY_HOE.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_SWORD.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_LONGSWORD.getDefaultStack());
+        mythicItems.add(ModItems.LEGENDARY_SPEAR.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_ROCKET.getDefaultStack());
         mythicItems.add(ModItems.SURVIVAL_DEBUG_STICK.getDefaultStack());
         mythicItems.add(ModItems.DIMENSION_POCKET.getDefaultStack());

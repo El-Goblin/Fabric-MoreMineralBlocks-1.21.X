@@ -5,16 +5,21 @@ import net.elgoblin.moremineralblocks.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.InstrumentComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
@@ -22,11 +27,14 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class InfiniteItemV2 extends Item {
@@ -41,7 +49,7 @@ public class InfiniteItemV2 extends Item {
         BlockPos positionWhereUsed = context.getBlockPos();
 
         if (world.isClient()) {
-            return ActionResult.FAIL;
+            return ActionResult.SUCCESS;
         }
 
         ItemStack infiniteItemstack = context.getStack();
@@ -106,9 +114,12 @@ public class InfiniteItemV2 extends Item {
             return ActionResult.FAIL;
         }
 
-        BlockState storageBlockState = world.getBlockState(storagePos);
+        BlockState storageBlockState = targetWorld.getBlockState(storagePos);
         Block depositBlock = storageBlockState.getBlock();
-        Inventory deposit = ChestBlock.getInventory((ChestBlock) depositBlock, storageBlockState, world, storagePos, true);
+        Inventory deposit = null;
+        if (depositBlock instanceof ChestBlock chestDeposit) {
+            deposit = ChestBlock.getInventory(chestDeposit, storageBlockState, targetWorld, storagePos, true);
+        }
         if (deposit == null && world.getBlockEntity(storagePos) instanceof Inventory otherInventory) {
             deposit = otherInventory;
         }
@@ -142,6 +153,27 @@ public class InfiniteItemV2 extends Item {
         if (result == ActionResult.PASS) {
             result = use(world, user, Hand.MAIN_HAND);
         }
+
+        if (result.isAccepted()) {
+            BlockState placedState = world.getBlockState(context.getBlockPos().offset(context.getSide()));
+
+            if (placedState.isAir()) {
+                placedState = world.getBlockState(context.getBlockPos());
+            }
+
+            if (!placedState.isAir()) {
+                BlockSoundGroup soundGroup = placedState.getSoundGroup();
+                world.playSound(
+                        null, // Player is null so EVERYONE (including the placing player) hears it
+                        context.getBlockPos(),
+                        soundGroup.getPlaceSound(),
+                        net.minecraft.sound.SoundCategory.BLOCKS,
+                        (soundGroup.getVolume() + 1.0F) / 2.0F,
+                        soundGroup.getPitch() * 0.8F
+                );
+            }
+        }
+
         return result;
     }
 
@@ -200,6 +232,26 @@ public class InfiniteItemV2 extends Item {
         user.equipStack(hand.getEquipmentSlot(), usedStack);
         ActionResult result = usedStack.use(world, user, hand);
 
+        if (result.isAccepted()) {
+            if (usedStack.isOf(net.minecraft.item.Items.GOAT_HORN)) {
+
+                InstrumentComponent instrumentComponent = usedStack.get(DataComponentTypes.INSTRUMENT);
+                Optional<RegistryEntry<Instrument>> optional = instrumentComponent != null ? instrumentComponent.getInstrument(user.getRegistryManager()) : Optional.empty();
+
+                if (optional.isPresent()) {
+                    Instrument instrument = (Instrument)((RegistryEntry)optional.get()).value();
+
+                    SoundEvent soundEvent = instrument.soundEvent().value();
+                    float f = instrument.range() / 16.0F;
+                    world.playSoundFromEntity(null, user, soundEvent, SoundCategory.RECORDS, f, 1.0F);
+
+                    user.getItemCooldownManager().set(usedStack, MathHelper.floor(instrument.useDuration() * 20.0F));
+                }
+            }
+
+            user.swingHand(hand, true);
+        }
+
         user.equipStack(hand.getEquipmentSlot(), copy);
         return ActionResult.FAIL;
     }
@@ -211,6 +263,9 @@ public class InfiniteItemV2 extends Item {
     private boolean isBannedItem(ItemStack stack) {
         if (stack.isOf(ModItems.DIMENSION_POCKET)) {return true;}
         if (stack.isOf(Items.ENDER_EYE)) {return true;}
+        if (stack.isOf(ModItems.FLASH)) {return true;}
+        if (stack.getItem() instanceof BucketItem) {return true;}
+        if (stack.isOf(Items.POWDER_SNOW_BUCKET)) {return true;}
         return stack.isEmpty();
     }
 }

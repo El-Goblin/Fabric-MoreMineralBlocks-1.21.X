@@ -366,7 +366,9 @@
 
 
   "key.category.moremineralblocks.legendary_tools": "Legendary Tools",
-  "key.moremineralblocks.switch_enchantments": "Switch Enchantments",
+  "key.moremineralblocks.switch_enchantments_toggle_safe_mode": "Switch Enchantments/Toggle Safe Mode",
+  "key.moremineralblocks.inter_group_scroll": "Scroll Between Groups",
+  "key.moremineralblocks.intra_group_scroll": "Scroll Inside Group",
   "enchantment.moremineralblocks.linker": "Linker"
 
 
