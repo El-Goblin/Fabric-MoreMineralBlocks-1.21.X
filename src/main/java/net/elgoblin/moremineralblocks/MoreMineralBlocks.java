@@ -260,6 +260,7 @@ public class MoreMineralBlocks implements ModInitializer{
 					if (deposit == null && targetWorld.getBlockEntity(storagePosition) instanceof Inventory otherInventory) {
 						deposit = otherInventory;
 					}
+					if (deposit == null) {return;}
 
 					List<Integer> group = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(interGroupPointer)));
 					if (group == null) {return;}
@@ -304,44 +305,56 @@ public class MoreMineralBlocks implements ModInitializer{
 					ServerWorld targetWorld = context.server().getWorld(RegistryKey.of(RegistryKeys.WORLD, dimension));
 					if (targetWorld == null || !targetWorld.isPosLoaded(storagePosition)) {return;}
 
-					if (targetWorld.getBlockEntity(storagePosition) instanceof Inventory inventory) {
+					BlockState blockState = targetWorld.getBlockState(storagePosition);
+					Block inventoryBlock = blockState.getBlock();
+					Inventory deposit = null;
 
-						int newInterGroupPointer = interGroupPointer + payload.scroll();
+					if (inventoryBlock instanceof ChestBlock chest) {
+						deposit = ChestBlock.getInventory(chest, blockState, targetWorld, storagePosition, true);
+					}
+					if (deposit == null && targetWorld.getBlockEntity(storagePosition) instanceof Inventory otherInventory) {
+						deposit = otherInventory;
+					}
+					if (deposit == null) {return;}
+
+					int newInterGroupPointer = interGroupPointer + payload.scroll();
+					if (newInterGroupPointer < 0) {newInterGroupPointer = 15;}
+					if (newInterGroupPointer >= 16) {newInterGroupPointer = 0;}
+					List<Integer> group = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newInterGroupPointer)));
+
+					int newIntraGroupPointer = 0;
+					if (group != null) {
+						newIntraGroupPointer = isGroupEmpty(deposit, group);
+					}
+
+//					deposit.getStack(group.get(newPointer)).isEmpty()
+
+					while (group != null && newIntraGroupPointer == -1 && newInterGroupPointer != interGroupPointer) {
+						newInterGroupPointer = newInterGroupPointer + payload.scroll();
 						if (newInterGroupPointer < 0) {newInterGroupPointer = 15;}
 						if (newInterGroupPointer >= 16) {newInterGroupPointer = 0;}
-						List<Integer> group = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newInterGroupPointer)));
 
-						int newIntraGroupPointer = 0;
+						group = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newInterGroupPointer)));
 						if (group != null) {
-							newIntraGroupPointer = isGroupEmpty(inventory, group);
+							newIntraGroupPointer = isGroupEmpty(deposit, group);
 						}
-
-						while (group != null && newIntraGroupPointer == -1 && newInterGroupPointer != interGroupPointer) {
-							newInterGroupPointer = newInterGroupPointer + payload.scroll();
-							if (newInterGroupPointer < 0) {newInterGroupPointer = 15;}
-							if (newInterGroupPointer >= 16) {newInterGroupPointer = 0;}
-							group = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newInterGroupPointer)));
-							if (group != null) {
-								newIntraGroupPointer = isGroupEmpty(inventory, group);
-							}
+					}
+					if (newInterGroupPointer == interGroupPointer) { // Di la vuelta, todos los grupos vacios
+						newInterGroupPointer = 0;
+						List<Integer> newIntraGroupPointers = new ArrayList<>(Collections.nCopies(16, 0));
+						List<Integer> group0 = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(0)));
+						if (group0 != null && !group0.isEmpty()) {
+							newIntraGroupPointers.set(0, intraGroupPointers.getFirst());
 						}
-						if (newInterGroupPointer == interGroupPointer) { // Di la vuelta, todos los grupos vacios
-							newInterGroupPointer = 0;
-							List<Integer> newIntraGroupPointers = new ArrayList<>(Collections.nCopies(16, 0));
-							List<Integer> group0 = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(0)));
-							if (group0 != null && !group0.isEmpty()) {
-								newIntraGroupPointers.set(0, intraGroupPointers.getFirst());
-							}
-							activeHand.set(ModDataComponentTypes.INTRA_GROUP_POINTERS, newIntraGroupPointers);
+						activeHand.set(ModDataComponentTypes.INTRA_GROUP_POINTERS, newIntraGroupPointers);
+						activeHand.set(ModDataComponentTypes.INTER_GROUP_POINTER, newInterGroupPointer);
+					}
+					else {
+						if (group != null) {
 							activeHand.set(ModDataComponentTypes.INTER_GROUP_POINTER, newInterGroupPointer);
-						}
-						else {
-							if (group != null) {
-								activeHand.set(ModDataComponentTypes.INTER_GROUP_POINTER, newInterGroupPointer);
-								List<Integer> newIntraGroupPointers = new ArrayList<>(intraGroupPointers);
-								newIntraGroupPointers.set(newInterGroupPointer, newIntraGroupPointer);
-								activeHand.set(ModDataComponentTypes.INTRA_GROUP_POINTERS, newIntraGroupPointers);
-							}
+							List<Integer> newIntraGroupPointers = new ArrayList<>(intraGroupPointers);
+							newIntraGroupPointers.set(newInterGroupPointer, newIntraGroupPointer);
+							activeHand.set(ModDataComponentTypes.INTRA_GROUP_POINTERS, newIntraGroupPointers);
 						}
 					}
 				});

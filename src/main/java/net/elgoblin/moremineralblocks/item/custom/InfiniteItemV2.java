@@ -49,7 +49,7 @@ public class InfiniteItemV2 extends Item {
         BlockPos positionWhereUsed = context.getBlockPos();
 
         if (world.isClient()) {
-            return ActionResult.SUCCESS;
+            return ActionResult.PASS;
         }
 
         ItemStack infiniteItemstack = context.getStack();
@@ -172,6 +172,7 @@ public class InfiniteItemV2 extends Item {
                         soundGroup.getPitch() * 0.8F
                 );
             }
+            user.swingHand(Hand.MAIN_HAND, true);
         }
 
         return result;
