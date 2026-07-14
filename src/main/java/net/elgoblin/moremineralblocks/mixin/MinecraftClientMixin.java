@@ -1,8 +1,7 @@
 package net.elgoblin.moremineralblocks.mixin;
 
-import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.item.ModItems;
-import net.elgoblin.moremineralblocks.networking.DimensionPocketMiddleClickQueryPayload;
+import net.elgoblin.moremineralblocks.networking.DimensionalPocketMiddleClickQueryPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -11,10 +10,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -42,14 +39,14 @@ public class MinecraftClientMixin {
         Block block = state.getBlock();
 
         ItemStack selectedItem = player.getStackInHand(Hand.MAIN_HAND);
-        if (!selectedItem.isOf(ModItems.DIMENSION_POCKET)) {
+        if (!selectedItem.isOf(ModItems.DIMENSIONAL_POCKET)) {
             selectedItem = player.getStackInHand(Hand.OFF_HAND);
         }
-        if (!selectedItem.isOf(ModItems.DIMENSION_POCKET)) {
+        if (!selectedItem.isOf(ModItems.DIMENSIONAL_POCKET)) {
             return;
         }
 
-        ClientPlayNetworking.send(new DimensionPocketMiddleClickQueryPayload(selectedItem, block));
+        ClientPlayNetworking.send(new DimensionalPocketMiddleClickQueryPayload(selectedItem, block));
         ci.cancel();
     }
 }

@@ -3,10 +3,8 @@ package net.elgoblin.moremineralblocks.item.custom;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.ToolComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +14,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -36,19 +33,19 @@ public class LegendaryShovelItem extends ShovelItem {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         World world = context.getWorld();
-        BlockPos blockPos = context.getBlockPos();
-        BlockState blockState = world.getBlockState(blockPos);
+        BlockPos position = context.getBlockPos();
+        BlockState blockState = world.getBlockState(position);
 
         if (!context.getWorld().isClient()) {
-            if (context.getWorld().getBlockEntity(blockPos) instanceof Inventory inventory) {
-                context.getStack().set(ModDataComponentTypes.LINKED_CHEST, blockPos);
+            if (context.getWorld().getBlockEntity(position) instanceof Inventory inventory) {
+                context.getStack().set(ModDataComponentTypes.LINKED_CHEST, position);
                 context.getStack().set(ModDataComponentTypes.SERVERWORLD, context.getWorld().getRegistryKey().getValue());
                 if (context.getPlayer() != null) {
-                    context.getPlayer().sendMessage(Text.of(blockPos.toString()), false);
+                    context.getPlayer().sendMessage(Text.of("Linked successfully at position (x=" + position.getX() + ", y=" + position.getY() + ", z=" + position.getZ() +")"), false);
                 }
             }
         }
-        if (context.getWorld().getBlockEntity(blockPos) instanceof Inventory inventory) {
+        if (context.getWorld().getBlockEntity(position) instanceof Inventory inventory) {
             return ActionResult.SUCCESS;
         }
 
@@ -58,22 +55,22 @@ public class LegendaryShovelItem extends ShovelItem {
             PlayerEntity playerEntity = context.getPlayer();
             BlockState blockState2 = (BlockState)PATH_STATES.get(blockState.getBlock());
             BlockState blockState3 = null;
-            if (blockState2 != null && world.getBlockState(blockPos.up()).isAir()) {
-                world.playSound(playerEntity, blockPos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            if (blockState2 != null && world.getBlockState(position.up()).isAir()) {
+                world.playSound(playerEntity, position, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 blockState3 = blockState2;
             } else if (blockState.getBlock() instanceof CampfireBlock && (Boolean)blockState.get(CampfireBlock.LIT)) {
                 if (!world.isClient()) {
-                    world.syncWorldEvent(null, WorldEvents.FIRE_EXTINGUISHED, blockPos, 0);
+                    world.syncWorldEvent(null, WorldEvents.FIRE_EXTINGUISHED, position, 0);
                 }
 
-                CampfireBlock.extinguish(context.getPlayer(), world, blockPos, blockState);
+                CampfireBlock.extinguish(context.getPlayer(), world, position, blockState);
                 blockState3 = blockState.with(CampfireBlock.LIT, false);
             }
 
             if (blockState3 != null) {
                 if (!world.isClient()) {
-                    world.setBlockState(blockPos, blockState3, Block.NOTIFY_ALL_AND_REDRAW);
-                    world.emitGameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Emitter.of(playerEntity, blockState3));
+                    world.setBlockState(position, blockState3, Block.NOTIFY_ALL_AND_REDRAW);
+                    world.emitGameEvent(GameEvent.BLOCK_CHANGE, position, GameEvent.Emitter.of(playerEntity, blockState3));
                 }
 
                 return ActionResult.SUCCESS;

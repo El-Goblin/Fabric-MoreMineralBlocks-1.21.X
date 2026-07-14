@@ -744,7 +744,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
     }
 
     private void getInfiniteItem(HitResult hitResult) {
-        ItemStack infiniteItem = new ItemStack(ModItems.DIMENSION_POCKET);
+        ItemStack infiniteItem = new ItemStack(ModItems.DIMENSIONAL_POCKET);
         List<Item> items = new ArrayList<>();
 
         for (Item item : Registries.ITEM) {
@@ -1325,7 +1325,7 @@ public class ChaosOrbEntity extends ThrownItemEntity {
         mythicItems.add(ModItems.LEGENDARY_SPEAR.getDefaultStack());
         mythicItems.add(ModItems.LEGENDARY_ROCKET.getDefaultStack());
         mythicItems.add(ModItems.SURVIVAL_DEBUG_STICK.getDefaultStack());
-        mythicItems.add(ModItems.DIMENSION_POCKET.getDefaultStack());
+        mythicItems.add(ModItems.DIMENSIONAL_POCKET.getDefaultStack());
         mythicItems.add(ModItems.FLASH.getDefaultStack());
 
         int nextItem = this.random.nextBetween(0, (int) mythicItems.size()-1);

@@ -7,11 +7,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
@@ -46,111 +44,62 @@ public abstract class BlockMixin {
 
             BlockPos storagePos = tool.get(ModDataComponentTypes.LINKED_CHEST);
             Identifier dimension = tool.get(ModDataComponentTypes.SERVERWORLD);
-            ServerWorld targetWorld = world;
             MinecraftServer server = world.getServer();
 
-            if (server != null && dimension != null) {
-                targetWorld = server.getWorld(RegistryKey.of(RegistryKeys.WORLD, dimension));
-                if (targetWorld == null) {
-                    targetWorld = world;
+            if (storagePos == null || dimension == null || server == null) {return;}
+
+            ServerWorld targetWorld = server.getWorld(RegistryKey.of(RegistryKeys.WORLD, dimension));
+            if (targetWorld == null || !targetWorld.isPosLoaded(storagePos)) {return;}
+
+            BlockState blockAtLinkedPosition = targetWorld.getBlockState(storagePos);
+            Block inventoryBlock = blockAtLinkedPosition.getBlock();
+            Inventory deposit = null;
+
+            if (inventoryBlock instanceof ChestBlock chest) {
+                deposit = ChestBlock.getInventory(chest, blockAtLinkedPosition, targetWorld, storagePos, true);
+            }
+            if (deposit == null && targetWorld.getBlockEntity(storagePos) instanceof Inventory otherInventory) {
+                deposit = otherInventory;
+            }
+            if (deposit == null) {return;}
+
+            List<ItemStack> toDropAsUsual = new ArrayList<>();
+
+            for (ItemStack drop : cir.getReturnValue()) {
+                int remainder = insert(deposit, drop);
+
+                if (remainder > 0) {
+                    toDropAsUsual.add(drop);
                 }
             }
+            deposit.markDirty();
+            cir.setReturnValue(toDropAsUsual);
+        }
+    }
 
-            if (storagePos != null && targetWorld.isChunkLoaded(storagePos) && targetWorld.getBlockEntity(storagePos) instanceof Inventory deposit) {
-                Block blockAtLinkedPosition = targetWorld.getBlockState(storagePos).getBlock();
+    private static int insert(Inventory to, ItemStack stack) {
+        int invSize = to.size();
+        int firstEmptySpot = -1;
 
-                if (deposit instanceof ChestBlockEntity && blockAtLinkedPosition instanceof ChestBlock) {
-                    deposit = ChestBlock.getInventory((ChestBlock) blockAtLinkedPosition,
-                            targetWorld.getBlockState(storagePos), targetWorld, storagePos, true
-                    );
-                }
-
-                List<ItemStack> toDropAsUsual = new ArrayList<>();
-
-                if (deposit != null) {
-                    for (ItemStack drop : cir.getReturnValue()) {
-                        int remainder = insert(deposit, drop);
-
-                        if (remainder > 0) {
-                            toDropAsUsual.add(drop);
-                        }
-                    }
-                    deposit.markDirty();
-                    cir.setReturnValue(toDropAsUsual);
-                }
+        for (int i = 0; i < invSize; i++) {
+            ItemStack currentStack = to.getStack(i);
+            if (firstEmptySpot == -1 && currentStack.isEmpty()) {
+                firstEmptySpot = i;
+            }
+            if (canMergeItems(currentStack, stack)){
+                stack = transfer(to, stack, i);
             }
         }
+        if (stack.isEmpty()) {
+            return 0;
+        }
+        if (firstEmptySpot != -1) {
+            stack = transfer(to, stack, firstEmptySpot);
+        }
+        return stack.getCount();
     }
 
-    private static int insert(Inventory deposit, ItemStack drop) {
-        if (deposit == null) {
-            return drop.getCount();
-        }
-        else {
-            if (isInventoryFull(deposit)) {
-                return drop.getCount();
-            }
-            else {
-                ItemStack remainder = transfer(deposit, drop);
-                if (remainder.isEmpty()) {
-                    return 0;
-                }
-
-                return drop.getCount();
-            }
-        }
-    }
-
-    private static boolean isInventoryFull(Inventory inventory) {
-        int[] is = getAvailableSlots(inventory);
-
-        for (int i : is) {
-            ItemStack itemStack = inventory.getStack(i);
-            if (itemStack.getCount() < itemStack.getMaxCount()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static int[] getAvailableSlots(Inventory inventory) {
-        int i = inventory.size();
-        if (i < AVAILABLE_SLOTS_CACHE.length) {
-            int[] is = AVAILABLE_SLOTS_CACHE[i];
-            if (is != null) {
-                return is;
-            } else {
-                int[] js = indexArray(i);
-                AVAILABLE_SLOTS_CACHE[i] = js;
-                return js;
-            }
-        } else {
-            return indexArray(i);
-        }
-    }
-
-    private static int[] indexArray(int size) {
-        int[] is = new int[size];
-        int i = 0;
-
-        while (i < is.length) {
-            is[i] = i++;
-        }
-
-        return is;
-    }
-
-    private static ItemStack transfer(Inventory to, ItemStack stack) {
-        int j = to.size();
-
-        for (int i = 0; i < j && !stack.isEmpty(); i++) {
-            stack = transfer2(to, stack, i);
-        }
-        return stack;
-    }
-
-    private static ItemStack transfer2(Inventory deposit, ItemStack stack, int slot) {
+    private static ItemStack transfer(Inventory deposit, ItemStack stack, int slot) {
         ItemStack receivingItemStack = deposit.getStack(slot);
         if (canInsert(deposit, stack, slot)) {
             if (receivingItemStack.isEmpty()) {

@@ -7,7 +7,7 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
 
 public record SwitchEnchantmentToggleSafeModePayload() implements CustomPayload {
-    public static final Id<SwitchEnchantmentToggleSafeModePayload> ID = new Id<>(Identifier.of(MoreMineralBlocks.MOD_ID, "switch_enchantments_toggle_safe_mode"));
+    public static final Id<SwitchEnchantmentToggleSafeModePayload> ID = new Id<>(Identifier.of(MoreMineralBlocks.MOD_ID, "switch_enchantments_toggle_safe_mode_payload"));
     public static final PacketCodec<RegistryByteBuf, SwitchEnchantmentToggleSafeModePayload> CODEC = PacketCodec.unit(new SwitchEnchantmentToggleSafeModePayload());
 
     @Override

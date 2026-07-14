@@ -95,10 +95,10 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
             ItemStack mainHoldedStack = client.player.getMainHandStack();
             ItemStack offHoldedStack = client.player.getOffHandStack();
 
-            if (mainHoldedStack.isOf(ModItems.DIMENSION_POCKET)) {
+            if (mainHoldedStack.isOf(ModItems.DIMENSIONAL_POCKET)) {
                 renderSelectedStack(drawContext, client, client.player.getMainHandStack());
             }
-            else if (offHoldedStack.isOf(ModItems.DIMENSION_POCKET)) {
+            else if (offHoldedStack.isOf(ModItems.DIMENSIONAL_POCKET)) {
                 renderSelectedStack(drawContext, client, client.player.getOffHandStack());
             }
         }));

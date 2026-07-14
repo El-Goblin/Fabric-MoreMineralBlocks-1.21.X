@@ -1,7 +1,7 @@
 package net.elgoblin.moremineralblocks.client;
 
-import net.elgoblin.moremineralblocks.networking.InfiniteItemstackV2ChestContentsQueryPayload;
-import net.elgoblin.moremineralblocks.networking.InfiniteItemstackV2ChestContentsResponsePayload;
+import net.elgoblin.moremineralblocks.networking.DimensionalPocketDepositContentsQueryPayload;
+import net.elgoblin.moremineralblocks.networking.DimensionalPocketDepositContentsResponsePayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.item.ItemStack;
 
@@ -13,7 +13,7 @@ public class InfiniteItemClientCache {
     public static ItemStack nextGroupStack = ItemStack.EMPTY;
 
     public static void init() {
-        ClientPlayNetworking.registerGlobalReceiver(InfiniteItemstackV2ChestContentsResponsePayload.ID, (payload, context) -> {
+        ClientPlayNetworking.registerGlobalReceiver(DimensionalPocketDepositContentsResponsePayload.ID, (payload, context) -> {
             context.client().execute(() -> {
                 mainRenderedStack = payload.mainStack();
                 sameGroupPrevStack = payload.sameGroupPrevStack();
@@ -25,6 +25,6 @@ public class InfiniteItemClientCache {
     }
 
     public static void requestUpdate(ItemStack stack) {
-        ClientPlayNetworking.send(new InfiniteItemstackV2ChestContentsQueryPayload(stack));
+        ClientPlayNetworking.send(new DimensionalPocketDepositContentsQueryPayload(stack));
     }
 }

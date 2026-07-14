@@ -162,8 +162,8 @@ public class ModItems {
             .recipeRemainder(BUCKET).component(DataComponentTypes.CONSUMABLE, ModDataComponentTypes.LA_LECHONA).useRemainder(BUCKET).maxCount(1)));
 
 //    public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
-public static final Item DIMENSION_POCKET = registerItem("dimension_pocket", new InfiniteItemV2(new Item.Settings()
-        .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "dimension_pocket")))
+public static final Item DIMENSIONAL_POCKET = registerItem("dimensional_pocket", new DimensionalPocketItem(new Item.Settings()
+        .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "dimensional_pocket")))
         .maxCount(1).rarity(Rarity.EPIC).maxDamage(0)));
 
     private static Item registerItem(String name, Item item) {
@@ -219,7 +219,7 @@ public static final Item DIMENSION_POCKET = registerItem("dimension_pocket", new
             entries.add(REFLECTIVE_MIRROR);
             entries.add(CHAOS_MIRROR);
             entries.add(FLASH);
-            entries.add(DIMENSION_POCKET);
+            entries.add(DIMENSIONAL_POCKET);
 //            entries.add(LA_LECHONA);
         });
 

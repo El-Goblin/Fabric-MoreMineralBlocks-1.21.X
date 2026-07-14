@@ -10,7 +10,6 @@ import net.minecraft.component.type.InstrumentComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.*;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -19,7 +18,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
@@ -29,7 +27,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,9 +34,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public class InfiniteItemV2 extends Item {
+public class DimensionalPocketItem extends Item {
 
-    public InfiniteItemV2(Settings settings) {
+    public DimensionalPocketItem(Settings settings) {
         super(settings);
     }
 
@@ -87,7 +84,7 @@ public class InfiniteItemV2 extends Item {
             }
 
             if (context.getPlayer() != null) {
-                context.getPlayer().sendMessage(Text.of(positionWhereUsed.toString()), false);
+                context.getPlayer().sendMessage(Text.of("Linked successfully at position (x=" + positionWhereUsed.getX() + ", y=" + positionWhereUsed.getY() + ", z=" + positionWhereUsed.getZ() +")"), false);
             }
             return ActionResult.SUCCESS;
         }
@@ -262,7 +259,7 @@ public class InfiniteItemV2 extends Item {
     }
 
     private boolean isBannedItem(ItemStack stack) {
-        if (stack.isOf(ModItems.DIMENSION_POCKET)) {return true;}
+        if (stack.isOf(ModItems.DIMENSIONAL_POCKET)) {return true;}
         if (stack.isOf(Items.ENDER_EYE)) {return true;}
         if (stack.isOf(ModItems.FLASH)) {return true;}
         if (stack.getItem() instanceof BucketItem) {return true;}

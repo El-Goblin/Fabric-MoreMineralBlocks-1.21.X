@@ -76,7 +76,7 @@ public class HandledScreenMixin {
         }
 
         if (click.button() == 0 && this.focusedSlot != null && this.focusedSlot.hasStack()) {
-            if (this.focusedSlot.getStack().isOf(ModItems.DIMENSION_POCKET)) {
+            if (this.focusedSlot.getStack().isOf(ModItems.DIMENSIONAL_POCKET)) {
 
                 ItemStack infiniteItem = this.focusedSlot.getStack();
 

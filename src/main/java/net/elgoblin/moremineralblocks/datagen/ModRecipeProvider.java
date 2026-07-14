@@ -762,6 +762,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .criterion(hasItem(ModItems.REFLECTIVE_MIRROR), conditionsFromItem(ModItems.REFLECTIVE_MIRROR))
                         .offerTo(exporter);
 
+                createShapeless(RecipeCategory.BUILDING_BLOCKS, Items.COBBLED_DEEPSLATE, 1)
+                        .input(Items.DEEPSLATE)
+                        .criterion(hasItem(Items.DEEPSLATE), conditionsFromItem(Items.DEEPSLATE))
+                        .offerTo(exporter);
+
                 createShaped(RecipeCategory.COMBAT, ModItems.WOODEN_LONGSWORD)
                         .pattern("  P")
                         .pattern(" P ")

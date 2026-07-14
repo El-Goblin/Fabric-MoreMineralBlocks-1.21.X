@@ -2,8 +2,8 @@ package net.elgoblin.moremineralblocks.client;
 
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.item.ModItems;
-import net.elgoblin.moremineralblocks.networking.InfiniteItemSelectColorPayload;
-import net.elgoblin.moremineralblocks.networking.ToggleSlotPayload;
+import net.elgoblin.moremineralblocks.networking.DimensionalPocketSelectColorPayload;
+import net.elgoblin.moremineralblocks.networking.DimensionalPocketToggleSlotPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -87,7 +87,7 @@ public class InlineColorPanel {
 
                     if (mouseX >= cx && mouseX < cx + 16 && mouseY >= cy && mouseY < cy + 16) {
                         this.selectedColorIndex = index;
-                        ClientPlayNetworking.send(new InfiniteItemSelectColorPayload(index, this.targetSlotId));
+                        ClientPlayNetworking.send(new DimensionalPocketSelectColorPayload(index, this.targetSlotId));
                         return true;
                     }
                     index++;
@@ -114,7 +114,7 @@ public class InlineColorPanel {
 
                 if (slot != null && slot.hasStack()) {
                     ItemStack stack = slot.getStack();
-                    if (stack.isOf(ModItems.DIMENSION_POCKET)) {
+                    if (stack.isOf(ModItems.DIMENSIONAL_POCKET)) {
                         List<Integer> existingSlots = stack.getOrDefault(colorInventory, Collections.emptyList());
                         List<Integer> updatedSlots = new ArrayList<>(existingSlots);
 
@@ -129,7 +129,7 @@ public class InlineColorPanel {
                 }
             }
         }
-        ClientPlayNetworking.send(new ToggleSlotPayload(this.targetSlotId, slotId, selectedColorIndex));
+        ClientPlayNetworking.send(new DimensionalPocketToggleSlotPayload(this.targetSlotId, slotId, selectedColorIndex));
     }
 
     public int getColorHex(int index) {
@@ -151,7 +151,7 @@ public class InlineColorPanel {
                 Slot slot = handledScreen.getScreenHandler().getSlot(this.targetSlotId);
                 if (slot != null && slot.hasStack()) {
                     ItemStack itemStack = slot.getStack();
-                    if (itemStack.isOf(ModItems.DIMENSION_POCKET)) {
+                    if (itemStack.isOf(ModItems.DIMENSIONAL_POCKET)) {
                         List<Integer> slots = slot.getStack().getOrDefault(component, java.util.Collections.emptyList());
                         return slots.contains(slotId);
                     }

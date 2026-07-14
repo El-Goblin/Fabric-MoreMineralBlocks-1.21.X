@@ -85,7 +85,7 @@ public class LegendaryAxeItem extends AxeItem {
                 context.getStack().set(ModDataComponentTypes.LINKED_CHEST, position);
                 context.getStack().set(ModDataComponentTypes.SERVERWORLD, context.getWorld().getRegistryKey().getValue());
                 if (context.getPlayer() != null) {
-                    context.getPlayer().sendMessage(Text.of(position.toString()), false);
+                    context.getPlayer().sendMessage(Text.of("Linked successfully at position (x=" + position.getX() + ", y=" + position.getY() + ", z=" + position.getZ() +")"), false);
                 }
             }
         }

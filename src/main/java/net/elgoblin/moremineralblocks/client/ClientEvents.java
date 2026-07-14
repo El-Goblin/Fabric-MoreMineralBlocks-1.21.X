@@ -2,8 +2,8 @@ package net.elgoblin.moremineralblocks.client;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocksClient;
 import net.elgoblin.moremineralblocks.item.ModItems;
-import net.elgoblin.moremineralblocks.networking.InfiniteItemStackInterGroupScrollPayload;
-import net.elgoblin.moremineralblocks.networking.InfiniteItemStackIntraGroupScrollPayload;
+import net.elgoblin.moremineralblocks.networking.DimensionalPocketInterGroupScrollPayload;
+import net.elgoblin.moremineralblocks.networking.DimensionalPocketIntraGroupScrollPayload;
 import net.elgoblin.moremineralblocks.networking.SwitchEnchantmentToggleSafeModePayload;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -33,9 +33,9 @@ public class ClientEvents {
                 ItemStack offHoldedStack = client.player.getOffHandStack();
                 ItemStack activeItem = ItemStack.EMPTY;
 
-                if (mainHoldedStack.isOf(ModItems.DIMENSION_POCKET)) {
+                if (mainHoldedStack.isOf(ModItems.DIMENSIONAL_POCKET)) {
                     activeItem = mainHoldedStack;
-                } else if (offHoldedStack.isOf(ModItems.DIMENSION_POCKET)) {
+                } else if (offHoldedStack.isOf(ModItems.DIMENSIONAL_POCKET)) {
                     activeItem = offHoldedStack;
                 }
 
@@ -53,7 +53,7 @@ public class ClientEvents {
             ItemStack mainHand = player.getMainHandStack();
             ItemStack offHand = player.getOffHandStack();
 
-            boolean isHoldingInfiniteItem = mainHand.isOf(ModItems.DIMENSION_POCKET) || offHand.isOf(ModItems.DIMENSION_POCKET);
+            boolean isHoldingInfiniteItem = mainHand.isOf(ModItems.DIMENSIONAL_POCKET) || offHand.isOf(ModItems.DIMENSIONAL_POCKET);
             boolean tabPressed = MoreMineralBlocksClient.intraGroupScroll.isPressed();
             boolean gravePressed = MoreMineralBlocksClient.interGroupScroll.isPressed();
 
@@ -61,11 +61,11 @@ public class ClientEvents {
                 int scroll = delta > 0 ? 1 : -1;
 
                 if (tabPressed) {
-                    ClientPlayNetworking.send(new InfiniteItemStackIntraGroupScrollPayload(scroll));
+                    ClientPlayNetworking.send(new DimensionalPocketIntraGroupScrollPayload(scroll));
                     return true;
                 }
                 else if (gravePressed) {
-                    ClientPlayNetworking.send(new InfiniteItemStackInterGroupScrollPayload(scroll));
+                    ClientPlayNetworking.send(new DimensionalPocketInterGroupScrollPayload(scroll));
                     return true;
                 }
             }

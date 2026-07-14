@@ -21,7 +21,7 @@ public class HeldItemRendererMixin {
             index = 1
     )
     private ItemStack replaceRenderedStack(ItemStack original) {
-        if (original.isOf(ModItems.DIMENSION_POCKET)) {
+        if (original.isOf(ModItems.DIMENSIONAL_POCKET)) {
             ItemStack replacement = InfiniteItemClientCache.mainRenderedStack;
 
             if (replacement != null && !replacement.isEmpty()) {

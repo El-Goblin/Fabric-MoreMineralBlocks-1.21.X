@@ -37,9 +37,9 @@ public class InfiniteItemstackOverlay {
             ItemStack offHand = player.getOffHandStack();
             ItemStack activeItem = ItemStack.EMPTY;
 
-            if (mainHand.isOf(ModItems.DIMENSION_POCKET)) {
+            if (mainHand.isOf(ModItems.DIMENSIONAL_POCKET)) {
                 activeItem = mainHand;
-            } else if (offHand.isOf(ModItems.DIMENSION_POCKET)) {
+            } else if (offHand.isOf(ModItems.DIMENSIONAL_POCKET)) {
                 activeItem = offHand;
             }
 

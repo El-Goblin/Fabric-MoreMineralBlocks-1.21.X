@@ -74,13 +74,13 @@ public class MoreMineralBlocks implements ModInitializer{
 
 		PayloadTypeRegistry.playC2S().register(SwitchEnchantmentToggleSafeModePayload.ID, SwitchEnchantmentToggleSafeModePayload.CODEC);
 
-		PayloadTypeRegistry.playC2S().register(InfiniteItemstackV2ChestContentsQueryPayload.ID, InfiniteItemstackV2ChestContentsQueryPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(InfiniteItemstackV2ChestContentsResponsePayload.ID, InfiniteItemstackV2ChestContentsResponsePayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(InfiniteItemSelectColorPayload.ID, InfiniteItemSelectColorPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(ToggleSlotPayload.ID, ToggleSlotPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(InfiniteItemStackIntraGroupScrollPayload.ID, InfiniteItemStackIntraGroupScrollPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(InfiniteItemStackInterGroupScrollPayload.ID, InfiniteItemStackInterGroupScrollPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(DimensionPocketMiddleClickQueryPayload.ID, DimensionPocketMiddleClickQueryPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(DimensionalPocketDepositContentsQueryPayload.ID, DimensionalPocketDepositContentsQueryPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(DimensionalPocketDepositContentsResponsePayload.ID, DimensionalPocketDepositContentsResponsePayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(DimensionalPocketSelectColorPayload.ID, DimensionalPocketSelectColorPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(DimensionalPocketToggleSlotPayload.ID, DimensionalPocketToggleSlotPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(DimensionalPocketIntraGroupScrollPayload.ID, DimensionalPocketIntraGroupScrollPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(DimensionalPocketInterGroupScrollPayload.ID, DimensionalPocketInterGroupScrollPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(DimensionalPocketMiddleClickQueryPayload.ID, DimensionalPocketMiddleClickQueryPayload.CODEC);
 
 
 		ModItems.registerModItems();
@@ -143,19 +143,19 @@ public class MoreMineralBlocks implements ModInitializer{
 						if (mainHandStack.isIn(ModTags.Items.LEGENDARY_TOOLS)) {
 							ModToolMaterials.advanceEnchantments(mainHandStack);
 						}
-						if (mainHandStack.isOf(ModItems.DIMENSION_POCKET)) {
+						if (mainHandStack.isOf(ModItems.DIMENSIONAL_POCKET)) {
 							boolean currentSafeMode = mainHandStack.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
 							mainHandStack.set(ModDataComponentTypes.SAFE_MODE, !currentSafeMode);
 						}
 					});
 				});
 
-		ServerPlayNetworking.registerGlobalReceiver(InfiniteItemstackV2ChestContentsQueryPayload.ID,
+		ServerPlayNetworking.registerGlobalReceiver(DimensionalPocketDepositContentsQueryPayload.ID,
 				(payload, context) -> {
 					context.server().execute(() -> {
 						ItemStack infiniteItem = payload.itemStack();
 
-						if (!infiniteItem.isOf(ModItems.DIMENSION_POCKET)) return;
+						if (!infiniteItem.isOf(ModItems.DIMENSIONAL_POCKET)) return;
 
 						BlockPos storagePos = infiniteItem.get(ModDataComponentTypes.LINKED_CHEST);
 						Identifier dimension = infiniteItem.get(ModDataComponentTypes.SERVERWORLD);
@@ -217,7 +217,7 @@ public class MoreMineralBlocks implements ModInitializer{
 						ItemStack prevVertStack = getStackFromGroup(infiniteItem, deposit, prevGroup, prevGroupIntraIdx);
 						ItemStack nextVertStack = getStackFromGroup(infiniteItem, deposit, nextGroup, nextGroupIntraIdx);
 
-						context.responseSender().sendPacket(new InfiniteItemstackV2ChestContentsResponsePayload(
+						context.responseSender().sendPacket(new DimensionalPocketDepositContentsResponsePayload(
 								mainStack,
 								prevHorizStack,
 								nextHorizStack,
@@ -227,12 +227,12 @@ public class MoreMineralBlocks implements ModInitializer{
 					});
 				});
 
-		ServerPlayNetworking.registerGlobalReceiver(InfiniteItemStackIntraGroupScrollPayload.ID,
+		ServerPlayNetworking.registerGlobalReceiver(DimensionalPocketIntraGroupScrollPayload.ID,
 				(payload, context) -> {
 					ServerPlayerEntity player = context.player();
 					ItemStack activeHand = ItemStack.EMPTY;
-					if (player.getMainHandStack().isOf(ModItems.DIMENSION_POCKET)) {activeHand = player.getMainHandStack();}
-					else if (player.getOffHandStack().isOf(ModItems.DIMENSION_POCKET)) {activeHand = player.getOffHandStack();}
+					if (player.getMainHandStack().isOf(ModItems.DIMENSIONAL_POCKET)) {activeHand = player.getMainHandStack();}
+					else if (player.getOffHandStack().isOf(ModItems.DIMENSIONAL_POCKET)) {activeHand = player.getOffHandStack();}
 
 					if (activeHand.isEmpty()) {return;}
 
@@ -282,14 +282,14 @@ public class MoreMineralBlocks implements ModInitializer{
 					activeHand.set(ModDataComponentTypes.INTRA_GROUP_POINTERS, newIntraGroupPointers);
 		        });
 
-		ServerPlayNetworking.registerGlobalReceiver(InfiniteItemStackInterGroupScrollPayload.ID,
+		ServerPlayNetworking.registerGlobalReceiver(DimensionalPocketInterGroupScrollPayload.ID,
 				(payload, context) -> {
 					ServerPlayerEntity player = context.player();
 					ItemStack activeHand = ItemStack.EMPTY;
-					if (player.getMainHandStack().isOf(ModItems.DIMENSION_POCKET)) {
+					if (player.getMainHandStack().isOf(ModItems.DIMENSIONAL_POCKET)) {
 						activeHand = player.getMainHandStack();
 					}
-					else if (player.getOffHandStack().isOf(ModItems.DIMENSION_POCKET)) {
+					else if (player.getOffHandStack().isOf(ModItems.DIMENSIONAL_POCKET)) {
 						activeHand = player.getOffHandStack();
 					}
 
@@ -322,12 +322,13 @@ public class MoreMineralBlocks implements ModInitializer{
 					if (newInterGroupPointer >= 16) {newInterGroupPointer = 0;}
 					List<Integer> group = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newInterGroupPointer)));
 
-					int newIntraGroupPointer = 0;
-					if (group != null) {
-						newIntraGroupPointer = isGroupEmpty(deposit, group);
-					}
+					int newIntraGroupPointer = -1;
+					if (group != null && !group.isEmpty()) {
+						int firstNonEmptySlot = isGroupEmpty(deposit, group);
+						int oldIntraGroupPointer = intraGroupPointers.get(newInterGroupPointer);
+						newIntraGroupPointer = deposit.getStack(group.get(oldIntraGroupPointer)).isEmpty() ? firstNonEmptySlot : oldIntraGroupPointer;
 
-//					deposit.getStack(group.get(newPointer)).isEmpty()
+					}
 
 					while (group != null && newIntraGroupPointer == -1 && newInterGroupPointer != interGroupPointer) {
 						newInterGroupPointer = newInterGroupPointer + payload.scroll();
@@ -335,8 +336,10 @@ public class MoreMineralBlocks implements ModInitializer{
 						if (newInterGroupPointer >= 16) {newInterGroupPointer = 0;}
 
 						group = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newInterGroupPointer)));
-						if (group != null) {
-							newIntraGroupPointer = isGroupEmpty(deposit, group);
+						if (group != null && !group.isEmpty()) {
+							int firstNonEmptySlot = isGroupEmpty(deposit, group);
+							int oldIntraGroupPointer = intraGroupPointers.get(newInterGroupPointer);
+							newIntraGroupPointer = deposit.getStack(group.get(oldIntraGroupPointer)).isEmpty() ? firstNonEmptySlot : oldIntraGroupPointer;
 						}
 					}
 					if (newInterGroupPointer == interGroupPointer) { // Di la vuelta, todos los grupos vacios
@@ -359,7 +362,7 @@ public class MoreMineralBlocks implements ModInitializer{
 					}
 				});
 
-		ServerPlayNetworking.registerGlobalReceiver(InfiniteItemSelectColorPayload.ID, (payload, context) -> {
+		ServerPlayNetworking.registerGlobalReceiver(DimensionalPocketSelectColorPayload.ID, (payload, context) -> {
 			context.server().execute(() -> {
 				ServerPlayerEntity player = context.player();
 				ScreenHandler currentHandler = player.currentScreenHandler;
@@ -371,7 +374,7 @@ public class MoreMineralBlocks implements ModInitializer{
 				if (targetSlot >= 0 && targetSlot < currentHandler.slots.size()) {
 					ItemStack stack = currentHandler.getSlot(targetSlot).getStack();
 
-					if (stack.isOf(ModItems.DIMENSION_POCKET)) {
+					if (stack.isOf(ModItems.DIMENSIONAL_POCKET)) {
 						stack.set(ModDataComponentTypes.SELECTED_COLOR, payload.colorIndex());
 					}
 				}
@@ -379,7 +382,7 @@ public class MoreMineralBlocks implements ModInitializer{
 			});
 		});
 
-		ServerPlayNetworking.registerGlobalReceiver(ToggleSlotPayload.ID, (payload, context) -> {
+		ServerPlayNetworking.registerGlobalReceiver(DimensionalPocketToggleSlotPayload.ID, (payload, context) -> {
 			context.server().execute(() -> {
 				ServerPlayerEntity player = context.player();
 				ScreenHandler handler = player.currentScreenHandler;
@@ -390,7 +393,7 @@ public class MoreMineralBlocks implements ModInitializer{
 				if (targetSlot == null || targetSlot.getStack().isEmpty()) {return;}
 				ItemStack itemStack = targetSlot.getStack();
 
-				if (!itemStack.isOf(ModItems.DIMENSION_POCKET)) {return;}
+				if (!itemStack.isOf(ModItems.DIMENSIONAL_POCKET)) {return;}
 
 				DyeColor dyeColor = DyeColor.byIndex(payload.colorIndex());
 				ComponentType<List<Integer>> colorComponent = ModDataComponentTypes.COLOR_INVENTORIES.get(dyeColor);
@@ -414,19 +417,19 @@ public class MoreMineralBlocks implements ModInitializer{
 			});
 		});
 
-		ServerPlayNetworking.registerGlobalReceiver(DimensionPocketMiddleClickQueryPayload.ID,
+		ServerPlayNetworking.registerGlobalReceiver(DimensionalPocketMiddleClickQueryPayload.ID,
 				(payload, context) -> {
 					context.server().execute(() -> {
 						ServerPlayerEntity player = context.player();
 						ItemStack infiniteItem = player.getMainHandStack();
-						if (!infiniteItem.isOf(ModItems.DIMENSION_POCKET)){
+						if (!infiniteItem.isOf(ModItems.DIMENSIONAL_POCKET)){
 							infiniteItem = player.getOffHandStack();
 						}
-						if (!infiniteItem.isOf(ModItems.DIMENSION_POCKET)) {
+						if (!infiniteItem.isOf(ModItems.DIMENSIONAL_POCKET)) {
 							return;
 						}
 
-						if (!infiniteItem.isOf(ModItems.DIMENSION_POCKET)) return;
+						if (!infiniteItem.isOf(ModItems.DIMENSIONAL_POCKET)) return;
 
 						BlockPos storagePos = infiniteItem.get(ModDataComponentTypes.LINKED_CHEST);
 						Identifier dimension = infiniteItem.get(ModDataComponentTypes.SERVERWORLD);
@@ -656,7 +659,7 @@ public class MoreMineralBlocks implements ModInitializer{
 //	}
 
 	private static void sendEmptyPayload(ServerPlayNetworking.Context context) {
-		context.responseSender().sendPacket(new InfiniteItemstackV2ChestContentsResponsePayload(
+		context.responseSender().sendPacket(new DimensionalPocketDepositContentsResponsePayload(
 				ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY
 		));
 	}
@@ -681,6 +684,9 @@ public class MoreMineralBlocks implements ModInitializer{
 			return 0;
 		}
 		int groupSize = group.size();
+		if (groupSize == 0) {
+			return 0;
+		}
 
 		int newPointer = intraGroupPointer + direction;
 		if (newPointer >= groupSize) {newPointer = 0;}
