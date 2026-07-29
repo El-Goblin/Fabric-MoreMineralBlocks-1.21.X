@@ -767,6 +767,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .criterion(hasItem(Items.DEEPSLATE), conditionsFromItem(Items.DEEPSLATE))
                         .offerTo(exporter);
 
+                createShapeless(RecipeCategory.TOOLS, ModItems.MOSS, 4)
+                        .input(Items.MOSS_BLOCK)
+                        .criterion(hasItem(Items.MOSS_BLOCK), conditionsFromItem(Items.MOSS_BLOCK))
+                        .offerTo(exporter);
+
                 createShaped(RecipeCategory.COMBAT, ModItems.WOODEN_LONGSWORD)
                         .pattern("  P")
                         .pattern(" P ")

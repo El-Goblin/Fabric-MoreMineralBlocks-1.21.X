@@ -25,10 +25,22 @@ public class InlineColorPanel {
     private int selectedColorIndex = 0;
 
     private static final int[] COLORS = {
-            0xFFFFFFFF, 0xFFD87F33, 0xFFB24CD8, 0xFF6699D8,
-            0xFFE5E533, 0xFF7FCC19, 0xFFF27FA5, 0xFF4C4C4C,
-            0xFF999999, 0xFF4C7F99, 0xFF7F3FB2, 0xFF334CB2,
-            0xFF664C33, 0xFF667F33, 0xFF993333, 0xFF191919
+            DyeColor.RED.getEntityColor(),
+            DyeColor.ORANGE.getEntityColor(),
+            DyeColor.YELLOW.getEntityColor(),
+            DyeColor.LIME.getEntityColor(),
+            DyeColor.GREEN.getEntityColor(),
+            DyeColor.CYAN.getEntityColor(),
+            DyeColor.LIGHT_BLUE.getEntityColor(),
+            DyeColor.BLUE.getEntityColor(),
+            DyeColor.PURPLE.getEntityColor(),
+            DyeColor.MAGENTA.getEntityColor(),
+            DyeColor.PINK.getEntityColor(),
+            DyeColor.BROWN.getEntityColor(),
+            DyeColor.WHITE.getEntityColor(),
+            0xFF999999,
+            DyeColor.GRAY.getEntityColor(),
+            DyeColor.BLACK.getEntityColor(),
     };
 
     public InlineColorPanel(int x, int y, int targetSlotId, int currentActiveColor) {

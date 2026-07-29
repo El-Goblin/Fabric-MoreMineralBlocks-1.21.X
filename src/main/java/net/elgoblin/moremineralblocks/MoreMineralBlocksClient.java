@@ -111,7 +111,8 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
         if (storagePos == null || dimension == null) {
             return;
         }
-        ItemStack selectedStack = InfiniteItemClientCache.mainRenderedStack;
+        ItemStack selectedStack = InfiniteItemClientCache.mainStack;
+        int stackCount = InfiniteItemClientCache.mainCount;
 
         if (!selectedStack.isEmpty() && client.player != null) {
             int width = client.getWindow().getScaledWidth();
@@ -133,7 +134,7 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
                     selectedStack,
                     x,
                     y,
-                    String.valueOf(selectedStack.getCount()));
+                    String.valueOf(stackCount));
 
         }
     }

@@ -141,6 +141,10 @@ public class DimensionalPocketItem extends Item {
                 && safeModeOn
                 && (usedStack.isDamageable() && (usedStack.getMaxDamage() - usedStack.getDamage()) <= 1
                 || !usedStack.isDamageable() && usedStack.getCount() <= 1)) {
+
+            usedStack = findNonEmptyStack(usedStack, deposit, group);
+        }
+        if (usedStack.isEmpty()) {
             return ActionResult.FAIL;
         }
 
@@ -189,6 +193,7 @@ public class DimensionalPocketItem extends Item {
         Identifier dimension = stack.get(ModDataComponentTypes.SERVERWORLD);
         Integer interGroupPointer = stack.get(ModDataComponentTypes.INTER_GROUP_POINTER);
         List<Integer> intraGroupPointers = stack.get(ModDataComponentTypes.INTRA_GROUP_POINTERS);
+        boolean safeModeOn = stack.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
 
         if (storagePos == null || dimension == null || interGroupPointer == null || intraGroupPointers == null) {
             return ActionResult.FAIL;
@@ -224,6 +229,16 @@ public class DimensionalPocketItem extends Item {
         ItemStack usedStack = deposit.getStack(group.get(intraGroupPointers.get(interGroupPointer)));
 
         if (isBannedItem(usedStack)) {
+            return ActionResult.FAIL;
+        }
+        if (!user.isInCreativeMode()
+                && safeModeOn
+                && (usedStack.isDamageable() && (usedStack.getMaxDamage() - usedStack.getDamage()) <= 1
+                || !usedStack.isDamageable() && usedStack.getCount() <= 1)) {
+
+            usedStack = findNonEmptyStack(usedStack, deposit, group);
+        }
+        if (usedStack.isEmpty()) {
             return ActionResult.FAIL;
         }
 
@@ -265,5 +280,26 @@ public class DimensionalPocketItem extends Item {
         if (stack.getItem() instanceof BucketItem) {return true;}
         if (stack.isOf(Items.POWDER_SNOW_BUCKET)) {return true;}
         return stack.isEmpty();
+    }
+
+    private ItemStack findNonEmptyStack(ItemStack usedStack, Inventory deposit, List<Integer> group) {
+        for (int i = 0 ; i < group.size() ; i++) {
+            System.out.println(i);
+            int depositPointer = Math.floorMod(group.get(i), deposit.size());
+            ItemStack currentStack = deposit.getStack(depositPointer);
+            if (currentStack.isOf(usedStack.getItem()) && currentStack.getCount() > 1) {
+                return currentStack;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public record DimensionalPocketData(BlockPos storagePos,
+                                        Identifier dimension,
+                                        ServerWorld targetWorld,
+                                        List<Integer> intraGroupPointers,
+                                        Integer interGroupPointer,
+                                        boolean safeMode) {
+
     }
 }

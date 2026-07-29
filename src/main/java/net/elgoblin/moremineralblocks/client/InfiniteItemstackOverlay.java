@@ -127,7 +127,7 @@ public class InfiniteItemstackOverlay {
                 renderSafeCachedStack(drawContext, InfiniteItemClientCache.sameGroupNextStack, slotCenterX + 22 + 3, hotbarTopY - (slotHeight * 2) + 3);
             }
 
-            renderSafeCachedStack(drawContext, InfiniteItemClientCache.mainRenderedStack, slotCenterX + 4, hotbarTopY - (slotHeight * 2) + 4);
+            renderSafeCachedStack(drawContext, InfiniteItemClientCache.mainStack, slotCenterX + 4, hotbarTopY - (slotHeight * 2) + 4);
         });
     }
 

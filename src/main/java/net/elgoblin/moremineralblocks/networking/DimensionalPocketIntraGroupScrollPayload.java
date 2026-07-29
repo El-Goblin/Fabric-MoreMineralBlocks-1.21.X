@@ -1,16 +1,20 @@
 package net.elgoblin.moremineralblocks.networking;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
 
-public record DimensionalPocketIntraGroupScrollPayload(Integer scroll) implements CustomPayload {
+public record DimensionalPocketIntraGroupScrollPayload(Integer scroll, ItemStack prevItem, ItemStack nextItem) implements CustomPayload {
     public static final Id<DimensionalPocketIntraGroupScrollPayload> ID = new Id<>(Identifier.of(MoreMineralBlocks.MOD_ID, "dimensional_pocket_intra_group_scroll_payload"));
     public static final PacketCodec<RegistryByteBuf, DimensionalPocketIntraGroupScrollPayload> CODEC = PacketCodec.tuple(
             PacketCodecs.INTEGER, DimensionalPocketIntraGroupScrollPayload::scroll,
+            ItemStack.OPTIONAL_PACKET_CODEC, DimensionalPocketIntraGroupScrollPayload::prevItem,
+            ItemStack.OPTIONAL_PACKET_CODEC, DimensionalPocketIntraGroupScrollPayload::nextItem,
             DimensionalPocketIntraGroupScrollPayload::new);
 
     @Override

@@ -61,7 +61,7 @@ public class ClientEvents {
                 int scroll = delta > 0 ? 1 : -1;
 
                 if (tabPressed) {
-                    ClientPlayNetworking.send(new DimensionalPocketIntraGroupScrollPayload(scroll));
+                    ClientPlayNetworking.send(new DimensionalPocketIntraGroupScrollPayload(scroll, InfiniteItemClientCache.sameGroupPrevStack, InfiniteItemClientCache.sameGroupNextStack));
                     return true;
                 }
                 else if (gravePressed) {

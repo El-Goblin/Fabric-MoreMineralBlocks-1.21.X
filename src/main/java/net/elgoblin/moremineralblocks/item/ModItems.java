@@ -161,6 +161,9 @@ public class ModItems {
             .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "la_lechona")))
             .recipeRemainder(BUCKET).component(DataComponentTypes.CONSUMABLE, ModDataComponentTypes.LA_LECHONA).useRemainder(BUCKET).maxCount(1)));
 
+    public static final Item MOSS = registerItem("moss", new MossItem(new Item.Settings()
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "moss")))));
+
 //    public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
 public static final Item DIMENSIONAL_POCKET = registerItem("dimensional_pocket", new DimensionalPocketItem(new Item.Settings()
         .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MoreMineralBlocks.MOD_ID, "dimensional_pocket")))
@@ -203,6 +206,7 @@ public static final Item DIMENSIONAL_POCKET = registerItem("dimensional_pocket",
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
             entries.add(CHAOS_ORB);
+            entries.add(MOSS);
 //            entries.add(INFINITE_ITEMSTACK);
         });
 
