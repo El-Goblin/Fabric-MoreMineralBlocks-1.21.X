@@ -9,6 +9,7 @@ import net.elgoblin.moremineralblocks.enchantment.ModEnchantmentEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 //import net.elgoblin.moremineralblocks.entity.custom.DevilmonEntity;
 //import net.elgoblin.moremineralblocks.entity.custom.MantisEntity;
+import net.elgoblin.moremineralblocks.gamerules.ChaosOrbGameRules;
 import net.elgoblin.moremineralblocks.item.ModItemGroups;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.ModToolMaterials;
@@ -85,6 +86,8 @@ public class MoreMineralBlocks implements ModInitializer{
 		ServerPayloadReceivers.registerDimensionPocketGlobalReceivers();
 
 
+
+
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
 		ModEffects.registerEffects();
@@ -96,6 +99,7 @@ public class MoreMineralBlocks implements ModInitializer{
 		MoreMineralBlocksStructure.registerStructureTypes();
 		ModEnchantmentEffects.registerEnchantmentEffects();
 		InfiniteItemClientCache.init();
+		ChaosOrbGameRules.init();
 
 
 

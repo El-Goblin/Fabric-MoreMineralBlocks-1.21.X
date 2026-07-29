@@ -5,6 +5,7 @@ import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
+import net.elgoblin.moremineralblocks.gamerules.ChaosOrbGameRules;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
@@ -989,6 +990,14 @@ public class ChaosOrbEntity extends ThrownItemEntity {
             randomNumber = random.nextFloat();
         }
         int radius = Math.max((int) (-1 * (5.6f * Math.log(randomNumber * 1369)/Math.log(1.375f) - 127)), 10);
+        double multiplier = world.getGameRules().getValue(ChaosOrbGameRules.VOID_SPHERE_SIZE_MULTIPLIER);
+        int fixedSize = world.getGameRules().getValue(ChaosOrbGameRules.VOID_SPHERE_FIXED_SIZE);
+        if (multiplier > 1) {
+            radius = (int) (radius * multiplier);
+        }
+        if (fixedSize >= 0) {
+            radius = fixedSize;
+        }
         BlockPos center = new BlockPos(new Vec3i((int) hitResult.getPos().x, (int) hitResult.getPos().y, (int) hitResult.getPos().z));
 
 
