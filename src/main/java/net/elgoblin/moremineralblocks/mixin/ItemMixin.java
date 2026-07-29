@@ -11,8 +11,12 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.MaceItem;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -45,11 +49,25 @@ public class ItemMixin {
     )
     private void useOnBlock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
         if (context.getStack().getItem() instanceof MaceItem) {
-            Block blockToCrack = context.getWorld().getBlockState(context.getBlockPos()).getBlock();
+            World world = context.getWorld();
+            BlockPos position = context.getBlockPos();
+            Block blockToCrack = world.getBlockState(position).getBlock();
             Block cracked = crackedBlocks.get(blockToCrack);
 
             if (cracked != null) {
-                context.getWorld().setBlockState(context.getBlockPos(), cracked.getDefaultState());
+                world.setBlockState(position, cracked.getDefaultState());
+
+                world.playSound(
+                        null,
+                        position,
+                        SoundEvents.BLOCK_POINTED_DRIPSTONE_LAND,
+                        SoundCategory.BLOCKS,
+                        1.0F,
+                        1.0F
+                );
+
+                world.emitGameEvent(context.getPlayer(), GameEvent.BLOCK_CHANGE, position);
+
                 context.getStack().damage(1, context.getPlayer());
                 cir.setReturnValue(ActionResult.SUCCESS);
             }

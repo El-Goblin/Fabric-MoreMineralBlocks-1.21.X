@@ -284,7 +284,6 @@ public class DimensionalPocketItem extends Item {
 
     private ItemStack findNonEmptyStack(ItemStack usedStack, Inventory deposit, List<Integer> group) {
         for (int i = 0 ; i < group.size() ; i++) {
-            System.out.println(i);
             int depositPointer = Math.floorMod(group.get(i), deposit.size());
             ItemStack currentStack = deposit.getStack(depositPointer);
             if (currentStack.isOf(usedStack.getItem()) && currentStack.getCount() > 1) {

@@ -50,8 +50,10 @@ public class InfiniteItemstackOverlay {
                 currentGroup = 0;
             }
 
-            int previousGroup = findNextGroup(activeItem, currentGroup, -1);
-            int nextGroup = findNextGroup(activeItem, currentGroup, 1);
+//            int previousGroup = findNextGroup(activeItem, currentGroup, -1);
+//            int nextGroup = findNextGroup(activeItem, currentGroup, 1);
+            int prevGroup = InfiniteItemClientCache.prevGroupIndex;
+            int nextGroup = InfiniteItemClientCache.nextGroupIndex;
 
             int screenWidth = client.getWindow().getScaledWidth();
             int screenHeight = client.getWindow().getScaledHeight();
@@ -111,7 +113,7 @@ public class InfiniteItemstackOverlay {
             drawColorIcon(drawContext, currentGroup, slotCenterX + 4, hotbarTopY - (slotHeight * 2) + 3, activeItem);
             drawColorIcon(drawContext, currentGroup, slotCenterX + 4, hotbarTopY - (slotHeight * 2) + 4, activeItem);
 
-            drawColorIcon(drawContext, previousGroup, slotCenterX + 4, hotbarTopY - slotHeight + 3, activeItem);
+            drawColorIcon(drawContext, prevGroup, slotCenterX + 4, hotbarTopY - slotHeight + 3, activeItem);
 
             renderSafeCachedStack(drawContext, InfiniteItemClientCache.nextGroupStack, slotCenterX + 4, hotbarTopY - (slotHeight * 3) + 4);
             renderSafeCachedStack(drawContext, InfiniteItemClientCache.prevGroupStack, slotCenterX + 4, hotbarTopY - slotHeight + 3);

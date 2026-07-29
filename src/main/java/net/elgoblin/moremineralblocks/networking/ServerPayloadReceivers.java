@@ -58,26 +58,24 @@ public class ServerPayloadReceivers {
                         }
 
                         StacksToShow stacksToShow = getStacksToShow(infiniteItem, deposit, interGroupPointer, intraGroupPointers.get(interGroupPointer), safeMode);
-                        int nextGroupIndex = findNextNonEmptyGroup(infiniteItem, interGroupPointer, 1);
-                        int prevGroupIndex = findNextNonEmptyGroup(infiniteItem, interGroupPointer, -1);
+                        int nextGroupIndex = findNextNonEmptyGroup(infiniteItem, deposit, interGroupPointer, 1, safeMode);
+                        int prevGroupIndex = findNextNonEmptyGroup(infiniteItem, deposit, interGroupPointer, -1, safeMode);
 
                         List<Integer> prevGroup = infiniteItem.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(prevGroupIndex)));
                         List<Integer> nextGroup = infiniteItem.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(nextGroupIndex)));
 
                         ItemStack prevGroupStack = prevGroup != null ? getStackFromInventory(deposit, prevGroup.get(intraGroupPointers.get(prevGroupIndex))) : ItemStack.EMPTY;
-                        ItemStack nextGroupStack = nextGroup != null ? getStackFromInventory(deposit, nextGroup.get(intraGroupPointers.get(prevGroupIndex))) : ItemStack.EMPTY;
+                        ItemStack nextGroupStack = nextGroup != null ? getStackFromInventory(deposit, nextGroup.get(intraGroupPointers.get(nextGroupIndex))) : ItemStack.EMPTY;
 
                         context.responseSender().sendPacket(new DimensionalPocketDepositContentsResponsePayload(
                                 stacksToShow.currentStack,
                                 stacksToShow.countCurrentStack,
                                 stacksToShow.prevStack,
-                                stacksToShow.countPrevStack,
                                 stacksToShow.nextStack,
-                                stacksToShow.countNextStack,
                                 prevGroupStack,
-                                prevGroupStack.getCount(),
+                                prevGroupIndex,
                                 nextGroupStack,
-                                nextGroupStack.getCount()
+                                nextGroupIndex
                         ));
                     });
                 });
@@ -245,7 +243,7 @@ public class ServerPayloadReceivers {
                     int newInterGroupPointer = interGroupPointer;
 
                     for (int offset = 1 ; offset < 16 ; offset++) {
-                        newInterGroupPointer = Math.floorMod(newInterGroupPointer + payload.scroll() * offset, 16);
+                        newInterGroupPointer = Math.floorMod(newInterGroupPointer + payload.scroll(), 16);
                         List<Integer> group = activeHand.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newInterGroupPointer)));
 
                         if (group == null || group.isEmpty()) {
@@ -253,7 +251,11 @@ public class ServerPayloadReceivers {
                         }
                         int firstNonEmptySlot = isGroupEmpty(deposit, group, safeMode);
                         int oldIntraGroupPointer = intraGroupPointers.get(newInterGroupPointer);
-                        int newIntraGroupPointer = (getStackFromInventory(deposit, group.get(oldIntraGroupPointer)).getCount() > (safeMode ? 1 : 0)) ? oldIntraGroupPointer : firstNonEmptySlot;
+                        int newIntraGroupPointer = firstNonEmptySlot;
+                        if (group.size() > oldIntraGroupPointer) {
+                            newIntraGroupPointer = (getStackFromInventory(deposit, group.get(oldIntraGroupPointer)).getCount() > (safeMode ? 1 : 0)) ? oldIntraGroupPointer : firstNonEmptySlot;
+                        }
+
 
                         if (newIntraGroupPointer != -1) {
                             activeHand.set(ModDataComponentTypes.INTER_GROUP_POINTER, newInterGroupPointer);
@@ -313,15 +315,24 @@ public class ServerPayloadReceivers {
                 });
     }
 
-    private static int findNextNonEmptyGroup(ItemStack infiniteItemstack, int currentGroup, int direction) {
-        int newGroup = Math.floorMod(currentGroup + direction, 16);
-        List<Integer> group = infiniteItemstack.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newGroup)));
-
-        while (group != null && group.isEmpty() && newGroup != currentGroup) {
+    private static int findNextNonEmptyGroup(ItemStack infiniteItemstack, Inventory deposit, int currentGroup, int direction, boolean safeMode) {
+        int newGroup = currentGroup;
+        for (int i = 1; i < 16 ; i++) {
             newGroup = Math.floorMod(newGroup + direction, 16);
-            group = infiniteItemstack.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newGroup)));
+            List<Integer> group = infiniteItemstack.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byIndex(newGroup)));
+
+            if (group == null || group.isEmpty()) {
+                continue;
+            }
+
+            for (int j = 0 ; j < group.size() ; j++) {
+                ItemStack currentStack = getStackFromInventory(deposit, group.get(j));
+                if (currentStack.getCount() > (safeMode ? 1 : 0)) {
+                    return newGroup;
+                }
+            }
         }
-        return newGroup;
+        return currentGroup;
     }
 
     private static ItemStack getStackFromInventory(Inventory inventory, int index) {
@@ -335,7 +346,7 @@ public class ServerPayloadReceivers {
 
     private static void sendEmptyPayload(ServerPlayNetworking.Context context) {
         context.responseSender().sendPacket(new DimensionalPocketDepositContentsResponsePayload(
-                ItemStack.EMPTY, 0, ItemStack.EMPTY, 0, ItemStack.EMPTY, 0, ItemStack.EMPTY, 0, ItemStack.EMPTY, 0
+                ItemStack.EMPTY, 0, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, 0, ItemStack.EMPTY, 0
         ));
     }
 

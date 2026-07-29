@@ -16,10 +16,10 @@ public class InfiniteItemClientCache {
     public static int sameGroupNextCount = 0;
 
     public static ItemStack prevGroupStack = ItemStack.EMPTY;
-    public static int prevGroupCount = 0;
+    public static int prevGroupIndex = 0;
 
     public static ItemStack nextGroupStack = ItemStack.EMPTY;
-    public static int nextGroupCount = 0;
+    public static int nextGroupIndex = 0;
 
     public static void init() {
         ClientPlayNetworking.registerGlobalReceiver(DimensionalPocketDepositContentsResponsePayload.ID, (payload, context) -> {
@@ -28,16 +28,14 @@ public class InfiniteItemClientCache {
                 mainCount = payload.mainCount();
 
                 sameGroupPrevStack = payload.sameGroupPrevStack();
-                sameGroupPrevCount = payload.sameGroupPrevCount();
 
                 sameGroupNextStack = payload.sameGroupNextStack();
-                sameGroupNextCount = payload.sameGroupNextCount();
 
                 prevGroupStack = payload.prevGroupStack();
-                prevGroupCount = payload.prevGroupCount();
+                prevGroupIndex = payload.prevGroupIndex();
 
                 nextGroupStack = payload.nextGroupStack();
-                nextGroupCount = payload.nextGroupCount();
+                nextGroupIndex = payload.nextGroupIndex();
             });
         });
     }
