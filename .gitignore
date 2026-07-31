@@ -1,7 +1,11 @@
 # gradle
 
 .gradle/
-build/
+build/*
+
+!build/libs/
+!build/libs/**
+
 out/
 classes/
 

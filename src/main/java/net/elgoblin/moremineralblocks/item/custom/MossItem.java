@@ -44,18 +44,20 @@ public class MossItem extends Item {
         ItemStack mossStack = context.getItemInHand();
         Player player = context.getPlayer();
 
-        if (MOSSY_BLOCKS.containsKey(clickedBlock) && !level.isClientSide() && player != null) {
-            level.setBlockAndUpdate(clickedPos, MOSSY_BLOCKS.get(clickedBlock).defaultBlockState());
-            if (!player.isCreative()) {
-                mossStack.shrink(1);
-            }
+        if (MOSSY_BLOCKS.containsKey(clickedBlock) && player != null) {
+            if (!level.isClientSide()) {
+                level.setBlockAndUpdate(clickedPos, MOSSY_BLOCKS.get(clickedBlock).defaultBlockState());
+                if (!player.getAbilities().instabuild) {
+                    mossStack.shrink(1);
+                }
 
-            level.playSound(null,
-                    clickedPos,
-                    SoundEvents.BONE_MEAL_USE,
-                    SoundSource.BLOCKS,
-                    1.0F,
-                    1.0F);
+                level.playSound(null,
+                        clickedPos,
+                        SoundEvents.BONE_MEAL_USE,
+                        SoundSource.BLOCKS,
+                        1.0F,
+                        1.0F);
+            }
 
             return InteractionResult.SUCCESS;
         }
