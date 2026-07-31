@@ -23,14 +23,17 @@ public class TerrainManager {
     }
 
     public void tick() {
-//        timer++;
-        if (!listOfJobs.isEmpty()) {
-            int assignedBlockOperations = maxBlockOperations / listOfJobs.size();
-            for (int i = listOfJobs.size()-1 ; i >= 0 ; i--) {
-                boolean hasFinished = listOfJobs.get(i).process(assignedBlockOperations);
-                if (hasFinished) { listOfJobs.remove(i);}
+        timer++;
+        if (timer % 5 == 0) {
+            if (!listOfJobs.isEmpty()) {
+                int assignedBlockOperations = maxBlockOperations / listOfJobs.size();
+                for (int i = listOfJobs.size()-1 ; i >= 0 ; i--) {
+                    boolean hasFinished = listOfJobs.get(i).process(assignedBlockOperations);
+                    if (hasFinished) { listOfJobs.remove(i);}
+                }
             }
         }
+        if (timer > 1000000) {timer = 0;}
 //        else {
 ////            if (timer % 600 == 0) {
 //////                System.out.println("No tengo laburos");

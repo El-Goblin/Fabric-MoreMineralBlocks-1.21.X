@@ -13,7 +13,8 @@
 		"MouseMixin",
 		"HandledScreenMixin",
 		"MinecraftClientMixin",
-		"ItemMixin"
+		"ItemMixin",
+		"ChunkMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
