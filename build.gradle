@@ -15,19 +15,17 @@ repositories {
 }
 
 loom {
-	splitEnvironmentSourceSets()
 
 	mods {
 		"moremineralblocks" {
 			sourceSet sourceSets.main
-			sourceSet sourceSets.client
 		}
 	}
 }
 
 fabricApi {
 	configureDataGeneration {
-		client = true
+		client = false
 	}
 }
 
