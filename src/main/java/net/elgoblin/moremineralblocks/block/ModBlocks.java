@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks.block;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.block.custom.ProtectorBlock;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -1090,6 +1091,15 @@ public class ModBlocks {
 //            false
 //    );
 
+    // CUSTOM BLOCKS
+
+    public static final Block PROTECTOR_BLOCK = registerBlock("protector_block", properties -> new ProtectorBlock(properties
+            .mapColor(MapColor.DIAMOND)
+            .instrument(NoteBlockInstrument.HARP)
+            .requiresCorrectToolForDrops()
+            .strength(10F, 3600000F)
+    ));
+
     // Funciones
 
     public static BlockSet registerBlockSet(
@@ -1156,6 +1166,10 @@ public class ModBlocks {
             output.accept(NETHER_BRICK_FENCE_GATE);
             output.accept(GLASS_STAIRS);
             output.accept(GLASS_SLAB);
+        });
+
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(output -> {
+            output.accept(PROTECTOR_BLOCK);
         });
 
         addSetToCreativeTab(GOLD_SET, false);

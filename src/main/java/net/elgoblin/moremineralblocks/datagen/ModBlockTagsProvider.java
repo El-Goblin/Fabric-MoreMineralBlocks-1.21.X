@@ -87,6 +87,7 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHER_BRICK_FENCE_GATE))
                 .add(ModBlocks.getResourceKey(ModBlocks.GLASS_STAIRS))
                 .add(ModBlocks.getResourceKey(ModBlocks.GLASS_SLAB))
+                .add(ModBlocks.getResourceKey(ModBlocks.PROTECTOR_BLOCK))
         ;
 
         // HOE MINEABLE
@@ -115,6 +116,8 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
         addSetToTag(ModBlocks.REDSTONE_BRICKS_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.CALCIFIED_REDSTONE_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.POLISHED_REDSTONE_SET, true, BlockTags.NEEDS_IRON_TOOL);
+
+        tag(BlockTags.NEEDS_IRON_TOOL).add(ModBlocks.getResourceKey(ModBlocks.PROTECTOR_BLOCK));
 
         // NEEDS STONE TOOL
 

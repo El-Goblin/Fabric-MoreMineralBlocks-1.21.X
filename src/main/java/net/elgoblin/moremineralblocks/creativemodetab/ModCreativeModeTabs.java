@@ -19,6 +19,8 @@ public class ModCreativeModeTabs {
                     .icon(() -> new ItemStack(ModBlocks.GOLD_BRICKS.asItem()))
                     .title(Component.translatable("creativemodetab." + MoreMineralBlocks.MOD_ID + ".blocks_tab"))
                     .displayItems((parameters, output) -> {
+                        output.accept(ModBlocks.PROTECTOR_BLOCK);
+
                         addToTab(output, ModBlocks.GOLD_SET);
                         addToTab(output, ModBlocks.GOLD_BRICKS_SET);
                         addToTab(output, ModBlocks.CALCIFIED_GOLD_SET);
@@ -96,6 +98,7 @@ public static final CreativeModeTab ITEMS_TAB = Registry.register(BuiltInRegistr
                     .title(Component.translatable("creativemodetab." + MoreMineralBlocks.MOD_ID + ".items_tab"))
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.MOSS);
+                        output.accept(ModItems.FLASH);
                     })
                     .build()
     );
