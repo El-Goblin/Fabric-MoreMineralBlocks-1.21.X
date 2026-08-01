@@ -18,6 +18,10 @@ public class ModItems {
     public static final Item MOSS = registerItem("moss", properties ->
         new MossItem(properties));
 
+    public static ResourceKey<Item> getResourceKey(Item item) {
+        return BuiltInRegistries.ITEM.getResourceKey(item).get();
+    }
+
     private static Item registerItem(String name, Function<Item.Properties, Item> function) {
         return Registry.register(BuiltInRegistries.ITEM, Identifier.fromNamespaceAndPath(MoreMineralBlocks.MOD_ID, name),
         function.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MoreMineralBlocks.MOD_ID, name)))));

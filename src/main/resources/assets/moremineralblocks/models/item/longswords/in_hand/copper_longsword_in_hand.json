@@ -1,0 +1,7 @@
+{
+    "parent": "moremineralblocks:item/longsword_in_hand_parent",
+    "textures": {
+        "layer0": "moremineralblocks:item/longswords/in_hand/copper_longsword_in_hand"
+    }
+
+}

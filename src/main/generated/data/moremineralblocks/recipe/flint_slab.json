@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "flint",
+  "key": {
+    "F": "moremineralblocks:flint_block"
+  },
+  "pattern": [
+    "FFF"
+  ],
+  "result": {
+    "count": 6,
+    "id": "moremineralblocks:flint_slab"
+  }
+}

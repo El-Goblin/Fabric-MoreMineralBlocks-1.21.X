@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "moremineralblocks:block/bedrock_wall_inventory"
+  }
+}

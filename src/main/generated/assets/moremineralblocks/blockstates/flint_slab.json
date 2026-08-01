@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moremineralblocks:block/flint_slab"
+    },
+    "type=double": {
+      "model": "moremineralblocks:block/flint_block"
+    },
+    "type=top": {
+      "model": "moremineralblocks:block/flint_slab_top"
+    }
+  }
+}

@@ -1,6 +1,9 @@
 package net.elgoblin.moremineralblocks;
 
+import net.elgoblin.moremineralblocks.datagen.ModBlockLootTableProvider;
+import net.elgoblin.moremineralblocks.datagen.ModBlockTagsProvider;
 import net.elgoblin.moremineralblocks.datagen.ModModelProvider;
+import net.elgoblin.moremineralblocks.datagen.ModRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
@@ -10,5 +13,8 @@ public class MoreMineralBlocksDataGenerator implements DataGeneratorEntrypoint {
 		 var pack = fabricDataGenerator.createPack();
 
 		 pack.addProvider(ModModelProvider::new);
+		 pack.addProvider(ModBlockTagsProvider::new);
+		 pack.addProvider(ModBlockLootTableProvider::new);
+		 pack.addProvider(ModRecipeProvider::new);
 	}
 }

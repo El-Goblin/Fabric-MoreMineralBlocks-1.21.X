@@ -1,0 +1,7 @@
+{
+    "parent": "item/spear_in_hand",
+    "textures": {
+        "layer0": "moremineralblocks:item/legendary_spear/in_hand/legendary_spear_bane_of_arthropods_in_hand"
+    }
+
+}

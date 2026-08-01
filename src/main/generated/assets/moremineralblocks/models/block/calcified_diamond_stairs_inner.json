@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "moremineralblocks:block/calcified_diamond_block",
+    "side": "moremineralblocks:block/calcified_diamond_block",
+    "top": "moremineralblocks:block/calcified_diamond_block"
+  }
+}

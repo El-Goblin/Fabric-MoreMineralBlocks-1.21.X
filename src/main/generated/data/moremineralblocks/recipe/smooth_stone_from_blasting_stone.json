@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "category": "blocks",
+  "experience": 0.11,
+  "group": "stone",
+  "ingredient": "minecraft:stone",
+  "result": {
+    "id": "minecraft:smooth_stone"
+  }
+}

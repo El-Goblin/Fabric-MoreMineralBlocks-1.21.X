@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moremineralblocks:block/bedrock_slab"
+    },
+    "type=double": {
+      "model": "minecraft:block/bedrock"
+    },
+    "type=top": {
+      "model": "moremineralblocks:block/bedrock_slab_top"
+    }
+  }
+}

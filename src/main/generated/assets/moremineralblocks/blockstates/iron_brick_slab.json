@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moremineralblocks:block/iron_brick_slab"
+    },
+    "type=double": {
+      "model": "moremineralblocks:block/iron_bricks"
+    },
+    "type=top": {
+      "model": "moremineralblocks:block/iron_brick_slab_top"
+    }
+  }
+}

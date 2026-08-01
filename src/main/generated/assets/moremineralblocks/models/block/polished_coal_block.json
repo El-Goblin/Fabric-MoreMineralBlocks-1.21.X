@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "moremineralblocks:block/polished_coal_block"
+  }
+}

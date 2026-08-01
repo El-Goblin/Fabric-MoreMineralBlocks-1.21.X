@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moremineralblocks:block/chiseled_emerald_slab"
+    },
+    "type=double": {
+      "model": "moremineralblocks:block/chiseled_emerald_block"
+    },
+    "type=top": {
+      "model": "moremineralblocks:block/chiseled_emerald_slab_top"
+    }
+  }
+}
