@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks.item;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.item.custom.FlashItem;
 import net.elgoblin.moremineralblocks.item.custom.MossItem;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
@@ -18,6 +19,9 @@ public class ModItems {
     public static final Item MOSS = registerItem("moss", properties ->
         new MossItem(properties));
 
+    public static final Item FLASH = registerItem("flash", properties ->
+            new FlashItem(properties));
+
     public static ResourceKey<Item> getResourceKey(Item item) {
         return BuiltInRegistries.ITEM.getResourceKey(item).get();
     }
@@ -32,6 +36,14 @@ public class ModItems {
 
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register(output -> {
             output.accept(MOSS);
+        });
+
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(output -> {
+            output.accept(FLASH);
+        });
+
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(output -> {
+            output.accept(FLASH);
         });
     }
 }

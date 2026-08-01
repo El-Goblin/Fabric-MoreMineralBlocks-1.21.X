@@ -139,6 +139,7 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerators) {
         itemModelGenerators.generateFlatItem(ModItems.MOSS, ModelTemplates.FLAT_ITEM);
+        itemModelGenerators.generateFlatItem(ModItems.FLASH, ModelTemplates.FLAT_ITEM);
     }
 
     private void generateBlockStateModelsForSet(BlockModelGenerators blockModelGenerators,
