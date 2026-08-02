@@ -99,6 +99,27 @@ public static final CreativeModeTab ITEMS_TAB = Registry.register(BuiltInRegistr
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.MOSS);
                         output.accept(ModItems.FLASH);
+                        output.accept(ModItems.LEGENDARY_PICKAXE);
+                        output.accept(ModItems.LEGENDARY_SHOVEL);
+                        output.accept(ModItems.LEGENDARY_AXE);
+                        output.accept(ModItems.LEGENDARY_HOE);
+                        output.accept(ModItems.LEGENDARY_SWORD);
+                        output.accept(ModItems.LEGENDARY_LONGSWORD);
+                        output.accept(ModItems.LEGENDARY_SPEAR);
+                        output.accept(ModItems.WOODEN_LONGSWORD);
+                        output.accept(ModItems.STONE_LONGSWORD);
+                        output.accept(ModItems.COPPER_LONGSWORD);
+                        output.accept(ModItems.IRON_LONGSWORD);
+                        output.accept(ModItems.GOLDEN_LONGSWORD);
+                        output.accept(ModItems.DIAMOND_LONGSWORD);
+                        output.accept(ModItems.NETHERITE_LONGSWORD);
+                        output.accept(ModItems.FLAMEBERGE_LONGSWORD);
+                        output.accept(ModItems.FIRE_DRAGONSWORD_LONGSWORD);
+                        output.accept(ModItems.FIENDBLADE_LONGSWORD);
+                        output.accept(ModItems.LEGENDARY_ROCKET);
+                        output.accept(ModItems.MAGIC_MIRROR);
+                        output.accept(ModItems.REFLECTIVE_MIRROR);
+                        output.accept(ModItems.CHAOS_MIRROR);
                     })
                     .build()
     );

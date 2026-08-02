@@ -5,7 +5,9 @@
   "mixins": [
     "BlockBehaviourMixin",
     "ExampleMixin",
-    "ItemMixin"
+    "ItemMixin",
+    "PlayerMixin",
+    "ZombieMixin"
   ],
   "injectors": {
     "defaultRequire": 1

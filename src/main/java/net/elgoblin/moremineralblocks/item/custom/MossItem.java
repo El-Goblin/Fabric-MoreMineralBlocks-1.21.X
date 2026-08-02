@@ -48,7 +48,7 @@ public class MossItem extends Item {
             if (!level.isClientSide()) {
                 level.setBlockAndUpdate(clickedPos, MOSSY_BLOCKS.get(clickedBlock).defaultBlockState());
                 if (!player.getAbilities().instabuild) {
-                    mossStack.shrink(1);
+                    mossStack.consume(1, player);
                 }
 
                 level.playSound(null,

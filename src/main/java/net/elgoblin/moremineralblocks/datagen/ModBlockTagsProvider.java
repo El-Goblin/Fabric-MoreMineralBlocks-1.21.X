@@ -1,10 +1,13 @@
 package net.elgoblin.moremineralblocks.datagen;
 
 import net.elgoblin.moremineralblocks.block.ModBlocks;
+import net.elgoblin.moremineralblocks.item.ModItems;
+import net.elgoblin.moremineralblocks.tags.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
@@ -17,6 +20,8 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider registries) {
+
+        // LEGENDARY TOOLS
 
 
         // PICKAXE MINEABLE
@@ -130,6 +135,14 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
         addSetToTag(ModBlocks.LAPIS_BRICKS_SET, true, BlockTags.NEEDS_STONE_TOOL);
         addSetToTag(ModBlocks.CALCIFIED_LAPIS_SET, true, BlockTags.NEEDS_STONE_TOOL);
         addSetToTag(ModBlocks.POLISHED_LAPIS_SET, true, BlockTags.NEEDS_STONE_TOOL);
+
+        // NEEDS DIAMOND TOOL
+
+        addSetToTag(ModBlocks.NETHERITE_SET, false, BlockTags.NEEDS_DIAMOND_TOOL);
+        addSetToTag(ModBlocks.NETHERITE_BRICKS_SET, true, BlockTags.NEEDS_DIAMOND_TOOL);
+        addSetToTag(ModBlocks.CALCIFIED_NETHERITE_SET, true, BlockTags.NEEDS_DIAMOND_TOOL);
+        addSetToTag(ModBlocks.POLISHED_NETHERITE_SET, true, BlockTags.NEEDS_DIAMOND_TOOL);
+        addSetToTag(ModBlocks.OBSIDIAN_SET, false, BlockTags.NEEDS_DIAMOND_TOOL);
 
         tag(BlockTags.STAIRS)
                 .add(ModBlocks.getResourceKey(ModBlocks.GOLD_SET.stairs()))

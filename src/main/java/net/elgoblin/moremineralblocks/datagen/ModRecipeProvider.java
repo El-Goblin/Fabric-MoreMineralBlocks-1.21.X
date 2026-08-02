@@ -68,6 +68,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy(getHasName(ModBlocks.FLINT_BLOCK), has(ModBlocks.FLINT_BLOCK))
                         .group("flint")
                         .save(output);
+
+                shapeless(RecipeCategory.MISC, ModItems.MAGIC_MIRROR, 1)
+                        .requires(ModItems.REFLECTIVE_MIRROR)
+                        .unlockedBy(getHasName(ModItems.REFLECTIVE_MIRROR), has(ModItems.REFLECTIVE_MIRROR))
+                        .group("magic_mirror")
+                        .save(output);
             }
         };
     }
