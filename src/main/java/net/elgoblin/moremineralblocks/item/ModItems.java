@@ -20,27 +20,27 @@ public class ModItems {
     public static final Item MOSS = registerItem("moss", MossItem::new);
 
     public static final Item MAGIC_MIRROR = registerItem("magic_mirror", MagicMirrorItem::new);
-    public static final Item REFLECTIVE_MIRROR = registerItem("reflective_mirror", ReflectiveMirrorItem::new);
-    public static final Item CHAOS_MIRROR = registerItem("chaos_mirror", ChaosMirrorItem::new);
+    public static final Item REFLECTIVE_MIRROR = registerItem("reflective_mirror",properties -> new ReflectiveMirrorItem(properties.rarity(Rarity.UNCOMMON)));
+    public static final Item CHAOS_MIRROR = registerItem("chaos_mirror", properties -> new ChaosMirrorItem(properties.rarity(Rarity.UNCOMMON)));
 
     public static final Item FLASH = registerItem("flash", properties ->
-            new FlashItem(properties.stacksTo(1)));
+            new FlashItem(properties.stacksTo(1).rarity(Rarity.RARE)));
 
     public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", properties ->
-            new LegendaryRocketItem(properties.stacksTo(1).fireResistant().component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
+            new LegendaryRocketItem(properties.stacksTo(1).fireResistant().component(DataComponents.UNBREAKABLE, Unit.INSTANCE).rarity(Rarity.EPIC)));
 
     public static final Item LEGENDARY_SWORD = registerItem("legendary_sword", properties ->
-            new Item(properties.sword(ModToolMaterials.LEGENDARY, 9.0F, -2.0F).fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
+            new LegendaryNonRightClickToolItem(properties.sword(ModToolMaterials.LEGENDARY, 9.0F, -2.0F).fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
     public static final Item LEGENDARY_SHOVEL = registerItem("legendary_shovel", properties ->
-            new ShovelItem(ModToolMaterials.LEGENDARY, 1.0F, -2.8F, properties.fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
+            new LegendaryShovelItem(ModToolMaterials.LEGENDARY, 1.0F, -2.8F, properties.fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
     public static final Item LEGENDARY_AXE = registerItem("legendary_axe", properties ->
-            new AxeItem(ModToolMaterials.LEGENDARY, 5.0F, -2.6F, properties.fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
+            new LegendaryAxeItem(ModToolMaterials.LEGENDARY, 5.0F, -2.6F, properties.fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
     public static final Item LEGENDARY_PICKAXE = registerItem("legendary_pickaxe", properties ->
-            new Item(properties.pickaxe(ModToolMaterials.LEGENDARY, 1.0F, -2.8F).fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
+            new LegendaryNonRightClickToolItem(properties.pickaxe(ModToolMaterials.LEGENDARY, 1.0F, -2.8F).fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
     public static final Item LEGENDARY_HOE = registerItem("legendary_hoe", properties ->
-            new HoeItem(ModToolMaterials.LEGENDARY, 1.0F, -2.8F, properties.fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
+            new LegendaryHoeItem(ModToolMaterials.LEGENDARY, 1.0F, -2.8F, properties.fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
     public static final Item LEGENDARY_SPEAR = registerItem("legendary_spear", properties ->
-            new Item(properties.spear(ModToolMaterials.LEGENDARY,
+            new LegendaryNonRightClickToolItem(properties.spear(ModToolMaterials.LEGENDARY,
                     1.25F,
                     1.5F,
                     0.25F,
@@ -52,7 +52,7 @@ public class ModItems {
                     4.6F).fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
 
     public static final Item LEGENDARY_LONGSWORD = registerItem("legendary_longsword", properties ->
-            new LongswordItem(properties.fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE),
+            new LegendaryLongswordItem(properties.fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE),
                     ModToolMaterials.LEGENDARY, 11.0F, -2.4F, 1, 5));
     public static final Item WOODEN_LONGSWORD = registerItem("wooden_longsword", properties ->
             new LongswordItem(properties,
@@ -76,7 +76,7 @@ public class ModItems {
             new LongswordItem(properties.fireResistant(),
                     ToolMaterial.NETHERITE, 5, -2.4F, 1, 2));
     public static final Item FIENDBLADE_LONGSWORD = registerItem("fiendblade_longsword", properties ->
-            new LongswordItem(properties.fireResistant(),
+            new LongswordItem(properties.fireResistant().rarity(Rarity.RARE),
                     ToolMaterial.NETHERITE, 5, -2.4F, 1, 2));
     public static final Item FIRE_DRAGONSWORD_LONGSWORD = registerItem("fire_dragonsword_longsword", properties ->
             new LongswordItem(properties.fireResistant(),

@@ -10,7 +10,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.phys.Vec3;
 
@@ -27,9 +26,6 @@ public class ModDataComponentTypes {
     public static final DataComponentType<ItemEnchantments> OTHER_ENCHANTMENTS = register(
             "other_enchantments", builder -> builder.persistent(ItemEnchantments.CODEC).networkSynchronized(ItemEnchantments.STREAM_CODEC).cacheEncoding()
     );
-    public static final DataComponentType<String> ENCHANTMENT_SET = register("enchantment_set", builder -> builder.persistent(Codec.STRING));
-
-
     public static final DataComponentType<BlockPos> LINKED_CHEST = register("linked_chest", builder -> builder.persistent(BlockPos.CODEC));
     public static final DataComponentType<BlockPos> OTHER_LINKED_CHEST = register("other_linked_chest", builder -> builder.persistent(BlockPos.CODEC));
     public static final DataComponentType<Vec3> COORDINATES = register("coordinates", builder -> builder.persistent(Vec3.CODEC));

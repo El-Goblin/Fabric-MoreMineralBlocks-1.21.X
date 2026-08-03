@@ -1,6 +1,8 @@
 package net.elgoblin.moremineralblocks.item.custom;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -13,8 +15,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.TooltipDisplay;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 public class LongswordItem extends Item {
 
@@ -22,7 +29,8 @@ public class LongswordItem extends Item {
 
     public LongswordItem(final Item.Properties properties, final ToolMaterial material, final float attackDamageBaseline, final float attackSpeedBaseline, final float entityInteractionRange, final float sweepingDamage) {
 
-        super(properties.shovel(material, attackDamageBaseline, attackSpeedBaseline).attributes(createAttributeModifiers(material, attackDamageBaseline, attackSpeedBaseline, entityInteractionRange, sweepingDamage)));
+        super(properties.sword(material, attackDamageBaseline, attackSpeedBaseline)
+                .attributes(createAttributeModifiers(material, attackDamageBaseline, attackSpeedBaseline, entityInteractionRange, sweepingDamage)));
     }
 
     public static ItemAttributeModifiers createAttributeModifiers(
@@ -36,7 +44,7 @@ public class LongswordItem extends Item {
                 .add(
                         Attributes.ATTACK_DAMAGE,
                         new AttributeModifier(
-                                Identifier.fromNamespaceAndPath(MoreMineralBlocks.MOD_ID, "attack_damage"),
+                                BASE_ATTACK_DAMAGE_ID,
                                 attackDamage + material.attackDamageBonus(),
                                 AttributeModifier.Operation.ADD_VALUE
                         ),
@@ -45,7 +53,7 @@ public class LongswordItem extends Item {
                 .add(
                         Attributes.ATTACK_SPEED,
                         new AttributeModifier(
-                                Identifier.fromNamespaceAndPath(MoreMineralBlocks.MOD_ID, "attack_speed"),
+                                BASE_ATTACK_SPEED_ID,
                                 attackSpeed,
                                 AttributeModifier.Operation.ADD_VALUE
                         ),

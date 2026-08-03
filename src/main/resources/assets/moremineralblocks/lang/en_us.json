@@ -356,6 +356,7 @@
   "item.moremineralblocks.wooden_longsword": "Wooden Longsword",
   "item.moremineralblocks.stone_longsword": "Stone Longsword",
   "item.moremineralblocks.iron_longsword": "Iron Longsword",
+  "item.moremineralblocks.copper_longsword": "Copper Longsword",
   "item.moremineralblocks.golden_longsword": "Golden Longsword",
   "item.moremineralblocks.diamond_longsword": "Diamond Longsword",
   "item.moremineralblocks.netherite_longsword": "Netherite Longsword",
@@ -388,7 +389,16 @@
   "key.moremineralblocks.switch_enchantments_toggle_safe_mode": "Switch Enchantments/Toggle Safe Mode",
   "key.moremineralblocks.inter_group_scroll": "Scroll Between Groups",
   "key.moremineralblocks.intra_group_scroll": "Scroll Inside Group",
-  "enchantment.moremineralblocks.linker": "Linker"
+  "enchantment.moremineralblocks.linker": "Linker",
 
+  "message.moremineralblocks.legendary_tools_linked_successfully": "Link Successful",
+  "message.moremineralblocks.legendary_tools_unlinked_successfully": "Unlink Successful",
 
+  "tooltip.moremineralblocks.legendary_tool_switch_enchantments": "Press %s to Switch Enchantments",
+  "tooltip.moremineralblocks.legendary_tool_linked": "LINKED",
+  "tooltip.moremineralblocks.legendary_tool_not_linked": "NOT LINKED",
+  "tooltip.moremineralblocks.legendary_tool_linking_guide": "Press Shift + %s to Link an Inventory",
+  "dimension.minecraft.overworld": "OVERWORLD",
+  "dimension.minecraft.the_nether": "NETHER",
+  "dimension.minecraft.the_end": "THE END"
 }

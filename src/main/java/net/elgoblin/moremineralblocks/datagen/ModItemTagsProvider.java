@@ -30,6 +30,16 @@ public class ModItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
         tag(ItemTags.HOES).add(ModItems.getResourceKey(ModItems.LEGENDARY_HOE));
         tag(ItemTags.SPEARS).add(ModItems.getResourceKey(ModItems.LEGENDARY_SPEAR));
 
+        tag(ModTags.Items.LEGENDARY_TOOLS)
+                .add(ModItems.getResourceKey(ModItems.LEGENDARY_SWORD))
+                .add(ModItems.getResourceKey(ModItems.LEGENDARY_LONGSWORD))
+                .add(ModItems.getResourceKey(ModItems.LEGENDARY_PICKAXE))
+                .add(ModItems.getResourceKey(ModItems.LEGENDARY_AXE))
+                .add(ModItems.getResourceKey(ModItems.LEGENDARY_SHOVEL))
+                .add(ModItems.getResourceKey(ModItems.LEGENDARY_HOE))
+                .add(ModItems.getResourceKey(ModItems.LEGENDARY_SPEAR))
+        ;
+
         // LONGSWORDS
 
         tag(ModTags.Items.LONGSWORDS).add(ModItems.getResourceKey(ModItems.LEGENDARY_LONGSWORD));

@@ -1,0 +1,21 @@
+{
+  "anvil_cost": 2,
+  "description": {
+    "translate": "enchantment.moremineralblocks.linker"
+  },
+  "max_cost": {
+    "base": 50,
+    "per_level_above_first": 1
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 1,
+    "per_level_above_first": 1
+  },
+  "primary_items": "#moremineralblocks:legendary_tools",
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#moremineralblocks:legendary_tools",
+  "weight": 1
+}

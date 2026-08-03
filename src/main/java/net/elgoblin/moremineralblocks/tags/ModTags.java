@@ -22,7 +22,7 @@ public class ModTags {
 
         public static final TagKey<Item> LEGENDARY_REPAIR = createTag("legendary_repair");
         public static final TagKey<Item> LONGSWORDS = createTag("longsword");
-        public static final TagKey<Item> LEGENDARY_TOOL = createTag("legendary_tool");
+        public static final TagKey<Item> LEGENDARY_TOOLS = createTag("legendary_tools");
 
         private static TagKey<Item> createTag(String name) {
             return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MoreMineralBlocks.MOD_ID, name));

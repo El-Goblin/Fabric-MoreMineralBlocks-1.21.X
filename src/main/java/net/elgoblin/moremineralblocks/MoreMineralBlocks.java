@@ -5,11 +5,17 @@ import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.creativemodetab.ModCreativeModeTabs;
 import net.elgoblin.moremineralblocks.effect.BlinkingEffect;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
+import net.elgoblin.moremineralblocks.enchantment.ModEnchantmentEffects;
+import net.elgoblin.moremineralblocks.enchantment.ModEnchantments;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.ModToolMaterials;
+import net.elgoblin.moremineralblocks.networking.ModPayloads;
+import net.elgoblin.moremineralblocks.networking.ServerPayloadReceivers;
+import net.elgoblin.moremineralblocks.networking.SwitchEnchantmentToggleSafeModePayload;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.resources.Identifier;
 
 import net.minecraft.server.level.ServerLevel;
@@ -28,6 +34,10 @@ public class MoreMineralBlocks implements ModInitializer {
 		ModBlocks.registerModBlocks();
 		ModDataComponentTypes.registerComponents();
 		ModEffects.registerEffects();
+		ModEnchantmentEffects.registerEnchantmentEffects();
+
+		ModPayloads.registerPayloads();
+		ServerPayloadReceivers.registerServerGlobalReceivers();
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
 			if (entity.hasEffect(ModEffects.FRAGILE) && !blocked) {

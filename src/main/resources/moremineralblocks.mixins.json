@@ -4,8 +4,11 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "BlockBehaviourMixin",
+    "BlockMixin",
+    "EntityMixin",
     "ExampleMixin",
     "ItemMixin",
+    "LivingEntityMixin",
     "PlayerMixin",
     "ZombieMixin"
   ],
