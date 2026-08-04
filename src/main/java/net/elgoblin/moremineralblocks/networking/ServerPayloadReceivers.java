@@ -465,64 +465,27 @@ public class ServerPayloadReceivers {
             boolean notMerged = true;
             for (int j = 0 ; j < orderedNonEmptyStacks.size() ; j++) {
                 if (canMergeItems(orderedNonEmptyStacks.get(j), stack)) {
+                    notMerged = false;
                     if (!DimensionalPocketItem.notAllowedToUse(safeMode, stack) ||
                         depositIndex == selectedDepositIndex ||
                         canMergeItems(stack, exampleSelectedItemStack)) {
                         counts.set(j, counts.get(j) + stack.getCount());
-                        notMerged = false;
+
                         if (depositIndex == selectedDepositIndex) {
                             nonEmptySelectedItem = j;
                         }
                     }
                 }
             }
-            if (notMerged) {
+            if (notMerged && !DimensionalPocketItem.notAllowedToUse(safeMode, stack)) {
                 if (depositIndex == selectedDepositIndex) {
                     nonEmptySelectedItem = orderedNonEmptyStacks.size();
                     exampleSelectedItemStack = stack;
                 }
                 orderedNonEmptyStacks.add(stack);
                 counts.add(stack.getCount());
-
             }
         }
-
-//        for (int i = 0 ; i < groupSize ; i++) {
-//            int depositIndex = selectedColoredGroup.get(i);
-//            if (depositIndex >= depositSize) { break; } // Testear si puedo asumir que esta ordenado
-//
-//            ItemStack stack = getStackFromInventory(deposit, depositIndex);
-//            if (stack.isEmpty()) { continue; }
-//
-//            boolean notMerged = true;
-//            if (depositIndex == selectedDepositIndex) {
-//                for (int j = 0 ; j < orderedNonEmptyStacks.size() ; j++) {
-//                    if (canMergeItems(orderedNonEmptyStacks.get(j), stack)) {
-//                        counts.set(j, counts.get(j) + stack.getCount());
-//                        notMerged = false;
-//                        if (depositIndex == selectedDepositIndex && !DimensionalPocketItem.notAllowedToUse(safeMode, stack)) {
-//                            nonEmptySelectedItem = j;
-//                        }
-//                    }
-//                }
-//            }
-//            for (int j = 0 ; j < orderedNonEmptyStacks.size() ; j++) {
-//                if (canMergeItems(orderedNonEmptyStacks.get(j), stack)) {
-//                    counts.set(j, counts.get(j) + stack.getCount());
-//                    notMerged = false;
-//                    if (depositIndex == selectedDepositIndex && !DimensionalPocketItem.notAllowedToUse(safeMode, stack)) {
-//                        nonEmptySelectedItem = j;
-//                    }
-//                }
-//            }
-//            if (notMerged) {
-//                if (depositIndex == selectedDepositIndex) {
-//                    nonEmptySelectedItem = orderedNonEmptyStacks.size();
-//                }
-//                orderedNonEmptyStacks.add(stack);
-//                counts.add(stack.getCount());
-//            }
-//        }
 
         if (orderedNonEmptyStacks.isEmpty()) { return emptyStacksToShow();}
 
