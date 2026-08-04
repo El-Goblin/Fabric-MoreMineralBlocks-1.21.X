@@ -3,6 +3,7 @@ package net.elgoblin.moremineralblocks.util;
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.enchantment.ModEnchantments;
+import net.elgoblin.moremineralblocks.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -13,16 +14,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
@@ -57,8 +54,8 @@ public class LegendaryItemUtils {
         }
     }
 
-    public static void linkChest(UseOnContext context, BlockPos position) {
-        if (context.getLevel().getBlockEntity(position) instanceof Container inventory) {
+    public static boolean linkOrUnlinkContainer(UseOnContext context, BlockPos position) {
+        if (context.getLevel().getBlockEntity(position) instanceof Container) {
             ItemStack itemStack = context.getItemInHand();
 
             Identifier newPositionDimension = context.getLevel().dimension().identifier();
@@ -82,15 +79,18 @@ public class LegendaryItemUtils {
                     context.getPlayer().sendSystemMessage(
                             Component.translatable("message.moremineralblocks.legendary_tools_linked_successfully"));
                 }
+                return true;
             }
         }
+        return false;
     }
 
-    public static void appendTooltip(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
+    public static void appendTooltip(ItemStack itemStack, Consumer<Component> builder) {
         Component switchEnchantments = Component.keybind("key." + MoreMineralBlocks.MOD_ID + ".switch_enchantments_toggle_safe_mode");
-        builder.accept(Component.translatable("tooltip." + MoreMineralBlocks.MOD_ID + ".legendary_tool_switch_enchantments", switchEnchantments));
+        String key = itemStack.is(ModItems.DIMENSIONAL_POCKET) ? ".dimensional_pocket_toggle_safe_mode" : ".legendary_tool_switch_enchantments";
+        builder.accept(Component.translatable("tooltip." + MoreMineralBlocks.MOD_ID + key, switchEnchantments));
 
-        if (ModEnchantments.getLevel(itemStack, ModEnchantments.LINKER) > 0) {
+        if (itemStack.is(ModItems.DIMENSIONAL_POCKET) || ModEnchantments.getLevel(itemStack, ModEnchantments.LINKER) > 0) {
             builder.accept(Component.empty());
 
             BlockPos linkedChest = itemStack.get(ModDataComponentTypes.LINKED_CHEST);
@@ -100,7 +100,7 @@ public class LegendaryItemUtils {
                 String translationKey = "dimension." + dimension.getNamespace() + "." + dimension.getPath();
 
                 builder.accept(Component.translatable("tooltip." + MoreMineralBlocks.MOD_ID + ".legendary_tool_linked")
-                        .withStyle(ChatFormatting.DARK_GREEN));
+                        .withStyle(ChatFormatting.GREEN));
                 builder.accept(Component.literal(String.format("X = %s | Y = %s | Z = %s",
                         linkedChest.getX(), linkedChest.getY(), linkedChest.getZ())));
                 builder.accept(Component.translatableWithFallback(translationKey, dimension.toString())
@@ -119,8 +119,8 @@ public class LegendaryItemUtils {
         }
     }
 
-    public static boolean isLinked(ItemStack itemStack) {
-        return itemStack.has(ModDataComponentTypes.LINKED_CHEST) && itemStack.has(ModDataComponentTypes.SERVERWORLD);
+    public static boolean isLinked(ItemStack tool) {
+        return tool.has(ModDataComponentTypes.LINKED_CHEST) && tool.has(ModDataComponentTypes.SERVERWORLD);
     }
 
     public static List<ItemStack> carryDropsToLinkedContainerAndGetRemainder(ServerLevel level,
@@ -162,6 +162,19 @@ public class LegendaryItemUtils {
             deposit = otherInventory;
         }
         return deposit;
+    }
+
+    public static Container getContainer(ItemStack tool, Level level) {
+        MinecraftServer server = level.getServer();
+        if (server == null) { return null; }
+
+        BlockPos linkedPos = tool.get(ModDataComponentTypes.LINKED_CHEST);
+        Identifier dimension = tool.get(ModDataComponentTypes.SERVERWORLD);
+        if (linkedPos == null || dimension == null) { return null; }
+
+        ServerLevel targetLevel = server.getLevel(ResourceKey.create(Registries.DIMENSION, dimension));
+        if (targetLevel == null || !targetLevel.isLoaded(linkedPos)) { return null; }
+        return getContainer(targetLevel, linkedPos);
     }
 
     private static int insert(Container to, ItemStack stack) {

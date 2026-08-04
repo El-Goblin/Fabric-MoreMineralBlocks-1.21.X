@@ -1,51 +1,89 @@
 package net.elgoblin.moremineralblocks;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import net.elgoblin.moremineralblocks.client.ClientEvents;
+import net.elgoblin.moremineralblocks.client.*;
+import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
+import net.elgoblin.moremineralblocks.item.ModItems;
+import net.elgoblin.moremineralblocks.item.custom.DimensionalPocketItem;
+import net.elgoblin.moremineralblocks.util.LegendaryItemUtils;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
-import net.minecraft.client.KeyMapping;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
+import net.minecraft.world.item.ItemStack;
 
 public class MoreMineralBlocksClient implements ClientModInitializer {
 
-	public static final KeyMapping.Category LEGENDARY_TOOLS = KeyMapping.Category.register(
-			Identifier.fromNamespaceAndPath(MoreMineralBlocks.MOD_ID, "legendary_tools")
-	);
-
-	public static KeyMapping SWITCH_ENCHANTMENTS_TOGGLE_SAFE_MODE;
-	public static KeyMapping intraGroupScroll;
-	public static KeyMapping interGroupScroll;
-
 	@Override
 	public void onInitializeClient() {
-		SWITCH_ENCHANTMENTS_TOGGLE_SAFE_MODE = KeyMappingHelper.registerKeyMapping(
-				new KeyMapping(
-						"key." + MoreMineralBlocks.MOD_ID +".switch_enchantments_toggle_safe_mode",
-						InputConstants.Type.KEYSYM,
-						GLFW.GLFW_KEY_K,
-						LEGENDARY_TOOLS
-				)
-		);
-
-		intraGroupScroll = KeyMappingHelper.registerKeyMapping(
-				new KeyMapping(
-						"key." + MoreMineralBlocks.MOD_ID +".intra_group_scroll",
-						InputConstants.Type.KEYSYM,
-						GLFW.GLFW_KEY_TAB,
-						LEGENDARY_TOOLS
-				)
-		);
-
-		interGroupScroll = KeyMappingHelper.registerKeyMapping(
-				new KeyMapping(
-						"key." + MoreMineralBlocks.MOD_ID +".inter_group_scroll",
-						InputConstants.Type.KEYSYM,
-						GLFW.GLFW_KEY_GRAVE_ACCENT,
-						LEGENDARY_TOOLS
-				)
-		);
 		ClientEvents.registerClientEvents();
+		ModKeybinds.registerModKeybinds();
+		DimensionalPocketOverlay.register();
+
+		HudElementRegistry.attachElementAfter(
+				VanillaHudElements.HOTBAR,
+				Identifier.fromNamespaceAndPath(MoreMineralBlocks.MOD_ID, "dimensional_pocket_render_main_stack"),
+				(guiGraphics, deltaTracker) -> {
+
+					Minecraft minecraft = Minecraft.getInstance();
+
+					if (minecraft.player == null) {
+						return;
+					}
+
+					ItemStack mainHand = minecraft.player.getMainHandItem();
+					ItemStack offHand = minecraft.player.getOffhandItem();
+
+					if (mainHand.is(ModItems.DIMENSIONAL_POCKET)) {
+						renderSelectedStack(guiGraphics, minecraft, mainHand);
+					} else if (offHand.is(ModItems.DIMENSIONAL_POCKET)) {
+						renderSelectedStack(guiGraphics, minecraft, offHand);
+					}
+				}
+		);
+	}
+
+	private void renderSelectedStack(GuiGraphicsExtractor guiGraphicsExtractor, Minecraft client, ItemStack stack) {
+		if (!LegendaryItemUtils.isLinked(stack)) { return; }
+
+		ItemStack selectedStack = DimensionalPocketCache.mainStack;
+		int stackCount = DimensionalPocketCache.mainStackCount;
+
+		if (!selectedStack.isEmpty() && client.player != null) {
+			int width = client.getWindow().getGuiScaledWidth();
+			int height = client.getWindow().getGuiScaledHeight();
+
+			int hotbarLeftX = (width / 2) - 90;
+			int selectedSlot = client.player.getInventory().getSelectedSlot();
+			int x = hotbarLeftX + (selectedSlot * 20) + 2;
+			int y = height - 19;
+
+			if (client.player.getOffhandItem() == stack) {
+				x = (width / 2) - 117;
+			}
+
+			boolean safeMode = stack.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
+
+			guiGraphicsExtractor.item(selectedStack, x, y);
+			if (safeMode && stackCount <= DimensionalPocketCache.mainStackDuplicateCount) {
+				guiGraphicsExtractor.text(
+						client.font,
+						String.valueOf(stackCount),
+						x + 17 - client.font.width(String.valueOf(stackCount)),
+						y + 9,
+						0xFFD46763,
+						true
+				);
+			}
+			else {
+				guiGraphicsExtractor.itemDecorations(
+						client.font,
+						selectedStack,
+						x,
+						y,
+						String.valueOf(stackCount));
+			}
+		}
 	}
 }

@@ -4,7 +4,6 @@ import net.elgoblin.moremineralblocks.MoreMineralBlocks;
 import net.elgoblin.moremineralblocks.item.custom.*;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -25,6 +24,9 @@ public class ModItems {
 
     public static final Item FLASH = registerItem("flash", properties ->
             new FlashItem(properties.stacksTo(1).rarity(Rarity.RARE)));
+
+    public static final Item DIMENSIONAL_POCKET = registerItem("dimensional_pocket", properties ->
+            new DimensionalPocketItem(properties.stacksTo(1).rarity(Rarity.EPIC)));
 
     public static final Item LEGENDARY_ROCKET = registerItem("legendary_rocket", properties ->
             new LegendaryRocketItem(properties.stacksTo(1).fireResistant().component(DataComponents.UNBREAKABLE, Unit.INSTANCE).rarity(Rarity.EPIC)));
@@ -113,6 +115,7 @@ public class ModItems {
             output.accept(MAGIC_MIRROR);
             output.accept(REFLECTIVE_MIRROR);
             output.accept(CHAOS_MIRROR);
+            output.accept(DIMENSIONAL_POCKET);
         });
 
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(output -> {

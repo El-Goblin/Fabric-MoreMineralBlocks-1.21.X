@@ -1,12 +1,10 @@
 package net.elgoblin.moremineralblocks.item.custom;
 
-import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.util.LegendaryItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
@@ -27,7 +25,7 @@ public class LegendaryLongswordItem extends LongswordItem {
         BlockPos position = context.getClickedPos();
 
         if (!context.getLevel().isClientSide()) {
-            LegendaryItemUtils.linkChest(context, position);
+            LegendaryItemUtils.linkOrUnlinkContainer(context, position);
         }
 
         if (context.getLevel().getBlockEntity(position) instanceof Container inventory) {
@@ -38,7 +36,7 @@ public class LegendaryLongswordItem extends LongswordItem {
 
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
-        LegendaryItemUtils.appendTooltip(itemStack, context, display, builder, tooltipFlag);
+        LegendaryItemUtils.appendTooltip(itemStack, builder);
         super.appendHoverText(itemStack, context, display, builder, tooltipFlag);
     }
 }

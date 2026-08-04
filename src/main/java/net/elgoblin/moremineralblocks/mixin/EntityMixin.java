@@ -43,7 +43,6 @@ public abstract class EntityMixin implements LegendaryItemUtils.KillerToolSaver{
         if (level.isClientSide()) { return; }
 
         ItemStack tool = this.getKillerTool();
-        System.out.println(tool);
 
         if (!tool.is(ModTags.Items.LEGENDARY_TOOLS) || !(ModEnchantments.getLevel(tool, ModEnchantments.LINKER) > 0)) {
             return;

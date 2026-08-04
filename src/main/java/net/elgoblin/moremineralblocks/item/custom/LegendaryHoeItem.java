@@ -24,7 +24,7 @@ public class LegendaryHoeItem extends HoeItem {
         BlockPos position = context.getClickedPos();
 
         if (!context.getLevel().isClientSide()) {
-            LegendaryItemUtils.linkChest(context, position);
+            LegendaryItemUtils.linkOrUnlinkContainer(context, position);
         }
 
         if (context.getLevel().getBlockEntity(position) instanceof Container inventory) {
@@ -35,7 +35,7 @@ public class LegendaryHoeItem extends HoeItem {
 
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
-        LegendaryItemUtils.appendTooltip(itemStack, context, display, builder, tooltipFlag);
+        LegendaryItemUtils.appendTooltip(itemStack, builder);
         super.appendHoverText(itemStack, context, display, builder, tooltipFlag);
     }
 }

@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks;
 
 import net.elgoblin.moremineralblocks.block.ModBlocks;
+import net.elgoblin.moremineralblocks.client.DimensionalPocketCache;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.creativemodetab.ModCreativeModeTabs;
 import net.elgoblin.moremineralblocks.effect.BlinkingEffect;
@@ -35,9 +36,9 @@ public class MoreMineralBlocks implements ModInitializer {
 		ModDataComponentTypes.registerComponents();
 		ModEffects.registerEffects();
 		ModEnchantmentEffects.registerEnchantmentEffects();
-
 		ModPayloads.registerPayloads();
 		ServerPayloadReceivers.registerServerGlobalReceivers();
+		DimensionalPocketCache.init();
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
 			if (entity.hasEffect(ModEffects.FRAGILE) && !blocked) {

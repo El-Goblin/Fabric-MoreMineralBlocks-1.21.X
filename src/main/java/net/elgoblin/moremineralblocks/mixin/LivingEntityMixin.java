@@ -20,7 +20,6 @@ public class LivingEntityMixin {
     private void captureTool(ServerLevel level, DamageSource source, CallbackInfo ci) {
         if (source.getEntity() instanceof LivingEntity killer) {
             ((LegendaryItemUtils.KillerToolSaver) this).setKillerTool(killer.getMainHandItem());
-            System.out.println("Saved tool");
         }
     }
 
@@ -30,6 +29,5 @@ public class LivingEntityMixin {
     )
     private void clearTool(ServerLevel level, DamageSource source, CallbackInfo ci) {
         ((LegendaryItemUtils.KillerToolSaver) this).setKillerTool(ItemStack.EMPTY);
-        System.out.println("Cleared Tool");
     }
 }

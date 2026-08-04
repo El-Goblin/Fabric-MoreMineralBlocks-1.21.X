@@ -17,5 +17,10 @@
   },
   "overwrites": {
     "requireAnnotations": true
-	}
+  },
+  "client": [
+    "AbstractContainerScreenMixin",
+    "MinecraftMixin",
+    "MouseHandlerMixin"
+  ]
 }

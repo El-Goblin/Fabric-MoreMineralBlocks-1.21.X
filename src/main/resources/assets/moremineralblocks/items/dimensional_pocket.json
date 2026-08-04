@@ -3,28 +3,28 @@
   "model": {
     "type": "minecraft:select",
     "property": "minecraft:component",
-    "component": "moremineralblocks:inter_group_pointer",
+    "component": "moremineralblocks:selected_colored_group",
     "cases": [
-      { "when": 0, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_red" } },
-      { "when": 1, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_orange" } },
-      { "when": 2, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_yellow" } },
-      { "when": 3, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_lime" } },
-      { "when": 4, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_green" } },
-      { "when": 5, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_cyan" } },
-      { "when": 6, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_light_blue" } },
-      { "when": 7, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_blue" } },
-      { "when": 8, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_purple" } },
-      { "when": 9, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_magenta" } },
-      { "when": 10, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_pink" } },
-      { "when": 11, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_brown" } },
-      { "when": 12, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_white" } },
-      { "when": 13, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_light_gray" } },
-      { "when": 14, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_gray" } },
-      { "when": 15, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_black" } }
+      { "when": 0, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_red" } },
+      { "when": 1, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_orange" } },
+      { "when": 2, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_yellow" } },
+      { "when": 3, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_lime" } },
+      { "when": 4, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_green" } },
+      { "when": 5, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_cyan" } },
+      { "when": 6, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_light_blue" } },
+      { "when": 7, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_blue" } },
+      { "when": 8, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_purple" } },
+      { "when": 9, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_magenta" } },
+      { "when": 10, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_pink" } },
+      { "when": 11, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_brown" } },
+      { "when": 12, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_white" } },
+      { "when": 13, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_light_gray" } },
+      { "when": 14, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_gray" } },
+      { "when": 15, "model": { "type": "minecraft:model", "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_black" } }
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "moremineralblocks:item/infinite_itemstack/infinite_itemstack_red"
+      "model": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_red"
     }
   }
 }

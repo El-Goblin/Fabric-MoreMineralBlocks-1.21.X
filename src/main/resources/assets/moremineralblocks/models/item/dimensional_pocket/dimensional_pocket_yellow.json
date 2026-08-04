@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "moremineralblocks:item/dimensional_pocket/dimensional_pocket_yellow"
+  }
+}

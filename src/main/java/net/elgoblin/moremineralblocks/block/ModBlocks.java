@@ -1129,8 +1129,6 @@ public class ModBlocks {
     }
 
     public static ResourceKey<Block> getResourceKey(Block block) {
-        ResourceKey<Block> asd = BuiltInRegistries.BLOCK.getResourceKey(block).get();
-        System.out.println(block.asItem());
         return BuiltInRegistries.BLOCK.getResourceKey(block).get();
     }
 

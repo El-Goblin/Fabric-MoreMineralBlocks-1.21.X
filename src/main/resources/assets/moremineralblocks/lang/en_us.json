@@ -387,14 +387,15 @@
 
   "key.category.moremineralblocks.legendary_tools": "Legendary Tools",
   "key.moremineralblocks.switch_enchantments_toggle_safe_mode": "Switch Enchantments/Toggle Safe Mode",
-  "key.moremineralblocks.inter_group_scroll": "Scroll Between Groups",
-  "key.moremineralblocks.intra_group_scroll": "Scroll Inside Group",
+  "key.moremineralblocks.scroll_between_groups": "Scroll Between Groups",
+  "key.moremineralblocks.scroll_inside_group": "Scroll Inside Group",
   "enchantment.moremineralblocks.linker": "Linker",
 
   "message.moremineralblocks.legendary_tools_linked_successfully": "Link Successful",
   "message.moremineralblocks.legendary_tools_unlinked_successfully": "Unlink Successful",
 
   "tooltip.moremineralblocks.legendary_tool_switch_enchantments": "Press %s to Switch Enchantments",
+  "tooltip.moremineralblocks.dimensional_pocket_toggle_safe_mode": "Press %s to Toggle Safe Mode",
   "tooltip.moremineralblocks.legendary_tool_linked": "LINKED",
   "tooltip.moremineralblocks.legendary_tool_not_linked": "NOT LINKED",
   "tooltip.moremineralblocks.legendary_tool_linking_guide": "Press Shift + %s to Link an Inventory",

@@ -20,9 +20,6 @@ import java.util.function.UnaryOperator;
 
 public class ModDataComponentTypes {
 
-    public static final DataComponentType<ItemEnchantments> OTHER_STORED_ENCHANTMENTS = register(
-            "other_stored_enchantments", builder -> builder.persistent(ItemEnchantments.CODEC).networkSynchronized(ItemEnchantments.STREAM_CODEC).cacheEncoding()
-    );
     public static final DataComponentType<ItemEnchantments> OTHER_ENCHANTMENTS = register(
             "other_enchantments", builder -> builder.persistent(ItemEnchantments.CODEC).networkSynchronized(ItemEnchantments.STREAM_CODEC).cacheEncoding()
     );
@@ -31,10 +28,9 @@ public class ModDataComponentTypes {
     public static final DataComponentType<Vec3> COORDINATES = register("coordinates", builder -> builder.persistent(Vec3.CODEC));
     public static final DataComponentType<Identifier> SERVERWORLD = register("server_id", builder -> builder.persistent(Identifier.CODEC));
     public static final DataComponentType<Identifier> OTHER_SERVERWORLD = register("other_server_id", builder -> builder.persistent(Identifier.CODEC));
-    public static final DataComponentType<Integer> INTER_GROUP_POINTER = register("inter_group_pointer", builder -> builder.persistent(Codec.INT));
 
-    public static final DataComponentType<Integer> SELECTED_COLOR = register("selected_color", builder -> builder.persistent(Codec.INT));
-    public static final DataComponentType<List<Integer>> INTRA_GROUP_POINTERS = register("intra_group_pointers", builder -> builder.persistent(Codec.INT.listOf()));
+    public static final DataComponentType<Integer> SELECTED_COLORED_GROUP = register("selected_colored_group", builder -> builder.persistent(Codec.INT));
+    public static final DataComponentType<List<Integer>> SELECTED_ITEM_IN_EACH_COLORED_GROUP = register("selected_item_in_each_colored_group", builder -> builder.persistent(Codec.INT.listOf()));
 
     public static final DataComponentType<Boolean> SAFE_MODE = register("safe_mode", builder -> builder.persistent(Codec.BOOL));
 

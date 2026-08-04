@@ -1,0 +1,241 @@
+package net.elgoblin.moremineralblocks.item.custom;
+
+import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
+import net.elgoblin.moremineralblocks.item.ModItems;
+import net.elgoblin.moremineralblocks.util.LegendaryItemUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.InstrumentComponent;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
+
+public class DimensionalPocketItem extends Item {
+    public DimensionalPocketItem(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+
+        Level level = context.getLevel();
+        if (level.isClientSide()) {
+            return InteractionResult.PASS;
+        }
+
+        ItemStack dimensionalPocket = context.getItemInHand();
+        boolean safeModeOn = dimensionalPocket.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
+        BlockPos clickedPosition = context.getClickedPos();
+
+        if (level.getBlockEntity(clickedPosition) instanceof Container) {
+            Container container = LegendaryItemUtils.getContainer((ServerLevel) level, clickedPosition);
+
+            if (!safeModeOn) {
+                boolean linked = LegendaryItemUtils.linkOrUnlinkContainer(context, clickedPosition);
+                initializeOrRemoveColoredGroups(dimensionalPocket, container, linked);
+                return InteractionResult.SUCCESS;
+            }
+        }
+
+        Player user = context.getPlayer();
+        if (user == null) { return InteractionResult.FAIL; }
+
+        ItemStack stackToUse = getStackToUse(dimensionalPocket, level, user, safeModeOn);
+        if (isBannedItem(stackToUse)) { return InteractionResult.FAIL; }
+
+        InteractionResult result = useStackOn(stackToUse, context, clickedPosition, level, user);
+        performAnimationsAndSound(result, level, context, user);
+
+        return result;
+    }
+
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+
+        if (level.isClientSide()) {
+            return InteractionResult.PASS;
+        }
+
+        ItemStack dimensionalPocket = player.getItemInHand(hand);
+        boolean safeModeOn = dimensionalPocket.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
+
+        ItemStack stackToUse = getStackToUse(dimensionalPocket, level, player, safeModeOn);
+        if (isBannedItem(stackToUse)) { return InteractionResult.FAIL; }
+
+        ItemStack copy = dimensionalPocket.copy();
+        InteractionResult result = stackToUse.use(level, player, hand);
+        performAnimationsAndSound(result, stackToUse, level, player, hand);
+
+        player.setItemSlot(hand.asEquipmentSlot(), copy);
+        return InteractionResult.FAIL;
+    }
+
+    private int findFirstNonEmptySlotOrZero(Container container) {
+        int i = 0;
+        if (container.isEmpty()) { return 0; }
+        while (container.getItem(i).isEmpty()) { i++; }
+        return i;
+    }
+
+    private void initializeOrRemoveColoredGroups(ItemStack dimensionalPocket, Container container,boolean linked) {
+        if (linked) {
+            int firstSlot = findFirstNonEmptySlotOrZero(container);
+            ArrayList<Integer> selectedItemInEachColoredGroup = new ArrayList<>(Collections.nCopies(16, 0));
+            selectedItemInEachColoredGroup.set(0,firstSlot);
+
+            dimensionalPocket.set(ModDataComponentTypes.SELECTED_ITEM_IN_EACH_COLORED_GROUP, selectedItemInEachColoredGroup);
+            dimensionalPocket.set(ModDataComponentTypes.SELECTED_COLORED_GROUP, 0);
+            dimensionalPocket.set(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byId(0)), IntStream.range(0,container.getContainerSize()).boxed().toList());
+
+            for (int colorIndex = 1 ; colorIndex < 16 ; colorIndex++) {
+                dimensionalPocket.set(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byId(colorIndex)), Collections.emptyList());
+            }
+        }
+        else {
+            dimensionalPocket.remove(ModDataComponentTypes.SELECTED_COLORED_GROUP);
+            dimensionalPocket.remove(ModDataComponentTypes.SELECTED_ITEM_IN_EACH_COLORED_GROUP);
+            for (int colorIndex = 0 ; colorIndex < 16 ; colorIndex++) {
+                dimensionalPocket.remove(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byId(colorIndex)));
+            }
+        }
+    }
+
+    private boolean isOffBounds(int slot, int size) {
+        return slot < 0 || slot >= size;
+    }
+
+    private boolean isBannedItem(ItemStack stack) {
+        if (stack.is(ModItems.DIMENSIONAL_POCKET)) {return true;}
+        if (stack.is(Items.ENDER_EYE)) {return true;}
+        if (stack.is(ModItems.FLASH)) {return true;}
+        if (stack.getItem() instanceof BucketItem) {return true;}
+        if (stack.is(Items.POWDER_SNOW_BUCKET)) {return true;}
+        return stack.isEmpty();
+    }
+
+    private ItemStack getStackToUse(ItemStack dimensionalPocket, Level level, Player user, boolean safeModeOn) {
+
+        Container deposit = LegendaryItemUtils.getContainer(dimensionalPocket, level);
+        if (deposit == null) { return ItemStack.EMPTY; }
+
+        Integer selectedColoredGroup = dimensionalPocket.get(ModDataComponentTypes.SELECTED_COLORED_GROUP);
+        List<Integer> selectedItemsInEachColoredGroup = dimensionalPocket.get(ModDataComponentTypes.SELECTED_ITEM_IN_EACH_COLORED_GROUP);
+        if (selectedColoredGroup == null || selectedItemsInEachColoredGroup == null) { return ItemStack.EMPTY; }
+
+        List<Integer> group = dimensionalPocket.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byId(selectedColoredGroup)));
+        if (group == null) { return ItemStack.EMPTY; }
+
+        if (group.isEmpty() || isOffBounds(selectedItemsInEachColoredGroup.get(selectedColoredGroup), group.size())) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack stackToUse = getStackFromInventory(deposit, group.get(selectedItemsInEachColoredGroup.get(selectedColoredGroup)));
+        if (isBannedItem(stackToUse)) { return ItemStack.EMPTY; }
+
+        if (!user.isCreative() && notAllowedToUse(safeModeOn, stackToUse)) {
+            stackToUse = findNonEmptyStackInGroupOfType(deposit, group, stackToUse.getItem());
+        }
+        return stackToUse;
+    }
+
+    private ItemStack findNonEmptyStackInGroupOfType(Container deposit, List<Integer> group, Item usedItem) {
+        for (Integer depositIndex : group) {
+            int depositSlot = Math.floorMod(depositIndex, deposit.getContainerSize());
+            ItemStack stack = deposit.getItem(depositSlot);
+            if (stack.is(usedItem) && stack.getCount() > 1) {
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private InteractionResult useStackOn(ItemStack stackToUse, UseOnContext context, BlockPos clickedPosition, Level level, Player user) {
+        BlockHitResult hitResult = new BlockHitResult(context.getClickLocation(), context.getClickedFace(), clickedPosition, false);
+        UseOnContext newContext = new UseOnContext(context.getLevel(), context.getPlayer(), context.getHand(), stackToUse, hitResult);
+
+        InteractionResult result = stackToUse.useOn(newContext);
+        if (result == InteractionResult.PASS) {
+            result = use(level, user, InteractionHand.MAIN_HAND);
+        }
+        return result;
+    }
+
+    private void performAnimationsAndSound(InteractionResult result, Level level, UseOnContext context, Player user) {
+        if (result.consumesAction()) {
+            BlockState placedState = level.getBlockState(context.getClickedPos().relative(context.getClickedFace()));
+
+            if (placedState.isAir()) {
+                placedState = level.getBlockState(context.getClickedPos());
+            }
+
+            if (!placedState.isAir()) {
+                SoundType soundType = placedState.getSoundType();
+                level.playSound(
+                        null, // Player is null so EVERYONE (including the placing player) hears it
+                        context.getClickedPos(),
+                        soundType.getPlaceSound(),
+                        net.minecraft.sounds.SoundSource.BLOCKS,
+                        (soundType.getVolume() + 1.0F) / 2.0F,
+                        soundType.getPitch() * 0.8F
+                );
+            }
+            user.swing(InteractionHand.MAIN_HAND, true);
+        }
+    }
+
+    private void performAnimationsAndSound(InteractionResult result, ItemStack usedStack, Level level, Player user, InteractionHand hand) {
+        if (result.consumesAction()) {
+            if (usedStack.is(Items.GOAT_HORN)) {
+
+                InstrumentComponent instrumentComponent = usedStack.get(DataComponents.INSTRUMENT);
+                if (instrumentComponent == null) { return; }
+                Instrument instrument = instrumentComponent.instrument().value();
+
+                SoundEvent soundEvent = instrument.soundEvent().value();
+                float f = instrument.range() / 16.0F;
+                level.playSound (null, user, soundEvent, SoundSource.RECORDS, f, 1.0F);
+
+                user.getCooldowns().addCooldown(usedStack, (int) Math.floor(instrument.useDuration() * 20.0F));
+            }
+
+            user.swing(hand, true);
+        }
+    }
+
+    public static boolean notAllowedToUse(boolean safeModeOn, ItemStack stackToUse) {
+        return safeModeOn
+                && (stackToUse.isDamageableItem() && (stackToUse.getMaxDamage() - stackToUse.getDamageValue()) <= 1
+                        || !stackToUse.isDamageableItem() && stackToUse.getCount() <= 1);
+    }
+
+    private static ItemStack getStackFromInventory(Container deposit, int index) {
+        if (deposit.isEmpty()) { return ItemStack.EMPTY; }
+        if (index >= deposit.getContainerSize()) { return ItemStack.EMPTY; }
+
+        return deposit.getItem(index);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
+        LegendaryItemUtils.appendTooltip(itemStack, builder);
+        super.appendHoverText(itemStack, context, display, builder, tooltipFlag);
+    }
+}

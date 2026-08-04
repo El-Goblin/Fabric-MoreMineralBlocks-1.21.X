@@ -120,6 +120,7 @@ public static final CreativeModeTab ITEMS_TAB = Registry.register(BuiltInRegistr
                         output.accept(ModItems.MAGIC_MIRROR);
                         output.accept(ModItems.REFLECTIVE_MIRROR);
                         output.accept(ModItems.CHAOS_MIRROR);
+                        output.accept(ModItems.DIMENSIONAL_POCKET);
                     })
                     .build()
     );

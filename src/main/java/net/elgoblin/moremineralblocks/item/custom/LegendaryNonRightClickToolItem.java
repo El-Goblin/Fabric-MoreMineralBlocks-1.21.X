@@ -1,14 +1,8 @@
 package net.elgoblin.moremineralblocks.item.custom;
 
-import net.elgoblin.moremineralblocks.MoreMineralBlocks;
-import net.elgoblin.moremineralblocks.MoreMineralBlocksClient;
-import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.util.LegendaryItemUtils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -29,7 +23,7 @@ public class LegendaryNonRightClickToolItem extends Item {
         BlockPos position = context.getClickedPos();
 
         if (!context.getLevel().isClientSide()) {
-            LegendaryItemUtils.linkChest(context, position);
+            LegendaryItemUtils.linkOrUnlinkContainer(context, position);
         }
 
         if (context.getLevel().getBlockEntity(position) instanceof Container inventory) {
@@ -40,7 +34,7 @@ public class LegendaryNonRightClickToolItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
-        LegendaryItemUtils.appendTooltip(itemStack, context, display, builder, tooltipFlag);
+        LegendaryItemUtils.appendTooltip(itemStack, builder);
         super.appendHoverText(itemStack, context, display, builder, tooltipFlag);
     }
 }
