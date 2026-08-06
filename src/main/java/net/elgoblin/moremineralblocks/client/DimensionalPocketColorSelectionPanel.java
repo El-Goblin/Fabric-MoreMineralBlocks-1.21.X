@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.DyeColor;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static net.elgoblin.moremineralblocks.client.DimensionalPocketOverlay.COLOREABLE_GROUP_TEXTURE;
+
 public class DimensionalPocketColorSelectionPanel {
 
     public int x, y;
@@ -25,7 +28,7 @@ public class DimensionalPocketColorSelectionPanel {
 
     private int selectedColor = 0;
 
-    private static final int[] COLORS = {
+    public static final int[] COLORS = {
             0xFFDA2403,
             0xFFFF6C16,
             DyeColor.YELLOW.getTextureDiffuseColor(),
@@ -72,7 +75,12 @@ public class DimensionalPocketColorSelectionPanel {
                 }
 
                 // Pintar el cuadrado de cada color
-                graphics.fill(cx, cy, cx + 16, cy + 16, color);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, COLOREABLE_GROUP_TEXTURE,
+                        cx, cy,
+                        0, 0,
+                        16, 16,
+                        16, 16,
+                        color);
 
                 // Si este color esta seleccionado actualmente, le pinto un borde blanco?
                 if (colorIndex == selectedColor) {

@@ -25,7 +25,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.GOLD_SET);
         blockModelGenerators.createDoor(ModBlocks.GOLD_SET.door());
-        blockModelGenerators.createTrapdoor(ModBlocks.GOLD_SET.trapdoor());
+        blockModelGenerators.createOrientableTrapdoor(ModBlocks.GOLD_SET.trapdoor());
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.GOLD_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_GOLD_SET);
@@ -35,7 +35,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DIAMOND_SET);
         blockModelGenerators.createDoor(ModBlocks.DIAMOND_SET.door());
-        blockModelGenerators.createTrapdoor(ModBlocks.DIAMOND_SET.trapdoor());
+        blockModelGenerators.createOrientableTrapdoor(ModBlocks.DIAMOND_SET.trapdoor());
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DIAMOND_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_DIAMOND_SET);
@@ -52,7 +52,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.EMERALD_SET);
         blockModelGenerators.createDoor(ModBlocks.EMERALD_SET.door());
-        blockModelGenerators.createTrapdoor(ModBlocks.EMERALD_SET.trapdoor());
+        blockModelGenerators.createOrientableTrapdoor(ModBlocks.EMERALD_SET.trapdoor());
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.EMERALD_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_EMERALD_SET);
@@ -63,7 +63,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.AMETHYST_SET);
         blockModelGenerators.createDoor(ModBlocks.AMETHYST_SET.door());
-        blockModelGenerators.createTrapdoor(ModBlocks.AMETHYST_SET.trapdoor());
+        blockModelGenerators.createOrientableTrapdoor(ModBlocks.AMETHYST_SET.trapdoor());
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.AMETHYST_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_AMETHYST_SET);
@@ -73,7 +73,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.LAPIS_SET);
         blockModelGenerators.createDoor(ModBlocks.LAPIS_SET.door());
-        blockModelGenerators.createTrapdoor(ModBlocks.LAPIS_SET.trapdoor());
+        blockModelGenerators.createOrientableTrapdoor(ModBlocks.LAPIS_SET.trapdoor());
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.LAPIS_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_LAPIS_SET);
@@ -83,7 +83,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.COAL_SET);
         blockModelGenerators.createDoor(ModBlocks.COAL_SET.door());
-        blockModelGenerators.createTrapdoor(ModBlocks.COAL_SET.trapdoor());
+        blockModelGenerators.createOrientableTrapdoor(ModBlocks.COAL_SET.trapdoor());
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.COAL_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_COAL_SET);
@@ -93,7 +93,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.NETHERITE_SET);
         blockModelGenerators.createDoor(ModBlocks.NETHERITE_SET.door());
-        blockModelGenerators.createTrapdoor(ModBlocks.NETHERITE_SET.trapdoor());
+        blockModelGenerators.createOrientableTrapdoor(ModBlocks.NETHERITE_SET.trapdoor());
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.NETHERITE_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_NETHERITE_SET);
@@ -103,7 +103,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.REDSTONE_SET);
         blockModelGenerators.createDoor(ModBlocks.REDSTONE_SET.door());
-        blockModelGenerators.createTrapdoor(ModBlocks.REDSTONE_SET.trapdoor());
+        blockModelGenerators.createOrientableTrapdoor(ModBlocks.REDSTONE_SET.trapdoor());
 
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.REDSTONE_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_REDSTONE_SET);
@@ -148,6 +148,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerators.generateFlatItem(ModItems.MAGIC_MIRROR, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.REFLECTIVE_MIRROR, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.CHAOS_MIRROR, ModelTemplates.FLAT_ITEM);
+        itemModelGenerators.generateFlatItem(ModItems.CHAOS_ORB, ModelTemplates.FLAT_ITEM);
     }
 
     private void generateBlockStateModelsForSet(BlockModelGenerators blockModelGenerators,

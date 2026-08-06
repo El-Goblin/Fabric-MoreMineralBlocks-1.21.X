@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.CompoundContainer;
@@ -31,6 +32,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static net.elgoblin.moremineralblocks.client.DimensionalPocketOverlay.COLOREABLE_GROUP_TEXTURE;
 
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMixin {
@@ -118,12 +121,13 @@ public class AbstractContainerScreenMixin {
                 if (activeColorPanel.isSlotAssignedToColor(slot.index, selectedColorIndex)) {
 
                     int color = activeColorPanel.getColorHex(selectedColorIndex);
-                    int toggledSlotColor = color;//(color & 0x00FFFFFF); //| 0xDD000000;
 
-                    // LIGHT GRAY quedaba casi indistinguible
-//                    if (selectedColorIndex == 8) { toggledSlotColor = 0x80FFFFFF; }
-
-                    graphics.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, toggledSlotColor);
+                    graphics.blit(RenderPipelines.GUI_TEXTURED, COLOREABLE_GROUP_TEXTURE,
+                            slot.x, slot.y,
+                            0, 0,
+                            16, 16,
+                            16, 16,
+                            color);
                 }
             }
         }

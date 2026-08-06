@@ -22,6 +22,8 @@ public class ModItems {
     public static final Item REFLECTIVE_MIRROR = registerItem("reflective_mirror",properties -> new ReflectiveMirrorItem(properties.rarity(Rarity.UNCOMMON)));
     public static final Item CHAOS_MIRROR = registerItem("chaos_mirror", properties -> new ChaosMirrorItem(properties.rarity(Rarity.UNCOMMON)));
 
+    public static final Item CHAOS_ORB = registerItem("chaos_orb", ChaosOrbItem::new);
+
     public static final Item FLASH = registerItem("flash", properties ->
             new FlashItem(properties.stacksTo(1).rarity(Rarity.RARE)));
 
@@ -116,6 +118,7 @@ public class ModItems {
             output.accept(REFLECTIVE_MIRROR);
             output.accept(CHAOS_MIRROR);
             output.accept(DIMENSIONAL_POCKET);
+            output.accept(CHAOS_ORB);
         });
 
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(output -> {
@@ -135,6 +138,7 @@ public class ModItems {
             output.accept(FIRE_DRAGONSWORD_LONGSWORD);
             output.accept(FIENDBLADE_LONGSWORD);
             output.accept(LEGENDARY_ROCKET);
+            output.accept(CHAOS_ORB);
         });
     }
 }

@@ -62,7 +62,7 @@ public class DimensionalPocketItem extends Item {
         if (isBannedItem(stackToUse)) { return InteractionResult.FAIL; }
 
         InteractionResult result = useStackOn(stackToUse, context, clickedPosition, level, user);
-        performAnimationsAndSound(result, level, context, user);
+        performAnimationsAndSound(result, level, context, user, context.getHand());
 
         return result;
     }
@@ -81,10 +81,12 @@ public class DimensionalPocketItem extends Item {
         if (isBannedItem(stackToUse)) { return InteractionResult.FAIL; }
 
         ItemStack copy = dimensionalPocket.copy();
+        player.setItemSlot(hand.asEquipmentSlot(), stackToUse);
         InteractionResult result = stackToUse.use(level, player, hand);
         performAnimationsAndSound(result, stackToUse, level, player, hand);
 
         player.setItemSlot(hand.asEquipmentSlot(), copy);
+
         return InteractionResult.FAIL;
     }
 
@@ -173,12 +175,12 @@ public class DimensionalPocketItem extends Item {
 
         InteractionResult result = stackToUse.useOn(newContext);
         if (result == InteractionResult.PASS) {
-            result = use(level, user, InteractionHand.MAIN_HAND);
+            result = use(level, user, context.getHand());
         }
         return result;
     }
 
-    private void performAnimationsAndSound(InteractionResult result, Level level, UseOnContext context, Player user) {
+    private void performAnimationsAndSound(InteractionResult result, Level level, UseOnContext context, Player user, InteractionHand hand) {
         if (result.consumesAction()) {
             BlockState placedState = level.getBlockState(context.getClickedPos().relative(context.getClickedFace()));
 
@@ -197,7 +199,7 @@ public class DimensionalPocketItem extends Item {
                         soundType.getPitch() * 0.8F
                 );
             }
-            user.swing(InteractionHand.MAIN_HAND, true);
+            user.swing(hand, true);
         }
     }
 

@@ -8,6 +8,7 @@ import net.elgoblin.moremineralblocks.effect.BlinkingEffect;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.enchantment.ModEnchantmentEffects;
 import net.elgoblin.moremineralblocks.enchantment.ModEnchantments;
+import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.ModToolMaterials;
 import net.elgoblin.moremineralblocks.networking.ModPayloads;
@@ -33,12 +34,13 @@ public class MoreMineralBlocks implements ModInitializer {
 		ModCreativeModeTabs.registerModCreativeModeTabs();
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
-		ModDataComponentTypes.registerComponents();
+		ModDataComponentTypes.registerDataComponentTypes();
 		ModEffects.registerEffects();
 		ModEnchantmentEffects.registerEnchantmentEffects();
 		ModPayloads.registerPayloads();
 		ServerPayloadReceivers.registerServerGlobalReceivers();
 		DimensionalPocketCache.init();
+		ModEntities.registerModEntities();
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
 			if (entity.hasEffect(ModEffects.FRAGILE) && !blocked) {

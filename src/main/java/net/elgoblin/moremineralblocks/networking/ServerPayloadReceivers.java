@@ -50,13 +50,23 @@ public class ServerPayloadReceivers {
                         }
                         if (mainHandItem.is(ModItems.DIMENSIONAL_POCKET)) {
                             boolean currentSafeMode = mainHandItem.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
-                            mainHandItem.set(ModDataComponentTypes.SAFE_MODE, !currentSafeMode);
+                            if (currentSafeMode) {
+                                mainHandItem.remove(ModDataComponentTypes.SAFE_MODE);
+                            }
+                            else {
+                                mainHandItem.set(ModDataComponentTypes.SAFE_MODE, true);
+                            }
                         }
                         else {
                             ItemStack offHandItem = player.getOffhandItem();
                             if (offHandItem.is(ModItems.DIMENSIONAL_POCKET)) {
                                 boolean currentSafeMode = offHandItem.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
-                                offHandItem.set(ModDataComponentTypes.SAFE_MODE, !currentSafeMode);
+                                if (currentSafeMode) {
+                                    offHandItem.remove(ModDataComponentTypes.SAFE_MODE);
+                                }
+                                else {
+                                    offHandItem.set(ModDataComponentTypes.SAFE_MODE, true);
+                                }
                             }
                         }
                     });
@@ -454,6 +464,9 @@ public class ServerPayloadReceivers {
         // Si queda en -1, el slot seleccionado actualmente esta vacio o fuera de rango
 
         ItemStack exampleSelectedItemStack = ItemStack.EMPTY;
+//        if (selectedDepositIndex < depositSize) {
+//            exampleSelectedItemStack = getStackFromInventory(deposit, selectedDepositIndex);
+//        }
 
         for (int i = 0 ; i < groupSize ; i++) {
             int depositIndex = selectedColoredGroup.get(i);
@@ -477,7 +490,7 @@ public class ServerPayloadReceivers {
                     }
                 }
             }
-            if (notMerged && !DimensionalPocketItem.notAllowedToUse(safeMode, stack)) {
+            if ((notMerged && !DimensionalPocketItem.notAllowedToUse(safeMode, stack)) || depositIndex == selectedDepositIndex) {
                 if (depositIndex == selectedDepositIndex) {
                     nonEmptySelectedItem = orderedNonEmptyStacks.size();
                     exampleSelectedItemStack = stack;

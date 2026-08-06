@@ -17,6 +17,8 @@ public class DimensionalPocketOverlay {
             Identifier.fromNamespaceAndPath("minecraft","textures/gui/sprites/hud/hotbar_selection.png");
     private static final Identifier HOTBAR_TEXTURE =
             Identifier.fromNamespaceAndPath("minecraft","textures/gui/sprites/hud/hotbar.png");
+    public static final Identifier COLOREABLE_GROUP_TEXTURE = Identifier.fromNamespaceAndPath(
+            MoreMineralBlocks.MOD_ID, "textures/item/dimensional_pocket/overlay/dimensional_pocket_coloreable_group_texture.png");
 
     public static void register() {
         HudElementRegistry.attachElementBefore(
@@ -124,9 +126,12 @@ public class DimensionalPocketOverlay {
     }
 
     private static void drawColorForIndex(GuiGraphicsExtractor guiGraphicsExtractor, int colorIndex, int x, int y, ItemStack originalItem) {
-        ItemStack iconStack = originalItem.copy();
-        iconStack.set(ModDataComponentTypes.SELECTED_COLORED_GROUP, colorIndex);
-        guiGraphicsExtractor.item(iconStack, x, y);
+        guiGraphicsExtractor.blit(RenderPipelines.GUI_TEXTURED, COLOREABLE_GROUP_TEXTURE,
+                x, y,
+                0, 0,
+                16, 16,
+                16, 16,
+                DimensionalPocketColorSelectionPanel.COLORS[colorIndex]);
     }
 
     private static void drawItem(GuiGraphicsExtractor guiGraphicsExtractor, ItemStack stack, int x, int y) {

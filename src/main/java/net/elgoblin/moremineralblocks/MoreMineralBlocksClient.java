@@ -1,15 +1,24 @@
 package net.elgoblin.moremineralblocks;
 
 import net.elgoblin.moremineralblocks.client.*;
+import net.elgoblin.moremineralblocks.client.models.DimensionalPocketOpenModel;
+import net.elgoblin.moremineralblocks.client.models.ModModelLayers;
+import net.elgoblin.moremineralblocks.client.renderer.DimensionalPocketRenderer;
+import net.elgoblin.moremineralblocks.client.renderer.ModSpecialModelRenderers;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
+import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.DimensionalPocketItem;
 import net.elgoblin.moremineralblocks.util.LegendaryItemUtils;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
@@ -20,6 +29,11 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
 		ClientEvents.registerClientEvents();
 		ModKeybinds.registerModKeybinds();
 		DimensionalPocketOverlay.register();
+		EntityRendererRegistry.register(ModEntities.CHAOS_ORB, ThrownItemRenderer::new);
+
+		ModModelLayers.register();
+		ModSpecialModelRenderers.register();
+
 
 		HudElementRegistry.attachElementAfter(
 				VanillaHudElements.HOTBAR,
@@ -65,7 +79,7 @@ public class MoreMineralBlocksClient implements ClientModInitializer {
 
 			boolean safeMode = stack.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
 
-			guiGraphicsExtractor.item(selectedStack, x, y);
+//			guiGraphicsExtractor.item(selectedStack, x, y);
 			if (safeMode && stackCount <= DimensionalPocketCache.mainStackDuplicateCount) {
 				guiGraphicsExtractor.text(
 						client.font,
