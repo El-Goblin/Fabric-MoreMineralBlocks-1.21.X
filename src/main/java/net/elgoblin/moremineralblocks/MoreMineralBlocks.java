@@ -14,6 +14,7 @@ import net.elgoblin.moremineralblocks.item.ModToolMaterials;
 import net.elgoblin.moremineralblocks.networking.ModPayloads;
 import net.elgoblin.moremineralblocks.networking.ServerPayloadReceivers;
 import net.elgoblin.moremineralblocks.networking.SwitchEnchantmentToggleSafeModePayload;
+import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -41,6 +42,7 @@ public class MoreMineralBlocks implements ModInitializer {
 		ServerPayloadReceivers.registerServerGlobalReceivers();
 		DimensionalPocketCache.init();
 		ModEntities.registerModEntities();
+		ModLootTableModifiers.modifyLootTables();
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
 			if (entity.hasEffect(ModEffects.FRAGILE) && !blocked) {
