@@ -3,6 +3,7 @@ package net.elgoblin.moremineralblocks.entity.custom;
 import com.mojang.datafixers.util.Pair;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItems;
+import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
 import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableIt
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,37 +41,38 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     private final RandomSource random = RandomSource.create();
     private String seededEvent = "none";
     private final Map<String, Pair<Integer, Integer>> eventMap = Map.ofEntries(
-            Map.entry("mobpack", new Pair<>(0,0)),
-            Map.entry("mythicitem", new Pair<>(0,1)),
-            Map.entry("skeletonhorse", new Pair<>(0,2)),
-            Map.entry("progression", new Pair<>(0,3)),
-            Map.entry("armor", new Pair<>(0,4)),
-            Map.entry("tools", new Pair<>(0,5)),
-            Map.entry("chaos", new Pair<>(0,6)),
-            Map.entry("terrainsphere", new Pair<>(0,7)),
-            Map.entry("explosion", new Pair<>(0,8)),
-            Map.entry("fireexplosion", new Pair<>(0,9)),
-            Map.entry("food", new Pair<>(0,10)),
-            Map.entry("book", new Pair<>(0,11)),
-            Map.entry("prize", new Pair<>(0, 12)),
-            Map.entry("xp", new Pair<>(0, 13)),
+//            Map.entry("mobpack", new Pair<>(0,0)),
+            Map.entry("mythicitem", new Pair<>(0,0)),
+//            Map.entry("mythicitem", new Pair<>(0,1)),
+//            Map.entry("skeletonhorse", new Pair<>(0,2)),
+//            Map.entry("progression", new Pair<>(0,3)),
+//            Map.entry("armor", new Pair<>(0,4)),
+//            Map.entry("tools", new Pair<>(0,5)),
+//            Map.entry("chaos", new Pair<>(0,6)),
+//            Map.entry("terrainsphere", new Pair<>(0,7)),
+//            Map.entry("explosion", new Pair<>(0,8)),
+//            Map.entry("fireexplosion", new Pair<>(0,9)),
+//            Map.entry("food", new Pair<>(0,10)),
+//            Map.entry("book", new Pair<>(0,11)),
+//            Map.entry("prize", new Pair<>(0, 12)),
+//            Map.entry("xp", new Pair<>(0, 13)),
 
-            Map.entry("smallBoing", new Pair<>(1,0)),
+            Map.entry("smallBoing", new Pair<>(1,0))
 //            Map.entry("beacon", new Pair<>(1,0)),
 
-            Map.entry("range", new Pair<>(2, 0)),
-            Map.entry("fragile", new Pair<>(2,1)),
-
-            Map.entry("storm", new Pair<>(4,0)),
-            Map.entry("teleport", new Pair<>(4,1)),
-
-            Map.entry("counterBlink", new Pair<>(5,0)),
-            Map.entry("blinking", new Pair<>(5,1)),
-            Map.entry("20", new Pair<>(5,2)),
-            Map.entry("scale", new Pair<>(5,3)),
-
-            Map.entry("help", new Pair<>(6,0)),
-            Map.entry("skyblock", new Pair<>(6,1))
+//            Map.entry("range", new Pair<>(2, 0)),
+//            Map.entry("fragile", new Pair<>(2,1)),
+//
+//            Map.entry("storm", new Pair<>(4,0)),
+//            Map.entry("teleport", new Pair<>(4,1)),
+//
+//            Map.entry("counterBlink", new Pair<>(5,0)),
+//            Map.entry("blinking", new Pair<>(5,1)),
+//            Map.entry("20", new Pair<>(5,2)),
+//            Map.entry("scale", new Pair<>(5,3)),
+//
+//            Map.entry("help", new Pair<>(6,0)),
+//            Map.entry("skyblock", new Pair<>(6,1))
     );
 
     private boolean tunneler = false;
@@ -77,7 +80,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 
     private List<Consumer<HitResult>> pointChaosEffects = new ArrayList<>(List.of(
 //            this::spawnMobPack,
-//            this::getMythicItem,
+            this::getMythicItem
 //            this::spawnSkeletonHorse,
 //            this::breakGameProgression,
 //            this::getArmorSet,
@@ -411,4 +414,62 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             }
         }
     }
+    private void getMythicItem(HitResult hitResult) {
+        List<ItemStack> mythicItems = new ArrayList<>();
+
+        ItemStack light = Items.LIGHT.getDefaultInstance();
+        light.setCount(32);
+        mythicItems.add(light);
+
+        ItemStack bedrock = Items.BEDROCK.getDefaultInstance();
+        bedrock.setCount(64);
+        mythicItems.add(bedrock);
+
+        ItemStack reinforcedDeepslate = Items.REINFORCED_DEEPSLATE.getDefaultInstance();
+        reinforcedDeepslate.setCount(64);
+        mythicItems.add(reinforcedDeepslate);
+
+        ItemStack endPortalFrame = Items.END_PORTAL_FRAME.getDefaultInstance();
+        endPortalFrame.setCount(12);
+        mythicItems.add(endPortalFrame);
+
+        ItemStack buddingAmethyst = Items.BUDDING_AMETHYST.getDefaultInstance();
+        buddingAmethyst.setCount(64);
+        mythicItems.add(buddingAmethyst);
+
+        ItemStack trialSpawner = Items.TRIAL_SPAWNER.getDefaultInstance();
+        mythicItems.add(trialSpawner);
+
+        ItemStack spawner = Items.SPAWNER.getDefaultInstance();
+        mythicItems.add(spawner);
+
+        List<ItemStack> spawnEggs = ((ChaosOrbItem) (this.getDefaultItem())).getOrCreateSpawnEggList();
+
+        mythicItems.add(ModItems.LEGENDARY_PICKAXE.getDefaultInstance());
+        mythicItems.add(ModItems.LEGENDARY_SHOVEL.getDefaultInstance());
+        mythicItems.add(ModItems.LEGENDARY_AXE.getDefaultInstance());
+        mythicItems.add(ModItems.LEGENDARY_HOE.getDefaultInstance());
+        mythicItems.add(ModItems.LEGENDARY_SWORD.getDefaultInstance());
+        mythicItems.add(ModItems.LEGENDARY_LONGSWORD.getDefaultInstance());
+        mythicItems.add(ModItems.LEGENDARY_SPEAR.getDefaultInstance());
+        mythicItems.add(ModItems.LEGENDARY_ROCKET.getDefaultInstance());
+//        mythicItems.add(ModItems.SURVIVAL_DEBUG_STICK.getDefaultStack());
+        mythicItems.add(ModItems.DIMENSIONAL_POCKET.getDefaultInstance());
+        mythicItems.add(ModItems.FLASH.getDefaultInstance());
+
+        int nextItem = this.random.nextIntBetweenInclusive(0, mythicItems.size() -1);
+        ItemStack reward = mythicItems.get(nextItem);
+
+        int nextEgg = this.random.nextIntBetweenInclusive(0, spawnEggs.size() -1);
+        mythicItems.add(spawnEggs.get(nextEgg));
+
+        if (reward.getItem() == Items.TRIAL_SPAWNER || reward.getItem() == Items.SPAWNER) {
+            ItemStack newEgg = spawnEggs.get(nextEgg);
+            newEgg.setCount(1);
+            this.spawnAtLocation(level, newEgg, 0);
+        }
+
+        this.spawnAtLocation(level, reward, 0);
+    }
+
 }

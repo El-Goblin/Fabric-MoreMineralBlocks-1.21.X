@@ -1,17 +1,29 @@
 package net.elgoblin.moremineralblocks.item.custom;
 
 import net.elgoblin.moremineralblocks.entity.custom.ChaosOrbEntity;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SnowballItem;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChaosOrbItem extends SnowballItem {
+
+    private List<ItemStack> spawnEggs = new ArrayList<>();
+    private long spawnEggsReady = 0;
+
+
     public ChaosOrbItem(Properties properties) {
         super(properties);
     }
@@ -39,5 +51,19 @@ public class ChaosOrbItem extends SnowballItem {
             itemStack.consume(1, user);
         }
         return InteractionResult.SUCCESS;
+    }
+
+    public List<ItemStack> getOrCreateSpawnEggList() {
+        if (spawnEggsReady != 1) {
+            spawnEggs = new ArrayList<>();
+
+            for (var item : BuiltInRegistries.ITEM) {
+                if (item instanceof SpawnEggItem spawnEggItem) {
+                    spawnEggs.add(spawnEggItem.getDefaultInstance());
+                }
+            }
+            spawnEggsReady = 1;
+        }
+        return spawnEggs;
     }
 }
