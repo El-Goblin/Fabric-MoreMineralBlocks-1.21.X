@@ -1,5 +1,6 @@
 package net.elgoblin.moremineralblocks.networking;
 
+import net.elgoblin.moremineralblocks.client.DimensionalPocketCache;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.DimensionalPocketItem;
@@ -336,8 +337,6 @@ public class ServerPayloadReceivers {
 
             if (dimPocketData == null) { return; }
 
-            boolean safeMode = dimPocketData.safeMode();
-
             Container deposit = getDeposit(dimPocketData.targetLevel(), dimPocketData.depositPos());
             if (deposit == null) { return; }
 
@@ -348,12 +347,16 @@ public class ServerPayloadReceivers {
             int itemIndexInGroup = dimPocketData.selectedItemInEachGroup().get(dimPocketData.selectedColoredGroup());
             ItemStack currentSelectedItemStack = getStackFromInventory(deposit, group.get(dimPocketData.selectedItemInEachGroup().get(dimPocketData.selectedColoredGroup())));
 
+            ItemStack sameGroupPrevStack = DimensionalPocketCache.sameGroupPrevStack;
+            ItemStack sameGroupNextStack = DimensionalPocketCache.sameGroupNextStack;
+
+            ItemStack targetStack = payload.scroll() == -1 ? sameGroupNextStack : sameGroupPrevStack;
+            if (canMergeItems(targetStack, currentSelectedItemStack)) { return; }
+
             for (int offset = 1; offset <= group.size(); offset++) {
                 itemIndexInGroup = Math.floorMod(itemIndexInGroup - payload.scroll(), group.size());
                 ItemStack currentStack = getStackFromInventory(deposit, group.get(itemIndexInGroup));
-                if (currentStack.isEmpty() ||
-                        DimensionalPocketItem.notAllowedToUse(safeMode, currentStack) ||
-                        canMergeItems(currentSelectedItemStack, currentStack)) { continue; }
+                if (!canMergeItems(currentStack, targetStack)) { continue; }
 
                 List<Integer> newIntraGroupPointers = new ArrayList<>(dimPocketData.selectedItemInEachGroup());
                 newIntraGroupPointers.set(dimPocketData.selectedColoredGroup(), itemIndexInGroup);
@@ -464,9 +467,9 @@ public class ServerPayloadReceivers {
         // Si queda en -1, el slot seleccionado actualmente esta vacio o fuera de rango
 
         ItemStack exampleSelectedItemStack = ItemStack.EMPTY;
-//        if (selectedDepositIndex < depositSize) {
-//            exampleSelectedItemStack = getStackFromInventory(deposit, selectedDepositIndex);
-//        }
+        if (selectedDepositIndex < depositSize) {
+            exampleSelectedItemStack = getStackFromInventory(deposit, selectedDepositIndex);
+        }
 
         for (int i = 0 ; i < groupSize ; i++) {
             int depositIndex = selectedColoredGroup.get(i);
@@ -479,24 +482,26 @@ public class ServerPayloadReceivers {
             for (int j = 0 ; j < orderedNonEmptyStacks.size() ; j++) {
                 if (canMergeItems(orderedNonEmptyStacks.get(j), stack)) {
                     notMerged = false;
-                    if (!DimensionalPocketItem.notAllowedToUse(safeMode, stack) ||
-                        depositIndex == selectedDepositIndex ||
-                        canMergeItems(stack, exampleSelectedItemStack)) {
-                        counts.set(j, counts.get(j) + stack.getCount());
 
-                        if (depositIndex == selectedDepositIndex) {
-                            nonEmptySelectedItem = j;
-                        }
+                    // Si son del tipo que estoy seleccionando, quiero que los muestre
+                    // Aunque sean slots de 1, van a sumar al total.
+                    if (!DimensionalPocketItem.notAllowedToUse(safeMode, stack) ||
+                            canMergeItems(exampleSelectedItemStack, stack)) {
+                        counts.set(j, counts.get(j) + stack.getCount());
                     }
                 }
             }
-            if ((notMerged && !DimensionalPocketItem.notAllowedToUse(safeMode, stack)) || depositIndex == selectedDepositIndex) {
-                if (depositIndex == selectedDepositIndex) {
-                    nonEmptySelectedItem = orderedNonEmptyStacks.size();
-                    exampleSelectedItemStack = stack;
+            if (notMerged) {
+                boolean isOfSelectedType = canMergeItems(stack, exampleSelectedItemStack);
+
+                if (!DimensionalPocketItem.notAllowedToUse(safeMode, stack) || isOfSelectedType) {
+                    // Si es del tipo que estoy seleccionando, lo quiero aunque este en safe y con cantidad 1
+                    if (isOfSelectedType) {
+                        nonEmptySelectedItem = orderedNonEmptyStacks.size();
+                    }
+                    orderedNonEmptyStacks.add(stack);
+                    counts.add(stack.getCount());
                 }
-                orderedNonEmptyStacks.add(stack);
-                counts.add(stack.getCount());
             }
         }
 

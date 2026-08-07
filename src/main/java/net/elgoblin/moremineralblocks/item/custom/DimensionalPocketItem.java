@@ -1,5 +1,6 @@
 package net.elgoblin.moremineralblocks.item.custom;
 
+import net.elgoblin.moremineralblocks.client.DimensionalPocketCache;
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.util.LegendaryItemUtils;
@@ -37,20 +38,19 @@ public class DimensionalPocketItem extends Item {
     public InteractionResult useOn(UseOnContext context) {
 
         Level level = context.getLevel();
-        if (level.isClientSide()) {
-            return InteractionResult.PASS;
-        }
 
         ItemStack dimensionalPocket = context.getItemInHand();
         boolean safeModeOn = dimensionalPocket.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
         BlockPos clickedPosition = context.getClickedPos();
 
         if (level.getBlockEntity(clickedPosition) instanceof Container) {
-            Container container = LegendaryItemUtils.getContainer((ServerLevel) level, clickedPosition);
-
             if (!safeModeOn) {
-                boolean linked = LegendaryItemUtils.linkOrUnlinkContainer(context, clickedPosition);
-                initializeOrRemoveColoredGroups(dimensionalPocket, container, linked);
+                if (!level.isClientSide()) {
+                    Container container = LegendaryItemUtils.getContainer((ServerLevel) level, clickedPosition);
+                    boolean linked = LegendaryItemUtils.linkOrUnlinkContainer(context, clickedPosition);
+                    initializeOrRemoveColoredGroups(dimensionalPocket, container, linked);
+
+                }
                 return InteractionResult.SUCCESS;
             }
         }
@@ -58,36 +58,59 @@ public class DimensionalPocketItem extends Item {
         Player user = context.getPlayer();
         if (user == null) { return InteractionResult.FAIL; }
 
+        if (level.isClientSide()) {
+            if (safeModeOn && DimensionalPocketCache.mainStackCount <= DimensionalPocketCache.mainStackDuplicateCount) {
+                return InteractionResult.FAIL;
+            }
+            return useStackOn(DimensionalPocketCache.mainStack.copy(), context, clickedPosition, level, user);
+        }
+
         ItemStack stackToUse = getStackToUse(dimensionalPocket, level, user, safeModeOn);
         if (isBannedItem(stackToUse)) { return InteractionResult.FAIL; }
 
-        InteractionResult result = useStackOn(stackToUse, context, clickedPosition, level, user);
-        performAnimationsAndSound(result, level, context, user, context.getHand());
-
-        return result;
+        return useStackOn(stackToUse, context, clickedPosition, level, user);
     }
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
 
-        if (level.isClientSide()) {
-            return InteractionResult.PASS;
-        }
-
         ItemStack dimensionalPocket = player.getItemInHand(hand);
         boolean safeModeOn = dimensionalPocket.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
+        ItemStack copy = dimensionalPocket.copy();
+
+        if (level.isClientSide()) {
+            if (safeModeOn && DimensionalPocketCache.mainStackCount <= DimensionalPocketCache.mainStackDuplicateCount) {
+                return InteractionResult.FAIL;
+            }
+            ItemStack stackToUse = DimensionalPocketCache.mainStack.copy();
+            player.setItemSlot(hand.asEquipmentSlot(), stackToUse);
+            InteractionResult result = stackToUse.use(level, player, hand);
+            player.setItemSlot(hand.asEquipmentSlot(), copy);
+            if (result.consumesAction()) {
+                System.out.println("Client success");
+                return InteractionResult.SUCCESS;
+            }
+            else {
+                System.out.println("Client fail");
+                return InteractionResult.FAIL;
+            }
+        }
 
         ItemStack stackToUse = getStackToUse(dimensionalPocket, level, player, safeModeOn);
         if (isBannedItem(stackToUse)) { return InteractionResult.FAIL; }
+        System.out.println("No banned item");
 
-        ItemStack copy = dimensionalPocket.copy();
         player.setItemSlot(hand.asEquipmentSlot(), stackToUse);
         InteractionResult result = stackToUse.use(level, player, hand);
-        performAnimationsAndSound(result, stackToUse, level, player, hand);
+//        performAnimationsAndSound(result, stackToUse, level, player, hand);
 
         player.setItemSlot(hand.asEquipmentSlot(), copy);
-
-        return InteractionResult.FAIL;
+        if (result.consumesAction()) {
+            return InteractionResult.SUCCESS;
+        }
+        else {
+            return InteractionResult.FAIL;
+        }
     }
 
     private int findFirstNonEmptySlotOrZero(Container container) {
@@ -145,25 +168,35 @@ public class DimensionalPocketItem extends Item {
         List<Integer> group = dimensionalPocket.get(ModDataComponentTypes.COLOR_INVENTORIES.get(DyeColor.byId(selectedColoredGroup)));
         if (group == null) { return ItemStack.EMPTY; }
 
-        if (group.isEmpty() || isOffBounds(selectedItemsInEachColoredGroup.get(selectedColoredGroup), group.size())) {
+        int currentSelectedItemIndex = selectedItemsInEachColoredGroup.get(selectedColoredGroup);
+
+        if (group.isEmpty() || isOffBounds(currentSelectedItemIndex, group.size())) {
             return ItemStack.EMPTY;
         }
 
-        ItemStack stackToUse = getStackFromInventory(deposit, group.get(selectedItemsInEachColoredGroup.get(selectedColoredGroup)));
+        ItemStack stackToUse = getStackFromInventory(deposit, group.get(currentSelectedItemIndex));
+        ItemStack fallbackStack = stackToUse;
         if (isBannedItem(stackToUse)) { return ItemStack.EMPTY; }
 
-        if (!user.isCreative() && notAllowedToUse(safeModeOn, stackToUse)) {
-            stackToUse = findNonEmptyStackInGroupOfType(deposit, group, stackToUse.getItem());
+        // Da un stack distinto al seleccionado, para permitir gastar el cofre entero aunque no estes en safeMode
+        stackToUse = findNonEmptyStackInGroupOfType(deposit, group, currentSelectedItemIndex, stackToUse.getItem(), safeModeOn);
+        if (stackToUse.isEmpty()) {
+            if (!user.isCreative() && notAllowedToUse(safeModeOn, fallbackStack)) {
+                return ItemStack.EMPTY;
+            }
+            stackToUse = fallbackStack;
         }
         return stackToUse;
     }
 
-    private ItemStack findNonEmptyStackInGroupOfType(Container deposit, List<Integer> group, Item usedItem) {
+    private ItemStack findNonEmptyStackInGroupOfType(Container deposit, List<Integer> group, int currentSelectedItemIndex, Item usedItem, boolean safeMode) {
         for (Integer depositIndex : group) {
-            int depositSlot = Math.floorMod(depositIndex, deposit.getContainerSize());
-            ItemStack stack = deposit.getItem(depositSlot);
-            if (stack.is(usedItem) && stack.getCount() > 1) {
-                return stack;
+            if (depositIndex != currentSelectedItemIndex) {
+                int depositSlot = Math.floorMod(depositIndex, deposit.getContainerSize());
+                ItemStack stack = deposit.getItem(depositSlot);
+                if (stack.is(usedItem) && stack.getCount() > (safeMode ? 1 : 0)) {
+                    return stack;
+                }
             }
         }
         return ItemStack.EMPTY;

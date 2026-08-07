@@ -132,7 +132,7 @@ public class DimensionalPocketRenderer implements SpecialModelRenderer<Dimension
         if (player != null) {
             ItemStack mainHand = player.getMainHandItem();
             ItemStack offHand = player.getOffhandItem();
-            if (stack == mainHand || stack == offHand) {
+            if (isSameDimensionalPocket(stack, mainHand) || isSameDimensionalPocket(stack, offHand)) {
                 isBeingHeld = true;
             }
         }
@@ -182,4 +182,11 @@ public class DimensionalPocketRenderer implements SpecialModelRenderer<Dimension
 
     private final ItemStackRenderState selectedItemState =
             new ItemStackRenderState();
+
+    private boolean isSameDimensionalPocket(ItemStack stackA, ItemStack stackB) {
+        if (stackA.isEmpty() || stackB.isEmpty()) return false;
+        if (!stackA.is(stackB.getItem())) return false;
+
+        return ItemStack.matches(stackA, stackB);
+    }
 }
