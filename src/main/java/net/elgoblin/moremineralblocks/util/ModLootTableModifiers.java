@@ -393,9 +393,6 @@ public class ModLootTableModifiers {
                     if (BuiltInLootTables.TRIAL_CHAMBERS_WATER_DISPENSER.equals(key)) {
                         tableBuilder.pool(trialChamberPot.build());
                     }
-                    if (BuiltInLootTables.EQUIPMENT_TRIAL_CHAMBER.equals(key)) {
-                        tableBuilder.pool(trialChambers.build());
-                    }
 
                     // END CITY
 
@@ -432,32 +429,7 @@ public class ModLootTableModifiers {
                     if (BuiltInLootTables.PILLAGER_OUTPOST.equals(key)) {
                         tableBuilder.pool(bastion.build());
                     }
-                    if (BuiltInLootTables.CHARGED_CREEPER.equals(key)) {
-                        tableBuilder.pool(shipwreck.build());
-                    }
-                    if (BuiltInLootTables.CHARGED_CREEPER_CREEPER.equals(key)) {
-                        tableBuilder.pool(shipwreck.build());
-                    }
-                    if (BuiltInLootTables.CHARGED_CREEPER_PIGLIN.equals(key)) {
-                        tableBuilder.pool(shipwreck.build());
-                    }
-                    if (BuiltInLootTables.CHARGED_CREEPER_SKELETON.equals(key)) {
-                        tableBuilder.pool(shipwreck.build());
-                    }
-                    if (BuiltInLootTables.CHARGED_CREEPER_ZOMBIE.equals(key)) {
-                        tableBuilder.pool(shipwreck.build());
-                    }
-                    if (BuiltInLootTables.CHARGED_CREEPER_WITHER_SKELETON.equals(key)) {
-                        tableBuilder.pool(shipwreck.build());
-                    }
-
                     if (BuiltInLootTables.PANDA_SNEEZE.equals(key)) {
-                        tableBuilder.pool(pandaSneeze.build());
-                    }
-                    if (BuiltInLootTables.SHEAR_SNOW_GOLEM.equals(key)) {
-                        tableBuilder.pool(igloo.build());
-                    }
-                    if (BuiltInLootTables.TURTLE_GROW.equals(key)) {
                         tableBuilder.pool(pandaSneeze.build());
                     }
                 }

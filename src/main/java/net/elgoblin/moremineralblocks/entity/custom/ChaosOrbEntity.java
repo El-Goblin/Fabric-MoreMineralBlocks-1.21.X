@@ -1,34 +1,53 @@
 package net.elgoblin.moremineralblocks.entity.custom;
 
 import com.mojang.datafixers.util.Pair;
+import net.elgoblin.moremineralblocks.block.ModBlocks;
+import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
+import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.util.ProtectorManager;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
+import net.minecraft.core.*;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.SuspiciousStewEffects;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BeaconBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.level.saveddata.WeatherData;
+import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 
 import java.util.*;
@@ -37,41 +56,46 @@ import java.util.function.Consumer;
 
 public class ChaosOrbEntity extends ThrowableItemProjectile {
 
+    private final Map<String, SimpleParticleType> particleMap = Map.of("minecraft:haste", ModParticles.CHAOS_ORB_HASTE_PARTICLE,
+            "minecraft:jump_boost", ModParticles.CHAOS_ORB_JUMP_BOOST_PARTICLE,
+            "minecraft:regeneration", ModParticles.CHAOS_ORB_REGENERATION_PARTICLE,
+            "minecraft:resistance", ModParticles.CHAOS_ORB_RESISTANCE_PARTICLE,
+            "minecraft:speed", ModParticles.CHAOS_ORB_SPEED_PARTICLE,
+            "minecraft:strength", ModParticles.CHAOS_ORB_STRENGTH_PARTICLE);
     private ServerLevel level = null;
     private final RandomSource random = RandomSource.create();
     private String seededEvent = "none";
     private final Map<String, Pair<Integer, Integer>> eventMap = Map.ofEntries(
 //            Map.entry("mobpack", new Pair<>(0,0)),
             Map.entry("mythicitem", new Pair<>(0,0)),
-//            Map.entry("mythicitem", new Pair<>(0,1)),
 //            Map.entry("skeletonhorse", new Pair<>(0,2)),
-//            Map.entry("progression", new Pair<>(0,3)),
+            Map.entry("progression", new Pair<>(0,1)),
 //            Map.entry("armor", new Pair<>(0,4)),
 //            Map.entry("tools", new Pair<>(0,5)),
-//            Map.entry("chaos", new Pair<>(0,6)),
+            Map.entry("chaos", new Pair<>(0,2)),
 //            Map.entry("terrainsphere", new Pair<>(0,7)),
-//            Map.entry("explosion", new Pair<>(0,8)),
-//            Map.entry("fireexplosion", new Pair<>(0,9)),
-//            Map.entry("food", new Pair<>(0,10)),
-//            Map.entry("book", new Pair<>(0,11)),
-//            Map.entry("prize", new Pair<>(0, 12)),
-//            Map.entry("xp", new Pair<>(0, 13)),
+            Map.entry("explosion", new Pair<>(0,3)),
+            Map.entry("fireexplosion", new Pair<>(0,4)),
+            Map.entry("food", new Pair<>(0,5)),
+            Map.entry("book", new Pair<>(0,6)),
+            Map.entry("prize", new Pair<>(0, 7)),
+            Map.entry("xp", new Pair<>(0, 8)),
 
-            Map.entry("smallBoing", new Pair<>(1,0))
-//            Map.entry("beacon", new Pair<>(1,0)),
+            Map.entry("smallboing", new Pair<>(1,0)),
+            Map.entry("beacon", new Pair<>(1,1)),
 
 //            Map.entry("range", new Pair<>(2, 0)),
-//            Map.entry("fragile", new Pair<>(2,1)),
+            Map.entry("fragile", new Pair<>(2,0)),
 //
-//            Map.entry("storm", new Pair<>(4,0)),
-//            Map.entry("teleport", new Pair<>(4,1)),
+            Map.entry("storm", new Pair<>(4,0)),
+            Map.entry("teleport", new Pair<>(4,1)),
 //
-//            Map.entry("counterBlink", new Pair<>(5,0)),
-//            Map.entry("blinking", new Pair<>(5,1)),
-//            Map.entry("20", new Pair<>(5,2)),
-//            Map.entry("scale", new Pair<>(5,3)),
+            Map.entry("counterBlink", new Pair<>(5,0)),
+            Map.entry("blinking", new Pair<>(5,1)),
+            Map.entry("20", new Pair<>(5,2)),
+            Map.entry("scale", new Pair<>(5,3)),
 //
-//            Map.entry("help", new Pair<>(6,0)),
+            Map.entry("help", new Pair<>(6,0))
 //            Map.entry("skyblock", new Pair<>(6,1))
     );
 
@@ -80,49 +104,49 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 
     private List<Consumer<HitResult>> pointChaosEffects = new ArrayList<>(List.of(
 //            this::spawnMobPack,
-            this::getMythicItem
+            this::getMythicItem,
 //            this::spawnSkeletonHorse,
-//            this::breakGameProgression,
+            this::breakGameProgression,
 //            this::getArmorSet,
 //            this::getToolsSet,
-//            this::spawn5ChaosOrbs,
+            this::spawn5ChaosOrbs,
 //            this::voidSphere,
-//            this::explosion, // Ponerle timer
-//            this::fireExplosion, // Ponerle timer
-//            this::getFood,
-//            this::getEnchantedBook,
-//            this::smallPrize,
-//            this::xp
+            this::explosion, // Ponerle timer
+            this::fireExplosion, // Ponerle timer
+            this::getFood,
+            this::getEnchantedBook,
+            this::smallPrize,
+            this::xp
 //            this::getInfiniteItem
     ));
     private List<BiConsumer<HitResult, AABB>> areaChaosEffects = new ArrayList<>(List.of(
-            this::smallBoing
-//            this::applyBeaconEffect
+            this::smallBoing,
+            this::applyBeaconEffect
     ));
     private List<BiConsumer<HitResult, AABB>> selfAreaChaosEffects = new ArrayList<>(List.of(
 //            this::increaseInteractionRange,
-//            this::fragile
+            this::fragile
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
 //            this::crash
     ));
     private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
-//            this::beginThunderstorm,
-//            this::randomizePlayersPositions
+            this::beginThunderstorm,
+            this::randomizePlayersPositions
 //            this::createSkyblock
             // Skyblock se va a ir agregando en cada llamado hasta que salga una vez.
     ));
     private List<BiConsumer<HitResult, AABB>> targetsOrSelfChaosEffects = new ArrayList<>(List.of(
-//            this::counterBlinking,
+            this::counterBlinking,
 ////            this::adventureGamemode
 ////            this::onanaHands,
-//            this::blinking,
-//            this::moveXBlocks,
-//            this::changeScale
+            this::blinking,
+            this::moveXBlocks,
+            this::changeScale
     ));
 
     private List<Consumer<HitResult>> debugChaosEffects = new ArrayList<>(List.of(
-//            this::debugHelp,
+            this::debugHelp
 //            this::createSkyblock
     ));
 
@@ -171,11 +195,11 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         }
         if (itemStack.getCustomName() != null) {
             seededEvent = itemStack.getCustomName().getString().toLowerCase();
-            if (itemStack.getCustomName().getString().equalsIgnoreCase("tunneler")) {
+            if (seededEvent.equalsIgnoreCase("tunneler")) {
                 tunneler = true;
             }
             else {
-                tunneler = false;
+                tunneler = !eventMap.containsKey(seededEvent) && tunneler;
             }
         }
     }
@@ -188,11 +212,11 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         }
         if (itemStack.getCustomName() != null) {
             seededEvent = itemStack.getCustomName().getString().toLowerCase();
-            if (itemStack.getCustomName().getString().equalsIgnoreCase("tunneler")) {
+            if (seededEvent.equalsIgnoreCase("tunneler")) {
                 tunneler = true;
             }
             else {
-                tunneler = false;
+                tunneler = !eventMap.containsKey(seededEvent) && tunneler;
             }
         }
     }
@@ -379,7 +403,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     // EVENTS
 
     private void smallBoing(HitResult hitResult, AABB boundingBox) {
-        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 32.0, 32.0), EntitySelector.NO_SPECTATORS);
+        List<Entity> entities = level.getEntitiesOfClass(Entity.class, boundingBox.inflate(32.0, 32.0, 32.0), entity -> !(entity.is(EntityTypes.ITEM_FRAME)));
 
         double knockback = 10;
 
@@ -393,7 +417,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         double entityY;
         double entityZ;
 
-        for (LivingEntity entity : entities) {
+        for (var entity : entities) {
             entityX = entity.getX();
             entityY = entity.getY();
             entityZ = entity.getZ();
@@ -409,11 +433,15 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             z = z / distance;
 
             if (distance > 0) {
-                entity.push(x * knockback, y * 5, z * knockback);
+                Vec3 force = new Vec3(x * knockback, y * 5.0, z * knockback);
+                entity.push(force);
+
+                entity.setDeltaMovement(force);
                 entity.hurtMarked = true;
             }
         }
     }
+
     private void getMythicItem(HitResult hitResult) {
         List<ItemStack> mythicItems = new ArrayList<>();
 
@@ -472,4 +500,430 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         this.spawnAtLocation(level, reward, 0);
     }
 
+    private void xp(HitResult hitResult) {
+        ExperienceOrb.award(level, this.position(), (int) Math.pow(Math.min(random.nextIntBetweenInclusive(8,32), random.nextIntBetweenInclusive(16,32)),3));
+    }
+
+    private void getEnchantedBook(HitResult hitResult) {
+        ItemStack enchantedBook = Items.ENCHANTED_BOOK.getDefaultInstance();
+        Registry<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        List<Holder.Reference<Enchantment>> enchantments = enchantmentRegistry.listElements().toList();
+        Holder.Reference<Enchantment> enchantmentHolder = enchantments.get(this.random.nextIntBetweenInclusive(0, enchantments.size() - 1));
+        Enchantment enchantment = enchantmentHolder.value();
+        int enchantmentLevel = this.random.nextIntBetweenInclusive(1, enchantment.getMaxLevel());
+        EnchantmentHelper.updateEnchantments(enchantedBook, mutable -> mutable.set(enchantmentHolder, enchantmentLevel));
+        this.spawnAtLocation(level, enchantedBook, 0f);
+    }
+
+    private void randomizePlayersPositions(HitResult hitResult) {
+        int forceTeleport = random.nextInt(20);
+        if (forceTeleport == 0 && this.getOwner() != null && this.getOwner() instanceof Player player) {
+            // Notar que de esta forma se aumenta la estadistica de veces usadas el item. Me parece correcto
+            ModItems.CHAOS_MIRROR.use(level, player, InteractionHand.MAIN_HAND);
+        }
+        else {
+            this.spawnAtLocation(level, ModItems.CHAOS_MIRROR.getDefaultInstance(), 0f);
+        }
+    }
+
+    private void explosion(HitResult hitResult) {
+        int kase = random.nextInt(19);
+
+        if (kase > 16 && this.getOwner() != null) {
+            level.explode(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 1.0, Level.ExplosionInteraction.BLOCK);
+        }
+        else {
+            level.explode(this, this.getX(), this.getY(), this.getZ(),(float) ((kase==0) ? 127.0 : 5.0), Level.ExplosionInteraction.BLOCK);
+        }
+    }
+
+    private void fireExplosion(HitResult hitResult) {
+        int kase = random.nextInt(19);
+
+        LargeFireball fireballEntity;
+        if (this.getOwner() != null) {
+            if (kase > 16) {
+                fireballEntity = new LargeFireball(level, (LivingEntity) this.getOwner(), new Vec3(0, -1.0f, 0), 1);
+                fireballEntity.setPos(this.getOwner().getX(), this.getOwner().getY()+2, this.getOwner().getZ());
+            }
+            else {
+                fireballEntity = new LargeFireball(level, (LivingEntity) this.getOwner(), new Vec3(0, -1.0f, 0), 4);
+                fireballEntity.setPos(this.getX(), this.getY(), this.getZ());
+            }
+            level.addFreshEntity(fireballEntity);
+        }
+    }
+
+    private void spawn5ChaosOrbs(HitResult hitResult) {
+        if (this.getOwner() != null) {
+            ItemStack chaosOrbs = new ItemStack(ModItems.CHAOS_ORB, 5);
+
+            ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, chaosOrbs);
+            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.shoot( 1.0f, 2.0f, 0f, 0.5f, 0.0f);
+
+            level.addFreshEntity(chaosOrbEntity);
+
+            chaosOrbEntity = new ChaosOrbEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, chaosOrbs);
+            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.shoot( -1.0f, 2.0f, 0f, 0.5f, 0.0f);
+
+            level.addFreshEntity(chaosOrbEntity);
+
+            chaosOrbEntity = new ChaosOrbEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, chaosOrbs);
+            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.shoot( 0f, 2.0f, 1.0f, 0.5f, 0.0f);
+
+            level.addFreshEntity(chaosOrbEntity);
+
+            chaosOrbEntity = new ChaosOrbEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, chaosOrbs);
+            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.shoot( 0f, 2.0f, -1.0f, 0.5f, 0.0f);
+
+            level.addFreshEntity(chaosOrbEntity);
+
+            chaosOrbEntity = new ChaosOrbEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, chaosOrbs);
+            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.shoot( 0f, 2.0f, 0.0f, 0f, 0f);
+
+            level.addFreshEntity(chaosOrbEntity);
+        }
+    }
+
+    private void fragile(HitResult hitResult, AABB boundingBox) {
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 16.0, 32.0), EntitySelector.NO_SPECTATORS);
+        level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+
+        for (LivingEntity entity : entities) {
+            MobEffectInstance effect = new MobEffectInstance(ModEffects.FRAGILE, 6000, 0);
+            if (entity != null) {
+                entity.addEffect(effect);
+            }
+        }
+    }
+
+    private void counterBlinking(HitResult hitResult, AABB boundingBox) {
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 16.0, 32.0), EntitySelector.NO_SPECTATORS);
+        if (entities.isEmpty() && this.getOwner() != null) {
+            entities.add((LivingEntity) this.getOwner());
+        }
+
+        level.sendParticles(ModParticles.CHAOS_ORB_COUNTER_BLINK_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+
+        for (LivingEntity entity : entities) {
+            MobEffectInstance effect = new MobEffectInstance(ModEffects.COUNTER_BLINK, 9600, 0);
+            if (entity != null) {
+                entity.addEffect(effect);
+            }
+        }
+    }
+
+    private void blinking(HitResult hitResult, AABB boundingBox) {
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 16.0, 32.0), EntitySelector.NO_SPECTATORS);
+        if (entities.isEmpty() && this.getOwner() != null) {
+            entities.add((LivingEntity) this.getOwner());
+        }
+        level.sendParticles(ModParticles.CHAOS_ORB_BLINKING_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+
+        for (LivingEntity entity : entities) {
+            MobEffectInstance effect = new MobEffectInstance(ModEffects.BLINKING, 1200, 0);
+            if (entity != null) {
+                entity.addEffect(effect);
+            }
+        }
+    }
+
+    private void breakGameProgression(HitResult hitResult) {
+        List<ItemStack> rareItems = new ArrayList<>();
+        rareItems.add(Items.ELYTRA.getDefaultInstance());
+        rareItems.add(Items.MACE.getDefaultInstance());
+        rareItems.add(Items.DRAGON_EGG.getDefaultInstance());
+        rareItems.add(Items.BEACON.getDefaultInstance());
+        rareItems.add(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE.getDefaultInstance());
+        rareItems.add(Items.TOTEM_OF_UNDYING.getDefaultInstance());
+        rareItems.add(Items.TRIDENT.getDefaultInstance());
+        rareItems.add(Items.SHULKER_BOX.getDefaultInstance());
+        rareItems.add(ModBlocks.PROTECTOR_BLOCK.asItem().getDefaultInstance());
+
+        Registry<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+
+        Optional<Holder.Reference<Enchantment>> mending = enchantmentRegistry.get(Enchantments.MENDING);
+        if (mending.isPresent()) {
+            ItemStack mendingBook = Items.ENCHANTED_BOOK.getDefaultInstance();
+            EnchantmentHelper.updateEnchantments(mendingBook, mutable -> mutable.set(mending.get(), 1));
+            rareItems.add(mendingBook);
+        }
+
+        Optional<Holder.Reference<Enchantment>> fortune = enchantmentRegistry.get(Enchantments.FORTUNE);
+        if (fortune.isPresent()) {
+            ItemStack fortuneBook = Items.ENCHANTED_BOOK.getDefaultInstance();
+            EnchantmentHelper.updateEnchantments(fortuneBook, mutable -> mutable.set(fortune.get(), 3));
+            rareItems.add(fortuneBook);
+        }
+
+        Optional<Holder.Reference<Enchantment>> looting = enchantmentRegistry.get(Enchantments.LOOTING);
+        if (looting.isPresent()) {
+            ItemStack lootingBook = Items.ENCHANTED_BOOK.getDefaultInstance();
+            EnchantmentHelper.updateEnchantments(lootingBook, mutable -> mutable.set(looting.get(), 3));
+            rareItems.add(lootingBook);
+        }
+
+        Optional<Holder.Reference<Enchantment>> silkTouch = enchantmentRegistry.get(Enchantments.SILK_TOUCH);
+        if (silkTouch.isPresent()) {
+            ItemStack silkTouchBook = Items.ENCHANTED_BOOK.getDefaultInstance();
+            EnchantmentHelper.updateEnchantments(silkTouchBook, mutable -> mutable.set(silkTouch.get(), 1));
+            rareItems.add(silkTouchBook);
+        }
+
+        ItemStack diamonds = Items.DIAMOND.getDefaultInstance();
+        diamonds.setCount(32);
+        rareItems.add(diamonds);
+
+        ItemStack goldenCarrots = Items.GOLDEN_CARROT.getDefaultInstance();
+        goldenCarrots.setCount(64);
+        rareItems.add(goldenCarrots);
+
+        ItemStack netherite = Items.NETHERITE_INGOT.getDefaultInstance();
+        netherite.setCount(2);
+        rareItems.add(netherite);
+
+        ItemStack bookshelves = Items.BOOKSHELF.getDefaultInstance();
+        bookshelves.setCount(15);
+        rareItems.add(bookshelves);
+
+        ItemStack goldenApples = Items.ENCHANTED_GOLDEN_APPLE.getDefaultInstance();
+        goldenApples.setCount(8);
+        rareItems.add(goldenApples);
+
+        ItemStack sponges = Items.SPONGE.getDefaultInstance();
+        sponges.setCount(64);
+        rareItems.add(sponges);
+
+        ItemStack iron_blocks = Items.IRON_BLOCK.getDefaultInstance();
+        iron_blocks.setCount(16);
+        rareItems.add(iron_blocks);
+
+        int nextItem = this.random.nextIntBetweenInclusive(0, rareItems.size() -1);
+        ItemStack reward = rareItems.get(nextItem);
+
+        if (reward.getItem() == Items.BOOKSHELF) {
+            this.spawnAtLocation(level, Items.ENCHANTING_TABLE.getDefaultInstance(), 0);
+        }
+
+        this.spawnAtLocation(level, reward, 0);
+    }
+
+    private void smallPrize(HitResult hitResult) {
+        List<ItemStack> prizes = new ArrayList<>();
+        prizes.add(new ItemStack(Items.OAK_LOG, 64));
+        prizes.add(new ItemStack(Items.BONE, 64));
+        prizes.add(new ItemStack(Items.COAL, 64));
+        prizes.add(new ItemStack(Items.STONE, 64));
+        prizes.add(new ItemStack(Items.SOUL_SAND, 64));
+        prizes.add(new ItemStack(Items.MAGMA_BLOCK, 64));
+        prizes.add(new ItemStack(Items.OBSIDIAN, 20));
+        prizes.add(new ItemStack(Items.BED.blue(), 1));
+        prizes.add(new ItemStack(Items.ENDER_PEARL, 16));
+        prizes.add(new ItemStack(Items.BLAZE_ROD, 12));
+        prizes.add(new ItemStack(Items.POINTED_DRIPSTONE, 32));
+        prizes.add(new ItemStack(Items.TURTLE_HELMET, 1));
+        prizes.add(new ItemStack(Items.SCAFFOLDING, 64));
+
+        int nextItem = this.random.nextIntBetweenInclusive(0, prizes.size() -1);
+        ItemStack reward = prizes.get(nextItem);
+
+        if (reward.getItem() == Items.POINTED_DRIPSTONE) {
+            this.spawnAtLocation(level, new ItemStack(Items.LAVA_BUCKET, 1), 0);
+            this.spawnAtLocation(level, new ItemStack(Items.WATER_BUCKET, 1), 0);
+            this.spawnAtLocation(level, new ItemStack(Items.CAULDRON, 1), 0);
+        }
+        if (reward.getItem() == Items.STONE) {
+            this.spawnAtLocation(level, new ItemStack(Items.STONE, 64), 0);
+            this.spawnAtLocation(level, new ItemStack(Items.STONE, 64), 0);
+        }
+
+        this.spawnAtLocation(level, reward, 0);
+    }
+
+    private void getFood(HitResult hitResult) {
+        List<Item> foodItems = new ArrayList<>();
+
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (item.components().has(DataComponents.FOOD) &&
+                    !(item instanceof PotionItem) &&
+                    item != Items.MUSHROOM_STEW &&
+                    item != Items.RABBIT_STEW) {
+                foodItems.add(item);
+            }
+        }
+
+        ItemStack food = foodItems.get(this.random.nextInt(foodItems.size())).getDefaultInstance();
+        if (!food.is(Items.ENCHANTED_GOLDEN_APPLE) && !food.is(Items.GOLDEN_APPLE)) {
+            food.setCount(32);
+        }
+
+        if (food.is(Items.SUSPICIOUS_STEW)) {
+            Registry<MobEffect> mobEffectRegistry = this.level().registryAccess().lookupOrThrow(Registries.MOB_EFFECT);
+            List<Holder.Reference<MobEffect>> statusEffects = mobEffectRegistry.listElements().toList();
+
+            if (!statusEffects.isEmpty()) {
+                Holder.Reference<MobEffect> effectEntry = statusEffects.get(this.random.nextInt(statusEffects.size()));
+
+                SuspiciousStewEffects.Entry chosenEffect = new SuspiciousStewEffects.Entry(effectEntry, 160);
+
+                food.set(DataComponents.SUSPICIOUS_STEW_EFFECTS, new SuspiciousStewEffects(List.of(chosenEffect)));
+                food.setCount(4);
+            }
+        }
+
+        this.spawnAtLocation(level, food, 0.0F);
+    }
+
+    private void applyBeaconEffect(HitResult hitResult, AABB boundingBox) {
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 200.0, 32.0), EntitySelector.NO_SPECTATORS);
+        List<Holder<MobEffect>> pool = BeaconBlockEntity.BEACON_EFFECTS.stream().flatMap(List::stream).toList();
+
+        int nextEffect = this.random.nextInt(pool.size());
+        int nextLevel = this.random.nextIntBetweenInclusive(1, 10); // 0 to 9 inclusive
+        Holder<MobEffect> effect = pool.get(nextEffect);
+
+        SimpleParticleType effectParticle = particleMap.get(effect.getRegisteredName());
+        if (effectParticle != null) {
+            level.sendParticles(effectParticle, this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        }
+
+        for (LivingEntity entity : entities) {
+            if (entity != null) {
+                MobEffectInstance effectInstance = new MobEffectInstance(effect, 24000, nextLevel);
+                entity.addEffect(effectInstance);
+            }
+        }
+    }
+
+    private void moveXBlocks(HitResult hitResult, AABB boundingBox) {
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class,
+                boundingBox.inflate(16.0, 8.0, 16.0),
+                EntitySelector.NO_SPECTATORS
+        );
+        boolean goDown = this.random.nextBoolean();
+
+        for (LivingEntity entity : entities) {
+            // Ocurre cuando se muere el player antes de que se calcule la lista
+            if (entity == null) { continue; }
+            Vec3 targetPos = new Vec3(entity.getX(), entity.getY() + (goDown ? -20 : 20), entity.getZ());
+
+            TeleportTransition teleportTarget = new TeleportTransition(level, targetPos, Vec3.ZERO,
+                    entity.getYRot(),
+                    entity.getXRot(),
+                    TeleportTransition.DO_NOTHING
+            );
+
+            entity.teleport(teleportTarget);
+
+            if (entity instanceof Player player) {
+                player.sendSystemMessage(Component.literal(goDown ? "-20" : "+20"));
+            }
+        }
+    }
+
+    private record ScalePack(
+            double scale,
+            double max_hp,
+            double step_height,
+            double fall_height,
+//            double fall_damage,
+            double speed,
+            double jump,
+            double block_interaction_range,
+            double entity_interaction_range,
+            double block_break_speed) {
+
+    }
+
+    private static final List<ScalePack> scalePacks = new ArrayList<ScalePack>(List.of(
+            new ScalePack(0.25,10, 0.6, 2, 0.08, 0.4, 3.5, 2.5, 1),
+            new ScalePack(0.5, 16, 0.6, 2.5, 0.09, 0.42, 4, 3, 1),
+            new ScalePack(1.5, 24, 1.126, 4.5,  0.125, 0.52, 5, 4, 2),
+            new ScalePack(2, 30, 1.126, 6,  0.15, 0.62, 6.5, 4.5, 2)));
+
+    private void applyAttributeChange(Holder<Attribute> attribute, double value, LivingEntity entity) {
+        AttributeInstance currentStat = entity.getAttribute(attribute);
+        if (currentStat != null) {
+            currentStat.setBaseValue(value);
+        }
+    }
+
+    private void changeScale(HitResult hitResult, AABB boundingBox) {
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class,
+                boundingBox.inflate(16.0, 8.0, 16.0),
+                EntitySelector.NO_SPECTATORS
+        );
+
+        ScalePack chosenPack = scalePacks.get(this.random.nextInt(scalePacks.size()));
+
+        if (this.getOwner() instanceof LivingEntity user && !entities.contains(user)) {
+            entities.add(user);
+        }
+
+        for (LivingEntity entity : entities) {
+            if (entity == null) continue;
+
+            applyAttributeChange(Attributes.SCALE, chosenPack.scale, entity);
+
+            if (entity instanceof Player player) {
+                applyAttributeChange(Attributes.MAX_HEALTH, chosenPack.max_hp, player);
+                applyAttributeChange(Attributes.STEP_HEIGHT, chosenPack.step_height, player);
+                applyAttributeChange(Attributes.SAFE_FALL_DISTANCE, chosenPack.fall_height, player);
+                applyAttributeChange(Attributes.MOVEMENT_SPEED, chosenPack.speed, player);
+                applyAttributeChange(Attributes.JUMP_STRENGTH, chosenPack.jump, player);
+                applyAttributeChange(Attributes.BLOCK_INTERACTION_RANGE, chosenPack.block_interaction_range, player);
+                applyAttributeChange(Attributes.ENTITY_INTERACTION_RANGE, chosenPack.entity_interaction_range, player);
+                applyAttributeChange(Attributes.MINING_EFFICIENCY, chosenPack.block_break_speed, player);
+
+                player.getInventory().add(new ItemStack(ModItems.LA_LECHONA));
+            }
+        }
+    }
+
+    private void beginThunderstorm(HitResult hitResult) {
+        level.getServer().setWeatherParameters(0, ServerLevel.THUNDER_DURATION.sample(random), true, true);
+        LightningBolt bolt = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.EVENT);
+        if (bolt != null) {
+            bolt.setPos(hitResult.getLocation());
+            level.addFreshEntity(bolt);
+        }
+    }
+
+    // DEBUG
+
+    private void debugHelp(HitResult hitResult) {
+        if (this.getOwner() != null && this.getOwner() instanceof Player player) {
+            player.sendSystemMessage(Component.literal("MobPack"));
+            player.sendSystemMessage(Component.literal("MythicItem"));
+            player.sendSystemMessage(Component.literal("SkeletonHorse"));
+            player.sendSystemMessage(Component.literal("Progression"));
+            player.sendSystemMessage(Component.literal("Armor"));
+            player.sendSystemMessage(Component.literal("Tools"));
+            player.sendSystemMessage(Component.literal("Chaos (5 chaos orbs)"));
+            player.sendSystemMessage(Component.literal("TerrainSphere"));
+            player.sendSystemMessage(Component.literal("Explosion"));
+            player.sendSystemMessage(Component.literal("FireExplosion"));
+            player.sendSystemMessage(Component.literal("Food"));
+            player.sendSystemMessage(Component.literal("Book"));
+            player.sendSystemMessage(Component.literal("Prize"));
+            player.sendSystemMessage(Component.literal("Xp"));
+            player.sendSystemMessage(Component.literal("Beacon"));
+            player.sendSystemMessage(Component.literal("Range"));
+            player.sendSystemMessage(Component.literal("Fragile"));
+            player.sendSystemMessage(Component.literal("Storm"));
+            player.sendSystemMessage(Component.literal("Teleport"));
+            player.sendSystemMessage(Component.literal("CounterBlink"));
+            player.sendSystemMessage(Component.literal("Blinking"));
+            player.sendSystemMessage(Component.literal("20"));
+            player.sendSystemMessage(Component.literal("Scale"));
+            player.sendSystemMessage(Component.literal("Tunneler"));
+            player.sendSystemMessage(Component.literal("Skyblock"));
+            player.sendSystemMessage(Component.literal("SmallBoing"));
+        }
+    }
 }

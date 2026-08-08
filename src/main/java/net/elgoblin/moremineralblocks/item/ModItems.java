@@ -1,9 +1,11 @@
 package net.elgoblin.moremineralblocks.item;
 
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.item.custom.*;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +23,11 @@ public class ModItems {
     public static final Item MAGIC_MIRROR = registerItem("magic_mirror", MagicMirrorItem::new);
     public static final Item REFLECTIVE_MIRROR = registerItem("reflective_mirror",properties -> new ReflectiveMirrorItem(properties.rarity(Rarity.UNCOMMON)));
     public static final Item CHAOS_MIRROR = registerItem("chaos_mirror", properties -> new ChaosMirrorItem(properties.rarity(Rarity.UNCOMMON)));
+
+    public static final Item LA_LECHONA = registerItem("la_lechona", properties ->
+            new Item(properties.stacksTo(1).craftRemainder(Items.BUCKET)
+                    .component(DataComponents.CONSUMABLE, ModDataComponentTypes.LA_LECHONA)
+                    .usingConvertsTo(Items.BUCKET)));
 
     public static final Item CHAOS_ORB = registerItem("chaos_orb", ChaosOrbItem::new);
 
@@ -109,6 +116,7 @@ public class ModItems {
 
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(output -> {
             output.accept(FLASH);
+            output.accept(LA_LECHONA);
             output.accept(LEGENDARY_ROCKET);
             output.accept(LEGENDARY_PICKAXE);
             output.accept(LEGENDARY_SHOVEL);

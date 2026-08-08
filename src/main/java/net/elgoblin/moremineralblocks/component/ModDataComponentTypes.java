@@ -2,6 +2,7 @@ package net.elgoblin.moremineralblocks.component;
 
 import com.mojang.serialization.Codec;
 import net.elgoblin.moremineralblocks.MoreMineralBlocks;
+import net.elgoblin.moremineralblocks.effect.LaLechonaConsumeEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
@@ -10,6 +11,8 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.Consumable;
+import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.phys.Vec3;
 
@@ -52,8 +55,9 @@ public class ModDataComponentTypes {
     public static final DataComponentType<ItemStack> CHOSEN_INFINITE_ITEM = register("chosen_infinite_item",
             builder -> builder.persistent(ItemStack.CODEC).networkSynchronized(ItemStack.STREAM_CODEC).cacheEncoding());
 
-//    public static final Consumable LA_LECHONA = Consumable.drink().onConsume(LaLechonaConsumeEffect.INSTANCE).build();
-
+    public static final Consumable LA_LECHONA = Consumables.defaultDrink()
+            .onConsume(LaLechonaConsumeEffect.INSTANCE)
+            .build();
 
     private static <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
         return Registry.register(

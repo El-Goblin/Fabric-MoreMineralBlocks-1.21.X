@@ -14,6 +14,7 @@ import net.elgoblin.moremineralblocks.item.ModToolMaterials;
 import net.elgoblin.moremineralblocks.networking.ModPayloads;
 import net.elgoblin.moremineralblocks.networking.ServerPayloadReceivers;
 import net.elgoblin.moremineralblocks.networking.SwitchEnchantmentToggleSafeModePayload;
+import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 
@@ -41,6 +42,7 @@ public class MoreMineralBlocks implements ModInitializer {
 		ModPayloads.registerPayloads();
 		ServerPayloadReceivers.registerServerGlobalReceivers();
 		DimensionalPocketCache.init();
+		ModParticles.registerParticles();
 		ModEntities.registerModEntities();
 		ModLootTableModifiers.modifyLootTables();
 

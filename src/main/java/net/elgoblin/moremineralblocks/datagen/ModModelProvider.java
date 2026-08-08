@@ -149,6 +149,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerators.generateFlatItem(ModItems.REFLECTIVE_MIRROR, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.CHAOS_MIRROR, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.CHAOS_ORB, ModelTemplates.FLAT_ITEM);
+        itemModelGenerators.generateFlatItem(ModItems.LA_LECHONA, ModelTemplates.FLAT_ITEM);
     }
 
     private void generateBlockStateModelsForSet(BlockModelGenerators blockModelGenerators,
