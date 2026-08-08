@@ -9,16 +9,19 @@ import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.enchantment.ModEnchantmentEffects;
 import net.elgoblin.moremineralblocks.enchantment.ModEnchantments;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
+import net.elgoblin.moremineralblocks.gamerule.ChaosOrbGameRules;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.ModToolMaterials;
 import net.elgoblin.moremineralblocks.networking.ModPayloads;
 import net.elgoblin.moremineralblocks.networking.ServerPayloadReceivers;
 import net.elgoblin.moremineralblocks.networking.SwitchEnchantmentToggleSafeModePayload;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
+import net.elgoblin.moremineralblocks.terrain.TerrainJobsManager;
 import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.resources.Identifier;
 
@@ -45,6 +48,12 @@ public class MoreMineralBlocks implements ModInitializer {
 		ModParticles.registerParticles();
 		ModEntities.registerModEntities();
 		ModLootTableModifiers.modifyLootTables();
+		TerrainJobsManager.init();
+		ChaosOrbGameRules.init();
+
+		ServerTickEvents.END_SERVER_TICK.register(minecraftServer -> {
+			TerrainJobsManager.TERRAIN_MANAGER.tick(minecraftServer);
+		});
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
 			if (entity.hasEffect(ModEffects.FRAGILE) && !blocked) {

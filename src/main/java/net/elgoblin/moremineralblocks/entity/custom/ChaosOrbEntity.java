@@ -4,9 +4,12 @@ import com.mojang.datafixers.util.Pair;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
+import net.elgoblin.moremineralblocks.gamerule.ChaosOrbGameRules;
 import net.elgoblin.moremineralblocks.item.ModItems;
 import net.elgoblin.moremineralblocks.item.custom.ChaosOrbItem;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
+import net.elgoblin.moremineralblocks.terrain.SingleBlockSphereJob;
+import net.elgoblin.moremineralblocks.terrain.TerrainJobsManager;
 import net.elgoblin.moremineralblocks.util.ProtectorManager;
 import net.minecraft.core.*;
 import net.minecraft.core.component.DataComponents;
@@ -24,6 +27,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -73,13 +77,13 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 //            Map.entry("armor", new Pair<>(0,4)),
 //            Map.entry("tools", new Pair<>(0,5)),
             Map.entry("chaos", new Pair<>(0,2)),
-//            Map.entry("terrainsphere", new Pair<>(0,7)),
             Map.entry("explosion", new Pair<>(0,3)),
             Map.entry("fireexplosion", new Pair<>(0,4)),
             Map.entry("food", new Pair<>(0,5)),
             Map.entry("book", new Pair<>(0,6)),
             Map.entry("prize", new Pair<>(0, 7)),
             Map.entry("xp", new Pair<>(0, 8)),
+            Map.entry("terrainsphere", new Pair<>(0,9)),
 
             Map.entry("smallboing", new Pair<>(1,0)),
             Map.entry("beacon", new Pair<>(1,1)),
@@ -110,13 +114,13 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 //            this::getArmorSet,
 //            this::getToolsSet,
             this::spawn5ChaosOrbs,
-//            this::voidSphere,
             this::explosion, // Ponerle timer
             this::fireExplosion, // Ponerle timer
             this::getFood,
             this::getEnchantedBook,
             this::smallPrize,
-            this::xp
+            this::xp,
+            this::voidSphere
 //            this::getInfiniteItem
     ));
     private List<BiConsumer<HitResult, AABB>> areaChaosEffects = new ArrayList<>(List.of(
@@ -891,6 +895,42 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         if (bolt != null) {
             bolt.setPos(hitResult.getLocation());
             level.addFreshEntity(bolt);
+        }
+    }
+
+    private void voidSphere(HitResult hitResult) {
+        float randomNumber = random.nextFloat();
+        while (randomNumber < 0.0000000001f) {
+            randomNumber = random.nextFloat();
+        }
+        int radius = Math.max((int) (-1 * (5.6f * Math.log(randomNumber * 1369)/Math.log(1.375f) - 127)), 10);
+        double multiplier = level.getGameRules().get(ChaosOrbGameRules.VOID_SPHERE_SIZE_MULTIPLIER);
+        int fixedSize = level.getGameRules().get(ChaosOrbGameRules.VOID_SPHERE_FIXED_SIZE);
+        if (multiplier > 1) {
+            radius = (int) (radius * multiplier);
+        }
+        if (fixedSize >= 0) {
+            radius = fixedSize;
+        }
+        BlockPos center = BlockPos.containing(hitResult.getLocation());
+
+        if (this.getOwner() != null) {
+            AABB boundingBox = this.getBoundingBox();
+            List<Player> entities = level.getEntitiesOfClass(Player.class,
+                    boundingBox.inflate(radius, radius * 0.25, radius),
+                    EntitySelector.NO_SPECTATORS
+            );
+            Player jobArgument = null;
+            if (this.getOwner() instanceof Player user) {
+                jobArgument = user;
+            }
+            TerrainJobsManager.TERRAIN_MANAGER.addJob(new SingleBlockSphereJob(level, jobArgument, center, radius, Blocks.AIR));
+
+            MobEffectInstance slowFall = new MobEffectInstance(MobEffects.SLOW_FALLING, radius * 4, 0);
+
+            for (Player player : entities) {
+                player.addEffect(slowFall);
+            }
         }
     }
 
