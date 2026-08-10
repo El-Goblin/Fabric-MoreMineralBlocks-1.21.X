@@ -117,7 +117,7 @@ public static final CreativeModeTab ITEMS_TAB = Registry.register(BuiltInRegistr
                         output.accept(ModItems.FIENDBLADE_LONGSWORD);
                         output.accept(ModItems.LEGENDARY_ROCKET);
                         output.accept(ModItems.MAGIC_MIRROR);
-                        output.accept(ModItems.REFLECTIVE_MIRROR);
+                        output.accept(ModItems.MEMORY_MIRROR);
                         output.accept(ModItems.CHAOS_MIRROR);
                         output.accept(ModItems.DIMENSIONAL_POCKET);
                         output.accept(ModItems.CHAOS_ORB);

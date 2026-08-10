@@ -5,7 +5,6 @@ import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.item.custom.*;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -21,7 +20,7 @@ public class ModItems {
     public static final Item MOSS = registerItem("moss", MossItem::new);
 
     public static final Item MAGIC_MIRROR = registerItem("magic_mirror", MagicMirrorItem::new);
-    public static final Item REFLECTIVE_MIRROR = registerItem("reflective_mirror",properties -> new ReflectiveMirrorItem(properties.rarity(Rarity.UNCOMMON)));
+    public static final Item MEMORY_MIRROR = registerItem("memory_mirror", properties -> new MemoryMirrorItem(properties.rarity(Rarity.UNCOMMON)));
     public static final Item CHAOS_MIRROR = registerItem("chaos_mirror", properties -> new ChaosMirrorItem(properties.rarity(Rarity.UNCOMMON)));
 
     public static final Item LA_LECHONA = registerItem("la_lechona", properties ->
@@ -126,7 +125,7 @@ public class ModItems {
             output.accept(LEGENDARY_AXE);
             output.accept(LEGENDARY_HOE);
             output.accept(MAGIC_MIRROR);
-            output.accept(REFLECTIVE_MIRROR);
+            output.accept(MEMORY_MIRROR);
             output.accept(CHAOS_MIRROR);
             output.accept(DIMENSIONAL_POCKET);
             output.accept(CHAOS_ORB);
@@ -150,6 +149,10 @@ public class ModItems {
             output.accept(FIENDBLADE_LONGSWORD);
             output.accept(LEGENDARY_ROCKET);
             output.accept(CHAOS_ORB);
+        });
+
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register(output -> {
+            output.accept(NETHERITE_NUGGET);
         });
     }
 }

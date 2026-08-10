@@ -825,7 +825,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void moveXBlocks(HitResult hitResult, AABB boundingBox) {
-        sendMessageToUser("20");
+        sendMessageToUser("-+20");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class,
                 boundingBox.inflate(16.0, 8.0, 16.0),
                 EntitySelector.NO_SPECTATORS
@@ -866,7 +866,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private static final List<ScalePack> scalePacks = new ArrayList<ScalePack>(List.of(
-            new ScalePack(0.25,10, 0.6, 2, 0.08, 0.4, 3.5, 2.5, 1),
+            new ScalePack(0.25,12, 0.6, 2, 0.08, 0.4, 3.5, 2.5, 1),
             new ScalePack(0.5, 16, 0.6, 2.5, 0.09, 0.42, 4, 3, 1),
             new ScalePack(1.5, 24, 1.126, 4.5,  0.125, 0.52, 5, 4, 2),
             new ScalePack(2, 30, 1.126, 6,  0.15, 0.62, 6.5, 4.5, 2)));

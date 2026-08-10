@@ -145,7 +145,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerators.generateFlatItem(ModItems.FLASH, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.LEGENDARY_ROCKET, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.MAGIC_MIRROR, ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModItems.REFLECTIVE_MIRROR, ModelTemplates.FLAT_ITEM);
+        itemModelGenerators.generateFlatItem(ModItems.MEMORY_MIRROR, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.CHAOS_MIRROR, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.CHAOS_ORB, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.LA_LECHONA, ModelTemplates.FLAT_ITEM);

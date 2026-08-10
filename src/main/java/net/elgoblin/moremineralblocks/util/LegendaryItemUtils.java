@@ -84,6 +84,7 @@ public class LegendaryItemUtils {
             else {
                 itemStack.set(ModDataComponentTypes.LINKED_CHEST, position);
                 itemStack.set(ModDataComponentTypes.SERVERWORLD, context.getLevel().dimension().identifier());
+                itemStack.remove(ModDataComponentTypes.CHEST_NAME);
                 if (blockEntity instanceof Nameable nameable && nameable.hasCustomName()) {
                     @Nullable Component name = nameable.getCustomName();
                     if (name != null) {

@@ -22,9 +22,9 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Consumer;
 
-public class ReflectiveMirrorItem extends Item {
+public class MemoryMirrorItem extends Item {
 
-    public ReflectiveMirrorItem(Properties properties) {
+    public MemoryMirrorItem(Properties properties) {
         super(properties);
     }
 
@@ -60,6 +60,8 @@ public class ReflectiveMirrorItem extends Item {
                             TeleportTransition.DO_NOTHING);
                     user.teleport(teleportTarget);
                 }
+                user.hurtMarked = true;
+                user.fallDistance = 0;
             }
             itemStack.consume(1, user);
             return InteractionResult.SUCCESS;

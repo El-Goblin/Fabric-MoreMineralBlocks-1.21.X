@@ -26,6 +26,8 @@ public class MagicMirrorItem extends Item {
             if (server != null && user instanceof ServerPlayer serverPlayer) {
                 TeleportTransition respawnTarget = serverPlayer.findRespawnPositionAndUseSpawnBlock(true, TeleportTransition.DO_NOTHING);
                 serverPlayer.teleport(respawnTarget);
+                user.hurtMarked = true;
+                user.fallDistance = 0;
             }
             itemStack.consume(1, user);
         }

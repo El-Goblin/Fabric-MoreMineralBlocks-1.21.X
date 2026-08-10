@@ -9,7 +9,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -41,7 +40,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .pattern("NHN")
                         .pattern("DDD")
                         .define('N', Items.NETHERITE_INGOT)
-                        .define('E', Items.END_CRYSTAL)
+                        .define('E', Items.NETHER_STAR)
                         .define('H', Items.HEAVY_CORE)
                         .define('D', Blocks.DIAMOND_BLOCK)
                         .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT))
@@ -56,8 +55,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 this.oreBlasting(NETHERRACK, RecipeCategory.BUILDING_BLOCKS, CookingBookCategory.BLOCKS, Items.NETHER_BRICK, 0.1f, 100, "netherrack");
 
                 shapeless(RecipeCategory.MISC, ModItems.MAGIC_MIRROR, 1)
-                        .requires(ModItems.REFLECTIVE_MIRROR)
-                        .unlockedBy(getHasName(ModItems.REFLECTIVE_MIRROR), has(ModItems.REFLECTIVE_MIRROR))
+                        .requires(ModItems.MEMORY_MIRROR)
+                        .unlockedBy(getHasName(ModItems.MEMORY_MIRROR), has(ModItems.MEMORY_MIRROR))
                         .group("magic_mirror")
                         .save(output);
 
@@ -320,7 +319,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .pattern("##")
                         .define('#', Items.AMETHYST_SHARD)
                         .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
-                        .save(output, "asd/amethyst_block");
+                        .save(output, "..../minecraft/recipe/amethyst_block");
 
                 shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMETHYST_BRICKS, 1)
                         .pattern("##")

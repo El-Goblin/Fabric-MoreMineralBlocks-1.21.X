@@ -2,6 +2,7 @@ package net.elgoblin.moremineralblocks.item.custom;
 
 import net.elgoblin.moremineralblocks.component.ModDataComponentTypes;
 import net.elgoblin.moremineralblocks.item.ModItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -41,6 +42,16 @@ public class ChaosMirrorItem extends Item {
                         random.nextIntBetweenInclusive(-29999980, 29999980)
                 );
 
+                while (level.getBlockState(BlockPos.containing(newCoordinates)).isAir()) {
+                    System.out.println("isAir");
+                    newCoordinates = newCoordinates.add(new Vec3(0,-1,0));
+                }
+                while (!level.getBlockState(BlockPos.containing(newCoordinates)).isAir()) {
+                    System.out.println("isNotAir");
+                    newCoordinates = newCoordinates.add(new Vec3(0,1,0));
+                }
+                newCoordinates = newCoordinates.add(new Vec3(0,1,0));
+
                 List<ServerPlayer> players = server.getPlayerList().getPlayers();
 
                 for (ServerPlayer playerEntity : players) {
@@ -55,7 +66,7 @@ public class ChaosMirrorItem extends Item {
                         Identifier world_ID = dimension.dimension().identifier();
 
                         Vec3 currentCoordinates = playerEntity.position();
-                        ItemStack magicMirror = ModItems.REFLECTIVE_MIRROR.getDefaultInstance();
+                        ItemStack magicMirror = ModItems.MEMORY_MIRROR.getDefaultInstance();
                         magicMirror.set(ModDataComponentTypes.COORDINATES, currentCoordinates);
                         magicMirror.set(ModDataComponentTypes.SERVERWORLD, world_ID);
 
@@ -67,6 +78,8 @@ public class ChaosMirrorItem extends Item {
                                 playerEntity.getXRot(),
                                 TeleportTransition.DO_NOTHING
                         );
+                        user.hurtMarked = true;
+                        user.fallDistance = 0;
                         playerEntity.teleport(teleportTarget);
                         playerEntity.getInventory().placeItemBackInInventory(magicMirror);
                     }

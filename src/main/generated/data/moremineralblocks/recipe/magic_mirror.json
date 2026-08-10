@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "group": "magic_mirror",
   "ingredients": [
-    "moremineralblocks:reflective_mirror"
+    "moremineralblocks:memory_mirror"
   ],
   "result": {
     "id": "moremineralblocks:magic_mirror"

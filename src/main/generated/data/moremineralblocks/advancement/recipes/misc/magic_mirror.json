@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_reflective_mirror": {
+    "has_memory_mirror": {
       "conditions": {
         "items": [
           {
-            "items": "moremineralblocks:reflective_mirror"
+            "items": "moremineralblocks:memory_mirror"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_reflective_mirror"
+      "has_memory_mirror"
     ]
   ],
   "rewards": {
