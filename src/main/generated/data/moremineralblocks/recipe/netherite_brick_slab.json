@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "netherite",
+  "ingredients": [
+    "moremineralblocks:diamond_brick_slab",
+    "moremineralblocks:netherite_nugget"
+  ],
+  "result": {
+    "id": "moremineralblocks:netherite_brick_slab"
+  }
+}

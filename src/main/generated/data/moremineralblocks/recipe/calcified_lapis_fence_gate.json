@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "lapis",
+  "key": {
+    "#": "moremineralblocks:calcified_lapis_block",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "S#S",
+    "S#S"
+  ],
+  "result": {
+    "count": 8,
+    "id": "moremineralblocks:calcified_lapis_fence_gate"
+  }
+}

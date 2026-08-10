@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "amethyst",
+  "key": {
+    "#": "moremineralblocks:calcified_amethyst_block"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 12,
+    "id": "moremineralblocks:calcified_amethyst_wall"
+  }
+}

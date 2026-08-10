@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "prismarine_bricks",
+  "key": {
+    "#": "minecraft:prismarine_bricks"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 12,
+    "id": "moremineralblocks:prismarine_brick_wall"
+  }
+}

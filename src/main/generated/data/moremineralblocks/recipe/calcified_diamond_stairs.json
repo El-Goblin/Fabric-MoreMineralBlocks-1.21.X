@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "diamond",
+  "key": {
+    "#": "moremineralblocks:calcified_diamond_block"
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "id": "moremineralblocks:calcified_diamond_stairs"
+  }
+}

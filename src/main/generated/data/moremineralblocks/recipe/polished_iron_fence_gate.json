@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "iron",
+  "key": {
+    "#": "moremineralblocks:polished_iron_block",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "S#S",
+    "S#S"
+  ],
+  "result": {
+    "count": 8,
+    "id": "moremineralblocks:polished_iron_fence_gate"
+  }
+}

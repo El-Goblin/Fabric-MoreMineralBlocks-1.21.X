@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "blue_ice",
+  "key": {
+    "#": "minecraft:blue_ice",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "S#S",
+    "S#S"
+  ],
+  "result": {
+    "count": 8,
+    "id": "moremineralblocks:blue_ice_fence_gate"
+  }
+}

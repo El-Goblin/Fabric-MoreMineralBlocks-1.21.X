@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "obsidian",
+  "key": {
+    "#": "minecraft:obsidian"
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "id": "moremineralblocks:obsidian_stairs"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "netherite",
+  "ingredients": [
+    "moremineralblocks:diamond_wall",
+    "moremineralblocks:netherite_nugget"
+  ],
+  "result": {
+    "id": "moremineralblocks:netherite_wall"
+  }
+}

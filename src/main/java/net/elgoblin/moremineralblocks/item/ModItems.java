@@ -34,6 +34,9 @@ public class ModItems {
     public static final Item FLASH = registerItem("flash", properties ->
             new FlashItem(properties.stacksTo(1).rarity(Rarity.RARE)));
 
+    public static final Item NETHERITE_NUGGET = registerItem("netherite_nugget", Item::new);
+
+
     public static final Item DIMENSIONAL_POCKET = registerItem("dimensional_pocket", properties ->
             new DimensionalPocketItem(properties.stacksTo(1).rarity(Rarity.EPIC)));
 

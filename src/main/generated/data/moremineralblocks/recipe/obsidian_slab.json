@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "obsidian",
+  "key": {
+    "#": "minecraft:obsidian"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "moremineralblocks:obsidian_slab"
+  }
+}

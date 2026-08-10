@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "moremineralblocks:lapis_bricks",
+  "result": {
+    "id": "moremineralblocks:lapis_brick_stairs"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "iron",
+  "key": {
+    "#": "moremineralblocks:amethyst_bricks",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "#S#",
+    "#S#"
+  ],
+  "result": {
+    "count": 16,
+    "id": "moremineralblocks:amethyst_brick_fence"
+  }
+}

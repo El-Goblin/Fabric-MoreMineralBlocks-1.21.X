@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "netherite",
+  "ingredients": [
+    "moremineralblocks:calcified_diamond_fence",
+    "moremineralblocks:netherite_nugget"
+  ],
+  "result": {
+    "id": "moremineralblocks:calcified_netherite_fence"
+  }
+}

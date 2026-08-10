@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "iron",
+  "key": {
+    "#": "moremineralblocks:diamond_bricks",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "S#S",
+    "S#S"
+  ],
+  "result": {
+    "count": 8,
+    "id": "moremineralblocks:diamond_brick_fence_gate"
+  }
+}

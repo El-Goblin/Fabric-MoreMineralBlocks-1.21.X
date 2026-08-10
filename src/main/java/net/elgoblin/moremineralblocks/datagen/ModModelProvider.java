@@ -122,8 +122,6 @@ public class ModModelProvider extends FabricModelProvider {
 
         // STAIRS
 
-        blockModelGenerators.family(Blocks.GLASS).stairs(ModBlocks.GLASS_STAIRS).slab(ModBlocks.GLASS_SLAB);
-
         // WALLS
 
         blockModelGenerators.family(Blocks.PRISMARINE_BRICKS).wall(ModBlocks.PRISMARINE_BRICK_WALL);
@@ -131,6 +129,7 @@ public class ModModelProvider extends FabricModelProvider {
         blockModelGenerators.family(Blocks.POLISHED_ANDESITE).wall(ModBlocks.POLISHED_ANDESITE_WALL);
         blockModelGenerators.family(Blocks.POLISHED_GRANITE).wall(ModBlocks.POLISHED_GRANITE_WALL);
         blockModelGenerators.family(Blocks.POLISHED_DIORITE).wall(ModBlocks.POLISHED_DIORITE_WALL);
+        blockModelGenerators.family(Blocks.STONE).wall(ModBlocks.STONE_WALL);
         blockModelGenerators.family(Blocks.PURPUR_BLOCK).wall(ModBlocks.PURPUR_WALL);
 //        blockModelGenerators.family(Blocks.QUARTZ_BLOCK).wall(ModBlocks.QUARTZ_WALL); // Revienta por algun motivo
         blockModelGenerators.family(Blocks.SMOOTH_QUARTZ).wall(ModBlocks.SMOOTH_QUARTZ_WALL);
@@ -150,6 +149,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerators.generateFlatItem(ModItems.CHAOS_MIRROR, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.CHAOS_ORB, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModItems.LA_LECHONA, ModelTemplates.FLAT_ITEM);
+        itemModelGenerators.generateFlatItem(ModItems.NETHERITE_NUGGET, ModelTemplates.FLAT_ITEM);
     }
 
     private void generateBlockStateModelsForSet(BlockModelGenerators blockModelGenerators,

@@ -1014,6 +1014,15 @@ public class ModBlocks {
             .strength(1.5F, 6.0F)
     ));
 
+    // STONE
+
+    public static final Block STONE_WALL = registerBlock("stone_wall", properties -> new WallBlock(properties
+            .mapColor(MapColor.STONE)
+            .instrument(NoteBlockInstrument.BASEDRUM)
+            .requiresCorrectToolForDrops()
+            .strength(1.5F, 6.0F)
+    ));
+
     // NETHER BRICK FENCE GATE
 
     public static final Block NETHER_BRICK_FENCE_GATE = registerBlock("nether_brick_fence_gate", properties -> new FenceGateBlock(WoodType.ACACIA,properties
@@ -1051,27 +1060,27 @@ public class ModBlocks {
 
     // Todos los glasses
 
-    public static final Block GLASS_STAIRS = registerBlock("glass_stairs", properties -> new StairBlock(Blocks.GLASS.defaultBlockState(), properties
-            .instrument(NoteBlockInstrument.HAT)
-            .strength(0.3F)
-            .sound(SoundType.GLASS)
-            .noOcclusion()
-            .isValidSpawn(Blocks::never)
-            .isRedstoneConductor(Blocks::never)
-            .isSuffocating(Blocks::never)
-            .isViewBlocking(Blocks::never)
-    ));
+//    public static final Block GLASS_STAIRS = registerBlock("glass_stairs", properties -> new StairBlock(Blocks.GLASS.defaultBlockState(), properties
+//            .instrument(NoteBlockInstrument.HAT)
+//            .strength(0.3F)
+//            .sound(SoundType.GLASS)
+//            .noOcclusion()
+//            .isValidSpawn(Blocks::never)
+//            .isRedstoneConductor(Blocks::never)
+//            .isSuffocating(Blocks::never)
+//            .isViewBlocking(Blocks::never)
+//    ));
 
-    public static final Block GLASS_SLAB = registerBlock("glass_slab", properties -> new SlabBlock(properties
-            .instrument(NoteBlockInstrument.HAT)
-            .strength(0.3F)
-            .sound(SoundType.GLASS)
-            .noOcclusion()
-            .isValidSpawn(Blocks::never)
-            .isRedstoneConductor(Blocks::never)
-            .isSuffocating(Blocks::never)
-            .isViewBlocking(Blocks::never)
-    ));
+//    public static final Block GLASS_SLAB = registerBlock("glass_slab", properties -> new SlabBlock(properties
+//            .instrument(NoteBlockInstrument.HAT)
+//            .strength(0.3F)
+//            .sound(SoundType.GLASS)
+//            .noOcclusion()
+//            .isValidSpawn(Blocks::never)
+//            .isRedstoneConductor(Blocks::never)
+//            .isSuffocating(Blocks::never)
+//            .isViewBlocking(Blocks::never)
+//    ));
 
 //    public static final BlockSet GLASS_SET = registerBlockSet(
 //            "glass",
@@ -1159,11 +1168,10 @@ public class ModBlocks {
             output.accept(POLISHED_ANDESITE_WALL);
             output.accept(POLISHED_GRANITE_WALL);
             output.accept(POLISHED_DIORITE_WALL);
+            output.accept(STONE_WALL);
 //            output.accept(QUARTZ_WALL);
             output.accept(SMOOTH_QUARTZ_WALL);
             output.accept(NETHER_BRICK_FENCE_GATE);
-            output.accept(GLASS_STAIRS);
-            output.accept(GLASS_SLAB);
         });
 
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(output -> {
@@ -1221,7 +1229,6 @@ public class ModBlocks {
         addSetToCreativeTab(BEDROCK_SET, false);
         addSetToCreativeTab(CALCITE_SET, false);
         addSetToCreativeTab(FLINT_SET, true);
-//        addSetToCreativeTab(GLASS_SET, false);
         addSetToCreativeTab(ICE_SET, false);
         addSetToCreativeTab(PACKED_ICE_SET, false);
         addSetToCreativeTab(BLUE_ICE_SET, false);

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "moss",
+  "ingredients": [
+    "minecraft:moss_block"
+  ],
+  "result": {
+    "count": 4,
+    "id": "moremineralblocks:moss"
+  }
+}

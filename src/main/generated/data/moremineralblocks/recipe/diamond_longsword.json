@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "longsword",
+  "key": {
+    "I": "minecraft:diamond",
+    "S": "minecraft:diamond_sword"
+  },
+  "pattern": [
+    "  I",
+    " I ",
+    "S  "
+  ],
+  "result": {
+    "id": "moremineralblocks:diamond_longsword"
+  }
+}

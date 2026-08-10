@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:packed_ice",
+  "result": {
+    "count": 4,
+    "id": "moremineralblocks:packed_ice_fence_gate"
+  }
+}

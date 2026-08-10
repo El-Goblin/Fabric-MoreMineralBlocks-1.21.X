@@ -82,11 +82,10 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.POLISHED_DIORITE_WALL);
                         output.accept(ModBlocks.POLISHED_GRANITE_WALL);
                         output.accept(ModBlocks.POLISHED_ANDESITE_WALL);
+                        output.accept(ModBlocks.STONE_WALL);
                         output.accept(ModBlocks.PURPUR_WALL);
                         output.accept(ModBlocks.PRISMARINE_BRICK_WALL);
                         output.accept(ModBlocks.DARK_PRISMARINE_WALL);
-                        output.accept(ModBlocks.GLASS_SLAB);
-                        output.accept(ModBlocks.GLASS_STAIRS);
                     })
                     .build()
     );
@@ -123,6 +122,7 @@ public static final CreativeModeTab ITEMS_TAB = Registry.register(BuiltInRegistr
                         output.accept(ModItems.DIMENSIONAL_POCKET);
                         output.accept(ModItems.CHAOS_ORB);
                         output.accept(ModItems.LA_LECHONA);
+                        output.accept(ModItems.NETHERITE_NUGGET);
                     })
                     .build()
     );

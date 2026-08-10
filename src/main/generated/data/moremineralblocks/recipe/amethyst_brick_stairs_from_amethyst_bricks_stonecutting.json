@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "moremineralblocks:amethyst_bricks",
+  "result": {
+    "id": "moremineralblocks:amethyst_brick_stairs"
+  }
+}

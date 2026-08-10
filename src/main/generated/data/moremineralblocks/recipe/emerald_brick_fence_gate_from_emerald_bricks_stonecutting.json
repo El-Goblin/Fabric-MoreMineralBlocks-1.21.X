@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "moremineralblocks:emerald_bricks",
+  "result": {
+    "count": 4,
+    "id": "moremineralblocks:emerald_brick_fence_gate"
+  }
+}

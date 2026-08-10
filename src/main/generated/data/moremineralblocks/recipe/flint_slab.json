@@ -1,11 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "group": "flint",
   "key": {
-    "F": "moremineralblocks:flint_block"
+    "#": "moremineralblocks:flint_block"
   },
   "pattern": [
-    "FFF"
+    "###"
   ],
   "result": {
     "count": 6,

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "moremineralblocks:coal_bricks",
+  "result": {
+    "id": "moremineralblocks:coal_brick_stairs"
+  }
+}

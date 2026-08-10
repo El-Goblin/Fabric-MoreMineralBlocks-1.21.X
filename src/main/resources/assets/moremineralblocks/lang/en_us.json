@@ -327,6 +327,7 @@
   "block.moremineralblocks.polished_andesite_wall": "Polished Andesite Wall",
   "block.moremineralblocks.polished_granite_wall": "Polished Granite Wall",
   "block.moremineralblocks.polished_diorite_wall": "Polished Diorite Wall",
+  "block.moremineralblocks.stone_wall": "Stone Wall",
   "block.moremineralblocks.nether_brick_fence_gate": "Nether Brick Fence Gate",
 
   "block.moremineralblocks.protector_block": "Protector",
@@ -374,6 +375,7 @@
   "item.moremineralblocks.la_lechona": "La Lechona",
 
   "item.moremineralblocks.moss": "Moss",
+  "item.moremineralblocks.netherite_nugget": "Netherite Nugget",
 
   "effect.moremineralblocks.slimey": "Slimey",
   "effect.moremineralblocks.blinking": "Blinking",

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "gold",
+  "key": {
+    "#": "moremineralblocks:gold_bricks"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 12,
+    "id": "moremineralblocks:gold_brick_wall"
+  }
+}

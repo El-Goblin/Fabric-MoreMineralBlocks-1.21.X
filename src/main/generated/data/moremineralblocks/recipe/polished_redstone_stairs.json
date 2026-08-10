@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "redstone",
+  "key": {
+    "#": "moremineralblocks:polished_redstone_block"
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "id": "moremineralblocks:polished_redstone_stairs"
+  }
+}

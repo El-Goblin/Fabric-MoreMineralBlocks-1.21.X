@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "moremineralblocks:calcified_iron_block",
+  "result": {
+    "count": 4,
+    "id": "moremineralblocks:calcified_iron_fence_gate"
+  }
+}

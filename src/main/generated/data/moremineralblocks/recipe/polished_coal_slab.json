@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "coal",
+  "key": {
+    "#": "moremineralblocks:polished_coal_block"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "moremineralblocks:polished_coal_slab"
+  }
+}

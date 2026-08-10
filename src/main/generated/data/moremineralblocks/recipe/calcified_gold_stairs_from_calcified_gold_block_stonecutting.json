@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "moremineralblocks:calcified_gold_block",
+  "result": {
+    "id": "moremineralblocks:calcified_gold_stairs"
+  }
+}

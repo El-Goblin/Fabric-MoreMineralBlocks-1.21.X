@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "amethyst",
+  "key": {
+    "#": "minecraft:amethyst_block"
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "id": "moremineralblocks:amethyst_stairs"
+  }
+}

@@ -73,13 +73,12 @@ public class ModBlockLootTableProvider extends FabricBlockLootSubProvider {
         dropSelf(ModBlocks.POLISHED_ANDESITE_WALL);
         dropSelf(ModBlocks.POLISHED_GRANITE_WALL);
         dropSelf(ModBlocks.POLISHED_DIORITE_WALL);
+        dropSelf(ModBlocks.STONE_WALL);
         dropSelf(ModBlocks.PURPUR_WALL);
         dropSelf(ModBlocks.SMOOTH_QUARTZ_WALL);
         dropSelf(ModBlocks.NETHER_BRICK_FENCE_GATE);
-        dropSelf(ModBlocks.GLASS_STAIRS);
         dropSelf(ModBlocks.PROTECTOR_BLOCK);
 
-        createSlabItemTable(ModBlocks.GLASS_SLAB);
     }
 
     private void generateLootTablesForSet(ModBlocks.BlockSet blockSet, boolean includeBase) {

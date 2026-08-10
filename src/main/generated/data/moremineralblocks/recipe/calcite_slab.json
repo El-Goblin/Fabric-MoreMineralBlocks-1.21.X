@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "calcite",
+  "key": {
+    "#": "minecraft:calcite"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "moremineralblocks:calcite_slab"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "moremineralblocks:flint_block",
+  "result": {
+    "id": "moremineralblocks:flint_stairs"
+  }
+}

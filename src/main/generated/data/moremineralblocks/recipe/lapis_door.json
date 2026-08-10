@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "lapis",
+  "key": {
+    "#": "minecraft:lapis_lazuli"
+  },
+  "pattern": [
+    "##",
+    "##",
+    "##"
+  ],
+  "result": {
+    "id": "moremineralblocks:lapis_door"
+  }
+}

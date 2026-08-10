@@ -8,8 +8,8 @@
     "BlockMixin",
     "EntityMixin",
     "ExampleMixin",
-    "ItemMixin",
     "LivingEntityMixin",
+    "MaceItemMixin",
     "PlayerMixin",
     "TintedGlassBlockMixin",
     "ZombieMixin"

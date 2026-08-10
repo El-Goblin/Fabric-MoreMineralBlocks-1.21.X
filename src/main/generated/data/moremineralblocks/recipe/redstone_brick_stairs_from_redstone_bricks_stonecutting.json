@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "moremineralblocks:redstone_bricks",
+  "result": {
+    "id": "moremineralblocks:redstone_brick_stairs"
+  }
+}

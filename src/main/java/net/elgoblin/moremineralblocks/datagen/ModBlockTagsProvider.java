@@ -91,8 +91,6 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.DARK_PRISMARINE_WALL))
                 .add(ModBlocks.getResourceKey(ModBlocks.PRISMARINE_BRICK_WALL))
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHER_BRICK_FENCE_GATE))
-                .add(ModBlocks.getResourceKey(ModBlocks.GLASS_STAIRS))
-                .add(ModBlocks.getResourceKey(ModBlocks.GLASS_SLAB))
                 .add(ModBlocks.getResourceKey(ModBlocks.PROTECTOR_BLOCK))
         ;
 
@@ -189,7 +187,6 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
 
                 .add(ModBlocks.getResourceKey(ModBlocks.FLINT_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.stairs()))
-                .add(ModBlocks.getResourceKey(ModBlocks.GLASS_STAIRS))
                 .add(ModBlocks.getResourceKey(ModBlocks.ICE_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.PACKED_ICE_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.BLUE_ICE_SET.stairs()))
@@ -249,7 +246,6 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
 
                 .add(ModBlocks.getResourceKey(ModBlocks.FLINT_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.slab()))
-                .add(ModBlocks.getResourceKey(ModBlocks.GLASS_SLAB))
                 .add(ModBlocks.getResourceKey(ModBlocks.ICE_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.PACKED_ICE_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.BLUE_ICE_SET.slab()))
@@ -434,6 +430,7 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_DIORITE_WALL))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_GRANITE_WALL))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_ANDESITE_WALL))
+                .add(ModBlocks.getResourceKey(ModBlocks.STONE_WALL))
                 .add(ModBlocks.getResourceKey(ModBlocks.SMOOTH_QUARTZ_WALL))
                 .add(ModBlocks.getResourceKey(ModBlocks.PURPUR_WALL))
         ;

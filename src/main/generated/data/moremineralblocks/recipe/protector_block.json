@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "protector",
+  "key": {
+    "D": "minecraft:diamond_block",
+    "E": "minecraft:end_crystal",
+    "H": "minecraft:heavy_core",
+    "N": "minecraft:netherite_ingot"
+  },
+  "pattern": [
+    "NEN",
+    "NHN",
+    "DDD"
+  ],
+  "result": {
+    "id": "moremineralblocks:protector_block"
+  }
+}

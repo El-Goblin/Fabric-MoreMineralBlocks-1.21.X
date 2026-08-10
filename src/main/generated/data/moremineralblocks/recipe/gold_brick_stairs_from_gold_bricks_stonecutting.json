@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "moremineralblocks:gold_bricks",
+  "result": {
+    "id": "moremineralblocks:gold_brick_stairs"
+  }
+}

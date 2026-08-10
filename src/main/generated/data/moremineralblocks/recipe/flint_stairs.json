@@ -1,16 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "group": "flint",
   "key": {
-    "F": "moremineralblocks:flint_block"
+    "#": "moremineralblocks:flint_block"
   },
   "pattern": [
-    "F  ",
-    "FF ",
-    "FFF"
+    "#  ",
+    "## ",
+    "###"
   ],
   "result": {
-    "count": 4,
+    "count": 8,
     "id": "moremineralblocks:flint_stairs"
   }
 }
