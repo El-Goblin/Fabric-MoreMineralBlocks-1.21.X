@@ -10,6 +10,7 @@ import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.function.Consumer;
 
@@ -25,11 +26,13 @@ public class LegendaryLongswordItem extends LongswordItem {
         BlockPos position = context.getClickedPos();
 
         if (!context.getLevel().isClientSide()) {
-            LegendaryItemUtils.linkOrUnlinkContainer(context, position);
+            BlockEntity blockEntity = context.getLevel().getBlockEntity(position);
+            boolean linked = LegendaryItemUtils.linkOrUnlinkContainer(context, position, blockEntity);
+            return linked ? InteractionResult.SUCCESS : InteractionResult.FAIL;
         }
 
         if (context.getLevel().getBlockEntity(position) instanceof Container inventory) {
-            return InteractionResult.SUCCESS;
+            return InteractionResult.PASS;
         }
         return super.useOn(context);
     }

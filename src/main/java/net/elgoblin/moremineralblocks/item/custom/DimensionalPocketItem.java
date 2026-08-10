@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.InstrumentComponent;
@@ -20,8 +21,10 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,16 +45,17 @@ public class DimensionalPocketItem extends Item {
         ItemStack dimensionalPocket = context.getItemInHand();
         boolean safeModeOn = dimensionalPocket.getOrDefault(ModDataComponentTypes.SAFE_MODE, false);
         BlockPos clickedPosition = context.getClickedPos();
+        BlockEntity blockEntity = level.getBlockEntity(clickedPosition);
 
-        if (level.getBlockEntity(clickedPosition) instanceof Container) {
+        if (blockEntity instanceof Container) {
             if (!safeModeOn) {
                 if (!level.isClientSide()) {
                     Container container = LegendaryItemUtils.getContainer((ServerLevel) level, clickedPosition);
-                    boolean linked = LegendaryItemUtils.linkOrUnlinkContainer(context, clickedPosition);
+                    boolean linked = LegendaryItemUtils.linkOrUnlinkContainer(context, clickedPosition, blockEntity);
                     initializeOrRemoveColoredGroups(dimensionalPocket, container, linked);
-
+                    return linked ? InteractionResult.SUCCESS : InteractionResult.FAIL;
                 }
-                return InteractionResult.SUCCESS;
+                return InteractionResult.PASS;
             }
         }
 
@@ -87,22 +91,18 @@ public class DimensionalPocketItem extends Item {
             InteractionResult result = stackToUse.use(level, player, hand);
             player.setItemSlot(hand.asEquipmentSlot(), copy);
             if (result.consumesAction()) {
-                System.out.println("Client success");
                 return InteractionResult.SUCCESS;
             }
             else {
-                System.out.println("Client fail");
                 return InteractionResult.FAIL;
             }
         }
 
         ItemStack stackToUse = getStackToUse(dimensionalPocket, level, player, safeModeOn);
         if (isBannedItem(stackToUse)) { return InteractionResult.FAIL; }
-        System.out.println("No banned item");
 
         player.setItemSlot(hand.asEquipmentSlot(), stackToUse);
         InteractionResult result = stackToUse.use(level, player, hand);
-//        performAnimationsAndSound(result, stackToUse, level, player, hand);
 
         player.setItemSlot(hand.asEquipmentSlot(), copy);
         if (result.consumesAction()) {
@@ -120,7 +120,7 @@ public class DimensionalPocketItem extends Item {
         return i;
     }
 
-    private void initializeOrRemoveColoredGroups(ItemStack dimensionalPocket, Container container,boolean linked) {
+    private void initializeOrRemoveColoredGroups(ItemStack dimensionalPocket, Container container, boolean linked) {
         if (linked) {
             int firstSlot = findFirstNonEmptySlotOrZero(container);
             ArrayList<Integer> selectedItemInEachColoredGroup = new ArrayList<>(Collections.nCopies(16, 0));

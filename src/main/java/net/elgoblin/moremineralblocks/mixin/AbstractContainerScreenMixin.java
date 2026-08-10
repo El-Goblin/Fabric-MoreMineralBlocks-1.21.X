@@ -29,9 +29,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static net.elgoblin.moremineralblocks.client.DimensionalPocketOverlay.COLOREABLE_GROUP_TEXTURE;
 
@@ -45,6 +43,8 @@ public class AbstractContainerScreenMixin {
     @Shadow protected int imageWidth;
     @Shadow protected int imageHeight;
 
+    @Unique
+    protected final Set<Slot> selectedSlots = new HashSet<>();
     @Unique
     private DimensionalPocketColorSelectionPanel activeColorPanel = null;
 
@@ -62,6 +62,7 @@ public class AbstractContainerScreenMixin {
 
             // Al elegir un color, evito que el juego me cierre el cofre por haber clickeado afuera
             if (activeColorPanel.selectColorIfClickedInsidePanel(event.x(), event.y())) {
+                selectedSlots.clear();
                 cir.setReturnValue(true);
                 cir.cancel();
                 return;
@@ -74,6 +75,7 @@ public class AbstractContainerScreenMixin {
                 if (isContainerSlot(menu, this.hoveredSlot)) {
                     int clickedSlotId = this.hoveredSlot.index;
                     this.activeColorPanel.toggleSlotAssigned(clickedSlotId);
+                    selectedSlots.add(this.hoveredSlot);
 
                     cir.setReturnValue(true);
                     cir.cancel();
@@ -97,6 +99,28 @@ public class AbstractContainerScreenMixin {
         cir.cancel();
     }
 
+    @Inject(
+            method = "mouseDragged",
+            at = @At("HEAD")
+    )
+    private void onMouseDragged(MouseButtonEvent event, double dx, double dy, CallbackInfoReturnable<Boolean> cir) {
+        if (event.button() == 0) {
+            if (this.hoveredSlot != null && activeColorPanel != null && activeColorPanel.active) {
+                if (!selectedSlots.contains(this.hoveredSlot)) {
+                    selectedSlots.add(this.hoveredSlot);
+                    activeColorPanel.toggleSlotAssigned(this.hoveredSlot.index);
+                }
+            }
+        }
+    }
+
+    @Inject(
+            method = "mouseReleased",
+            at = @At("HEAD")
+    )
+    private void onMouseReleased(MouseButtonEvent event, CallbackInfoReturnable<Boolean> cir) {
+        selectedSlots.clear();
+    }
 
 
     @Inject(method = "extractRenderState", at = @At("TAIL"))

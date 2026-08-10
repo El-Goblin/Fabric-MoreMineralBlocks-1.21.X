@@ -9,18 +9,22 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +58,13 @@ public class LegendaryItemUtils {
         }
     }
 
-    public static boolean linkOrUnlinkContainer(UseOnContext context, BlockPos position) {
+    public static boolean linkOrUnlinkContainer(UseOnContext context, BlockPos position, BlockEntity blockEntity) {
+
         if (context.getLevel().getBlockEntity(position) instanceof Container) {
             ItemStack itemStack = context.getItemInHand();
+            if (!itemStack.is(ModItems.DIMENSIONAL_POCKET) && ModEnchantments.getLevel(itemStack, ModEnchantments.LINKER) <= 0) {
+                return false;
+            }
 
             Identifier newPositionDimension = context.getLevel().dimension().identifier();
 
@@ -66,6 +74,7 @@ public class LegendaryItemUtils {
             if (currentLinkedChest != null && currentLinkedChest.equals(position) && newPositionDimension.equals(currentDimension)) {
                 itemStack.remove(ModDataComponentTypes.LINKED_CHEST);
                 itemStack.remove(ModDataComponentTypes.SERVERWORLD);
+                itemStack.remove(ModDataComponentTypes.CHEST_NAME);
                 if (context.getPlayer() != null) {
                     context.getPlayer().sendSystemMessage(
                             Component.translatable("message.moremineralblocks.legendary_tools_unlinked_successfully")
@@ -75,6 +84,12 @@ public class LegendaryItemUtils {
             else {
                 itemStack.set(ModDataComponentTypes.LINKED_CHEST, position);
                 itemStack.set(ModDataComponentTypes.SERVERWORLD, context.getLevel().dimension().identifier());
+                if (blockEntity instanceof Nameable nameable && nameable.hasCustomName()) {
+                    @Nullable Component name = nameable.getCustomName();
+                    if (name != null) {
+                        itemStack.set(ModDataComponentTypes.CHEST_NAME, name.getString());
+                    }
+                }
                 if (context.getPlayer() != null) {
                     context.getPlayer().sendSystemMessage(
                             Component.translatable("message.moremineralblocks.legendary_tools_linked_successfully"));
@@ -99,10 +114,16 @@ public class LegendaryItemUtils {
             if (linkedChest != null && dimension != null) {
                 String translationKey = "dimension." + dimension.getNamespace() + "." + dimension.getPath();
 
+                MutableComponent coordinates = Component.literal(String.format("X = %s | Y = %s | Z = %s",
+                        linkedChest.getX(), linkedChest.getY(), linkedChest.getZ()));
+                String name = itemStack.get(ModDataComponentTypes.CHEST_NAME);
+                if (name != null) {
+                    coordinates = Component.literal(name);
+                }
+
                 builder.accept(Component.translatable("tooltip." + MoreMineralBlocks.MOD_ID + ".legendary_tool_linked")
                         .withStyle(ChatFormatting.GREEN));
-                builder.accept(Component.literal(String.format("X = %s | Y = %s | Z = %s",
-                        linkedChest.getX(), linkedChest.getY(), linkedChest.getZ())));
+                builder.accept(coordinates);
                 builder.accept(Component.translatableWithFallback(translationKey, dimension.toString())
                         .withStyle(ChatFormatting.LIGHT_PURPLE));
             }
