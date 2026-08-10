@@ -67,6 +67,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             "minecraft:speed", ModParticles.CHAOS_ORB_SPEED_PARTICLE,
             "minecraft:strength", ModParticles.CHAOS_ORB_STRENGTH_PARTICLE);
     private ServerLevel level = null;
+    private Entity user = null;
     private final RandomSource random = RandomSource.create();
     private String seededEvent = "none";
     private final Map<String, Pair<Integer, Integer>> eventMap = Map.ofEntries(
@@ -197,15 +198,21 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         if (!level.isClientSide()) {
             this.level = (ServerLevel) level;
         }
-        if (itemStack.getCustomName() != null) {
-            seededEvent = itemStack.getCustomName().getString().toLowerCase();
-            if (seededEvent.equalsIgnoreCase("tunneler")) {
-                tunneler = true;
-            }
-            else {
-                tunneler = !eventMap.containsKey(seededEvent) && tunneler;
+        if (this.getOwner() != null) {
+            user = this.getOwner();
+            if (itemStack.getCustomName() != null) {
+                if (user instanceof Player player && player.isCreative()) {
+                    seededEvent = itemStack.getCustomName().getString().toLowerCase();
+                    if (seededEvent.equalsIgnoreCase("tunneler")) {
+                        tunneler = true;
+                    }
+                    else {
+                        tunneler = !eventMap.containsKey(seededEvent) && tunneler;
+                    }
+                }
             }
         }
+
     }
 
     public ChaosOrbEntity(final Level level, final double x, final double y, final double z, final ItemStack itemStack) {
@@ -214,13 +221,18 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         if (!level.isClientSide()) {
             this.level = (ServerLevel) level;
         }
-        if (itemStack.getCustomName() != null) {
-            seededEvent = itemStack.getCustomName().getString().toLowerCase();
-            if (seededEvent.equalsIgnoreCase("tunneler")) {
-                tunneler = true;
-            }
-            else {
-                tunneler = !eventMap.containsKey(seededEvent) && tunneler;
+        if (this.getOwner() != null) {
+            user = this.getOwner();
+            if (itemStack.getCustomName() != null) {
+                if (user instanceof Player player && player.isCreative()) {
+                    seededEvent = itemStack.getCustomName().getString().toLowerCase();
+                    if (seededEvent.equalsIgnoreCase("tunneler")) {
+                        tunneler = true;
+                    }
+                    else {
+                        tunneler = !eventMap.containsKey(seededEvent) && tunneler;
+                    }
+                }
             }
         }
     }
@@ -280,13 +292,6 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 
     @Override
     public void handleEntityEvent(final byte id) {
-        if (id == 3) {
-            ParticleOptions particle = this.getParticle();
-
-            for (int i = 0; i < 8; i++) {
-                this.level().addParticle(particle, this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
-            }
-        }
     }
 
     @Override
@@ -296,10 +301,10 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         double knockback = random.nextIntBetweenInclusive(1,20);
         knockback = knockback * 0.4;
 
-        if (this.getOwner() == null) { return; }
+        if (user == null) { return; }
 
-        double x = entity.getX() - this.getOwner().getX();
-        double z = entity.getZ() - this.getOwner().getZ();
+        double x = entity.getX() - user.getX();
+        double z = entity.getZ() - user.getZ();
 
         double distance = Math.sqrt(x * x + z * z);
         x = x / distance;
@@ -407,6 +412,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     // EVENTS
 
     private void smallBoing(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Small Boing");
         List<Entity> entities = level.getEntitiesOfClass(Entity.class, boundingBox.inflate(32.0, 32.0, 32.0), entity -> !(entity.is(EntityTypes.ITEM_FRAME)));
 
         double knockback = 10;
@@ -447,6 +453,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void getMythicItem(HitResult hitResult) {
+        sendMessageToUser("Mythic Item");
         List<ItemStack> mythicItems = new ArrayList<>();
 
         ItemStack light = Items.LIGHT.getDefaultInstance();
@@ -505,10 +512,12 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void xp(HitResult hitResult) {
+        sendMessageToUser("XP");
         ExperienceOrb.award(level, this.position(), (int) Math.pow(Math.min(random.nextIntBetweenInclusive(8,32), random.nextIntBetweenInclusive(16,32)),3));
     }
 
     private void getEnchantedBook(HitResult hitResult) {
+        sendMessageToUser("Book");
         ItemStack enchantedBook = Items.ENCHANTED_BOOK.getDefaultInstance();
         Registry<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
         List<Holder.Reference<Enchantment>> enchantments = enchantmentRegistry.listElements().toList();
@@ -520,8 +529,9 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void randomizePlayersPositions(HitResult hitResult) {
+        sendMessageToUser("Teleport");
         int forceTeleport = random.nextInt(20);
-        if (forceTeleport == 0 && this.getOwner() != null && this.getOwner() instanceof Player player) {
+        if (forceTeleport == 0 && user != null && user instanceof Player player) {
             // Notar que de esta forma se aumenta la estadistica de veces usadas el item. Me parece correcto
             ModItems.CHAOS_MIRROR.use(level, player, InteractionHand.MAIN_HAND);
         }
@@ -531,10 +541,11 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void explosion(HitResult hitResult) {
+        sendMessageToUser("Explosion");
         int kase = random.nextInt(19);
 
-        if (kase > 16 && this.getOwner() != null) {
-            level.explode(this, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),(float) 1.0, Level.ExplosionInteraction.BLOCK);
+        if (kase > 16 && user != null) {
+            level.explode(this, user.getX(), user.getY(), user.getZ(),(float) 1.0, Level.ExplosionInteraction.BLOCK);
         }
         else {
             level.explode(this, this.getX(), this.getY(), this.getZ(),(float) ((kase==0) ? 127.0 : 5.0), Level.ExplosionInteraction.BLOCK);
@@ -542,16 +553,17 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void fireExplosion(HitResult hitResult) {
+        sendMessageToUser("Fire Explosion");
         int kase = random.nextInt(19);
 
         LargeFireball fireballEntity;
-        if (this.getOwner() != null) {
+        if (user != null) {
             if (kase > 16) {
-                fireballEntity = new LargeFireball(level, (LivingEntity) this.getOwner(), new Vec3(0, -1.0f, 0), 1);
-                fireballEntity.setPos(this.getOwner().getX(), this.getOwner().getY()+2, this.getOwner().getZ());
+                fireballEntity = new LargeFireball(level, (LivingEntity) user, new Vec3(0, -1.0f, 0), 1);
+                fireballEntity.setPos(user.getX(), user.getY()+2, user.getZ());
             }
             else {
-                fireballEntity = new LargeFireball(level, (LivingEntity) this.getOwner(), new Vec3(0, -1.0f, 0), 4);
+                fireballEntity = new LargeFireball(level, (LivingEntity) user, new Vec3(0, -1.0f, 0), 4);
                 fireballEntity.setPos(this.getX(), this.getY(), this.getZ());
             }
             level.addFreshEntity(fireballEntity);
@@ -559,35 +571,36 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void spawn5ChaosOrbs(HitResult hitResult) {
-        if (this.getOwner() != null) {
+        sendMessageToUser("5 Chaos Orbs");
+        if (user != null) {
             ItemStack chaosOrbs = new ItemStack(ModItems.CHAOS_ORB, 5);
 
             ChaosOrbEntity chaosOrbEntity = new ChaosOrbEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, chaosOrbs);
-            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.setOwner(user);
             chaosOrbEntity.shoot( 1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
             level.addFreshEntity(chaosOrbEntity);
 
             chaosOrbEntity = new ChaosOrbEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, chaosOrbs);
-            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.setOwner(user);
             chaosOrbEntity.shoot( -1.0f, 2.0f, 0f, 0.5f, 0.0f);
 
             level.addFreshEntity(chaosOrbEntity);
 
             chaosOrbEntity = new ChaosOrbEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, chaosOrbs);
-            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.setOwner(user);
             chaosOrbEntity.shoot( 0f, 2.0f, 1.0f, 0.5f, 0.0f);
 
             level.addFreshEntity(chaosOrbEntity);
 
             chaosOrbEntity = new ChaosOrbEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, chaosOrbs);
-            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.setOwner(user);
             chaosOrbEntity.shoot( 0f, 2.0f, -1.0f, 0.5f, 0.0f);
 
             level.addFreshEntity(chaosOrbEntity);
 
             chaosOrbEntity = new ChaosOrbEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, chaosOrbs);
-            chaosOrbEntity.setOwner(this.getOwner());
+            chaosOrbEntity.setOwner(user);
             chaosOrbEntity.shoot( 0f, 2.0f, 0.0f, 0f, 0f);
 
             level.addFreshEntity(chaosOrbEntity);
@@ -595,6 +608,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void fragile(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Fragile");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 16.0, 32.0), EntitySelector.NO_SPECTATORS);
         level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
@@ -607,9 +621,10 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void counterBlinking(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Counter Blink");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 16.0, 32.0), EntitySelector.NO_SPECTATORS);
-        if (entities.isEmpty() && this.getOwner() != null) {
-            entities.add((LivingEntity) this.getOwner());
+        if (entities.isEmpty() && user != null) {
+            entities.add((LivingEntity) user);
         }
 
         level.sendParticles(ModParticles.CHAOS_ORB_COUNTER_BLINK_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
@@ -623,9 +638,10 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void blinking(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Blinking");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 16.0, 32.0), EntitySelector.NO_SPECTATORS);
-        if (entities.isEmpty() && this.getOwner() != null) {
-            entities.add((LivingEntity) this.getOwner());
+        if (entities.isEmpty() && user != null) {
+            entities.add((LivingEntity) user);
         }
         level.sendParticles(ModParticles.CHAOS_ORB_BLINKING_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
 
@@ -638,6 +654,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void breakGameProgression(HitResult hitResult) {
+        sendMessageToUser("Break Game Progression");
         List<ItemStack> rareItems = new ArrayList<>();
         rareItems.add(Items.ELYTRA.getDefaultInstance());
         rareItems.add(Items.MACE.getDefaultInstance());
@@ -718,6 +735,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void smallPrize(HitResult hitResult) {
+        sendMessageToUser("Small Prize");
         List<ItemStack> prizes = new ArrayList<>();
         prizes.add(new ItemStack(Items.OAK_LOG, 64));
         prizes.add(new ItemStack(Items.BONE, 64));
@@ -750,13 +768,12 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void getFood(HitResult hitResult) {
+        sendMessageToUser("Food");
         List<Item> foodItems = new ArrayList<>();
 
         for (Item item : BuiltInRegistries.ITEM) {
             if (item.components().has(DataComponents.FOOD) &&
-                    !(item instanceof PotionItem) &&
-                    item != Items.MUSHROOM_STEW &&
-                    item != Items.RABBIT_STEW) {
+                    item.getDefaultMaxStackSize() > 1 || item == Items.SUSPICIOUS_STEW) {
                 foodItems.add(item);
             }
         }
@@ -767,7 +784,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         }
 
         if (food.is(Items.SUSPICIOUS_STEW)) {
-            Registry<MobEffect> mobEffectRegistry = this.level().registryAccess().lookupOrThrow(Registries.MOB_EFFECT);
+            Registry<MobEffect> mobEffectRegistry = level.registryAccess().lookupOrThrow(Registries.MOB_EFFECT);
             List<Holder.Reference<MobEffect>> statusEffects = mobEffectRegistry.listElements().toList();
 
             if (!statusEffects.isEmpty()) {
@@ -779,17 +796,20 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
                 food.setCount(4);
             }
         }
+        sendMessageToUser(food.toString());
 
         this.spawnAtLocation(level, food, 0.0F);
     }
 
     private void applyBeaconEffect(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Beacon Effect");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 200.0, 32.0), EntitySelector.NO_SPECTATORS);
         List<Holder<MobEffect>> pool = BeaconBlockEntity.BEACON_EFFECTS.stream().flatMap(List::stream).toList();
 
         int nextEffect = this.random.nextInt(pool.size());
         int nextLevel = this.random.nextIntBetweenInclusive(1, 10); // 0 to 9 inclusive
         Holder<MobEffect> effect = pool.get(nextEffect);
+        sendMessageToUser(effect.getRegisteredName());
 
         SimpleParticleType effectParticle = particleMap.get(effect.getRegisteredName());
         if (effectParticle != null) {
@@ -805,6 +825,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void moveXBlocks(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("20");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class,
                 boundingBox.inflate(16.0, 8.0, 16.0),
                 EntitySelector.NO_SPECTATORS
@@ -858,6 +879,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void changeScale(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Scale");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class,
                 boundingBox.inflate(16.0, 8.0, 16.0),
                 EntitySelector.NO_SPECTATORS
@@ -865,8 +887,8 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 
         ScalePack chosenPack = scalePacks.get(this.random.nextInt(scalePacks.size()));
 
-        if (this.getOwner() instanceof LivingEntity user && !entities.contains(user)) {
-            entities.add(user);
+        if (user instanceof LivingEntity && !entities.contains(user)) {
+            entities.add((LivingEntity) user);
         }
 
         for (LivingEntity entity : entities) {
@@ -890,6 +912,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void beginThunderstorm(HitResult hitResult) {
+        sendMessageToUser("Storm");
         level.getServer().setWeatherParameters(0, ServerLevel.THUNDER_DURATION.sample(random), true, true);
         LightningBolt bolt = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.EVENT);
         if (bolt != null) {
@@ -899,6 +922,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void voidSphere(HitResult hitResult) {
+        sendMessageToUser("Terrain Sphere");
         float randomNumber = random.nextFloat();
         while (randomNumber < 0.0000000001f) {
             randomNumber = random.nextFloat();
@@ -914,15 +938,15 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         }
         BlockPos center = BlockPos.containing(hitResult.getLocation());
 
-        if (this.getOwner() != null) {
+        if (user != null) {
             AABB boundingBox = this.getBoundingBox();
             List<Player> entities = level.getEntitiesOfClass(Player.class,
                     boundingBox.inflate(radius, radius * 0.25, radius),
                     EntitySelector.NO_SPECTATORS
             );
             Player jobArgument = null;
-            if (this.getOwner() instanceof Player user) {
-                jobArgument = user;
+            if (user instanceof Player) {
+                jobArgument = (Player) user;
             }
             TerrainJobsManager.TERRAIN_MANAGER.addJob(new SingleBlockSphereJob(level, jobArgument, center, radius, Blocks.AIR));
 
@@ -937,33 +961,37 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     // DEBUG
 
     private void debugHelp(HitResult hitResult) {
-        if (this.getOwner() != null && this.getOwner() instanceof Player player) {
-            player.sendSystemMessage(Component.literal("MobPack"));
-            player.sendSystemMessage(Component.literal("MythicItem"));
-            player.sendSystemMessage(Component.literal("SkeletonHorse"));
-            player.sendSystemMessage(Component.literal("Progression"));
-            player.sendSystemMessage(Component.literal("Armor"));
-            player.sendSystemMessage(Component.literal("Tools"));
-            player.sendSystemMessage(Component.literal("Chaos (5 chaos orbs)"));
-            player.sendSystemMessage(Component.literal("TerrainSphere"));
-            player.sendSystemMessage(Component.literal("Explosion"));
-            player.sendSystemMessage(Component.literal("FireExplosion"));
-            player.sendSystemMessage(Component.literal("Food"));
-            player.sendSystemMessage(Component.literal("Book"));
-            player.sendSystemMessage(Component.literal("Prize"));
-            player.sendSystemMessage(Component.literal("Xp"));
-            player.sendSystemMessage(Component.literal("Beacon"));
-            player.sendSystemMessage(Component.literal("Range"));
-            player.sendSystemMessage(Component.literal("Fragile"));
-            player.sendSystemMessage(Component.literal("Storm"));
-            player.sendSystemMessage(Component.literal("Teleport"));
-            player.sendSystemMessage(Component.literal("CounterBlink"));
-            player.sendSystemMessage(Component.literal("Blinking"));
-            player.sendSystemMessage(Component.literal("20"));
-            player.sendSystemMessage(Component.literal("Scale"));
-            player.sendSystemMessage(Component.literal("Tunneler"));
-            player.sendSystemMessage(Component.literal("Skyblock"));
-            player.sendSystemMessage(Component.literal("SmallBoing"));
+        if (user != null && user instanceof Player player) {
+            sendMessageToUser("MobPack");
+            sendMessageToUser("MythicItem");
+            sendMessageToUser("Progression");
+            sendMessageToUser("Armor");
+            sendMessageToUser("Tools");
+            sendMessageToUser("Chaos");
+            sendMessageToUser("TerrainSphere");
+            sendMessageToUser("Explosion");
+            sendMessageToUser("FireExplosion");
+            sendMessageToUser("Book");
+            sendMessageToUser("Prize");
+            sendMessageToUser("Xp");
+            sendMessageToUser("Beacon");
+            sendMessageToUser("Fragile");
+            sendMessageToUser("Storm");
+            sendMessageToUser("Teleport");
+            sendMessageToUser("CounterBlink");
+            sendMessageToUser("Blinking");
+            sendMessageToUser("20");
+            sendMessageToUser("Scale");
+            sendMessageToUser("Tunneler");
+            sendMessageToUser("SmallBoing");
         }
+    }
+
+    private boolean sendMessageToUser(String message) {
+        if (user != null) {
+            ((Player) user).sendSystemMessage(Component.literal(message));
+            return true;
+        }
+        return false;
     }
 }
