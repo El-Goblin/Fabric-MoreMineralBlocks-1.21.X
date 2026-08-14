@@ -170,7 +170,7 @@ public class DimensionalPocketItem extends Item {
 
         int currentSelectedItemIndex = selectedItemsInEachColoredGroup.get(selectedColoredGroup);
 
-        if (group.isEmpty() || isOffBounds(currentSelectedItemIndex, group.size())) {
+        if (group.isEmpty() || isOffBounds(currentSelectedItemIndex, deposit.getContainerSize())) {
             return ItemStack.EMPTY;
         }
 
@@ -179,7 +179,9 @@ public class DimensionalPocketItem extends Item {
         if (isBannedItem(stackToUse)) { return ItemStack.EMPTY; }
 
         // Da un stack distinto al seleccionado, para permitir gastar el cofre entero aunque no estes en safeMode
-        stackToUse = findNonEmptyStackInGroupOfType(deposit, group, currentSelectedItemIndex, stackToUse.getItem(), safeModeOn);
+        stackToUse = findNonEmptyStackInGroupOfType(deposit, group, group.get(currentSelectedItemIndex), stackToUse.getItem(), safeModeOn);
+        System.out.println(currentSelectedItemIndex);
+        System.out.println(stackToUse);
         if (stackToUse.isEmpty()) {
             if (!user.isCreative() && notAllowedToUse(safeModeOn, fallbackStack)) {
                 return ItemStack.EMPTY;
@@ -192,10 +194,11 @@ public class DimensionalPocketItem extends Item {
     private ItemStack findNonEmptyStackInGroupOfType(Container deposit, List<Integer> group, int currentSelectedItemIndex, Item usedItem, boolean safeMode) {
         for (Integer depositIndex : group) {
             if (depositIndex != currentSelectedItemIndex) {
-                int depositSlot = Math.floorMod(depositIndex, deposit.getContainerSize());
-                ItemStack stack = deposit.getItem(depositSlot);
-                if (stack.is(usedItem) && stack.getCount() > (safeMode ? 1 : 0)) {
-                    return stack;
+                if (!isOffBounds(depositIndex, deposit.getContainerSize())) {
+                    ItemStack stack = deposit.getItem(depositIndex);
+                    if (stack.is(usedItem) && stack.getCount() > (safeMode ? 1 : 0)) {
+                        return stack;
+                    }
                 }
             }
         }
