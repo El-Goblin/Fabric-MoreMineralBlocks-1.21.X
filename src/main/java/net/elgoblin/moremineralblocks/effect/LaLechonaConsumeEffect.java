@@ -1,6 +1,7 @@
 package net.elgoblin.moremineralblocks.effect;
 
 import com.mojang.serialization.MapCodec;
+import net.elgoblin.moremineralblocks.component.ModAttachmentTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -35,6 +36,7 @@ public record LaLechonaConsumeEffect() implements ConsumeEffect {
         applyAttributeChange(Attributes.BLOCK_INTERACTION_RANGE, 4.5, entity);
         applyAttributeChange(Attributes.ENTITY_INTERACTION_RANGE, 3, entity);
         applyAttributeChange(Attributes.MINING_EFFICIENCY, 1, entity);
+        entity.removeAttached(ModAttachmentTypes.NIGHT_OWL);
         return entity.removeAllEffects();
     }
 

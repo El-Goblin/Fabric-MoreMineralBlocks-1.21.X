@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.PoisonMobEffect;
 
 public class ModEffects {
     public static final Holder<MobEffect> BLINKING = registerStatusEffect("blinking",
@@ -20,6 +21,12 @@ public class ModEffects {
 
     public static final Holder<MobEffect> FRAGILE = registerStatusEffect("fragile",
             new OnDamageTakenEffect(MobEffectCategory.HARMFUL, 12771234));
+
+    public static final Holder<MobEffect> SNOWY_BODYGUARDS = registerStatusEffect("snowy_bodyguards",
+            new OnDamageTakenEffect(MobEffectCategory.HARMFUL, 0xFFFFFFFF));
+
+    public static final Holder<MobEffect> ADYACENT_BLOCK_PLACING = registerStatusEffect("adyacent_block_placing",
+            new RemovedByLaLechonaEffect(MobEffectCategory.HARMFUL, 0xFFFF0090));
 
 //    public static final Holder<MobEffect> ONANA_HANDS = registerStatusEffect("onana_hands",
 //            new OnDamageTakenEffect(MobEffectCategory.HARMFUL, 12779366));

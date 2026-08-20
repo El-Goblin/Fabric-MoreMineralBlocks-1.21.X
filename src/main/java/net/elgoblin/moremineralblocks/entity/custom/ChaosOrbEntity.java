@@ -2,6 +2,7 @@ package net.elgoblin.moremineralblocks.entity.custom;
 
 import com.mojang.datafixers.util.Pair;
 import net.elgoblin.moremineralblocks.block.ModBlocks;
+import net.elgoblin.moremineralblocks.component.ModAttachmentTypes;
 import net.elgoblin.moremineralblocks.effect.ModEffects;
 import net.elgoblin.moremineralblocks.entity.ModEntities;
 import net.elgoblin.moremineralblocks.gamerule.ChaosOrbGameRules;
@@ -22,8 +23,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -43,11 +44,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.portal.TeleportTransition;
-import net.minecraft.world.level.saveddata.WeatherData;
-import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -66,6 +64,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             "minecraft:resistance", ModParticles.CHAOS_ORB_RESISTANCE_PARTICLE,
             "minecraft:speed", ModParticles.CHAOS_ORB_SPEED_PARTICLE,
             "minecraft:strength", ModParticles.CHAOS_ORB_STRENGTH_PARTICLE);
+
     private ServerLevel level = null;
     private Entity user = null;
     private final RandomSource random = RandomSource.create();
@@ -91,14 +90,19 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 
 //            Map.entry("range", new Pair<>(2, 0)),
             Map.entry("fragile", new Pair<>(2,0)),
+            Map.entry("snowybodyguards", new Pair<>(2,1)),
+
+            Map.entry("nightowl", new Pair<>(3,0)),
 //
             Map.entry("storm", new Pair<>(4,0)),
             Map.entry("teleport", new Pair<>(4,1)),
 //
-            Map.entry("counterBlink", new Pair<>(5,0)),
+            Map.entry("counterblink", new Pair<>(5,0)),
             Map.entry("blinking", new Pair<>(5,1)),
             Map.entry("20", new Pair<>(5,2)),
             Map.entry("scale", new Pair<>(5,3)),
+            Map.entry("levitation", new Pair<>(5,4)),
+//            Map.entry("adyacentblockplacing", new Pair<>(5,5)),
 //
             Map.entry("help", new Pair<>(6,0))
 //            Map.entry("skyblock", new Pair<>(6,1))
@@ -130,9 +134,11 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     ));
     private List<BiConsumer<HitResult, AABB>> selfAreaChaosEffects = new ArrayList<>(List.of(
 //            this::increaseInteractionRange,
-            this::fragile
+            this::fragile,
+            this::snowyBodyguards
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
+            this::nightOwl
 //            this::crash
     ));
     private List<Consumer<HitResult>> globalChaosEffects = new ArrayList<>(List.of(
@@ -147,7 +153,9 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 ////            this::onanaHands,
             this::blinking,
             this::moveXBlocks,
-            this::changeScale
+            this::changeScale,
+            this::levitation
+//            this::blocksPlacedOnAdyacentPositions
     ));
 
     private List<Consumer<HitResult>> debugChaosEffects = new ArrayList<>(List.of(
@@ -610,7 +618,8 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     private void fragile(HitResult hitResult, AABB boundingBox) {
         sendMessageToUser("Fragile");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 16.0, 32.0), EntitySelector.NO_SPECTATORS);
-        level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+        level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 3.0, 0.0, 1.0);
+
 
         for (LivingEntity entity : entities) {
             MobEffectInstance effect = new MobEffectInstance(ModEffects.FRAGILE, 6000, 0);
@@ -619,6 +628,35 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             }
         }
     }
+
+    private void snowyBodyguards(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Snowy Bodyguards");
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(16.0, 8.0, 16.0), EntitySelector.NO_SPECTATORS);
+        //level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 3.0, 0.0, 1.0);
+
+        for (LivingEntity entity : entities) {
+            MobEffectInstance effect = new MobEffectInstance(ModEffects.SNOWY_BODYGUARDS, 24000, 0);
+            if (entity != null) {
+                entity.addEffect(effect);
+            }
+        }
+    }
+
+//    private void blocksPlacedOnAdyacentPositions(HitResult hitResult, AABB boundingBox) {
+//        sendMessageToUser("Adyacent Block Placing");
+//        List<ServerPlayer> entities = level.getEntitiesOfClass(ServerPlayer.class, boundingBox.inflate(16.0, 8.0, 16.0), EntitySelector.NO_SPECTATORS);
+//
+//        if (entities.isEmpty() && user != null) {
+//            entities.add((ServerPlayer) user);
+//        }
+//        //level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 3.0, 0.0, 1.0);
+//
+//        for (ServerPlayer player : entities) {
+//            if (player != null) {
+//                player.setAttached(ModAttachmentTypes.ADYACENT_BLOCK_PLACING, random.nextLong());
+//            }
+//        }
+//    }
 
     private void counterBlinking(HitResult hitResult, AABB boundingBox) {
         sendMessageToUser("Counter Blink");
@@ -650,6 +688,30 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             if (entity != null) {
                 entity.addEffect(effect);
             }
+        }
+    }
+
+    private void levitation(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Levitation");
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(64.0, 32.0, 64.0), EntitySelector.NO_SPECTATORS);
+        if (entities.isEmpty() && user != null) {
+            entities.add((LivingEntity) user);
+        }
+        //level.sendParticles(ModParticles.CHAOS_ORB_BLINKING_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 1.0, 0.0, 1.0);
+
+        for (LivingEntity entity : entities) {
+            if (entity != null) {
+                MobEffectInstance effect = new MobEffectInstance(MobEffects.LEVITATION, 400, 0);
+                entity.addEffect(effect);
+            }
+        }
+    }
+
+    private void nightOwl(HitResult hitResult) {
+        sendMessageToUser("Night Owl");
+
+        if (user != null && user instanceof ServerPlayer) {
+            user.setAttached(ModAttachmentTypes.NIGHT_OWL, true);
         }
     }
 
@@ -807,7 +869,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         List<Holder<MobEffect>> pool = BeaconBlockEntity.BEACON_EFFECTS.stream().flatMap(List::stream).toList();
 
         int nextEffect = this.random.nextInt(pool.size());
-        int nextLevel = this.random.nextIntBetweenInclusive(1, 10); // 0 to 9 inclusive
+        int nextLevel = this.random.nextIntBetweenInclusive(0, 9); // 0 es lvl 1 y 9 es lvl 10
         Holder<MobEffect> effect = pool.get(nextEffect);
         sendMessageToUser(effect.getRegisteredName());
 
@@ -984,6 +1046,10 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             sendMessageToUser("Scale");
             sendMessageToUser("Tunneler");
             sendMessageToUser("SmallBoing");
+            sendMessageToUser("Levitation");
+            sendMessageToUser("Nightowl");
+            sendMessageToUser("SnowyBodyguards");
+//            sendMessageToUser("AdyacentBlockPlacing");
         }
     }
 

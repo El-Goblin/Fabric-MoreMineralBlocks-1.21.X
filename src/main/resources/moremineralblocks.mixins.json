@@ -11,6 +11,8 @@
     "LivingEntityMixin",
     "MaceItemMixin",
     "PlayerMixin",
+    "ServerLevelMixin",
+    "ServerPlayerMixin",
     "TintedGlassBlockMixin",
     "ZombieMixin"
   ],

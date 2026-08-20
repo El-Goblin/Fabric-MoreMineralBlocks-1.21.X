@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 
 import java.util.*;
 
@@ -73,6 +72,7 @@ public class ServerPayloadReceivers {
                     });
                 }
         );
+
         registerDimensionalPocketServerGlobalReceivers();
     }
 
