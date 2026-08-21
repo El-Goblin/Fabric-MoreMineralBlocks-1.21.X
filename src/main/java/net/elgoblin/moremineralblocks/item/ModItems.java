@@ -31,7 +31,7 @@ public class ModItems {
     public static final Item CHAOS_ORB = registerItem("chaos_orb", ChaosOrbItem::new);
 
     public static final Item FLASH = registerItem("flash", properties ->
-            new FlashItem(properties.stacksTo(1).rarity(Rarity.RARE)));
+            new FlashItem(properties.stacksTo(1).rarity(Rarity.EPIC)));
 
     public static final Item NETHERITE_NUGGET = registerItem("netherite_nugget", Item::new);
 

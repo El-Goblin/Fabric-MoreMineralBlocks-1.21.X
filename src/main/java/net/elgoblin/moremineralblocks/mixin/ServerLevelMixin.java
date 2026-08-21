@@ -13,6 +13,7 @@ import net.minecraft.world.clock.ClockTimeMarkers;
 import net.minecraft.world.clock.ServerClockManager;
 import net.minecraft.world.clock.WorldClock;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.gamerules.GameRules;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,14 +36,11 @@ public abstract class ServerLevelMixin {
                     target = "Lnet/minecraft/world/clock/ServerClockManager;moveToTimeMarker(Lnet/minecraft/core/Holder;Lnet/minecraft/resources/ResourceKey;)Z"
             )
     )
-    private boolean invertSleepRuleIfNightOwl(ServerClockManager instance, Holder<WorldClock> clock, ResourceKey<ClockTimeMarker> timeMarkerId, Operation<Boolean> original) {
+    private boolean moveToNightIfNightOwlsSleeping(ServerClockManager instance, Holder<WorldClock> clock, ResourceKey<ClockTimeMarker> timeMarkerId, Operation<Boolean> original) {
 
         ServerLevel level = (ServerLevel) (Object) this;
         List<ServerPlayer> sleepingPlayers = level.players().stream().filter(LivingEntity::isSleeping).toList();
         List<ServerPlayer> allNightOwls = sleepingPlayers.stream().filter(serverPlayer -> serverPlayer.hasAttached(ModAttachmentTypes.NIGHT_OWL)).toList();
-
-        System.out.println("sleeping players = " + sleepingPlayers);
-        System.out.println("nightOwls = " + allNightOwls);
 
         if (sleepingPlayers.size() == allNightOwls.size()) {
             return instance.moveToTimeMarker(clock, ClockTimeMarkers.NIGHT);

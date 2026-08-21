@@ -67,7 +67,7 @@ public abstract class PlayerMixin {
         Player player = (Player) (Object) this;
 
         if (player.hasAttached(ModAttachmentTypes.NIGHT_OWL)) {
-            return !original.call(instance, level);
+            return level.isBrightOutside() || level.isThundering();
         }
 
         return original.call(instance, level);

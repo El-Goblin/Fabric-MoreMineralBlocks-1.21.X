@@ -405,5 +405,6 @@
   "tooltip.moremineralblocks.legendary_tool_linking_guide": "Press Shift + %s to Link an Inventory",
   "dimension.minecraft.overworld": "OVERWORLD",
   "dimension.minecraft.the_nether": "NETHER",
-  "dimension.minecraft.the_end": "THE END"
+  "dimension.minecraft.the_end": "THE END",
+  "block.moremineralblocks.bed.no_sleep_night_owl": "You can only sleep during day or thunderstorms"
 }
