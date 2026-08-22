@@ -1,9 +1,19 @@
 package net.elgoblin.moremineralblocks.datagen;
 
 import net.elgoblin.moremineralblocks.block.ModBlocks;
+import net.elgoblin.moremineralblocks.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -78,7 +88,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootSubProvider {
         dropSelf(ModBlocks.SMOOTH_QUARTZ_WALL);
         dropSelf(ModBlocks.NETHER_BRICK_FENCE_GATE);
         dropSelf(ModBlocks.PROTECTOR_BLOCK);
-
+        add(Blocks.SPAWNER, multipleDrops(ModItems.CHAOS_ORB, 5, 5));
     }
 
     private void generateLootTablesForSet(ModBlocks.BlockSet blockSet, boolean includeBase) {
@@ -90,5 +100,16 @@ public class ModBlockLootTableProvider extends FabricBlockLootSubProvider {
         dropSelf(blockSet.wall());
         if (blockSet.door() != null) {add(blockSet.door(), this::createDoorTable);}
         if (blockSet.trapdoor() != null) {dropSelf(blockSet.trapdoor());}
+    }
+
+    public LootTable.Builder multipleDrops(Item item, int minDrops, int maxDrops) {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(item)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(minDrops, maxDrops)
+                                )))
+                );
     }
 }

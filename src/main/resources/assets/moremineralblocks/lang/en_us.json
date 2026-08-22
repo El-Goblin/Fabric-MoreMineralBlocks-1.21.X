@@ -377,7 +377,6 @@
   "item.moremineralblocks.moss": "Moss",
   "item.moremineralblocks.netherite_nugget": "Netherite Nugget",
 
-  "effect.moremineralblocks.slimey": "Slimey",
   "effect.moremineralblocks.blinking": "Blinking",
   "effect.moremineralblocks.counter_blink": "Counter Blink",
   "effect.moremineralblocks.fragile": "Fragile",
@@ -406,5 +405,5 @@
   "dimension.minecraft.overworld": "OVERWORLD",
   "dimension.minecraft.the_nether": "NETHER",
   "dimension.minecraft.the_end": "THE END",
-  "block.moremineralblocks.bed.no_sleep_night_owl": "You can only sleep during day or thunderstorms"
+  "block.moremineralblocks.bed.no_sleep_night_owl": "Y si sale una partidita mas?"
 }

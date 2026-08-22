@@ -16,6 +16,7 @@ public class MoreMineralBlocksDataGenerator implements DataGeneratorEntrypoint {
 		 pack.addProvider(ModBlockTagsProvider::new);
 		 pack.addProvider(ModItemTagsProvider::new);
 		 pack.addProvider(ModBlockLootTableProvider::new);
+		 pack.addProvider(ModEntityLootTableProvider::new);
 		 pack.addProvider(ModRecipeProvider::new);
 		 pack.addProvider(ModRegistryDataGeneration::new);
 	}

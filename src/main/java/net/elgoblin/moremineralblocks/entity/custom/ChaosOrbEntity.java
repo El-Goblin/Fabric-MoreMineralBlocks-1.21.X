@@ -421,7 +421,8 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 
     private void smallBoing(HitResult hitResult, AABB boundingBox) {
         sendMessageToUser("Small Boing");
-        List<Entity> entities = level.getEntitiesOfClass(Entity.class, boundingBox.inflate(32.0, 32.0, 32.0), entity -> !(entity.is(EntityTypes.ITEM_FRAME)));
+        List<Entity> entities = level.getEntitiesOfClass(Entity.class, boundingBox.inflate(32.0, 32.0, 32.0),
+                entity -> !(entity.is(EntityTypes.ITEM_FRAME)) && !(entity.is(EntityTypes.ITEM)));
 
         double knockback = 10;
 
@@ -553,10 +554,10 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         int kase = random.nextInt(19);
 
         if (kase > 16 && user != null) {
-            level.explode(this, user.getX(), user.getY(), user.getZ(),(float) 1.0, Level.ExplosionInteraction.BLOCK);
+            level.explode(this, user.getX(), user.getY(), user.getZ(),(float) 8.0, Level.ExplosionInteraction.BLOCK);
         }
         else {
-            level.explode(this, this.getX(), this.getY(), this.getZ(),(float) ((kase==0) ? 127.0 : 5.0), Level.ExplosionInteraction.BLOCK);
+            level.explode(this, this.getX(), this.getY(), this.getZ(),(float) ((kase==0) ? 127.0 : 8.0), Level.ExplosionInteraction.BLOCK);
         }
     }
 
@@ -567,11 +568,11 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         LargeFireball fireballEntity;
         if (user != null) {
             if (kase > 16) {
-                fireballEntity = new LargeFireball(level, (LivingEntity) user, new Vec3(0, -1.0f, 0), 1);
+                fireballEntity = new LargeFireball(level, (LivingEntity) user, new Vec3(0, -1.0f, 0), 4);
                 fireballEntity.setPos(user.getX(), user.getY()+2, user.getZ());
             }
             else {
-                fireballEntity = new LargeFireball(level, (LivingEntity) user, new Vec3(0, -1.0f, 0), 4);
+                fireballEntity = new LargeFireball(level, (LivingEntity) user, new Vec3(0, -1.0f, 0), 8);
                 fireballEntity.setPos(this.getX(), this.getY(), this.getZ());
             }
             level.addFreshEntity(fireballEntity);
@@ -632,6 +633,9 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     private void snowyBodyguards(HitResult hitResult, AABB boundingBox) {
         sendMessageToUser("Snowy Bodyguards");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(16.0, 8.0, 16.0), EntitySelector.NO_SPECTATORS);
+        if (user != null) {
+            entities.add((LivingEntity) user);
+        }
         //level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 3.0, 0.0, 1.0);
 
         for (LivingEntity entity : entities) {

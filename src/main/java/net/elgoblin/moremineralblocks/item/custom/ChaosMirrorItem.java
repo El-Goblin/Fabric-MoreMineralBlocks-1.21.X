@@ -66,9 +66,9 @@ public class ChaosMirrorItem extends Item {
                         Identifier world_ID = dimension.dimension().identifier();
 
                         Vec3 currentCoordinates = playerEntity.position();
-                        ItemStack magicMirror = ModItems.MEMORY_MIRROR.getDefaultInstance();
-                        magicMirror.set(ModDataComponentTypes.COORDINATES, currentCoordinates);
-                        magicMirror.set(ModDataComponentTypes.SERVERWORLD, world_ID);
+                        ItemStack memoryMirror = ModItems.MEMORY_MIRROR.getDefaultInstance();
+                        memoryMirror.set(ModDataComponentTypes.COORDINATES, currentCoordinates);
+                        memoryMirror.set(ModDataComponentTypes.SERVERWORLD, world_ID);
 
                         TeleportTransition teleportTarget = new TeleportTransition(
                                 (ServerLevel) level,
@@ -80,8 +80,13 @@ public class ChaosMirrorItem extends Item {
                         );
                         user.hurtMarked = true;
                         user.fallDistance = 0;
+                        if (playerEntity.isPassenger()) {
+                            playerEntity.stopRiding();
+                        }
                         playerEntity.teleport(teleportTarget);
-                        playerEntity.getInventory().placeItemBackInInventory(magicMirror);
+                        playerEntity.getCooldowns().addCooldown(memoryMirror, 1200);
+                        playerEntity.getInventory().placeItemBackInInventory(memoryMirror);
+
                     }
                 }
             }
