@@ -16,6 +16,7 @@ import net.elgoblin.moremineralblocks.networking.ServerPayloadReceivers;
 import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.terrain.TerrainJobsManager;
 import net.elgoblin.moremineralblocks.util.ModLootTableModifiers;
+import net.elgoblin.moremineralblocks.util.SnowGolemLifetimes;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -74,6 +75,10 @@ public class MoreMineralBlocks implements ModInitializer {
 
 		ServerTickEvents.END_SERVER_TICK.register(minecraftServer -> {
 			TerrainJobsManager.TERRAIN_MANAGER.tick(minecraftServer);
+
+			if (minecraftServer.getGameRules().get(ChaosOrbGameRules.SNOW_GOLEM_LIFETIME) > 0) {
+				minecraftServer.getAllLevels().forEach(dimension -> SnowGolemLifetimes.get(dimension).tick());
+			}
 		});
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(MoreMineralBlocks::applyAfterDamageEffects);
@@ -149,6 +154,7 @@ public class MoreMineralBlocks implements ModInitializer {
 				golem.setPos(entity.position().add(new Vec3(random.nextIntBetweenInclusive(-3, 3), 0, random.nextIntBetweenInclusive(-3, 3))));
 				golem.setAggressive(true);
 				serverLevel.addFreshEntity(golem);
+				SnowGolemLifetimes.get(serverLevel).addEntity(golem);
 			}
 		}
 	}

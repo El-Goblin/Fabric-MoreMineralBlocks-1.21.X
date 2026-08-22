@@ -18,6 +18,11 @@ public class ChaosOrbGameRules {
             .category(GameRuleCategory.MISC)
             .buildAndRegister(Identifier.fromNamespaceAndPath(MoreMineralBlocks.MOD_ID, "void_sphere_fixed_size"));
 
+    public static final GameRule<Integer> SNOW_GOLEM_LIFETIME = GameRuleBuilder
+            .forInteger(1200)
+            .category(GameRuleCategory.MISC)
+            .buildAndRegister(Identifier.fromNamespaceAndPath(MoreMineralBlocks.MOD_ID, "snow_golem_lifetime"));
+
     public static final GameRule<Integer> SKYBLOCK_RADIUS = GameRuleBuilder
             .forInteger(7)
             .category(GameRuleCategory.MISC)
