@@ -12,6 +12,7 @@ import net.elgoblin.moremineralblocks.particle.ModParticles;
 import net.elgoblin.moremineralblocks.terrain.SingleBlockSphereJob;
 import net.elgoblin.moremineralblocks.terrain.TerrainJobsManager;
 import net.elgoblin.moremineralblocks.util.ProtectorManager;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.*;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -21,6 +22,10 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.ResolutionContext;
+import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
+import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -714,8 +719,16 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     private void nightOwl(HitResult hitResult) {
         sendMessageToUser("Night Owl");
 
-        if (user != null && user instanceof ServerPlayer) {
-            user.setAttached(ModAttachmentTypes.NIGHT_OWL, true);
+
+        if (user != null && user instanceof ServerPlayer player) {
+            player.setAttached(ModAttachmentTypes.NIGHT_OWL, true);
+
+            //player.connection.send(new ClientboundSetTitleTextPacket(Component.literal("Hoy me quedo hasta tarde")));
+
+//            player.connection.send(new ClientboundSetTitleTextPacket(
+//                    Component.literal("Hoy me quedo hasta tarde")
+//                            .withStyle(ChatFormatting.RED)
+//            ));
         }
     }
 
