@@ -1,4 +1,4 @@
-# More Mineral Blocks
+# Umamium
 
 ## Setup
 
