@@ -1,7 +1,0 @@
-{
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "moremineralblocks:item/legendary_longsword/inventory/legendary_longsword_knockback"
-    }
-
-}

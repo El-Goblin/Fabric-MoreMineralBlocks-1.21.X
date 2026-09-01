@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:polished_redstone_block",
+  "result": {
+    "count": 4,
+    "id": "umamium:polished_redstone_fence"
+  }
+}

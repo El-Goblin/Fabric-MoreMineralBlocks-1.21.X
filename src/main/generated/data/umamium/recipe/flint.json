@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "umamium:flint_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "minecraft:flint"
+  }
+}

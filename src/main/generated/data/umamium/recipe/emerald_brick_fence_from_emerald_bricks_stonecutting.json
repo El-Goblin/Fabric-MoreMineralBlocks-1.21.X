@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:emerald_bricks",
+  "result": {
+    "count": 4,
+    "id": "umamium:emerald_brick_fence"
+  }
+}

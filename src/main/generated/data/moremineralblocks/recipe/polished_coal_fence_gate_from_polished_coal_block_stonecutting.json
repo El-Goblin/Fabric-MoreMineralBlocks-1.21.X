@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "moremineralblocks:polished_coal_block",
-  "result": {
-    "count": 4,
-    "id": "moremineralblocks:polished_coal_fence_gate"
-  }
-}

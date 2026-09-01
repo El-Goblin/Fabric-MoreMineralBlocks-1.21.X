@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "moremineralblocks:gold_bricks",
-  "result": {
-    "count": 4,
-    "id": "moremineralblocks:gold_brick_fence"
-  }
-}

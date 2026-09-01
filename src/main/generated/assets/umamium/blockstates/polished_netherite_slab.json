@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/polished_netherite_slab"
+    },
+    "type=double": {
+      "model": "umamium:block/polished_netherite_block"
+    },
+    "type=top": {
+      "model": "umamium:block/polished_netherite_slab_top"
+    }
+  }
+}

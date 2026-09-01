@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "redstone",
+  "key": {
+    "#": "umamium:calcified_redstone_block"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 12,
+    "id": "umamium:calcified_redstone_wall"
+  }
+}

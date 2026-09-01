@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "moremineralblocks:block/iron_bricks",
-    "side": "moremineralblocks:block/iron_bricks",
-    "top": "moremineralblocks:block/iron_bricks"
-  }
-}

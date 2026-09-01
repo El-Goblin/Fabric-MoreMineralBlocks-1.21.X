@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "netherite",
+  "ingredients": [
+    "umamium:diamond_door",
+    "umamium:netherite_nugget"
+  ],
+  "result": {
+    "id": "umamium:netherite_door"
+  }
+}

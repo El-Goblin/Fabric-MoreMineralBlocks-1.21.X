@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "umamium:block/amethyst_bricks",
+    "side": "umamium:block/amethyst_bricks",
+    "top": "umamium:block/amethyst_bricks"
+  }
+}

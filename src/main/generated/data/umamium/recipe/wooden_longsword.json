@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "longsword",
+  "key": {
+    "I": "#minecraft:planks",
+    "S": "minecraft:wooden_sword"
+  },
+  "pattern": [
+    "  I",
+    " I ",
+    "S  "
+  ],
+  "result": {
+    "id": "umamium:wooden_longsword"
+  }
+}

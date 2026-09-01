@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/redstone_brick_slab"
+    },
+    "type=double": {
+      "model": "umamium:block/redstone_bricks"
+    },
+    "type=top": {
+      "model": "umamium:block/redstone_brick_slab_top"
+    }
+  }
+}

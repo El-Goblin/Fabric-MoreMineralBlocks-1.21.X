@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/polished_coal_slab"
+    },
+    "type=double": {
+      "model": "umamium:block/polished_coal_block"
+    },
+    "type=top": {
+      "model": "umamium:block/polished_coal_slab_top"
+    }
+  }
+}

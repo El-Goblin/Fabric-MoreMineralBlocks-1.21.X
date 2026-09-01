@@ -21,7 +21,7 @@ repositories {
 loom {
 
 	mods {
-		"moremineralblocks" {
+		"umamium" {
 			sourceSet sourceSets.main
 		}
 	}

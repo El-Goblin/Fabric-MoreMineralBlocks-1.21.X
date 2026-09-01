@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:amethyst_bricks",
+  "result": {
+    "count": 4,
+    "id": "umamium:amethyst_brick_fence_gate"
+  }
+}

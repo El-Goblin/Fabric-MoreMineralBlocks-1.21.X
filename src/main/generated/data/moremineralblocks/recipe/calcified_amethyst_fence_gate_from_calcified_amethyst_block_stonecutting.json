@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "moremineralblocks:calcified_amethyst_block",
-  "result": {
-    "count": 4,
-    "id": "moremineralblocks:calcified_amethyst_fence_gate"
-  }
-}

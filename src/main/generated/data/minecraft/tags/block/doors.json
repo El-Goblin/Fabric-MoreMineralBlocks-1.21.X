@@ -1,12 +1,12 @@
 {
   "values": [
-    "moremineralblocks:gold_door",
-    "moremineralblocks:diamond_door",
-    "moremineralblocks:emerald_door",
-    "moremineralblocks:amethyst_door",
-    "moremineralblocks:lapis_door",
-    "moremineralblocks:coal_door",
-    "moremineralblocks:netherite_door",
-    "moremineralblocks:redstone_door"
+    "umamium:gold_door",
+    "umamium:diamond_door",
+    "umamium:emerald_door",
+    "umamium:amethyst_door",
+    "umamium:lapis_door",
+    "umamium:coal_door",
+    "umamium:netherite_door",
+    "umamium:redstone_door"
   ]
 }

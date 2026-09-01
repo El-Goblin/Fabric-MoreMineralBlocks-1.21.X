@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:chiseled_emerald_block",
+  "result": {
+    "count": 2,
+    "id": "umamium:chiseled_emerald_wall"
+  }
+}

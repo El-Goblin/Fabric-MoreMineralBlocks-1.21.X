@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "netherite",
+  "ingredients": [
+    "umamium:diamond_brick_stairs",
+    "umamium:netherite_nugget"
+  ],
+  "result": {
+    "id": "umamium:netherite_brick_stairs"
+  }
+}

@@ -1,0 +1,7 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "umamium:item/legendary_sword/legendary_sword_smite"
+    }
+
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/calcified_diamond_slab"
+    },
+    "type=double": {
+      "model": "umamium:block/calcified_diamond_block"
+    },
+    "type=top": {
+      "model": "umamium:block/calcified_diamond_slab_top"
+    }
+  }
+}

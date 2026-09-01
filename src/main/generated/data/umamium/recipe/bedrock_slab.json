@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "bedrock",
+  "key": {
+    "#": "minecraft:bedrock"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "umamium:bedrock_slab"
+  }
+}

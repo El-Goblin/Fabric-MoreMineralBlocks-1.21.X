@@ -10,4 +10,4 @@ pluginManagement {
 }
 
 // Should match your modid
-rootProject.name = 'Fabric-MoreMineralBlocks-1.21.X'
+rootProject.name = 'Fabric-Umamium-1.21.X'

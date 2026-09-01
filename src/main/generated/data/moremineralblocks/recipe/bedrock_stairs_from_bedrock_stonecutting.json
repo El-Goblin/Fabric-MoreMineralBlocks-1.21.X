@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "minecraft:bedrock",
-  "result": {
-    "id": "moremineralblocks:bedrock_stairs"
-  }
-}

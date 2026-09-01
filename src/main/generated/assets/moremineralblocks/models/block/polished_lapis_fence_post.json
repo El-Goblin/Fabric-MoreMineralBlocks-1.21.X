@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/fence_post",
-  "textures": {
-    "texture": "moremineralblocks:block/polished_lapis_block"
-  }
-}

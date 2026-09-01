@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_side",
+  "textures": {
+    "texture": "umamium:block/polished_amethyst_block"
+  }
+}

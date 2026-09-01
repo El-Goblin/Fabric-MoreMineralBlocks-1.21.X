@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:diamond_bricks",
+  "result": {
+    "count": 2,
+    "id": "umamium:diamond_brick_slab"
+  }
+}

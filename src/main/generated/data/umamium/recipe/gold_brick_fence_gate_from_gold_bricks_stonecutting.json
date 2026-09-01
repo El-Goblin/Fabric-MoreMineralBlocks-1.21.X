@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:gold_bricks",
+  "result": {
+    "count": 4,
+    "id": "umamium:gold_brick_fence_gate"
+  }
+}

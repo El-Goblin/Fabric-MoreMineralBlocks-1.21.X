@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "moremineralblocks:polished_redstone_block",
-  "result": {
-    "id": "moremineralblocks:polished_redstone_stairs"
-  }
-}

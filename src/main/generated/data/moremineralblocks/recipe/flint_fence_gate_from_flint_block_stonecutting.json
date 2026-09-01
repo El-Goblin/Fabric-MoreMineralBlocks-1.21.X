@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "moremineralblocks:flint_block",
-  "result": {
-    "count": 4,
-    "id": "moremineralblocks:flint_fence_gate"
-  }
-}

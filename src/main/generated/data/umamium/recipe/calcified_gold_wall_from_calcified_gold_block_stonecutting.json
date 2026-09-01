@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:calcified_gold_block",
+  "result": {
+    "count": 2,
+    "id": "umamium:calcified_gold_wall"
+  }
+}

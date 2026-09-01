@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_left",
+  "textures": {
+    "bottom": "umamium:block/diamond_door_bottom",
+    "top": "umamium:block/diamond_door_top"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "lapis",
+  "key": {
+    "#": "umamium:calcified_lapis_block"
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "id": "umamium:calcified_lapis_stairs"
+  }
+}

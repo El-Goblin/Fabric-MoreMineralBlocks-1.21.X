@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_memory_mirror": {
+      "conditions": {
+        "items": [
+          {
+            "items": "umamium:memory_mirror"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "umamium:magic_mirror"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_memory_mirror"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "umamium:magic_mirror"
+    ]
+  }
+}

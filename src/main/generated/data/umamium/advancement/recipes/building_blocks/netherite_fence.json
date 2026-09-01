@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_diamond_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "umamium:diamond_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_netherite_nugget": {
+      "conditions": {
+        "items": [
+          {
+            "items": "umamium:netherite_nugget"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "umamium:netherite_fence"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_diamond_fence",
+      "has_netherite_nugget"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "umamium:netherite_fence"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "umamium:block/polished_netherite_block",
+    "side": "umamium:block/polished_netherite_block",
+    "top": "umamium:block/polished_netherite_block"
+  }
+}

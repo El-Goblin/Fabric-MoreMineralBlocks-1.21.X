@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:flint_block",
+  "result": {
+    "count": 2,
+    "id": "umamium:flint_slab"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:redstone_bricks",
+  "result": {
+    "count": 4,
+    "id": "umamium:redstone_brick_fence"
+  }
+}

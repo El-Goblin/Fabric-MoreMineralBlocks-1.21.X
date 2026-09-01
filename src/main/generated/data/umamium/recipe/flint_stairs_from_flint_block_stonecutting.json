@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:flint_block",
+  "result": {
+    "id": "umamium:flint_stairs"
+  }
+}

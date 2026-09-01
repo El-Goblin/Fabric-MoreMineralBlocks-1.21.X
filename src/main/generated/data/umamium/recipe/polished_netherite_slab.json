@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "netherite",
+  "ingredients": [
+    "umamium:polished_diamond_slab",
+    "umamium:netherite_nugget"
+  ],
+  "result": {
+    "id": "umamium:polished_netherite_slab"
+  }
+}

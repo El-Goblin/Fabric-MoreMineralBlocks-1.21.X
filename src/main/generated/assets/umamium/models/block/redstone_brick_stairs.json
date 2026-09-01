@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "umamium:block/redstone_bricks",
+    "side": "umamium:block/redstone_bricks",
+    "top": "umamium:block/redstone_bricks"
+  }
+}

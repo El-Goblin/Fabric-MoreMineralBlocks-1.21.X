@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "moremineralblocks:block/netherite_bricks",
-    "side": "moremineralblocks:block/netherite_bricks",
-    "top": "moremineralblocks:block/netherite_bricks"
-  }
-}

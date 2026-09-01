@@ -1,0 +1,192 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "composite",
+          "models": [
+            {
+              "type": "model",
+              "model": "umamium:item/legendary_spear/inventory/legendary_spear_handle"
+            },
+            {
+              "type": "condition",
+              "property": "minecraft:component",
+              "predicate": "minecraft:enchantments",
+              "value": [],
+              "on_true": { "type": "model", "model": "umamium:item/legendary_spear/inventory/legendary_spear_base" },
+              "on_false": { "type": "empty" }
+            },
+            {
+              "type": "condition",
+              "property": "minecraft:component",
+              "predicate": "minecraft:enchantments",
+              "value": [{
+                "enchantments": "minecraft:smite"
+              }],
+              "on_true": { "type": "model", "model": "umamium:item/legendary_spear/inventory/legendary_spear_smite" },
+              "on_false": { "type": "empty" }
+            },
+            {
+              "type": "condition",
+              "property": "minecraft:component",
+              "predicate": "minecraft:enchantments",
+              "value": [{
+                "enchantments": "minecraft:sharpness"
+              }],
+              "on_true": { "type": "model", "model": "umamium:item/legendary_spear/inventory/legendary_spear_sharpness" },
+              "on_false": { "type": "empty" }
+            },
+            {
+              "type": "condition",
+              "property": "minecraft:component",
+              "predicate": "minecraft:enchantments",
+              "value": [{
+                "enchantments": "minecraft:bane_of_arthropods"
+              }],
+              "on_true": { "type": "model", "model": "umamium:item/legendary_spear/inventory/legendary_spear_bane_of_arthropods" },
+              "on_false": { "type": "empty" }
+            },
+            {
+              "type": "condition",
+              "property": "minecraft:component",
+              "predicate": "minecraft:enchantments",
+              "value": [{
+                "enchantments": "minecraft:knockback"
+              }],
+              "on_true": { "type": "model", "model": "umamium:item/legendary_spear/inventory/legendary_spear_knockback" },
+              "on_false": { "type": "empty" }
+            },
+            {
+              "type": "condition",
+              "property": "minecraft:component",
+              "predicate": "minecraft:enchantments",
+              "value": [{
+                "enchantments": "minecraft:lunge"
+              }],
+              "on_true": { "type": "model", "model": "umamium:item/legendary_spear/inventory/legendary_spear_lunge" },
+              "on_false": { "type": "empty" }
+            },
+            {
+              "type": "condition",
+              "property": "minecraft:component",
+              "predicate": "minecraft:enchantments",
+              "value": [{
+                "enchantments": "umamium:linker"
+              }],
+              "on_true": { "type": "model", "model": "umamium:item/legendary_spear/inventory/legendary_spear_linker" },
+              "on_false": { "type": "empty" }
+            },
+            {
+              "type": "condition",
+              "property": "minecraft:component",
+              "predicate": "minecraft:enchantments",
+              "value": [{
+                "enchantments": "minecraft:fire_aspect"
+              }],
+              "on_true": { "type": "model", "model": "umamium:item/legendary_spear/inventory/legendary_spear_fire_aspect" },
+              "on_false": { "type": "empty" }
+            }
+          ]
+        },
+        "when": [
+          "gui",
+          "ground",
+          "fixed",
+          "on_shelf"
+        ]
+      }
+    ],
+    "fallback": {
+      "type": "composite",
+      "models": [
+        {
+          "type": "model",
+          "model": "umamium:item/legendary_spear/in_hand/legendary_spear_handle_in_hand"
+        },
+        {
+          "type": "condition",
+          "property": "minecraft:component",
+          "predicate": "minecraft:enchantments",
+          "value": [],
+          "on_true": { "type": "model", "model": "umamium:item/legendary_spear/in_hand/legendary_spear_base_in_hand" },
+          "on_false": { "type": "empty" }
+        },
+        {
+          "type": "condition",
+          "property": "minecraft:component",
+          "predicate": "minecraft:enchantments",
+          "value": [{
+            "enchantments": "minecraft:smite"
+          }],
+          "on_true": { "type": "model", "model": "umamium:item/legendary_spear/in_hand/legendary_spear_smite_in_hand" },
+          "on_false": { "type": "empty" }
+        },
+        {
+          "type": "condition",
+          "property": "minecraft:component",
+          "predicate": "minecraft:enchantments",
+          "value": [{
+            "enchantments": "minecraft:sharpness"
+          }],
+          "on_true": { "type": "model", "model": "umamium:item/legendary_spear/in_hand/legendary_spear_sharpness_in_hand" },
+          "on_false": { "type": "empty" }
+        },
+        {
+          "type": "condition",
+          "property": "minecraft:component",
+          "predicate": "minecraft:enchantments",
+          "value": [{
+            "enchantments": "minecraft:bane_of_arthropods"
+          }],
+          "on_true": { "type": "model", "model": "umamium:item/legendary_spear/in_hand/legendary_spear_bane_of_arthropods_in_hand" },
+          "on_false": { "type": "empty" }
+        },
+        {
+          "type": "condition",
+          "property": "minecraft:component",
+          "predicate": "minecraft:enchantments",
+          "value": [{
+            "enchantments": "minecraft:knockback"
+          }],
+          "on_true": { "type": "model", "model": "umamium:item/legendary_spear/in_hand/legendary_spear_knockback_in_hand" },
+          "on_false": { "type": "empty" }
+        },
+        {
+          "type": "condition",
+          "property": "minecraft:component",
+          "predicate": "minecraft:enchantments",
+          "value": [{
+            "enchantments": "minecraft:lunge"
+          }],
+          "on_true": { "type": "model", "model": "umamium:item/legendary_spear/in_hand/legendary_spear_lunge_in_hand" },
+          "on_false": { "type": "empty" }
+        },
+        {
+          "type": "condition",
+          "property": "minecraft:component",
+          "predicate": "minecraft:enchantments",
+          "value": [{
+            "enchantments": "umamium:linker"
+          }],
+          "on_true": { "type": "model", "model": "umamium:item/legendary_spear/in_hand/legendary_spear_linker_in_hand" },
+          "on_false": { "type": "empty" }
+        },
+        {
+          "type": "condition",
+          "property": "minecraft:component",
+          "predicate": "minecraft:enchantments",
+          "value": [{
+            "enchantments": "minecraft:fire_aspect"
+          }],
+          "on_true": { "type": "model", "model": "umamium:item/legendary_spear/in_hand/legendary_spear_fire_aspect_in_hand" },
+          "on_false": { "type": "empty" }
+        }
+      ]
+    },
+    "property": "minecraft:display_context"
+  },
+  "swap_animation_scale": 1.9,
+  "oversized_in_gui": true
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/flint_slab"
+    },
+    "type=double": {
+      "model": "umamium:block/flint_block"
+    },
+    "type=top": {
+      "model": "umamium:block/flint_slab_top"
+    }
+  }
+}

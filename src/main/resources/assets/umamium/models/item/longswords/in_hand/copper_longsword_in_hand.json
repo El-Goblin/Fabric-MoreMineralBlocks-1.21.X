@@ -1,0 +1,7 @@
+{
+    "parent": "umamium:item/longsword_in_hand_parent",
+    "textures": {
+        "layer0": "umamium:item/longswords/in_hand/copper_longsword_in_hand"
+    }
+
+}

@@ -1,0 +1,7 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "umamium:item/legendary_spear/inventory/legendary_spear_bane_of_arthropods"
+    }
+
+}

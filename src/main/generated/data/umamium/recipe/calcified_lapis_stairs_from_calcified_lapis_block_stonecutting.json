@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:calcified_lapis_block",
+  "result": {
+    "id": "umamium:calcified_lapis_stairs"
+  }
+}

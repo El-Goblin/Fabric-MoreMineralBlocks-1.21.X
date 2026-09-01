@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "moremineralblocks:block/emerald_bricks",
-    "side": "moremineralblocks:block/emerald_bricks",
-    "top": "moremineralblocks:block/emerald_bricks"
-  }
-}

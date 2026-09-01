@@ -1,0 +1,91 @@
+{
+  "hand_animation_on_swap": true,
+  "model": {
+    "type": "composite",
+    "models": [
+      {
+        "type": "model",
+        "model": "umamium:item/legendary_axe/legendary_axe_handle"
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_axe/legendary_axe_base" },
+        "on_false": { "type": "empty" }
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "minecraft:efficiency"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_axe/legendary_axe_efficiency" },
+        "on_false": { "type": "empty" }
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "minecraft:silk_touch"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_axe/legendary_axe_silk_touch" },
+        "on_false": { "type": "empty" }
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "minecraft:fortune"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_axe/legendary_axe_fortune" },
+        "on_false": { "type": "empty" }
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "minecraft:bane_of_arthropods"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_axe/legendary_axe_bane_of_arthropods" },
+        "on_false": { "type": "empty" }
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "minecraft:smite"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_axe/legendary_axe_smite" },
+        "on_false": { "type": "empty" }
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "minecraft:sharpness"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_axe/legendary_axe_sharpness" },
+        "on_false": { "type": "empty" }
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "umamium:linker"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_axe/legendary_axe_linker" },
+        "on_false": { "type": "empty" }
+      }
+    ]
+  }
+
+}

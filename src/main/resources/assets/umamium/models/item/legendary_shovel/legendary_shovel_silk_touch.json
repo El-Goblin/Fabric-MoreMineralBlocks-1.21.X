@@ -1,0 +1,7 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "umamium:item/legendary_shovel/legendary_shovel_silk_touch"
+    }
+
+}

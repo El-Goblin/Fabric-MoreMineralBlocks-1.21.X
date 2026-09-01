@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:flint_block",
+  "result": {
+    "count": 4,
+    "id": "umamium:flint_fence_gate"
+  }
+}

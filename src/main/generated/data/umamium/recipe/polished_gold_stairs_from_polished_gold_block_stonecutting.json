@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:polished_gold_block",
+  "result": {
+    "id": "umamium:polished_gold_stairs"
+  }
+}

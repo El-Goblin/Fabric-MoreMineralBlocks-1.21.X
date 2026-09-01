@@ -1,0 +1,52 @@
+{
+  "hand_animation_on_swap": true,
+  "model": {
+    "type": "composite",
+    "models": [
+      {
+        "type": "model",
+        "model": "umamium:item/legendary_pickaxe/legendary_pickaxe_base"
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "minecraft:efficiency"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_pickaxe/legendary_pickaxe_efficiency" },
+        "on_false": { "type": "empty" }
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "minecraft:silk_touch"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_pickaxe/legendary_pickaxe_silk_touch" },
+        "on_false": { "type": "empty" }
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "minecraft:fortune"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_pickaxe/legendary_pickaxe_fortune" },
+        "on_false": { "type": "empty" }
+      },
+      {
+        "type": "condition",
+        "property": "minecraft:component",
+        "predicate": "minecraft:enchantments",
+        "value": [{
+          "enchantments": "umamium:linker"
+        }],
+        "on_true": { "type": "model", "model": "umamium:item/legendary_pickaxe/legendary_pickaxe_linker" },
+        "on_false": { "type": "empty" }
+      }
+    ]
+  }
+}

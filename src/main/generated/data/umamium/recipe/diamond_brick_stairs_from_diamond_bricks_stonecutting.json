@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:diamond_bricks",
+  "result": {
+    "id": "umamium:diamond_brick_stairs"
+  }
+}

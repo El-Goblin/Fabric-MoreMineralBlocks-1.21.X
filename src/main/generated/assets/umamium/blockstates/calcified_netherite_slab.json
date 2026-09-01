@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/calcified_netherite_slab"
+    },
+    "type=double": {
+      "model": "umamium:block/calcified_netherite_block"
+    },
+    "type=top": {
+      "model": "umamium:block/calcified_netherite_slab_top"
+    }
+  }
+}

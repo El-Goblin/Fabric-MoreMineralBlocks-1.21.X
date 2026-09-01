@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "longsword",
+  "key": {
+    "I": "#minecraft:stone_crafting_materials",
+    "S": "minecraft:stone_sword"
+  },
+  "pattern": [
+    "  I",
+    " I ",
+    "S  "
+  ],
+  "result": {
+    "id": "umamium:stone_longsword"
+  }
+}

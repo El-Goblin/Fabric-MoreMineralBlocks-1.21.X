@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:emerald_bricks",
+  "result": {
+    "id": "umamium:emerald_brick_stairs"
+  }
+}

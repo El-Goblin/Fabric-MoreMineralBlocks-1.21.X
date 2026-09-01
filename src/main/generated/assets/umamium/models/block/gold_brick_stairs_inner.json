@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "umamium:block/gold_bricks",
+    "side": "umamium:block/gold_bricks",
+    "top": "umamium:block/gold_bricks"
+  }
+}

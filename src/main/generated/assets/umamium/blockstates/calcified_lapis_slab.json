@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/calcified_lapis_slab"
+    },
+    "type=double": {
+      "model": "umamium:block/calcified_lapis_block"
+    },
+    "type=top": {
+      "model": "umamium:block/calcified_lapis_slab_top"
+    }
+  }
+}

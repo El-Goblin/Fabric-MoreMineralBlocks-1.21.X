@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "umamium:block/coal_bricks",
+    "side": "umamium:block/coal_bricks",
+    "top": "umamium:block/coal_bricks"
+  }
+}

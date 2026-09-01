@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_top_right_open",
-  "textures": {
-    "bottom": "moremineralblocks:block/diamond_door_bottom",
-    "top": "moremineralblocks:block/diamond_door_top"
-  }
-}

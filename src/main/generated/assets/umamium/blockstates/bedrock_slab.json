@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/bedrock_slab"
+    },
+    "type=double": {
+      "model": "minecraft:block/bedrock"
+    },
+    "type=top": {
+      "model": "umamium:block/bedrock_slab_top"
+    }
+  }
+}

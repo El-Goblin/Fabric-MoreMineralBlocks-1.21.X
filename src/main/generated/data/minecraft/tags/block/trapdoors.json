@@ -1,12 +1,12 @@
 {
   "values": [
-    "moremineralblocks:gold_trapdoor",
-    "moremineralblocks:diamond_trapdoor",
-    "moremineralblocks:emerald_trapdoor",
-    "moremineralblocks:amethyst_trapdoor",
-    "moremineralblocks:lapis_trapdoor",
-    "moremineralblocks:coal_trapdoor",
-    "moremineralblocks:netherite_trapdoor",
-    "moremineralblocks:redstone_trapdoor"
+    "umamium:gold_trapdoor",
+    "umamium:diamond_trapdoor",
+    "umamium:emerald_trapdoor",
+    "umamium:amethyst_trapdoor",
+    "umamium:lapis_trapdoor",
+    "umamium:coal_trapdoor",
+    "umamium:netherite_trapdoor",
+    "umamium:redstone_trapdoor"
   ]
 }

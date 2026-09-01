@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "moremineralblocks:polished_diamond_block",
-  "result": {
-    "id": "moremineralblocks:polished_diamond_stairs"
-  }
-}

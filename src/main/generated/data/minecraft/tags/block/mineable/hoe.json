@@ -1,9 +1,9 @@
 {
   "values": [
-    "moremineralblocks:sculk_stairs",
-    "moremineralblocks:sculk_slab",
-    "moremineralblocks:sculk_fence",
-    "moremineralblocks:sculk_fence_gate",
-    "moremineralblocks:sculk_wall"
+    "umamium:sculk_stairs",
+    "umamium:sculk_slab",
+    "umamium:sculk_fence",
+    "umamium:sculk_fence_gate",
+    "umamium:sculk_wall"
   ]
 }

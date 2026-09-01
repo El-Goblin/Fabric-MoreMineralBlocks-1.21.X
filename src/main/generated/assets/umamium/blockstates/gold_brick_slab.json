@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/gold_brick_slab"
+    },
+    "type=double": {
+      "model": "umamium:block/gold_bricks"
+    },
+    "type=top": {
+      "model": "umamium:block/gold_brick_slab_top"
+    }
+  }
+}

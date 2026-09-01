@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "emerald",
+  "key": {
+    "#": "umamium:chiseled_emerald_block",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "#S#",
+    "#S#"
+  ],
+  "result": {
+    "count": 16,
+    "id": "umamium:chiseled_emerald_fence"
+  }
+}

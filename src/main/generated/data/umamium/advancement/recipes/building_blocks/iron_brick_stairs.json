@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_iron_bricks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "umamium:iron_bricks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "umamium:iron_brick_stairs"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_iron_bricks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "umamium:iron_brick_stairs"
+    ]
+  }
+}

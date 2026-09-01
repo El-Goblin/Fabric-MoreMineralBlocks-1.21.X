@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smithing_transform",
-  "addition": "#minecraft:netherite_tool_materials",
-  "base": "moremineralblocks:diamond_longsword",
-  "result": {
-    "id": "moremineralblocks:netherite_longsword"
-  },
-  "template": "minecraft:netherite_upgrade_smithing_template"
-}

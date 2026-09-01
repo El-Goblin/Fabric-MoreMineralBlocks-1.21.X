@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:polished_coal_block",
+  "result": {
+    "id": "umamium:polished_coal_stairs"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "umamium:block/chiseled_emerald_block",
+    "side": "umamium:block/chiseled_emerald_block",
+    "top": "umamium:block/chiseled_emerald_block"
+  }
+}

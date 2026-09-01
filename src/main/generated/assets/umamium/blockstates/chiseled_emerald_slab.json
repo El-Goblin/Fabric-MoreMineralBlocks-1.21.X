@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/chiseled_emerald_slab"
+    },
+    "type=double": {
+      "model": "umamium:block/chiseled_emerald_block"
+    },
+    "type=top": {
+      "model": "umamium:block/chiseled_emerald_slab_top"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "umamium:calcified_emerald_block",
+  "result": {
+    "id": "umamium:calcified_emerald_stairs"
+  }
+}

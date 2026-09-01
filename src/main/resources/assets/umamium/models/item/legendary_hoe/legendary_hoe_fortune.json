@@ -1,0 +1,7 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "umamium:item/legendary_hoe/legendary_hoe_fortune"
+    }
+
+}

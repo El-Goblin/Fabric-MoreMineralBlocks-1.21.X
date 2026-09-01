@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "gold",
+  "ingredients": [
+    "minecraft:gold_block",
+    "minecraft:calcite"
+  ],
+  "result": {
+    "count": 2,
+    "id": "umamium:calcified_gold_block"
+  }
+}

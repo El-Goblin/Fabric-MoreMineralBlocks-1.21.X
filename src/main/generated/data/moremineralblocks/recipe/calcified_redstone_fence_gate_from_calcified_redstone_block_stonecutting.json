@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "moremineralblocks:calcified_redstone_block",
-  "result": {
-    "count": 4,
-    "id": "moremineralblocks:calcified_redstone_fence_gate"
-  }
-}

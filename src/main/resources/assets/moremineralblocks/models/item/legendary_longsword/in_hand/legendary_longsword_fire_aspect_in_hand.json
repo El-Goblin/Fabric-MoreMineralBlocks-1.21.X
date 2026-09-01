@@ -1,7 +1,0 @@
-{
-    "parent": "moremineralblocks:item/longsword_fire_flat",
-    "textures": {
-        "layer0": "moremineralblocks:item/legendary_longsword/in_hand/legendary_longsword_fire_aspect_animation_in_hand"
-    }
-
-}

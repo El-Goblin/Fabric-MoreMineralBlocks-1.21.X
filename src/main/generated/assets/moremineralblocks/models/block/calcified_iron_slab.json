@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "moremineralblocks:block/calcified_iron_block",
-    "side": "moremineralblocks:block/calcified_iron_block",
-    "top": "moremineralblocks:block/calcified_iron_block"
-  }
-}

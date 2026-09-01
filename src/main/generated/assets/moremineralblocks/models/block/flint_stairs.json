@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "moremineralblocks:block/flint_block",
-    "side": "moremineralblocks:block/flint_block",
-    "top": "moremineralblocks:block/flint_block"
-  }
-}
