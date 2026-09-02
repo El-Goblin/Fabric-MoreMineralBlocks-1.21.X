@@ -56,7 +56,10 @@ public class SingleBlockSphereJob implements TerrainJob{
             blocksProcessed += processEquals(positionToModify);
         }
         if (advanceX.isEmpty() && advanceZ.isEmpty()) {
-            player.sendSystemMessage(Component.literal(String.format("%d", radius)));
+
+            if (player != null && player instanceof Player) {
+                player.sendSystemMessage(Component.literal(String.format("%d", radius)));
+            }
             return true;
         }
         return false;

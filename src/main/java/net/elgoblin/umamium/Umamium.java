@@ -15,6 +15,7 @@ import net.elgoblin.umamium.networking.ModPayloads;
 import net.elgoblin.umamium.networking.ServerPayloadReceivers;
 import net.elgoblin.umamium.particle.ModParticles;
 import net.elgoblin.umamium.terrain.TerrainJobsManager;
+import net.elgoblin.umamium.util.ArrowShootersManager;
 import net.elgoblin.umamium.util.ModLootTableModifiers;
 import net.elgoblin.umamium.util.SnowGolemLifetimes;
 import net.fabricmc.api.ModInitializer;
@@ -64,6 +65,7 @@ public class Umamium implements ModInitializer {
 			if (minecraftServer.getGameRules().get(ChaosOrbGameRules.SNOW_GOLEM_LIFETIME) > 0) {
 				minecraftServer.getAllLevels().forEach(dimension -> SnowGolemLifetimes.get(dimension).tick());
 			}
+			minecraftServer.getAllLevels().forEach(dimension -> ArrowShootersManager.get(dimension).tick());
 		});
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(Umamium::applyAfterDamageEffects);

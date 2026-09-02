@@ -11,8 +11,10 @@ import net.elgoblin.umamium.item.custom.ChaosOrbItem;
 import net.elgoblin.umamium.particle.ModParticles;
 import net.elgoblin.umamium.terrain.SingleBlockSphereJob;
 import net.elgoblin.umamium.terrain.TerrainJobsManager;
+import net.elgoblin.umamium.util.ArrowShootersManager;
+import net.elgoblin.umamium.util.variants.FrogAccessor;
 import net.elgoblin.umamium.util.ProtectorManager;
-import net.minecraft.ChatFormatting;
+import net.elgoblin.umamium.util.variants.PigAccessor;
 import net.minecraft.core.*;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -22,10 +24,8 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
-import net.minecraft.network.chat.ResolutionContext;
-import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
-import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -38,6 +38,27 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.chicken.Chicken;
+import net.minecraft.world.entity.animal.chicken.ChickenVariant;
+import net.minecraft.world.entity.animal.chicken.ChickenVariants;
+import net.minecraft.world.entity.animal.cow.Cow;
+import net.minecraft.world.entity.animal.cow.CowVariant;
+import net.minecraft.world.entity.animal.cow.CowVariants;
+import net.minecraft.world.entity.animal.equine.SkeletonHorse;
+import net.minecraft.world.entity.animal.frog.FrogVariant;
+import net.minecraft.world.entity.animal.frog.FrogVariants;
+import net.minecraft.world.entity.animal.pig.Pig;
+import net.minecraft.world.entity.animal.pig.PigVariant;
+import net.minecraft.world.entity.animal.pig.PigVariants;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.monster.cubemob.MagmaCube;
+import net.minecraft.world.entity.monster.cubemob.Slime;
+import net.minecraft.world.entity.monster.cubemob.SulfurCube;
+import net.minecraft.world.entity.monster.illager.Illusioner;
+import net.minecraft.world.entity.monster.illager.Pillager;
+import net.minecraft.world.entity.monster.piglin.Piglin;
+import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
+import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
@@ -75,12 +96,9 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     private final RandomSource random = RandomSource.create();
     private String seededEvent = "none";
     private final Map<String, Pair<Integer, Integer>> eventMap = Map.ofEntries(
-//            Map.entry("mobpack", new Pair<>(0,0)),
             Map.entry("mythicitem", new Pair<>(0,0)),
-//            Map.entry("skeletonhorse", new Pair<>(0,2)),
+//
             Map.entry("progression", new Pair<>(0,1)),
-//            Map.entry("armor", new Pair<>(0,4)),
-//            Map.entry("tools", new Pair<>(0,5)),
             Map.entry("chaos", new Pair<>(0,2)),
             Map.entry("explosion", new Pair<>(0,3)),
             Map.entry("fireexplosion", new Pair<>(0,4)),
@@ -89,6 +107,12 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             Map.entry("prize", new Pair<>(0, 7)),
             Map.entry("xp", new Pair<>(0, 8)),
             Map.entry("terrainsphere", new Pair<>(0,9)),
+            Map.entry("skeletonhorse", new Pair<>(0,10)),
+            Map.entry("armor", new Pair<>(0,11)),
+            Map.entry("tools", new Pair<>(0,12)),
+            Map.entry("mobpack", new Pair<>(0,13)),
+            Map.entry("giantslime", new Pair<>(0,14)),
+            Map.entry("arrowshooter", new Pair<>(0,15)),
 
             Map.entry("smallboing", new Pair<>(1,0)),
             Map.entry("beacon", new Pair<>(1,1)),
@@ -96,6 +120,8 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 //            Map.entry("range", new Pair<>(2, 0)),
             Map.entry("fragile", new Pair<>(2,0)),
             Map.entry("snowybodyguards", new Pair<>(2,1)),
+            Map.entry("waterweakness", new Pair<>(2,2)),
+            Map.entry("chaoseffect", new Pair<>(2,3)),
 
             Map.entry("nightowl", new Pair<>(3,0)),
 //
@@ -117,21 +143,22 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     private LinkedList<BlockPos> tunnelQueue = new LinkedList<>();
 
     private List<Consumer<HitResult>> pointChaosEffects = new ArrayList<>(List.of(
-//            this::spawnMobPack,
             this::getMythicItem,
-//            this::spawnSkeletonHorse,
             this::breakGameProgression,
-//            this::getArmorSet,
-//            this::getToolsSet,
             this::spawn5ChaosOrbs,
-            this::explosion, // Ponerle timer
-            this::fireExplosion, // Ponerle timer
+            this::explosion,
+            this::fireExplosion,
             this::getFood,
             this::getEnchantedBook,
             this::smallPrize,
             this::xp,
-            this::voidSphere
-//            this::getInfiniteItem
+            this::voidSphere,
+            this::spawnSkeletonHorse,
+            this::getArmorSet,
+            this::getToolsSet,
+            this::spawnMobPack,
+            this::spawnGiantSlime,
+            this::arrowShooter
     ));
     private List<BiConsumer<HitResult, AABB>> areaChaosEffects = new ArrayList<>(List.of(
             this::smallBoing,
@@ -140,7 +167,9 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     private List<BiConsumer<HitResult, AABB>> selfAreaChaosEffects = new ArrayList<>(List.of(
 //            this::increaseInteractionRange,
             this::fragile,
-            this::snowyBodyguards
+            this::snowyBodyguards,
+            this::waterWeakness,
+            this::chaosEffect
     ));
     private List<Consumer<HitResult>> selfChaosEffects = new ArrayList<>(List.of(
             this::nightOwl
@@ -584,6 +613,15 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         }
     }
 
+    private void arrowShooter(HitResult hitResult) {
+        sendMessageToUser("Arrow Shooter");
+        ArrowShootersManager arrowShooters = ArrowShootersManager.get(level);
+        arrowShooters.addShooter(this.getX(), this.getY() + 1, this.getZ());
+        System.out.println("X = " + this.getX());
+        System.out.println("Y = " + this.getY());
+        System.out.println("Z = " + this.getZ());
+    }
+
     private void spawn5ChaosOrbs(HitResult hitResult) {
         sendMessageToUser("5 Chaos Orbs");
         if (user != null) {
@@ -625,7 +663,9 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         sendMessageToUser("Fragile");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 16.0, 32.0), EntitySelector.NO_SPECTATORS);
         level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 3.0, 0.0, 1.0);
-
+        if (user != null && !entities.contains((LivingEntity) user)) {
+            entities.add((LivingEntity) user);
+        }
 
         for (LivingEntity entity : entities) {
             MobEffectInstance effect = new MobEffectInstance(ModEffects.FRAGILE, 6000, 0);
@@ -635,10 +675,43 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         }
     }
 
+    private void waterWeakness(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Water Weakness");
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(32.0, 16.0, 32.0), EntitySelector.NO_SPECTATORS);
+        //level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 3.0, 0.0, 1.0);
+
+        if (user != null && !entities.contains((LivingEntity) user)) {
+            entities.add((LivingEntity) user);
+        }
+
+        for (LivingEntity entity : entities) {
+            MobEffectInstance effect = new MobEffectInstance(ModEffects.WATER_WEAKNESS, 12000, 0);
+            if (entity != null) {
+                entity.addEffect(effect);
+            }
+        }
+    }
+
+    private void chaosEffect(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Chaos Effect");
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(16.0, 8.0, 16.0), EntitySelector.NO_SPECTATORS);
+        if (user != null && !entities.contains((LivingEntity) user)) {
+            entities.add((LivingEntity) user);
+        }
+        //level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 3.0, 0.0, 1.0);
+
+        for (LivingEntity entity : entities) {
+            MobEffectInstance effect = new MobEffectInstance(ModEffects.CHAOS, 600, 0);
+            if (entity != null) {
+                entity.addEffect(effect);
+            }
+        }
+    }
+
     private void snowyBodyguards(HitResult hitResult, AABB boundingBox) {
         sendMessageToUser("Snowy Bodyguards");
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(16.0, 8.0, 16.0), EntitySelector.NO_SPECTATORS);
-        if (user != null) {
+        if (user != null && !entities.contains((LivingEntity) user)) {
             entities.add((LivingEntity) user);
         }
         //level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 3.0, 0.0, 1.0);
@@ -1037,6 +1110,355 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         }
     }
 
+    private void spawnSkeletonHorse(HitResult hitResult) {
+        sendMessageToUser("Skeleton Horse");
+        SkeletonHorse skeletonHorseEntity = EntityTypes.SKELETON_HORSE.create(level, EntitySpawnReason.EVENT);
+        if (skeletonHorseEntity != null) {
+            skeletonHorseEntity.setTrap(true);
+            skeletonHorseEntity.setAge(0);
+            skeletonHorseEntity.absSnapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+
+            level.addFreshEntity(skeletonHorseEntity);
+        }
+    }
+
+    private void spawnGiantSlime(HitResult hitResult) {
+        sendMessageToUser("Skeleton Horse");
+        if (level.dimension() == Level.NETHER) {
+            MagmaCube giantMagmaCube = EntityTypes.MAGMA_CUBE.create(level, EntitySpawnReason.EVENT);
+            if (giantMagmaCube != null) {
+                giantMagmaCube.setSize(64, true);
+                applyAttributeChange(Attributes.JUMP_STRENGTH, 5, giantMagmaCube);
+                applyAttributeChange(Attributes.MOVEMENT_SPEED, 3, giantMagmaCube);
+                applyAttributeChange(Attributes.STEP_HEIGHT, 5, giantMagmaCube);
+                giantMagmaCube.setCustomName(Component.literal("Thuvi' Ejah"));
+                giantMagmaCube.setCustomNameVisible(true);
+                giantMagmaCube.absSnapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+
+                level.addFreshEntity(giantMagmaCube);
+            }
+        }
+        if (level.dimension() == Level.END) {
+            SulfurCube giantSulfurCube = EntityTypes.SULFUR_CUBE.create(level, EntitySpawnReason.EVENT);
+            if (giantSulfurCube != null) {
+                giantSulfurCube.setSize(64, true);
+                applyAttributeChange(Attributes.JUMP_STRENGTH, 5, giantSulfurCube);
+                applyAttributeChange(Attributes.MOVEMENT_SPEED, 3, giantSulfurCube);
+                applyAttributeChange(Attributes.STEP_HEIGHT, 5, giantSulfurCube);
+                giantSulfurCube.setCustomName(Component.literal("Thuvi' Ejah"));
+                giantSulfurCube.setCustomNameVisible(true);
+                giantSulfurCube.absSnapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+
+                level.addFreshEntity(giantSulfurCube);
+            }
+        }
+        else {
+            if (level.dimension() != Level.NETHER) {
+                Slime giantSlime = EntityTypes.SLIME.create(level, EntitySpawnReason.EVENT);
+                if (giantSlime != null) {
+                    giantSlime.setSize(64, true);
+                    applyAttributeChange(Attributes.JUMP_STRENGTH, 5, giantSlime);
+                    applyAttributeChange(Attributes.MOVEMENT_SPEED, 3, giantSlime);
+                    applyAttributeChange(Attributes.STEP_HEIGHT, 5, giantSlime);
+                    giantSlime.setCustomName(Component.literal("Thuvi' Ejah"));
+                    giantSlime.setCustomNameVisible(true);
+                    giantSlime.absSnapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+
+                    level.addFreshEntity(giantSlime);
+                }
+            }
+        }
+    }
+
+    private void getArmorSet(HitResult hitResult) {
+        sendMessageToUser("Armor");
+
+        int material = random.nextIntBetweenInclusive(0,4);
+        switch (material) {
+            case 0:
+                this.spawnAtLocation(level, Items.LEATHER_HELMET.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.LEATHER_HORSE_ARMOR.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.LEATHER_CHESTPLATE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.LEATHER_LEGGINGS.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.LEATHER_BOOTS.getDefaultInstance(), 0);
+                break;
+            case 1:
+                this.spawnAtLocation(level, Items.IRON_HELMET.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.IRON_HORSE_ARMOR.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.IRON_CHESTPLATE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.IRON_LEGGINGS.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.IRON_BOOTS.getDefaultInstance(), 0);
+                break;
+            case 2:
+                this.spawnAtLocation(level, Items.GOLDEN_HELMET.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.GOLDEN_HORSE_ARMOR.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.GOLDEN_CHESTPLATE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.GOLDEN_LEGGINGS.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.GOLDEN_BOOTS.getDefaultInstance(), 0);
+                break;
+            case 3:
+                this.spawnAtLocation(level, Items.DIAMOND_HELMET.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.DIAMOND_HORSE_ARMOR.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.DIAMOND_CHESTPLATE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.DIAMOND_LEGGINGS.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.DIAMOND_BOOTS.getDefaultInstance(), 0);
+                break;
+            case 4:
+                this.spawnAtLocation(level, Items.CHAINMAIL_HELMET.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.CHAINMAIL_CHESTPLATE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.CHAINMAIL_LEGGINGS.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.CHAINMAIL_BOOTS.getDefaultInstance(), 0);
+                break;
+        }
+    }
+
+    private void getToolsSet(HitResult hitResult) {
+        sendMessageToUser("Tools");
+
+        int material = random.nextIntBetweenInclusive(0,4);
+        switch (material) {
+            case 0:
+                this.spawnAtLocation(level, Items.WOODEN_AXE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.WOODEN_SHOVEL.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.WOODEN_SWORD.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.WOODEN_PICKAXE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.WOODEN_HOE.getDefaultInstance(), 0);
+                break;
+            case 1:
+                this.spawnAtLocation(level, Items.STONE_AXE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.STONE_SHOVEL.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.STONE_SWORD.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.STONE_PICKAXE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.STONE_HOE.getDefaultInstance(), 0);
+                break;
+            case 2:
+                this.spawnAtLocation(level, Items.IRON_AXE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.IRON_SHOVEL.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.IRON_SWORD.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.IRON_PICKAXE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.IRON_HOE.getDefaultInstance(), 0);
+                break;
+            case 3:
+                this.spawnAtLocation(level, Items.GOLDEN_AXE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.GOLDEN_SHOVEL.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.GOLDEN_SWORD.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.GOLDEN_PICKAXE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.GOLDEN_HOE.getDefaultInstance(), 0);
+                break;
+            case 4:
+                this.spawnAtLocation(level, Items.DIAMOND_AXE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.DIAMOND_SHOVEL.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.DIAMOND_SWORD.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.DIAMOND_PICKAXE.getDefaultInstance(), 0);
+                this.spawnAtLocation(level, Items.DIAMOND_HOE.getDefaultInstance(), 0);
+                break;
+        }
+    }
+
+    private void spawnMobPack(HitResult hitResult) {
+        sendMessageToUser("Mob Pack");
+
+        List<EntityType<?>> mobs = BuiltInRegistries.ENTITY_TYPE.stream().filter(
+                type -> type.getCategory() != MobCategory.MISC
+        ).toList();
+
+        int nextEntity = this.random.nextIntBetweenInclusive(0, mobs.size()-1);
+        int spawnsToPerform = this.random.nextIntBetweenInclusive(5, 14);
+
+//        EntityType<?> entityType = mobs.get(nextEntity);
+//        Identifier entityTypeID = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
+        EntityType<?> entityType = EntityTypes.PIG;
+        Identifier entityTypeID = Identifier.parse("minecraft:pig");
+
+        while (spawnsToPerform-- > 0) {
+            Entity entity = entityType.create(level, EntitySpawnReason.EVENT);
+
+            switch (entityTypeID.toString()) {
+                case "minecraft:wither":
+                    if (entity != null) {
+                        ((WitherBoss) entity).setInvulnerableTicks(600);
+                    }
+                    spawnsToPerform-=4;
+                    break;
+
+                case "minecraft:ender_dragon", "minecraft:warden":
+                    nextEntity = this.random.nextIntBetweenInclusive(0, mobs.size() - 1);
+                    entityType = mobs.get(nextEntity);
+                    entityTypeID = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
+                    entity = entityType.create(level, EntitySpawnReason.EVENT);
+                    spawnsToPerform++;
+                    break;
+
+                case "minecraft:bat", "minecraft:bee", "minecraft:cod", "minecraft:pufferfish", "minecraft:rabbit", "minecraft:salmon", "minecraft:silverfish", "minecraft:endermite", "minecraft:tadpole":
+                    Entity entity2 = entityType.create(level, EntitySpawnReason.EVENT);
+                    if (entity2 != null) {
+                        entity2.absSnapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                        level.addFreshEntity(entity2);
+                    }
+                    Entity entity3 = entityType.create(level, EntitySpawnReason.EVENT);
+                    if (entity3 != null) {
+                        entity3.absSnapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                        level.addFreshEntity(entity3);
+                    }
+                    break;
+
+                case "minecraft:elder_guardian":
+                    spawnsToPerform-=4;
+                    break;
+
+                case "minecraft:slime":
+                    if (entity != null) {
+                        ((Slime) entity).setSize(random.nextIntBetweenInclusive(1, 16), true);
+                    }
+                    break;
+
+                case "minecraft:magma_cube":
+                    if (entity != null) {
+                        ((MagmaCube) entity).setSize(random.nextIntBetweenInclusive(1, 8), true);
+                    }
+                    break;
+
+                case "minecraft:sulfur_cube":
+                    if (entity != null) {
+                        ((SulfurCube) entity).setSize(random.nextIntBetweenInclusive(1, 8), true);
+                    }
+                    break;
+
+                case "minecraft:skeleton", "minecraft:bogged", "minecraft:stray", "minecraft:parched":
+                    if (entity != null) {
+                        ((AbstractSkeleton) entity).setItemSlot(EquipmentSlot.MAINHAND, Items.BOW.getDefaultInstance());
+                    }
+                    break;
+
+                case "minecraft:illusioner":
+                    if (entity != null) {
+                        ((Illusioner) entity).setItemSlot(EquipmentSlot.MAINHAND, Items.BOW.getDefaultInstance());
+                    }
+                    break;
+
+                case "minecraft:wither_skeleton":
+                    if (entity != null) {
+                        ((WitherSkeleton) entity).setItemSlot(EquipmentSlot.MAINHAND, Items.STONE_SWORD.getDefaultInstance());
+                    }
+                    break;
+
+                case "minecraft:pillager":
+                    if (entity != null) {
+                        ((Pillager) entity).setItemSlot(EquipmentSlot.MAINHAND, Items.CROSSBOW.getDefaultInstance());
+                    }
+                    break;
+
+                case "minecraft:vindicator":
+                    if (entity != null) {
+                        ((Pillager) entity).setItemSlot(EquipmentSlot.MAINHAND, Items.IRON_AXE.getDefaultInstance());
+                    }
+                    break;
+
+                case "minecraft:vex":
+                    if (entity != null) {
+                        ((Illusioner) entity).setItemSlot(EquipmentSlot.MAINHAND, Items.IRON_SWORD.getDefaultInstance());
+                    }
+                    break;
+
+                case "minecraft:piglin":
+                    if (entity != null) {
+                        int randomNumber = random.nextIntBetweenInclusive(0, 2);
+                        ItemStack weapon = switch (randomNumber) {
+                            case 1 -> Items.GOLDEN_SWORD.getDefaultInstance();
+                            case 2 -> Items.GOLDEN_SPEAR.getDefaultInstance();
+                            default -> Items.CROSSBOW.getDefaultInstance();
+                        };
+                        ((Piglin) entity).setItemSlot(EquipmentSlot.MAINHAND, weapon);
+                    }
+                    break;
+
+                case "minecraft:zombified_piglin":
+                    if (entity != null) {
+                        ((Piglin) entity).setItemSlot(EquipmentSlot.MAINHAND, random.nextBoolean() ? Items.GOLDEN_SWORD.getDefaultInstance() : Items.GOLDEN_SPEAR.getDefaultInstance());
+                    }
+                    break;
+
+                case "minecraft:evoker", "minecraft:ravager":
+                    spawnsToPerform-=2;
+                    break;
+
+                case "minecraft:chicken":
+                    if (entity != null) {
+                        int randomNumber = random.nextIntBetweenInclusive(0, 3);
+                        ResourceKey<ChickenVariant> variant = switch (randomNumber) {
+                            case 1 -> ChickenVariants.WARM;
+                            case 2 -> ChickenVariants.TEMPERATE;
+                            case 3 -> ChickenVariants.COLD;
+                            default -> ChickenVariants.DEFAULT;
+                        };
+                        Holder<ChickenVariant> variantHolder =
+                                level.registryAccess()
+                                        .lookupOrThrow(Registries.CHICKEN_VARIANT)
+                                        .getOrThrow(variant);
+
+                        ((Chicken) entity).setVariant(variantHolder);
+                    }
+                    break;
+
+                case "minecraft:cow":
+                    if (entity != null) {
+                        int randomNumber = random.nextIntBetweenInclusive(0, 3);
+                        ResourceKey<CowVariant> variant = switch (randomNumber) {
+                            case 1 -> CowVariants.WARM;
+                            case 2 -> CowVariants.TEMPERATE;
+                            case 3 -> CowVariants.COLD;
+                            default -> CowVariants.DEFAULT;
+                        };
+                        Holder<CowVariant> variantHolder =
+                                level.registryAccess()
+                                        .lookupOrThrow(Registries.COW_VARIANT)
+                                        .getOrThrow(variant);
+
+                        ((Cow) entity).setVariant(variantHolder);
+                    }
+                    break;
+
+                case "minecraft:pig":
+                    if (entity != null) {
+                        int randomNumber = random.nextIntBetweenInclusive(0, 3);
+                        ResourceKey<PigVariant> variant = switch (randomNumber) {
+                            case 1 -> PigVariants.WARM;
+                            case 2 -> PigVariants.TEMPERATE;
+                            case 3 -> PigVariants.COLD;
+                            default -> PigVariants.DEFAULT;
+                        };
+                        Holder<PigVariant> variantHolder =
+                                level.registryAccess()
+                                        .lookupOrThrow(Registries.PIG_VARIANT)
+                                        .getOrThrow(variant);
+
+                        ((PigAccessor) entity).umamium$setVariantAccessor(variantHolder);
+                    }
+                    break;
+
+                case "minecraft:frog":
+                    if (entity != null) {
+                        int randomNumber = random.nextIntBetweenInclusive(0, 3);
+                        ResourceKey<FrogVariant> variant = switch (randomNumber) {
+                            case 1 -> FrogVariants.WARM;
+                            case 2 -> FrogVariants.TEMPERATE;
+                            default -> FrogVariants.COLD;
+                        };
+                        Holder<FrogVariant> variantHolder =
+                                level.registryAccess()
+                                        .lookupOrThrow(Registries.FROG_VARIANT)
+                                        .getOrThrow(variant);
+
+                        ((FrogAccessor) entity).umamium$setVariantAccessor(variantHolder);
+                    }
+            }
+            if (entity != null) {
+                entity.absSnapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                level.addFreshEntity(entity);
+            }
+        }
+    }
+
     // DEBUG
 
     private void debugHelp(HitResult hitResult) {
@@ -1066,13 +1488,21 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             sendMessageToUser("Levitation");
             sendMessageToUser("Nightowl");
             sendMessageToUser("SnowyBodyguards");
+            sendMessageToUser("SkeletonHorse");
+            sendMessageToUser("Armor");
+            sendMessageToUser("Tools");
+            sendMessageToUser("MobPack");
+            sendMessageToUser("WaterWeakness");
+            sendMessageToUser("GiantSlime");
+            sendMessageToUser("ChaosEffect");
+            sendMessageToUser("ArrowShooter");
 //            sendMessageToUser("AdyacentBlockPlacing");
         }
     }
 
     private boolean sendMessageToUser(String message) {
-        if (user != null) {
-            ((Player) user).sendSystemMessage(Component.literal(message));
+        if (user != null && user instanceof Player  player) {
+            player.sendSystemMessage(Component.literal(message));
             return true;
         }
         return false;

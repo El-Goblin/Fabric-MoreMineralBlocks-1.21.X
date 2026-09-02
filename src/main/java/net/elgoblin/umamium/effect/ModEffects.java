@@ -12,6 +12,12 @@ public class ModEffects {
     public static final Holder<MobEffect> BLINKING = registerStatusEffect("blinking",
             new BlinkingEffect(MobEffectCategory.NEUTRAL, 0x00ff20));
 
+    public static final Holder<MobEffect> WATER_WEAKNESS = registerStatusEffect("water_weakness",
+            new BooleanEffect(MobEffectCategory.NEUTRAL, 0x0000CC));
+
+    public static final Holder<MobEffect> CHAOS = registerStatusEffect("chaos",
+            new ChaosEffect(MobEffectCategory.NEUTRAL, 0xCC0000));
+
 //    public static final Holder<MobEffect> ADVENTURE = registerStatusEffect("adventure",
 //            new AdventureEffect(MobEffectCategory.NEUTRAL, 0x00ff20));
 
