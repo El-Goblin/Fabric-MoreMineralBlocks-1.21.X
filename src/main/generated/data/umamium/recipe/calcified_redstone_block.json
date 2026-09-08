@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "group": "redstone",
   "ingredients": [
     "minecraft:redstone_block",
     "minecraft:calcite"

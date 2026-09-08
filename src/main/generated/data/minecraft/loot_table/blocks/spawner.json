@@ -9,8 +9,8 @@
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 5.0
+                "max": 10.0,
+                "min": 10.0
               },
               "function": "minecraft:set_count"
             }

@@ -25,22 +25,31 @@ public class ModCreativeModeTabs {
                         addToTab(output, ModBlocks.GOLD_BRICKS_SET);
                         addToTab(output, ModBlocks.CALCIFIED_GOLD_SET);
                         addToTab(output, ModBlocks.POLISHED_GOLD_SET);
+                        addToTab(output, ModBlocks.GOLD_ORE_SET);
+                        addToTab(output, ModBlocks.DEEPSLATE_GOLD_ORE_SET);
+                        addToTab(output, ModBlocks.NETHER_GOLD_ORE_SET);
 
                         addToTab(output, ModBlocks.DIAMOND_SET);
                         addToTab(output, ModBlocks.DIAMOND_BRICKS_SET);
                         addToTab(output, ModBlocks.CALCIFIED_DIAMOND_SET);
                         addToTab(output, ModBlocks.POLISHED_DIAMOND_SET);
+                        addToTab(output, ModBlocks.DIAMOND_ORE_SET);
+                        addToTab(output, ModBlocks.DEEPSLATE_DIAMOND_ORE_SET);
 
                         addToTab(output, ModBlocks.IRON_SET);
                         addToTab(output, ModBlocks.IRON_BRICKS_SET);
                         addToTab(output, ModBlocks.CALCIFIED_IRON_SET);
                         addToTab(output, ModBlocks.POLISHED_IRON_SET);
+                        addToTab(output, ModBlocks.IRON_ORE_SET);
+                        addToTab(output, ModBlocks.DEEPSLATE_IRON_ORE_SET);
 
                         addToTab(output, ModBlocks.EMERALD_SET);
                         addToTab(output, ModBlocks.EMERALD_BRICKS_SET);
                         addToTab(output, ModBlocks.CALCIFIED_EMERALD_SET);
                         addToTab(output, ModBlocks.POLISHED_EMERALD_SET);
                         addToTab(output, ModBlocks.CHISELED_EMERALD_SET);
+                        addToTab(output, ModBlocks.EMERALD_ORE_SET);
+                        addToTab(output, ModBlocks.DEEPSLATE_EMERALD_ORE_SET);
 
                         addToTab(output, ModBlocks.AMETHYST_SET);
                         addToTab(output, ModBlocks.AMETHYST_BRICKS_SET);
@@ -51,11 +60,15 @@ public class ModCreativeModeTabs {
                         addToTab(output, ModBlocks.LAPIS_BRICKS_SET);
                         addToTab(output, ModBlocks.CALCIFIED_LAPIS_SET);
                         addToTab(output, ModBlocks.POLISHED_LAPIS_SET);
+                        addToTab(output, ModBlocks.LAPIS_ORE_SET);
+                        addToTab(output, ModBlocks.DEEPSLATE_LAPIS_ORE_SET);
 
                         addToTab(output, ModBlocks.COAL_SET);
                         addToTab(output, ModBlocks.COAL_BRICKS_SET);
                         addToTab(output, ModBlocks.CALCIFIED_COAL_SET);
                         addToTab(output, ModBlocks.POLISHED_COAL_SET);
+                        addToTab(output, ModBlocks.COAL_ORE_SET);
+                        addToTab(output, ModBlocks.DEEPSLATE_COAL_ORE_SET);
 
                         addToTab(output, ModBlocks.NETHERITE_SET);
                         addToTab(output, ModBlocks.NETHERITE_BRICKS_SET);
@@ -66,6 +79,11 @@ public class ModCreativeModeTabs {
                         addToTab(output, ModBlocks.REDSTONE_BRICKS_SET);
                         addToTab(output, ModBlocks.CALCIFIED_REDSTONE_SET);
                         addToTab(output, ModBlocks.POLISHED_REDSTONE_SET);
+                        addToTab(output, ModBlocks.REDSTONE_ORE_SET);
+                        addToTab(output, ModBlocks.DEEPSLATE_REDSTONE_ORE_SET);
+
+                        addToTab(output, ModBlocks.COPPER_ORE_SET);
+                        addToTab(output, ModBlocks.DEEPSLATE_COPPER_ORE_SET);
 
                         addToTab(output, ModBlocks.OBSIDIAN_SET);
                         addToTab(output, ModBlocks.SCULK_SET);
@@ -93,7 +111,7 @@ public class ModCreativeModeTabs {
 public static final CreativeModeTab ITEMS_TAB = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
             Identifier.fromNamespaceAndPath(Umamium.MOD_ID, "items_tab"),
             FabricCreativeModeTab.builder()
-                    .icon(() -> new ItemStack(ModBlocks.GOLD_BRICKS.asItem()))
+                    .icon(() -> new ItemStack(ModItems.CHAOS_ORB))
                     .title(Component.translatable("creativemodetab." + Umamium.MOD_ID + ".items_tab"))
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.MOSS);

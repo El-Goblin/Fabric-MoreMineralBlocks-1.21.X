@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "group": "emerald",
   "ingredients": [
     "minecraft:emerald_block",
     "minecraft:calcite"

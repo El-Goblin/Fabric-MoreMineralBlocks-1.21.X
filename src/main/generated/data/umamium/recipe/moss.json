@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "moss",
   "ingredients": [
     "minecraft:moss_block"
   ],

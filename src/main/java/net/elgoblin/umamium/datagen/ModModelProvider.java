@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 public class ModModelProvider extends FabricModelProvider {
@@ -30,6 +31,9 @@ public class ModModelProvider extends FabricModelProvider {
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.GOLD_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_GOLD_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.POLISHED_GOLD_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.GOLD_ORE_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DEEPSLATE_GOLD_ORE_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.NETHER_GOLD_ORE_SET);
 
         // DIAMOND
 
@@ -40,6 +44,8 @@ public class ModModelProvider extends FabricModelProvider {
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DIAMOND_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_DIAMOND_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.POLISHED_DIAMOND_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DIAMOND_ORE_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DEEPSLATE_DIAMOND_ORE_SET);
 
         // IRON
 
@@ -47,6 +53,8 @@ public class ModModelProvider extends FabricModelProvider {
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.IRON_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_IRON_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.POLISHED_IRON_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.IRON_ORE_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DEEPSLATE_IRON_ORE_SET);
 
         // EMERALD
 
@@ -58,6 +66,8 @@ public class ModModelProvider extends FabricModelProvider {
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_EMERALD_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.POLISHED_EMERALD_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CHISELED_EMERALD_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.EMERALD_ORE_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DEEPSLATE_EMERALD_ORE_SET);
 
         // AMETHYST
 
@@ -78,6 +88,8 @@ public class ModModelProvider extends FabricModelProvider {
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.LAPIS_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_LAPIS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.POLISHED_LAPIS_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.LAPIS_ORE_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DEEPSLATE_LAPIS_ORE_SET);
 
         // COAL
 
@@ -88,6 +100,8 @@ public class ModModelProvider extends FabricModelProvider {
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.COAL_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_COAL_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.POLISHED_COAL_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.COAL_ORE_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DEEPSLATE_COAL_ORE_SET);
 
         // NETHERITE
 
@@ -108,6 +122,13 @@ public class ModModelProvider extends FabricModelProvider {
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.REDSTONE_BRICKS_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.CALCIFIED_REDSTONE_SET);
         generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.POLISHED_REDSTONE_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.REDSTONE_ORE_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DEEPSLATE_REDSTONE_ORE_SET);
+
+        // COPPER
+
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.COPPER_ORE_SET);
+        generateBlockStateModelsForSet(blockModelGenerators, ModBlocks.DEEPSLATE_COPPER_ORE_SET);
 
         // OTHERS
 

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:nether_gold_ore",
+  "result": {
+    "id": "umamium:nether_gold_ore_stairs"
+  }
+}

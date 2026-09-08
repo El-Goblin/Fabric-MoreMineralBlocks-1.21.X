@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "emerald",
   "key": {
     "#": "umamium:polished_emerald_block"
   },

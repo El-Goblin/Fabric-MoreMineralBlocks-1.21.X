@@ -29,6 +29,24 @@
   "block.umamium.gold_brick_fence_gate": "Gold Brick Fence Gate",
   "block.umamium.gold_brick_wall": "Gold Brick Wall",
 
+  "block.umamium.gold_ore_stairs": "Gold Ore Stairs",
+  "block.umamium.gold_ore_slab": "Gold Ore Slab",
+  "block.umamium.gold_ore_fence": "Gold Ore Fence",
+  "block.umamium.gold_ore_fence_gate": "Gold Ore Fence Gate",
+  "block.umamium.gold_ore_wall": "Gold Ore Wall",
+
+  "block.umamium.deepslate_gold_ore_stairs": "Deepslate Gold Ore Stairs",
+  "block.umamium.deepslate_gold_ore_slab": "Deepslate Gold Ore Slab",
+  "block.umamium.deepslate_gold_ore_fence": "Deepslate Gold Ore Fence",
+  "block.umamium.deepslate_gold_ore_fence_gate": "Deepslate Gold Ore Fence Gate",
+  "block.umamium.deepslate_gold_ore_wall": "Deepslate Gold Ore Wall",
+
+  "block.umamium.nether_gold_ore_stairs": "Nether Gold Ore Stairs",
+  "block.umamium.nether_gold_ore_slab": "Nether Gold Ore Slab",
+  "block.umamium.nether_gold_ore_fence": "Nether Gold Ore Fence",
+  "block.umamium.nether_gold_ore_fence_gate": "Nether Gold Ore Fence Gate",
+  "block.umamium.nether_gold_ore_wall": "Nether Gold Ore Wall",
+
   "block.umamium.diamond_stairs": "Diamond Stairs",
   "block.umamium.diamond_slab": "Diamond Slab",
   "block.umamium.diamond_fence": "Diamond Fence",
@@ -58,6 +76,18 @@
   "block.umamium.diamond_brick_fence_gate": "Diamond Brick Fence Gate",
   "block.umamium.diamond_brick_wall": "Diamond Brick Wall",
 
+  "block.umamium.diamond_ore_stairs": "Diamond Ore Stairs",
+  "block.umamium.diamond_ore_slab": "Diamond Ore Slab",
+  "block.umamium.diamond_ore_fence": "Diamond Ore Fence",
+  "block.umamium.diamond_ore_fence_gate": "Diamond Ore Fence Gate",
+  "block.umamium.diamond_ore_wall": "Diamond Ore Wall",
+
+  "block.umamium.deepslate_diamond_ore_stairs": "Deepslate Diamond Ore Stairs",
+  "block.umamium.deepslate_diamond_ore_slab": "Deepslate Diamond Ore Slab",
+  "block.umamium.deepslate_diamond_ore_fence": "Deepslate Diamond Ore Fence",
+  "block.umamium.deepslate_diamond_ore_fence_gate": "Deepslate Diamond Ore Fence Gate",
+  "block.umamium.deepslate_diamond_ore_wall": "Deepslate Diamond Ore Wall",
+
   "block.umamium.iron_stairs": "Iron Stairs",
   "block.umamium.iron_slab": "Iron Slab",
   "block.umamium.iron_fence": "Iron Fence",
@@ -86,6 +116,18 @@
   "block.umamium.iron_brick_fence": "Iron Brick Fence",
   "block.umamium.iron_brick_fence_gate": "Iron Brick Fence Gate",
   "block.umamium.iron_brick_wall": "Iron Brick Wall",
+
+  "block.umamium.iron_ore_stairs": "Iron Ore Stairs",
+  "block.umamium.iron_ore_slab": "Iron Ore Slab",
+  "block.umamium.iron_ore_fence": "Iron Ore Fence",
+  "block.umamium.iron_ore_fence_gate": "Iron Ore Fence Gate",
+  "block.umamium.iron_ore_wall": "Iron Ore Wall",
+
+  "block.umamium.deepslate_iron_ore_stairs": "Deepslate Iron Ore Stairs",
+  "block.umamium.deepslate_iron_ore_slab": "Deepslate Iron Ore Slab",
+  "block.umamium.deepslate_iron_ore_fence": "Deepslate Iron Ore Fence",
+  "block.umamium.deepslate_iron_ore_fence_gate": "Deepslate Iron Ore Fence Gate",
+  "block.umamium.deepslate_iron_ore_wall": "Deepslate Iron Ore Wall",
 
   "block.umamium.emerald_stairs": "Emerald Stairs",
   "block.umamium.emerald_slab": "Emerald Slab",
@@ -122,6 +164,18 @@
   "block.umamium.chiseled_emerald_fence": "Chiseled Emerald Fence",
   "block.umamium.chiseled_emerald_fence_gate": "Chiseled Emerald Fence Gate",
   "block.umamium.chiseled_emerald_wall": "Chiseled Emerald Wall",
+
+  "block.umamium.emerald_ore_stairs": "Emerald Ore Stairs",
+  "block.umamium.emerald_ore_slab": "Emerald Ore Slab",
+  "block.umamium.emerald_ore_fence": "Emerald Ore Fence",
+  "block.umamium.emerald_ore_fence_gate": "Emerald Ore Fence Gate",
+  "block.umamium.emerald_ore_wall": "Emerald Ore Wall",
+
+  "block.umamium.deepslate_emerald_ore_stairs": "Deepslate Emerald Ore Stairs",
+  "block.umamium.deepslate_emerald_ore_slab": "Deepslate Emerald Ore Slab",
+  "block.umamium.deepslate_emerald_ore_fence": "Deepslate Emerald Ore Fence",
+  "block.umamium.deepslate_emerald_ore_fence_gate": "Deepslate Emerald Ore Fence Gate",
+  "block.umamium.deepslate_emerald_ore_wall": "Deepslate Emerald Ore Wall",
 
   "block.umamium.amethyst_stairs": "Amethyst Stairs",
   "block.umamium.amethyst_slab": "Amethyst Slab",
@@ -181,6 +235,18 @@
   "block.umamium.lapis_brick_fence_gate": "Lapis Brick Fence Gate",
   "block.umamium.lapis_brick_wall": "Lapis Brick Wall",
 
+  "block.umamium.lapis_ore_stairs": "Lapiz Lazuli Ore Stairs",
+  "block.umamium.lapis_ore_slab": "Lapiz Lazuli Ore Slab",
+  "block.umamium.lapis_ore_fence": "Lapiz Lazuli Ore Fence",
+  "block.umamium.lapis_ore_fence_gate": "Lapiz Lazuli Ore Fence Gate",
+  "block.umamium.lapis_ore_wall": "Lapiz Lazuli Ore Wall",
+
+  "block.umamium.deepslate_lapis_ore_stairs": "Deepslate Lapis Lazuli Ore Stairs",
+  "block.umamium.deepslate_lapis_ore_slab": "Deepslate Lapis Lazuli Ore Slab",
+  "block.umamium.deepslate_lapis_ore_fence": "Deepslate Lapis Lazuli Ore Fence",
+  "block.umamium.deepslate_lapis_ore_fence_gate": "Deepslate Lapis Lazuli Ore Fence Gate",
+  "block.umamium.deepslate_lapis_ore_wall": "Deepslate Lapis Lazuli Ore Wall",
+
   "block.umamium.calcite_stairs": "Calcite Stairs",
   "block.umamium.calcite_slab": "Calcite Slab",
   "block.umamium.calcite_fence": "Calcite Fence",
@@ -215,6 +281,18 @@
   "block.umamium.redstone_brick_fence": "Redstone Brick Fence",
   "block.umamium.redstone_brick_fence_gate": "Redstone Brick Fence Gate",
   "block.umamium.redstone_brick_wall": "Redstone Brick Wall",
+
+  "block.umamium.redstone_ore_stairs": "Redstone Ore Stairs",
+  "block.umamium.redstone_ore_slab": "Redstone Ore Slab",
+  "block.umamium.redstone_ore_fence": "Redstone Ore Fence",
+  "block.umamium.redstone_ore_fence_gate": "Redstone Ore Fence Gate",
+  "block.umamium.redstone_ore_wall": "Redstone Ore Wall",
+
+  "block.umamium.deepslate_redstone_ore_stairs": "Deepslate Redstone Ore Stairs",
+  "block.umamium.deepslate_redstone_ore_slab": "Deepslate Redstone Ore Slab",
+  "block.umamium.deepslate_redstone_ore_fence": "Deepslate Redstone Ore Fence",
+  "block.umamium.deepslate_redstone_ore_fence_gate": "Deepslate Redstone Ore Fence Gate",
+  "block.umamium.deepslate_redstone_ore_wall": "Deepslate Redstone Ore Wall",
 
   "block.umamium.netherite_stairs": "Netherite Stairs",
   "block.umamium.netherite_slab": "Netherite Slab",
@@ -273,6 +351,30 @@
   "block.umamium.coal_brick_fence": "Coal Brick Fence",
   "block.umamium.coal_brick_fence_gate": "Coal Brick Fence Gate",
   "block.umamium.coal_brick_wall": "Coal Brick Wall",
+
+  "block.umamium.coal_ore_stairs": "Coal Ore Stairs",
+  "block.umamium.coal_ore_slab": "Coal Ore Slab",
+  "block.umamium.coal_ore_fence": "Coal Ore Fence",
+  "block.umamium.coal_ore_fence_gate": "Coal Ore Fence Gate",
+  "block.umamium.coal_ore_wall": "Coal Ore Wall",
+
+  "block.umamium.deepslate_coal_ore_stairs": "Deepslate Coal Ore Stairs",
+  "block.umamium.deepslate_coal_ore_slab": "Deepslate Coal Ore Slab",
+  "block.umamium.deepslate_coal_ore_fence": "Deepslate Coal Ore Fence",
+  "block.umamium.deepslate_coal_ore_fence_gate": "Deepslate Coal Ore Fence Gate",
+  "block.umamium.deepslate_coal_ore_wall": "Deepslate Coal Ore Wall",
+
+  "block.umamium.copper_ore_stairs": "Copper Ore Stairs",
+  "block.umamium.copper_ore_slab": "Copper Ore Slab",
+  "block.umamium.copper_ore_fence": "Copper Ore Fence",
+  "block.umamium.copper_ore_fence_gate": "Copper Ore Fence Gate",
+  "block.umamium.copper_ore_wall": "Copper Ore Wall",
+
+  "block.umamium.deepslate_copper_ore_stairs": "Deepslate Copper Ore Stairs",
+  "block.umamium.deepslate_copper_ore_slab": "Deepslate Copper Ore Slab",
+  "block.umamium.deepslate_copper_ore_fence": "Deepslate Copper Ore Fence",
+  "block.umamium.deepslate_copper_ore_fence_gate": "Deepslate Copper Ore Fence Gate",
+  "block.umamium.deepslate_copper_ore_wall": "Deepslate Copper Ore Wall",
 
   "block.umamium.obsidian_stairs": "Obsidian Stairs",
   "block.umamium.obsidian_slab": "Obsidian Slab",
@@ -385,8 +487,8 @@
 
   "entity.umamium.chaos_orb": "Chaos Orb",
 
-  "creativemodetab.umamium.blocks_tab": "More Mineral Blocks",
-  "creativemodetab.umamium.items_tab": "More Mineral Blocks Items",
+  "creativemodetab.umamium.blocks_tab": "Umamium Blocks",
+  "creativemodetab.umamium.items_tab": "Umamium Items",
 
 
   "key.category.umamium.legendary_tools": "Legendary Tools",
@@ -406,5 +508,22 @@
   "dimension.minecraft.overworld": "OVERWORLD",
   "dimension.minecraft.the_nether": "NETHER",
   "dimension.minecraft.the_end": "THE END",
-  "block.umamium.bed.no_sleep_night_owl": "Y si sale una partidita mas?"
+  "block.umamium.bed.no_sleep_night_owl": "Y si sale una partidita mas?",
+
+  "gamerule.category.umamium.umamium": "Umamium",
+
+  "gamerule.umamium.chaos_orb_debug_messages": "Chat messages from chaos orbs",
+  "gamerule.umamium.chaos_orb_debug_messages.description": "If active, chaos orbs will send the name of the event as a chat message to the user.",
+  "gamerule.umamium.enderman_griefing": "Allow enderman griefing",
+  "gamerule.umamium.enderman_griefing.description": "Stops the enderman from interacting with blocks. Creeper explosions will still damage the world.",
+  "gamerule.umamium.skyblock_radius": "Skyblock radius",
+  "gamerule.umamium.skyblock_radius.description": "Controls how much air to leave, in chunks, in each direction centered in the skyblock.",
+  "gamerule.umamium.snow_golem_lifetime": "Snow golem lifetime",
+  "gamerule.umamium.snow_golem_lifetime.description": "Controls how long the golems from the chaos orb event live. High values can result in a lot of golem entities being generated and can harm performance",
+  "gamerule.umamium.terrain_manager_blocks_per_tick": "Terrain modifying events speed",
+  "gamerule.umamium.terrain_manager_blocks_per_tick.description": "Controls how many blocks are modified per tick by the chaos orb events. This number is shared by all events so the final number gets divided by the amount of events active.",
+  "gamerule.umamium.void_sphere_fixed_size": "Void sphere fixed size",
+  "gamerule.umamium.void_sphere_fixed_size.description": "Forces void sphere from the chaos orb event to occur with this radius when positive",
+  "gamerule.umamium.void_sphere_size_multiplier": "Void sphere size multiplier",
+  "gamerule.umamium.void_sphere_size_multiplier.description": "Multiplies the void sphere radius from the chaos orb event, the base distribution remains the same"
 }

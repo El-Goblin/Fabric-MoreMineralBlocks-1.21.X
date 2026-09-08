@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "iron",
   "key": {
     "#": "minecraft:iron_block"
   },
@@ -10,6 +9,7 @@
     "##"
   ],
   "result": {
+    "count": 4,
     "id": "umamium:iron_bricks"
   }
 }

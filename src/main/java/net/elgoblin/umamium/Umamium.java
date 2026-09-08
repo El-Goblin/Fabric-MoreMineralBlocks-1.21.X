@@ -9,7 +9,7 @@ import net.elgoblin.umamium.effect.BlinkingEffect;
 import net.elgoblin.umamium.effect.ModEffects;
 import net.elgoblin.umamium.enchantment.ModEnchantmentEffects;
 import net.elgoblin.umamium.entity.ModEntities;
-import net.elgoblin.umamium.gamerule.ChaosOrbGameRules;
+import net.elgoblin.umamium.gamerule.ModGameRules;
 import net.elgoblin.umamium.item.ModItems;
 import net.elgoblin.umamium.networking.ModPayloads;
 import net.elgoblin.umamium.networking.ServerPayloadReceivers;
@@ -57,12 +57,12 @@ public class Umamium implements ModInitializer {
 		ModEntities.registerModEntities();
 		ModLootTableModifiers.modifyLootTables();
 		TerrainJobsManager.init();
-		ChaosOrbGameRules.init();
+		ModGameRules.init();
 
 		ServerTickEvents.END_SERVER_TICK.register(minecraftServer -> {
 			TerrainJobsManager.TERRAIN_MANAGER.tick(minecraftServer);
 
-			if (minecraftServer.getGameRules().get(ChaosOrbGameRules.SNOW_GOLEM_LIFETIME) > 0) {
+			if (minecraftServer.getGameRules().get(ModGameRules.SNOW_GOLEM_LIFETIME) > 0) {
 				minecraftServer.getAllLevels().forEach(dimension -> SnowGolemLifetimes.get(dimension).tick());
 			}
 			minecraftServer.getAllLevels().forEach(dimension -> ArrowShootersManager.get(dimension).tick());

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:copper_ore",
+  "result": {
+    "count": 4,
+    "id": "umamium:copper_ore_fence_gate"
+  }
+}

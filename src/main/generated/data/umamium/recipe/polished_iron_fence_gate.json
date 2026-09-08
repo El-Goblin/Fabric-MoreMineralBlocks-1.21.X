@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "iron",
   "key": {
     "#": "umamium:polished_iron_block",
     "S": "minecraft:stick"

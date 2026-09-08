@@ -31,22 +31,32 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
         addSetToTag(ModBlocks.GOLD_BRICKS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.CALCIFIED_GOLD_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.POLISHED_GOLD_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.GOLD_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.DEEPSLATE_GOLD_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.NETHER_GOLD_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
 
         addSetToTag(ModBlocks.DIAMOND_SET, false, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.DIAMOND_BRICKS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.CALCIFIED_DIAMOND_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.POLISHED_DIAMOND_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.DIAMOND_ORE_SET, false, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.DIAMOND_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.DEEPSLATE_DIAMOND_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
 
         addSetToTag(ModBlocks.IRON_SET, false, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.IRON_BRICKS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.CALCIFIED_IRON_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.POLISHED_IRON_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.IRON_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.DEEPSLATE_IRON_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
 
         addSetToTag(ModBlocks.EMERALD_SET, false, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.EMERALD_BRICKS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.CALCIFIED_EMERALD_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.POLISHED_EMERALD_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.CHISELED_EMERALD_SET, false, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.EMERALD_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.DEEPSLATE_EMERALD_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
 
         addSetToTag(ModBlocks.AMETHYST_SET, false, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.AMETHYST_BRICKS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -57,11 +67,15 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
         addSetToTag(ModBlocks.LAPIS_BRICKS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.CALCIFIED_LAPIS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.POLISHED_LAPIS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.LAPIS_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.DEEPSLATE_LAPIS_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
 
         addSetToTag(ModBlocks.COAL_SET, false, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.COAL_BRICKS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.CALCIFIED_COAL_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.POLISHED_COAL_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.COAL_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.DEEPSLATE_COAL_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
 
         addSetToTag(ModBlocks.NETHERITE_SET, false, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.NETHERITE_BRICKS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -72,6 +86,11 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
         addSetToTag(ModBlocks.REDSTONE_BRICKS_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.CALCIFIED_REDSTONE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
         addSetToTag(ModBlocks.POLISHED_REDSTONE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.REDSTONE_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.DEEPSLATE_REDSTONE_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+
+        addSetToTag(ModBlocks.COPPER_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
+        addSetToTag(ModBlocks.DEEPSLATE_COPPER_ORE_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
 
         addSetToTag(ModBlocks.FLINT_SET, true, BlockTags.MINEABLE_WITH_PICKAXE);
 //        addSetToTag(ModBlocks.GLASS_SET, false, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -104,36 +123,53 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
         addSetToTag(ModBlocks.GOLD_BRICKS_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.CALCIFIED_GOLD_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.POLISHED_GOLD_SET, true, BlockTags.NEEDS_IRON_TOOL);
+        addSetToTag(ModBlocks.GOLD_ORE_SET, false, BlockTags.NEEDS_IRON_TOOL);
+        addSetToTag(ModBlocks.DEEPSLATE_GOLD_ORE_SET, false, BlockTags.NEEDS_IRON_TOOL);
 
         addSetToTag(ModBlocks.DIAMOND_SET, false, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.DIAMOND_BRICKS_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.CALCIFIED_DIAMOND_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.POLISHED_DIAMOND_SET, true, BlockTags.NEEDS_IRON_TOOL);
+        addSetToTag(ModBlocks.DIAMOND_ORE_SET, false, BlockTags.NEEDS_IRON_TOOL);
+        addSetToTag(ModBlocks.DEEPSLATE_DIAMOND_ORE_SET, false, BlockTags.NEEDS_IRON_TOOL);
 
         addSetToTag(ModBlocks.EMERALD_SET, false, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.EMERALD_BRICKS_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.CALCIFIED_EMERALD_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.POLISHED_EMERALD_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.CHISELED_EMERALD_SET, false, BlockTags.NEEDS_IRON_TOOL);
+        addSetToTag(ModBlocks.EMERALD_ORE_SET, false, BlockTags.NEEDS_IRON_TOOL);
+        addSetToTag(ModBlocks.DEEPSLATE_EMERALD_ORE_SET, false, BlockTags.NEEDS_IRON_TOOL);
 
         addSetToTag(ModBlocks.REDSTONE_SET, false, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.REDSTONE_BRICKS_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.CALCIFIED_REDSTONE_SET, true, BlockTags.NEEDS_IRON_TOOL);
         addSetToTag(ModBlocks.POLISHED_REDSTONE_SET, true, BlockTags.NEEDS_IRON_TOOL);
+        addSetToTag(ModBlocks.REDSTONE_ORE_SET, false, BlockTags.NEEDS_IRON_TOOL);
+        addSetToTag(ModBlocks.DEEPSLATE_REDSTONE_ORE_SET, false, BlockTags.NEEDS_IRON_TOOL);
 
         tag(BlockTags.NEEDS_IRON_TOOL).add(ModBlocks.getResourceKey(ModBlocks.PROTECTOR_BLOCK));
 
         // NEEDS STONE TOOL
 
+        addSetToTag(ModBlocks.NETHER_GOLD_ORE_SET, false, BlockTags.NEEDS_STONE_TOOL);
+
         addSetToTag(ModBlocks.IRON_SET, false, BlockTags.NEEDS_STONE_TOOL);
         addSetToTag(ModBlocks.IRON_BRICKS_SET, true, BlockTags.NEEDS_STONE_TOOL);
         addSetToTag(ModBlocks.CALCIFIED_IRON_SET, true, BlockTags.NEEDS_STONE_TOOL);
         addSetToTag(ModBlocks.POLISHED_IRON_SET, true, BlockTags.NEEDS_STONE_TOOL);
+        addSetToTag(ModBlocks.IRON_ORE_SET, true, BlockTags.NEEDS_STONE_TOOL);
+        addSetToTag(ModBlocks.DEEPSLATE_IRON_ORE_SET, true, BlockTags.NEEDS_STONE_TOOL);
 
         addSetToTag(ModBlocks.LAPIS_SET, false, BlockTags.NEEDS_STONE_TOOL);
         addSetToTag(ModBlocks.LAPIS_BRICKS_SET, true, BlockTags.NEEDS_STONE_TOOL);
         addSetToTag(ModBlocks.CALCIFIED_LAPIS_SET, true, BlockTags.NEEDS_STONE_TOOL);
         addSetToTag(ModBlocks.POLISHED_LAPIS_SET, true, BlockTags.NEEDS_STONE_TOOL);
+        addSetToTag(ModBlocks.LAPIS_ORE_SET, true, BlockTags.NEEDS_STONE_TOOL);
+        addSetToTag(ModBlocks.DEEPSLATE_LAPIS_ORE_SET, true, BlockTags.NEEDS_STONE_TOOL);
+
+        addSetToTag(ModBlocks.COPPER_ORE_SET, true, BlockTags.NEEDS_STONE_TOOL);
+        addSetToTag(ModBlocks.DEEPSLATE_COPPER_ORE_SET, true, BlockTags.NEEDS_STONE_TOOL);
 
         // NEEDS DIAMOND TOOL
 
@@ -148,17 +184,24 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.GOLD_BRICKS_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_GOLD_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_GOLD_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.GOLD_ORE_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_GOLD_ORE_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.NETHER_GOLD_ORE_SET.stairs()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_BRICKS_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_DIAMOND_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_DIAMOND_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_ORE_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_DIAMOND_ORE_SET.stairs()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_BRICKS_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_EMERALD_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_EMERALD_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CHISELED_EMERALD_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_ORE_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_EMERALD_ORE_SET.stairs()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.AMETHYST_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.AMETHYST_BRICKS_SET.stairs()))
@@ -169,11 +212,15 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.LAPIS_BRICKS_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_LAPIS_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_LAPIS_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.LAPIS_ORE_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_LAPIS_ORE_SET.stairs()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_BRICKS_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_COAL_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_COAL_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.COAL_ORE_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_COAL_ORE_SET.stairs()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_BRICKS_SET.stairs()))
@@ -184,6 +231,8 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_BRICKS_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_REDSTONE_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_REDSTONE_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_ORE_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_REDSTONE_ORE_SET.stairs()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.FLINT_SET.stairs()))
                 .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.stairs()))
@@ -202,22 +251,31 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.GOLD_BRICKS_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_GOLD_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_GOLD_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.GOLD_ORE_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_GOLD_ORE_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.NETHER_GOLD_ORE_SET.slab()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_BRICKS_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_DIAMOND_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_DIAMOND_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_ORE_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_DIAMOND_ORE_SET.slab()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.IRON_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.IRON_BRICKS_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_IRON_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_IRON_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.IRON_ORE_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_IRON_ORE_SET.slab()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_BRICKS_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_EMERALD_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_EMERALD_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CHISELED_EMERALD_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_ORE_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_EMERALD_ORE_SET.slab()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.AMETHYST_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.AMETHYST_BRICKS_SET.slab()))
@@ -228,11 +286,15 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.LAPIS_BRICKS_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_LAPIS_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_LAPIS_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.LAPIS_ORE_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_LAPIS_ORE_SET.slab()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_BRICKS_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_COAL_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_COAL_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.COAL_ORE_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_COAL_ORE_SET.slab()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_BRICKS_SET.slab()))
@@ -243,6 +305,11 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_BRICKS_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_REDSTONE_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_REDSTONE_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_ORE_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_REDSTONE_ORE_SET.slab()))
+
+                .add(ModBlocks.getResourceKey(ModBlocks.COPPER_ORE_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_COPPER_ORE_SET.slab()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.FLINT_SET.slab()))
                 .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.slab()))
@@ -259,22 +326,31 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.GOLD_BRICKS_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_GOLD_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_GOLD_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.GOLD_ORE_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_GOLD_ORE_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.NETHER_GOLD_ORE_SET.fence()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_BRICKS_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_DIAMOND_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_DIAMOND_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_ORE_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_DIAMOND_ORE_SET.fence()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.IRON_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.IRON_BRICKS_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_IRON_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_IRON_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.IRON_ORE_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_IRON_ORE_SET.fence()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_BRICKS_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_EMERALD_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_EMERALD_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CHISELED_EMERALD_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_ORE_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_EMERALD_ORE_SET.fence()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.AMETHYST_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.AMETHYST_BRICKS_SET.fence()))
@@ -285,11 +361,15 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.LAPIS_BRICKS_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_LAPIS_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_LAPIS_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.LAPIS_ORE_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_LAPIS_ORE_SET.fence()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_BRICKS_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_COAL_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_COAL_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.COAL_ORE_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_COAL_ORE_SET.fence()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_BRICKS_SET.fence()))
@@ -300,6 +380,11 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_BRICKS_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_REDSTONE_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_REDSTONE_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_ORE_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_REDSTONE_ORE_SET.fence()))
+
+                .add(ModBlocks.getResourceKey(ModBlocks.COPPER_ORE_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_COPPER_ORE_SET.fence()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.FLINT_SET.fence()))
                 .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.fence()))
@@ -316,22 +401,31 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.GOLD_BRICKS_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_GOLD_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_GOLD_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.GOLD_ORE_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_GOLD_ORE_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.NETHER_GOLD_ORE_SET.fenceGate()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_BRICKS_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_DIAMOND_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_DIAMOND_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_ORE_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_DIAMOND_ORE_SET.fenceGate()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.IRON_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.IRON_BRICKS_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_IRON_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_IRON_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.IRON_ORE_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_IRON_ORE_SET.fenceGate()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_BRICKS_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_EMERALD_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_EMERALD_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CHISELED_EMERALD_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_ORE_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_EMERALD_ORE_SET.fenceGate()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.AMETHYST_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.AMETHYST_BRICKS_SET.fenceGate()))
@@ -342,11 +436,15 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.LAPIS_BRICKS_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_LAPIS_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_LAPIS_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.LAPIS_ORE_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_LAPIS_ORE_SET.fenceGate()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_BRICKS_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_COAL_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_COAL_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.COAL_ORE_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_COAL_ORE_SET.fenceGate()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_BRICKS_SET.fenceGate()))
@@ -357,6 +455,11 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_BRICKS_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_REDSTONE_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_REDSTONE_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_ORE_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_REDSTONE_ORE_SET.fenceGate()))
+
+                .add(ModBlocks.getResourceKey(ModBlocks.COPPER_ORE_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_COPPER_ORE_SET.fenceGate()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.FLINT_SET.fenceGate()))
                 .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.fenceGate()))
@@ -374,22 +477,31 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.GOLD_BRICKS_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_GOLD_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_GOLD_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.GOLD_ORE_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_GOLD_ORE_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.NETHER_GOLD_ORE_SET.wall()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_BRICKS_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_DIAMOND_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_DIAMOND_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DIAMOND_ORE_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_DIAMOND_ORE_SET.wall()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.IRON_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.IRON_BRICKS_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_IRON_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_IRON_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.IRON_ORE_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_IRON_ORE_SET.wall()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_BRICKS_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_EMERALD_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_EMERALD_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CHISELED_EMERALD_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.EMERALD_ORE_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_EMERALD_ORE_SET.wall()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.AMETHYST_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.AMETHYST_BRICKS_SET.wall()))
@@ -400,11 +512,15 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.LAPIS_BRICKS_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_LAPIS_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_LAPIS_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.LAPIS_ORE_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_LAPIS_ORE_SET.wall()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_BRICKS_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_COAL_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_COAL_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.COAL_ORE_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_COAL_ORE_SET.wall()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_BRICKS_SET.wall()))
@@ -415,6 +531,11 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_BRICKS_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.CALCIFIED_REDSTONE_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.POLISHED_REDSTONE_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_ORE_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_REDSTONE_ORE_SET.wall()))
+
+                .add(ModBlocks.getResourceKey(ModBlocks.COPPER_ORE_SET.wall()))
+                .add(ModBlocks.getResourceKey(ModBlocks.DEEPSLATE_COPPER_ORE_SET.wall()))
 
                 .add(ModBlocks.getResourceKey(ModBlocks.FLINT_SET.wall()))
                 .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.wall()))
@@ -455,6 +576,15 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
                 .add(ModBlocks.getResourceKey(ModBlocks.COAL_SET.trapdoor()))
                 .add(ModBlocks.getResourceKey(ModBlocks.NETHERITE_SET.trapdoor()))
                 .add(ModBlocks.getResourceKey(ModBlocks.REDSTONE_SET.trapdoor()))
+        ;
+
+        tag(ModTags.Blocks.NETHER_PORTAL_BLOCK)
+                .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.base()))
+                .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.slab()))
+                .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.stairs()))
+                .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.fence()))
+                .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.fenceGate()))
+                .add(ModBlocks.getResourceKey(ModBlocks.OBSIDIAN_SET.wall()))
         ;
     }
 

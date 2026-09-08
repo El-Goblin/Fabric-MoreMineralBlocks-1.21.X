@@ -3,7 +3,7 @@ package net.elgoblin.umamium.util;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.elgoblin.umamium.Umamium;
-import net.elgoblin.umamium.gamerule.ChaosOrbGameRules;
+import net.elgoblin.umamium.gamerule.ModGameRules;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -71,7 +71,7 @@ public class SnowGolemLifetimes extends SavedData {
 
     public void addEntity(Entity entity) {
         if (!addedAnEntityThisTick) {
-            entityGroups.add(new EntityGroup(new ArrayList<>(), level.getGameRules().get(ChaosOrbGameRules.SNOW_GOLEM_LIFETIME) + tickCount));
+            entityGroups.add(new EntityGroup(new ArrayList<>(), level.getGameRules().get(ModGameRules.SNOW_GOLEM_LIFETIME) + tickCount));
         }
         entityGroups.getLast().entities.add(entity.getUUID());
         addedAnEntityThisTick = true;

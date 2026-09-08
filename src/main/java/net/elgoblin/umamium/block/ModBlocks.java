@@ -1,13 +1,14 @@
 package net.elgoblin.umamium.block;
 
 import net.elgoblin.umamium.Umamium;
-import net.elgoblin.umamium.block.custom.ProtectorBlock;
+import net.elgoblin.umamium.block.custom.*;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -883,18 +884,17 @@ public class ModBlocks {
 
     // SCULK
 
-    public static final BlockSet SCULK_SET = registerBlockSet(
+    public static final BlockSet SCULK_SET = registerDropXPBlockSet(
             "sculk",
             Blocks.SCULK,
-            BlockSetType.ACACIA,
             WoodType.ACACIA,
             props -> props
                     .mapColor(MapColor.COLOR_BLACK)
                     .instrument(NoteBlockInstrument.BASEDRUM)
                     .strength(0.2F)
                     .sound(SoundType.SCULK),
-            false,
-            false
+            1,
+            1
     );
 
     // PACKED_ICE
@@ -949,6 +949,237 @@ public class ModBlocks {
                     .isRedstoneConductor(Blocks::never),
             false,
             false
+    );
+
+    // ORES
+
+    public static final BlockSet GOLD_ORE_SET = registerDropXPBlockSet(
+            "gold_ore",
+            Blocks.GOLD_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops(),
+            0,
+            0
+    );
+
+    public static final BlockSet DEEPSLATE_GOLD_ORE_SET = registerDropXPBlockSet(
+            "deepslate_gold_ore",
+            Blocks.DEEPSLATE_GOLD_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.DEEPSLATE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE),
+            0,
+            0
+    );
+
+    public static final BlockSet DIAMOND_ORE_SET = registerDropXPBlockSet(
+            "diamond_ore",
+            Blocks.DIAMOND_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops(),
+            3,
+            7
+    );
+
+    public static final BlockSet DEEPSLATE_DIAMOND_ORE_SET = registerDropXPBlockSet(
+            "deepslate_diamond_ore",
+            Blocks.DEEPSLATE_DIAMOND_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.DEEPSLATE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE),
+            3,
+            7
+    );
+
+    public static final BlockSet IRON_ORE_SET = registerDropXPBlockSet(
+            "iron_ore",
+            Blocks.IRON_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops(),
+            0,
+            0
+    );
+
+    public static final BlockSet DEEPSLATE_IRON_ORE_SET = registerDropXPBlockSet(
+            "deepslate_iron_ore",
+            Blocks.DEEPSLATE_IRON_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.DEEPSLATE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE),
+            0,
+            0
+    );
+
+    public static final BlockSet EMERALD_ORE_SET = registerDropXPBlockSet(
+            "emerald_ore",
+            Blocks.EMERALD_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops(),
+            3,
+            7
+    );
+
+    public static final BlockSet DEEPSLATE_EMERALD_ORE_SET = registerDropXPBlockSet(
+            "deepslate_emerald_ore",
+            Blocks.DEEPSLATE_EMERALD_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.DEEPSLATE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE),
+            3,
+            7
+    );
+
+    public static final BlockSet LAPIS_ORE_SET = registerDropXPBlockSet(
+            "lapis_ore",
+            Blocks.LAPIS_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops(),
+            2,
+            5
+    );
+
+    public static final BlockSet DEEPSLATE_LAPIS_ORE_SET = registerDropXPBlockSet(
+            "deepslate_lapis_ore",
+            Blocks.DEEPSLATE_LAPIS_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.DEEPSLATE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE),
+            2,
+            5
+    );
+
+    public static final BlockSet COAL_ORE_SET = registerDropXPBlockSet(
+            "coal_ore",
+            Blocks.COAL_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops(),
+            0,
+            2
+    );
+
+    public static final BlockSet DEEPSLATE_COAL_ORE_SET = registerDropXPBlockSet(
+            "deepslate_coal_ore",
+            Blocks.DEEPSLATE_COAL_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.DEEPSLATE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE),
+            0,
+            2
+    );
+
+    public static final BlockSet REDSTONE_ORE_SET = registerDropXPBlockSet(
+            "redstone_ore",
+            Blocks.REDSTONE_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops(),
+            3,
+            7
+    );
+
+    public static final BlockSet DEEPSLATE_REDSTONE_ORE_SET = registerDropXPBlockSet(
+            "deepslate_redstone_ore",
+            Blocks.DEEPSLATE_REDSTONE_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.DEEPSLATE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE),
+            3,
+            7
+    );
+
+    public static final BlockSet COPPER_ORE_SET = registerDropXPBlockSet(
+            "copper_ore",
+            Blocks.COPPER_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops(),
+            0,
+            0
+    );
+
+    public static final BlockSet DEEPSLATE_COPPER_ORE_SET = registerDropXPBlockSet(
+            "deepslate_copper_ore",
+            Blocks.DEEPSLATE_COPPER_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.DEEPSLATE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE),
+            0,
+            0
+    );
+
+    public static final BlockSet NETHER_GOLD_ORE_SET = registerDropXPBlockSet(
+            "nether_gold_ore",
+            Blocks.NETHER_GOLD_ORE,
+            WoodType.ACACIA,
+            props -> props
+                    .mapColor(MapColor.NETHER)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops(),
+            0,
+            1
     );
 
     // PRISMARINE
@@ -1137,6 +1368,23 @@ public class ModBlocks {
         return new BlockSet(base, stairs, slab, fence, fence_gate, wall, door, trapdoor);
     }
 
+    public static BlockSet registerDropXPBlockSet(
+            String prefix,
+            Block base,
+            WoodType woodType,
+            Function<BlockBehaviour.Properties, BlockBehaviour.Properties> propertiesModifier,
+            float minXp,
+            float maxXP
+    ) {
+
+        Block stairs = registerBlock(prefix + "_stairs", prop -> new DropExperienceStairBlock(UniformInt.of((int) Math.ceil(minXp * 0.75), (int) Math.ceil(maxXP * 0.75)) ,base.defaultBlockState(),propertiesModifier.apply(prop)));
+        Block slab = registerBlock(prefix + "_slab", prop -> new DropExperienceSlabBlock(UniformInt.of((int) Math.ceil(minXp * 0.5), (int) Math.ceil(maxXP * 0.5)), propertiesModifier.apply(prop)));
+        Block fence = registerBlock(prefix + "_fence", prop -> new DropExperienceFenceBlock(UniformInt.of((int) Math.ceil(minXp * 0.25), (int) Math.ceil(maxXP * 0.25)), propertiesModifier.apply(prop)));
+        Block fence_gate = registerBlock(prefix + "_fence_gate", prop -> new DropExperienceFenceGateBlock(UniformInt.of((int) Math.ceil(minXp * 0.25), (int) Math.ceil(maxXP * 0.25)), woodType ,propertiesModifier.apply(prop)));
+        Block wall = registerBlock(prefix + "_wall", prop -> new DropExperienceWallBlock(UniformInt.of((int) Math.ceil(minXp * 0.5), (int) Math.ceil(maxXP * 0.5)), propertiesModifier.apply(prop)));
+        return new BlockSet(base, stairs, slab, fence, fence_gate, wall, null, null);
+    }
+
     public static ResourceKey<Block> getResourceKey(Block block) {
         return BuiltInRegistries.BLOCK.getResourceKey(block).get();
     }
@@ -1183,21 +1431,34 @@ public class ModBlocks {
         addSetToCreativeTab(CALCIFIED_GOLD_SET, true);
         addSetToCreativeTab(POLISHED_GOLD_SET, true);
 
+        addSetToCreativeTab(GOLD_ORE_SET, false);
+        addSetToCreativeTab(DEEPSLATE_GOLD_ORE_SET, false);
+        addSetToCreativeTab(NETHER_GOLD_ORE_SET, false);
+
         addSetToCreativeTab(DIAMOND_SET, false);
         addSetToCreativeTab(DIAMOND_BRICKS_SET, true);
         addSetToCreativeTab(CALCIFIED_DIAMOND_SET, true);
         addSetToCreativeTab(POLISHED_DIAMOND_SET, true);
+
+        addSetToCreativeTab(DIAMOND_ORE_SET, false);
+        addSetToCreativeTab(DEEPSLATE_DIAMOND_ORE_SET, false);
 
         addSetToCreativeTab(IRON_SET, false);
         addSetToCreativeTab(IRON_BRICKS_SET, true);
         addSetToCreativeTab(CALCIFIED_IRON_SET, true);
         addSetToCreativeTab(POLISHED_IRON_SET, true);
 
+        addSetToCreativeTab(IRON_ORE_SET, false);
+        addSetToCreativeTab(DEEPSLATE_IRON_ORE_SET, false);
+
         addSetToCreativeTab(EMERALD_SET, false);
         addSetToCreativeTab(EMERALD_BRICKS_SET, true);
         addSetToCreativeTab(CALCIFIED_EMERALD_SET, true);
         addSetToCreativeTab(POLISHED_EMERALD_SET, true);
         addSetToCreativeTab(CHISELED_EMERALD_SET, false);
+
+        addSetToCreativeTab(EMERALD_ORE_SET, false);
+        addSetToCreativeTab(DEEPSLATE_EMERALD_ORE_SET, false);
 
         addSetToCreativeTab(AMETHYST_SET, false);
         addSetToCreativeTab(AMETHYST_BRICKS_SET, true);
@@ -1209,10 +1470,19 @@ public class ModBlocks {
         addSetToCreativeTab(CALCIFIED_LAPIS_SET, true);
         addSetToCreativeTab(POLISHED_LAPIS_SET, true);
 
+        addSetToCreativeTab(LAPIS_ORE_SET, false);
+        addSetToCreativeTab(DEEPSLATE_LAPIS_ORE_SET, false);
+
         addSetToCreativeTab(COAL_SET, false);
         addSetToCreativeTab(COAL_BRICKS_SET, true);
         addSetToCreativeTab(CALCIFIED_COAL_SET, true);
         addSetToCreativeTab(POLISHED_COAL_SET, true);
+
+        addSetToCreativeTab(COAL_ORE_SET, false);
+        addSetToCreativeTab(DEEPSLATE_COAL_ORE_SET, false);
+
+        addSetToCreativeTab(COPPER_ORE_SET, false);
+        addSetToCreativeTab(DEEPSLATE_COPPER_ORE_SET, false);
 
         addSetToCreativeTab(NETHERITE_SET, false);
         addSetToCreativeTab(NETHERITE_BRICKS_SET, true);
@@ -1223,6 +1493,9 @@ public class ModBlocks {
         addSetToCreativeTab(REDSTONE_BRICKS_SET, true);
         addSetToCreativeTab(CALCIFIED_REDSTONE_SET, true);
         addSetToCreativeTab(POLISHED_REDSTONE_SET, true);
+
+        addSetToCreativeTab(REDSTONE_ORE_SET, false);
+        addSetToCreativeTab(DEEPSLATE_REDSTONE_ORE_SET, false);
 
         addSetToCreativeTab(OBSIDIAN_SET, false);
         addSetToCreativeTab(SCULK_SET, false);

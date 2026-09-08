@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "redstone",
   "key": {
     "#": "umamium:polished_redstone_block",
     "S": "minecraft:stick"

@@ -1,7 +1,7 @@
 package net.elgoblin.umamium.terrain;
 
 import net.elgoblin.umamium.Umamium;
-import net.elgoblin.umamium.gamerule.ChaosOrbGameRules;
+import net.elgoblin.umamium.gamerule.ModGameRules;
 import net.minecraft.server.MinecraftServer;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class TerrainJobsManager {
 
     public void tick(MinecraftServer server) {
         if (!listOfJobs.isEmpty()) {
-            maxBlockOperations = server.getGameRules().get(ChaosOrbGameRules.BLOCKS_PER_TICK);
+            maxBlockOperations = server.getGameRules().get(ModGameRules.BLOCKS_PER_TICK);
             int assignedBlockOperations = maxBlockOperations / listOfJobs.size();
             for (int i = listOfJobs.size() - 1; i >= 0; i--) {
                 boolean hasFinished = listOfJobs.get(i).process(assignedBlockOperations);

@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "sculk",
   "key": {
     "#": "minecraft:sculk",
     "S": "minecraft:stick"

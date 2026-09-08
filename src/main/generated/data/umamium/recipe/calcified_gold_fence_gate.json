@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "gold",
   "key": {
     "#": "umamium:calcified_gold_block",
     "S": "minecraft:stick"

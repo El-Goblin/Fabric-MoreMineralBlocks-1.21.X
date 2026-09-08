@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "group": "diamond",
   "ingredients": [
     "minecraft:diamond_block",
     "minecraft:calcite"

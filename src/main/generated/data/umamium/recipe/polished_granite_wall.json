@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "polished_granite",
   "key": {
     "#": "minecraft:polished_granite"
   },

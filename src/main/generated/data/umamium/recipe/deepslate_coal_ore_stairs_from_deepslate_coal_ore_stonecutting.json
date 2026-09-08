@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:deepslate_coal_ore",
+  "result": {
+    "id": "umamium:deepslate_coal_ore_stairs"
+  }
+}

@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "amethyst",
   "key": {
     "#": "umamium:polished_amethyst_block",
     "S": "minecraft:stick"

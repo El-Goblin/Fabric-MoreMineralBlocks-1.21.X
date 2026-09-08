@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "diamond",
   "key": {
     "#": "umamium:calcified_diamond_block",
     "S": "minecraft:stick"

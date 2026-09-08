@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "umamium:block/deepslate_diamond_ore_slab"
+    },
+    "type=double": {
+      "model": "minecraft:block/deepslate_diamond_ore"
+    },
+    "type=top": {
+      "model": "umamium:block/deepslate_diamond_ore_slab_top"
+    }
+  }
+}

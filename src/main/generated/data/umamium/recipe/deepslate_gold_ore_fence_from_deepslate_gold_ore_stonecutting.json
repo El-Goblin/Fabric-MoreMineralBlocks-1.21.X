@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:deepslate_gold_ore",
+  "result": {
+    "count": 4,
+    "id": "umamium:deepslate_gold_ore_fence"
+  }
+}

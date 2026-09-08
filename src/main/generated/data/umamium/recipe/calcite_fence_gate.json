@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "calcite",
   "key": {
     "#": "minecraft:calcite",
     "S": "minecraft:stick"

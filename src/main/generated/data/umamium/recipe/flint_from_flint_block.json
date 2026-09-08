@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "group": "flint",
   "ingredients": [
     "umamium:flint_block"
   ],

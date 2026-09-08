@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "group": "gold",
   "ingredients": [
     "minecraft:gold_block",
     "minecraft:calcite"

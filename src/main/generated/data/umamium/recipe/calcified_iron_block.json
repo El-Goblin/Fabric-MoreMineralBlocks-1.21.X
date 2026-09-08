@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "group": "iron",
   "ingredients": [
     "minecraft:iron_block",
     "minecraft:calcite"

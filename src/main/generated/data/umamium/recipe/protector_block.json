@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "protector",
   "key": {
     "D": "minecraft:diamond_block",
     "E": "minecraft:nether_star",

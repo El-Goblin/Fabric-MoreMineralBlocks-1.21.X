@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "diamond",
   "key": {
     "#": "minecraft:diamond_block"
   },

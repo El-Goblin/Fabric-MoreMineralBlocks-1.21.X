@@ -5,7 +5,7 @@ import net.elgoblin.umamium.block.ModBlocks;
 import net.elgoblin.umamium.component.ModAttachmentTypes;
 import net.elgoblin.umamium.effect.ModEffects;
 import net.elgoblin.umamium.entity.ModEntities;
-import net.elgoblin.umamium.gamerule.ChaosOrbGameRules;
+import net.elgoblin.umamium.gamerule.ModGameRules;
 import net.elgoblin.umamium.item.ModItems;
 import net.elgoblin.umamium.item.custom.ChaosOrbItem;
 import net.elgoblin.umamium.particle.ModParticles;
@@ -47,7 +47,6 @@ import net.minecraft.world.entity.animal.cow.CowVariants;
 import net.minecraft.world.entity.animal.equine.SkeletonHorse;
 import net.minecraft.world.entity.animal.frog.FrogVariant;
 import net.minecraft.world.entity.animal.frog.FrogVariants;
-import net.minecraft.world.entity.animal.pig.Pig;
 import net.minecraft.world.entity.animal.pig.PigVariant;
 import net.minecraft.world.entity.animal.pig.PigVariants;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -694,16 +693,16 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
 
     private void chaosEffect(HitResult hitResult, AABB boundingBox) {
         sendMessageToUser("Chaos Effect");
-        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, boundingBox.inflate(16.0, 8.0, 16.0), EntitySelector.NO_SPECTATORS);
-        if (user != null && !entities.contains((LivingEntity) user)) {
-            entities.add((LivingEntity) user);
+        List<Player> entities = level.getEntitiesOfClass(Player.class, boundingBox.inflate(16.0, 8.0, 16.0), EntitySelector.NO_SPECTATORS);
+        if (user != null && !entities.contains(user) && user instanceof Player player) {
+            entities.add(player);
         }
         //level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 3.0, 0.0, 1.0);
 
-        for (LivingEntity entity : entities) {
-            MobEffectInstance effect = new MobEffectInstance(ModEffects.CHAOS, 600, 0);
-            if (entity != null) {
-                entity.addEffect(effect);
+        for (Player player : entities) {
+            MobEffectInstance effect = new MobEffectInstance(ModEffects.CHAOS, 1800, 0);
+            if (player != null) {
+                player.addEffect(effect);
             }
         }
     }
@@ -1080,8 +1079,8 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             randomNumber = random.nextFloat();
         }
         int radius = Math.max((int) (-1 * (5.6f * Math.log(randomNumber * 1369)/Math.log(1.375f) - 127)), 10);
-        double multiplier = level.getGameRules().get(ChaosOrbGameRules.VOID_SPHERE_SIZE_MULTIPLIER);
-        int fixedSize = level.getGameRules().get(ChaosOrbGameRules.VOID_SPHERE_FIXED_SIZE);
+        double multiplier = level.getGameRules().get(ModGameRules.VOID_SPHERE_SIZE_MULTIPLIER);
+        int fixedSize = level.getGameRules().get(ModGameRules.VOID_SPHERE_FIXED_SIZE);
         if (multiplier > 1) {
             radius = (int) (radius * multiplier);
         }
@@ -1123,7 +1122,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private void spawnGiantSlime(HitResult hitResult) {
-        sendMessageToUser("Skeleton Horse");
+        sendMessageToUser("Giant Slime");
         if (level.dimension() == Level.NETHER) {
             MagmaCube giantMagmaCube = EntityTypes.MAGMA_CUBE.create(level, EntitySpawnReason.EVENT);
             if (giantMagmaCube != null) {
@@ -1265,10 +1264,10 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         int nextEntity = this.random.nextIntBetweenInclusive(0, mobs.size()-1);
         int spawnsToPerform = this.random.nextIntBetweenInclusive(5, 14);
 
-//        EntityType<?> entityType = mobs.get(nextEntity);
-//        Identifier entityTypeID = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
-        EntityType<?> entityType = EntityTypes.PIG;
-        Identifier entityTypeID = Identifier.parse("minecraft:pig");
+        EntityType<?> entityType = mobs.get(nextEntity);
+        Identifier entityTypeID = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
+//        EntityType<?> entityType = EntityTypes.PIG;
+//        Identifier entityTypeID = Identifier.parse("minecraft:pig");
 
         while (spawnsToPerform-- > 0) {
             Entity entity = entityType.create(level, EntitySpawnReason.EVENT);
@@ -1501,7 +1500,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
     }
 
     private boolean sendMessageToUser(String message) {
-        if (user != null && user instanceof Player  player) {
+        if (user != null && user instanceof Player player && level != null && level.getGameRules().get(ModGameRules.CHAOS_ORB_DEBUG_MESSAGES)) {
             player.sendSystemMessage(Component.literal(message));
             return true;
         }

@@ -12,6 +12,7 @@ public class ModTags {
     public static class Blocks {
 
         public static final TagKey<Block> INCORRECT_FOR_LEGENDARY_TOOL = createTag("incorrect_for_legendary_tool");
+        public static final TagKey<Block> NETHER_PORTAL_BLOCK = createTag("nether_portal_block");
 
         private static TagKey<Block> createTag(String name) {
             return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Umamium.MOD_ID, name));

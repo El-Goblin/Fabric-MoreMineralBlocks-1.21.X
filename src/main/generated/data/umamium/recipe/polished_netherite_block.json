@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "group": "netherite",
   "ingredients": [
     "umamium:polished_diamond_block",
     "umamium:netherite_nugget"

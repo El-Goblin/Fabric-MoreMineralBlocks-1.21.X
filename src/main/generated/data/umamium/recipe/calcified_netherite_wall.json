@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "group": "netherite",
   "ingredients": [
     "umamium:calcified_diamond_wall",
     "umamium:netherite_nugget"

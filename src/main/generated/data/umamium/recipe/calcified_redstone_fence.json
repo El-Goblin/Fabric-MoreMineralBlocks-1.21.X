@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "redstone",
   "key": {
     "#": "umamium:calcified_redstone_block",
     "S": "minecraft:stick"

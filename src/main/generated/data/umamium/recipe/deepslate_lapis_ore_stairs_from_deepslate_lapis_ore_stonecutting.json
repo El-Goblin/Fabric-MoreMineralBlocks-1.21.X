@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:deepslate_lapis_ore",
+  "result": {
+    "id": "umamium:deepslate_lapis_ore_stairs"
+  }
+}

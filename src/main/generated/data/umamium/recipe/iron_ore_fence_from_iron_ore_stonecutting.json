@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:iron_ore",
+  "result": {
+    "count": 4,
+    "id": "umamium:iron_ore_fence"
+  }
+}

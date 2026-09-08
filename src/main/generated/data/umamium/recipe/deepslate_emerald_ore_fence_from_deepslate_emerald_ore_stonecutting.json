@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:deepslate_emerald_ore",
+  "result": {
+    "count": 4,
+    "id": "umamium:deepslate_emerald_ore_fence"
+  }
+}

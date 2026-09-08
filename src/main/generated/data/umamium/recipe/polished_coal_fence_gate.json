@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "coal",
   "key": {
     "#": "umamium:polished_coal_block",
     "S": "minecraft:stick"

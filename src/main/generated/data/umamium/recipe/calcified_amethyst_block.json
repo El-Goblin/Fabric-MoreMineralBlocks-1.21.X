@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "group": "amethyst",
   "ingredients": [
     "minecraft:amethyst_block",
     "minecraft:calcite"

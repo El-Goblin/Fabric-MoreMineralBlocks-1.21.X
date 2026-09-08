@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "group": "coal",
   "ingredients": [
     "minecraft:coal_block",
     "minecraft:calcite"

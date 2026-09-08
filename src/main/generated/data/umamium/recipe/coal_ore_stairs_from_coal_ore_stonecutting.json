@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:coal_ore",
+  "result": {
+    "id": "umamium:coal_ore_stairs"
+  }
+}
