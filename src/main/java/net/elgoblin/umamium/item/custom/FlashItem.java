@@ -29,7 +29,7 @@ public class FlashItem extends Item {
         if (!level.isClientSide()) {
             player.getCooldowns().addCooldown(player.getItemInHand(hand), 50);
 
-            Vec3 target = player.position().add(player.getViewVector(1.0F).scale(6));
+            Vec3 target = player.position().add(player.getViewVector(1.0F).scale(7));
 
             TeleportTransition teleportTarget = new TeleportTransition((ServerLevel) level,
                     target,

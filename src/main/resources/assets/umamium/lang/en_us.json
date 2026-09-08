@@ -519,11 +519,11 @@
   "gamerule.umamium.skyblock_radius": "Skyblock radius",
   "gamerule.umamium.skyblock_radius.description": "Controls how much air to leave, in chunks, in each direction centered in the skyblock.",
   "gamerule.umamium.snow_golem_lifetime": "Snow golem lifetime",
-  "gamerule.umamium.snow_golem_lifetime.description": "Controls how long the golems from the chaos orb event live. High values can result in a lot of golem entities being generated and can harm performance",
+  "gamerule.umamium.snow_golem_lifetime.description": "Controls how long the golems from the chaos orb event live. High values can result in a lot of golem entities being generated and can harm performance.",
   "gamerule.umamium.terrain_manager_blocks_per_tick": "Terrain modifying events speed",
   "gamerule.umamium.terrain_manager_blocks_per_tick.description": "Controls how many blocks are modified per tick by the chaos orb events. This number is shared by all events so the final number gets divided by the amount of events active.",
   "gamerule.umamium.void_sphere_fixed_size": "Void sphere fixed size",
   "gamerule.umamium.void_sphere_fixed_size.description": "Forces void sphere from the chaos orb event to occur with this radius when positive",
   "gamerule.umamium.void_sphere_size_multiplier": "Void sphere size multiplier",
-  "gamerule.umamium.void_sphere_size_multiplier.description": "Multiplies the void sphere radius from the chaos orb event, the base distribution remains the same"
+  "gamerule.umamium.void_sphere_size_multiplier.description": "Multiplies the void sphere radius from the chaos orb event, the base distribution remains the same."
 }

@@ -32,7 +32,7 @@ public class ModGameRules {
             .buildAndRegister(Identifier.fromNamespaceAndPath(Umamium.MOD_ID, "skyblock_radius"));
 
     public static final GameRule<Integer> BLOCKS_PER_TICK = GameRuleBuilder
-            .forInteger(50000)
+            .forInteger(2500)
             .category(UMAMIUM_GAMERULE_CATEGORY)
             .buildAndRegister(Identifier.fromNamespaceAndPath(Umamium.MOD_ID, "terrain_manager_blocks_per_tick"));
 
