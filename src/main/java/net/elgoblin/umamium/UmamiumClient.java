@@ -3,6 +3,7 @@ package net.elgoblin.umamium;
 import net.elgoblin.umamium.client.*;
 import net.elgoblin.umamium.client.models.ModModelLayers;
 import net.elgoblin.umamium.client.renderer.ModSpecialModelRenderers;
+import net.elgoblin.umamium.component.ModAttachmentTypes;
 import net.elgoblin.umamium.component.ModDataComponentTypes;
 import net.elgoblin.umamium.entity.ModEntities;
 import net.elgoblin.umamium.item.ModItems;
@@ -11,15 +12,38 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.fabricmc.fabric.api.event.player.ItemEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityAttachment;
+import net.minecraft.world.entity.EntityAttachments;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
+
+import java.util.*;
 
 public class UmamiumClient implements ClientModInitializer {
 
 	private long blockPlacedCount = 0;
+
+	private static final Identifier NIGHT_OWL = Identifier.fromNamespaceAndPath(Umamium.MOD_ID, "textures/mob_effect/slimey.png"
+	);
+	private static final Identifier EFFECT_BACKGROUND_AMBIENT_SPRITE = Identifier.withDefaultNamespace("hud/effect_background_ambient");
+	private static final Identifier EFFECT_BACKGROUND_SPRITE = Identifier.withDefaultNamespace("hud/effect_background");
+
 
 	@Override
 	public void onInitializeClient() {
@@ -36,7 +60,49 @@ public class UmamiumClient implements ClientModInitializer {
 //				2
 //		);
 
-
+//		ItemEvents.USE_ON.register((context -> {
+//			Player player = context.getPlayer();
+//			if (player == null) { return null; }
+//			if (!player.hasAttached(ModAttachmentTypes.ADYACENT_BLOCK_PLACING)) { return null; }
+//
+//			ItemStack stack = context.getItemInHand();
+//			if (!(stack.getItem() instanceof BlockItem blockItem)) { return null; }
+//
+//			UUID uuid = player.getUUID();
+//			long seed = uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits() ^ blockPlacedCount++;
+//
+//			System.out.println("Seed Client = " + seed);
+//
+//			List<Vec3i> positions = new ArrayList<>(List.of(
+//					new Vec3i(1, 0, 0),
+//					new Vec3i(0, 1, 0),
+//					new Vec3i(0, 0, 1),
+//					new Vec3i(-1, 0, 0),
+//					new Vec3i(0, -1, 0),
+//					new Vec3i(0, 0, -1)
+//			));
+//
+//			Collections.shuffle(positions, new Random(seed));
+//
+//			for (Vec3i offset : positions) {
+//				BlockPos newPos = context.getClickedPos().offset(offset);
+//
+//				BlockHitResult newHitResult = new BlockHitResult(
+//						Vec3.atCenterOf(newPos),
+//						context.getClickedFace(),
+//						newPos,
+//						context.isInside()
+//				);
+//
+//				BlockPlaceContext placeContext = new BlockPlaceContext(player, context.getHand(), stack, newHitResult);
+//				InteractionResult result = blockItem.place(placeContext);
+//
+//				if (result.consumesAction()) {
+//					return InteractionResult.SUCCESS;
+//				}
+//			}
+//			return null;
+//		}));
 
 //		ItemEvents.USE_ON.register((context) -> {
 //			Player player = context.getPlayer();
@@ -114,6 +180,22 @@ public class UmamiumClient implements ClientModInitializer {
 					}
 				}
 		);
+
+		HudElementRegistry.attachElementAfter(VanillaHudElements.HOTBAR,
+				Identifier.fromNamespaceAndPath(Umamium.MOD_ID, "la_lechona_effects"),
+				(graphics, deltaTracker) -> {
+
+			        Minecraft minecraft = Minecraft.getInstance();
+					LocalPlayer player = minecraft.player;
+			        if (player == null) { return; }
+
+					boolean hasNightOwl = player.hasAttached(ModAttachmentTypes.NIGHT_OWL);
+
+					if (hasNightOwl) {
+						graphics.blitSprite(RenderPipelines.GUI_TEXTURED, EFFECT_BACKGROUND_SPRITE, 5, 5, 24, 24);
+						graphics.blit(RenderPipelines.GUI_TEXTURED, NIGHT_OWL, 5, 5, 0, 0, 24, 24, 24, 24);
+					}
+				});
 	}
 
 	private void renderSelectedStack(GuiGraphicsExtractor guiGraphicsExtractor, Minecraft client, ItemStack stack) {
@@ -158,4 +240,8 @@ public class UmamiumClient implements ClientModInitializer {
 			}
 		}
 	}
+
+//	private boolean showInGui(EntityAttachment attachment) {
+//		return attachment
+//	}
 }

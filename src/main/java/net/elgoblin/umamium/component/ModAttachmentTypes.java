@@ -3,7 +3,9 @@ package net.elgoblin.umamium.component;
 import com.mojang.serialization.Codec;
 import net.elgoblin.umamium.Umamium;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.Identifier;
 
 public class ModAttachmentTypes {
@@ -14,19 +16,23 @@ public class ModAttachmentTypes {
                     builder -> builder
                             .persistent(Codec.BOOL)
                             .copyOnDeath()
+                            .syncWith(
+                                    ByteBufCodecs.BOOL,
+                                    AttachmentSyncPredicate.targetOnly()
+                            )
             );
 
-//    public static final AttachmentType<Long> ADYACENT_BLOCK_PLACING =
-//            AttachmentRegistry.create(
-//                    Identifier.fromNamespaceAndPath(Umamium.MOD_ID, "adyacent_block_placing"),
-//                    builder -> builder
-//                            .persistent(Codec.LONG)
-//                            .copyOnDeath()
-//                            .syncWith(
-//                                    ByteBufCodecs.LONG,
-//                                    AttachmentSyncPredicate.targetOnly()
-//                            )
-//            );
+    public static final AttachmentType<Boolean> ADYACENT_BLOCK_PLACING =
+            AttachmentRegistry.create(
+                    Identifier.fromNamespaceAndPath(Umamium.MOD_ID, "adyacent_block_placing"),
+                    builder -> builder
+                            .persistent(Codec.BOOL)
+                            .copyOnDeath()
+                            .syncWith(
+                                    ByteBufCodecs.BOOL,
+                                    AttachmentSyncPredicate.targetOnly()
+                            )
+            );
 
     public static void registerAttachmentTypes() {
         Umamium.LOGGER.info("Registering Attachments for " + Umamium.MOD_ID);

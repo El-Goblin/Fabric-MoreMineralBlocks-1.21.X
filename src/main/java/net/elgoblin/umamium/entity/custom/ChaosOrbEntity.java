@@ -15,6 +15,7 @@ import net.elgoblin.umamium.util.ArrowShootersManager;
 import net.elgoblin.umamium.util.variants.FrogAccessor;
 import net.elgoblin.umamium.util.ProtectorManager;
 import net.elgoblin.umamium.util.variants.PigAccessor;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.*;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -24,6 +25,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -132,7 +134,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             Map.entry("20", new Pair<>(5,2)),
             Map.entry("scale", new Pair<>(5,3)),
             Map.entry("levitation", new Pair<>(5,4)),
-//            Map.entry("adyacentblockplacing", new Pair<>(5,5)),
+            Map.entry("adyacentblockplacing", new Pair<>(5,5)),
 //
             Map.entry("help", new Pair<>(6,0))
 //            Map.entry("skyblock", new Pair<>(6,1))
@@ -187,8 +189,8 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             this::blinking,
             this::moveXBlocks,
             this::changeScale,
-            this::levitation
-//            this::blocksPlacedOnAdyacentPositions
+            this::levitation,
+            this::blocksPlacedOnAdyacentPositions
     ));
 
     private List<Consumer<HitResult>> debugChaosEffects = new ArrayList<>(List.of(
@@ -723,21 +725,22 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         }
     }
 
-//    private void blocksPlacedOnAdyacentPositions(HitResult hitResult, AABB boundingBox) {
-//        sendMessageToUser("Adyacent Block Placing");
-//        List<ServerPlayer> entities = level.getEntitiesOfClass(ServerPlayer.class, boundingBox.inflate(16.0, 8.0, 16.0), EntitySelector.NO_SPECTATORS);
-//
-//        if (entities.isEmpty() && user != null) {
-//            entities.add((ServerPlayer) user);
-//        }
-//        //level.sendParticles(ModParticles.CHAOS_ORB_FRAGILE_PARTICLE,this.getX(), this.getY(), this.getZ(), 1, 0.0, 3.0, 0.0, 1.0);
-//
-//        for (ServerPlayer player : entities) {
-//            if (player != null) {
-//                player.setAttached(ModAttachmentTypes.ADYACENT_BLOCK_PLACING, random.nextLong());
-//            }
-//        }
-//    }
+    private void blocksPlacedOnAdyacentPositions(HitResult hitResult, AABB boundingBox) {
+        sendMessageToUser("Adyacent Block Placing");
+        List<ServerPlayer> entities = level.getEntitiesOfClass(ServerPlayer.class, boundingBox.inflate(16.0, 8.0, 16.0), EntitySelector.NO_SPECTATORS);
+        addUserTargetsOrSelfServerPlayer(entities, user);
+
+        for (ServerPlayer player : entities) {
+            if (player != null) {
+                player.setAttached(ModAttachmentTypes.ADYACENT_BLOCK_PLACING, true);
+
+                player.connection.send(new ClientboundSetTitleTextPacket(
+                        Component.literal("Missclick")
+                                .withStyle(ChatFormatting.RED)
+                ));
+            }
+        }
+    }
 
     private void counterBlinking(HitResult hitResult, AABB boundingBox) {
         sendMessageToUser("Counter Blink");
@@ -795,12 +798,12 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
         if (user != null && user instanceof ServerPlayer player) {
             player.setAttached(ModAttachmentTypes.NIGHT_OWL, true);
 
-            //player.connection.send(new ClientboundSetTitleTextPacket(Component.literal("Hoy me quedo hasta tarde")));
+//            player.connection.send(new ClientboundSetTitleTextPacket(Component.literal("Hoy me quedo hasta tarde")));
 
-//            player.connection.send(new ClientboundSetTitleTextPacket(
-//                    Component.literal("Hoy me quedo hasta tarde")
-//                            .withStyle(ChatFormatting.RED)
-//            ));
+            player.connection.send(new ClientboundSetTitleTextPacket(
+                    Component.literal("Hoy me quedo hasta tarde")
+                            .withStyle(ChatFormatting.RED)
+            ));
         }
     }
 
@@ -1495,7 +1498,7 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             sendMessageToUser("GiantSlime");
             sendMessageToUser("ChaosEffect");
             sendMessageToUser("ArrowShooter");
-//            sendMessageToUser("AdyacentBlockPlacing");
+            sendMessageToUser("AdyacentBlockPlacing");
         }
     }
 
@@ -1505,5 +1508,17 @@ public class ChaosOrbEntity extends ThrowableItemProjectile {
             return true;
         }
         return false;
+    }
+
+    private void addUserServerPlayer(List<ServerPlayer> players, Entity player) {
+        if (player instanceof ServerPlayer playerUser && !players.contains(playerUser)) {
+            players.add(playerUser);
+        }
+    }
+
+    private void addUserTargetsOrSelfServerPlayer(List<ServerPlayer> players, Entity player) {
+        if (players.isEmpty() && player instanceof ServerPlayer playerUser) {
+            players.add(playerUser);
+        }
     }
 }

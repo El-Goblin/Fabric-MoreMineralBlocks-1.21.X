@@ -15,7 +15,7 @@ public class ModEffects {
     public static final Holder<MobEffect> WATER_WEAKNESS = registerStatusEffect("water_weakness",
             new BooleanEffect(MobEffectCategory.NEUTRAL, 0x0000CC));
 
-    public static final Holder<MobEffect> CHAOS = registerStatusEffect("chaos",
+    public static final Holder<MobEffect> CHAOS = registerStatusEffect("chaos_effect",
             new ChaosEffect(MobEffectCategory.NEUTRAL, 0xCC0000));
 
 //    public static final Holder<MobEffect> ADVENTURE = registerStatusEffect("adventure",
@@ -29,9 +29,6 @@ public class ModEffects {
 
     public static final Holder<MobEffect> SNOWY_BODYGUARDS = registerStatusEffect("snowy_bodyguards",
             new OnDamageTakenEffect(MobEffectCategory.HARMFUL, 0xFFFFFFFF));
-
-    public static final Holder<MobEffect> ADYACENT_BLOCK_PLACING = registerStatusEffect("adyacent_block_placing",
-            new RemovedByLaLechonaEffect(MobEffectCategory.HARMFUL, 0xFFFF0090));
 
 //    public static final Holder<MobEffect> ONANA_HANDS = registerStatusEffect("onana_hands",
 //            new OnDamageTakenEffect(MobEffectCategory.HARMFUL, 12779366));

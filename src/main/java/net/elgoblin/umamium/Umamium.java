@@ -22,24 +22,36 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.ItemEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.resources.Identifier;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.golem.SnowGolem;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 public class Umamium implements ModInitializer {
 	public static final String MOD_ID = "umamium";
 	public static final RandomSource random = RandomSource.create();
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	private long blockPlacedCount = 0;
+	private Map<UUID, Long> playerToBlockPlacedCount = new HashMap<>();
 
 	@Override
 	public void onInitialize() {
@@ -69,6 +81,62 @@ public class Umamium implements ModInitializer {
 		});
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(Umamium::applyAfterDamageEffects);
+
+		ItemEvents.USE_ON.register((context -> {
+			Player player = context.getPlayer();
+			if (player == null) { return null; }
+			if (!player.hasAttached(ModAttachmentTypes.ADYACENT_BLOCK_PLACING)) { return null; }
+
+			ItemStack stack = context.getItemInHand();
+			if (!(stack.getItem() instanceof BlockItem blockItem)) { return null; }
+
+			UUID uuid = player.getUUID();
+			long blockPlacedCount = playerToBlockPlacedCount.getOrDefault(uuid, 0L);
+			long seed = uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits() ^ blockPlacedCount;
+
+			if (!context.getLevel().isClientSide()) {
+				playerToBlockPlacedCount.put(uuid, blockPlacedCount + 1);
+			}
+
+			List<Direction> directions = new ArrayList<>(List.of(
+					Direction.DOWN,
+					Direction.UP,
+					Direction.EAST,
+					Direction.WEST,
+					Direction.NORTH,
+					Direction.SOUTH
+			));
+
+			Collections.shuffle(directions, new Random(seed));
+
+			for (Direction face : directions) {
+				if (!context.getLevel().isClientSide()) {
+					System.out.println("direction = " + face);
+					System.out.println("blockPos = " + context.getClickedPos().relative(context.getClickedFace()));
+				}
+				BlockPos position = context.getClickedPos().relative(context.getClickedFace());
+
+				if (!context.getLevel().getBlockState(position.relative(face)).canBeReplaced()) {
+					continue;
+				}
+
+				BlockHitResult newHitResult = new BlockHitResult(
+						Vec3.atCenterOf(position),
+						face,
+						position.relative(face),
+						context.isInside()
+				);
+
+				BlockPlaceContext placeContext = new BlockPlaceContext(player, context.getHand(), stack, newHitResult);
+				InteractionResult result = blockItem.place(placeContext);
+
+				if (result.consumesAction()) {
+					return InteractionResult.SUCCESS;
+				}
+			}
+			return null;
+		}));
+
 
 //		ItemEvents.USE_ON.register((context) -> {
 //			Player player = context.getPlayer();
